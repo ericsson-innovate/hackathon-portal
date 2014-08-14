@@ -344,7 +344,7 @@
     }
   ],
   "codeExamples": {
-    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "android": "/app/src/com/idean/atthack/network/RequestHelper.java",
     "ios": "/data/examples/ios/examples.m",
     "web": "/dist/data/web-examples.js"
   }
