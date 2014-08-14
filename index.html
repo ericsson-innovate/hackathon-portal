@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+
+  <title>Hackathon Portal</title>
+
+  <link rel='shortcut icon' type='image/x-icon' href='/src/images/favicon.ico' />
+
+  <link rel="stylesheet" href="/lib/prism/prism.css">
+  <link rel="stylesheet" href="/dist/styles/main.min.css">
+</head>
+<body ng-app="hackApp"
+    ng-controller="HackCtrl">
+  <div id="banner">
+    <div id="top-header">
+      <div class="content-area">
+        <div id="logos">
+          <a id="att-logo" href="http://www.att.com/"><img src="/dist/images/att-logo.jpg" alt="AT&T Logo"></a>
+          <a id="ericsson-logo" href="http://www.ericsson.com/"><img src="/dist/images/ericsson-logo.jpg" alt="Ericsson Logo"></a>
+        </div>
+        <span id="title-part-1">Connected Car</span>
+        <span id="title-part-2">Hackathon</span>
+      </div>
+    </div>
+
+    <div id="car-area">
+      <div class="content-area">
+        <div class="inner-content-area">
+          <ul class="tabs">
+            <li ng-repeat="category in hackState.categories"
+                ng-click="hackState.handleCategoryTabClick(category)"
+                ng-class="{selected: selectedCategory === category}"
+                class="tab">
+              {{category.name}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <ul class="side-menu">
+      <li ng-repeat="item in hackState.sideBarLinks"
+          ng-class="{selected: routeState.name === item.ref}">
+        <a ng-if="item.isStateRoute"
+           ng-attr-ui-sref="{{item.ref}}">
+          {{item.label}}
+        </a>
+        <a ng-if="!item.isStateRoute"
+           ng-attr-href="{{item.ref}}">
+          {{item.label}}
+        </a>
+
+        <hr class="divider">
+      </li>
+    </ul>
+
+    <div ui-view
+         id="route-view"
+         class="{{routeState.name + '-route'}} inner-content-area"></div>
+  </div>
+
+  <!-- ======== Scripts ======== -->
+
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+  <script src="/lib/prism/prism.js"></script>
+
+  <!-- TODO: replace these individual script includes with the single minified version -->
+  <script src="/dist/scripts/hackathon-portal.min.js"></script>
+
+  <!--<script src="/src/main.js"></script>-->
+
+  <!--<script src="/src/common/routes.js"></script>-->
+  <!--<script src="/src/common/asdp-emulator-parameters.js"></script>-->
+
+  <!--<script src="/src/common/hack-controller.js"></script>-->
+
+  <!--<script src="/src/common/category-filter.js"></script>-->
+  <!--<script src="/src/common/error-description-filter.js"></script>-->
+
+  <!--<script src="/src/common/sync-prism-directive.js"></script>-->
+
+  <!--<script src="/src/common/specifications-service.js"></script>-->
+  <!--<script src="/src/common/examples-service.js"></script>-->
+  <!--<script src="/src/common/api-service.js"></script>-->
+
+  <!--<script src="/src/components/api-list-item/api-list-item-directive.js"></script>-->
+  <!--<script src="/src/components/api-specification-card/api-specification-card-directive.js"></script>-->
+  <!--<script src="/src/components/api-example-card/api-example-card-directive.js"></script>-->
+  <!--<script src="/src/components/api-try-it-card/api-try-it-card-directive.js"></script>-->
+  <!--<script src="/src/components/api-list/api-list-directive.js"></script>-->
+
+  <!--<script src="/src/routes/api-documentation/api-documentation-controller.js"></script>-->
+  <!--<script src="/src/routes/getting-started/getting-started-controller.js"></script>-->
+  <!--<script src="/src/routes/sample-apps/sample-apps-controller.js"></script>-->
+</body>
+</html>

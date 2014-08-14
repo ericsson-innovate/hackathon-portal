@@ -1,0 +1,36 @@
+{
+  "id": "2.16.3-delete-a-vehicle",
+  "docNumber": "2.16.3",
+  "name": "Delete a Vehicle",
+  "description": "Delete an existing vehicle.",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/vehicles/v1/vehicle/delete/{vin}",
+    "HTTP Verb": ["DELETE", "POST"],
+    "Authentication": "Basic Authentication"
+  },
+  "parameters": {
+    "route": {
+      "vin": ""
+    }
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/vehicles/v1/vehicle/delete/1TX123456789011223"
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

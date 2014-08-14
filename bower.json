@@ -1,0 +1,12 @@
+{
+  "name": "hackathon-portal",
+  "version": "0.0.0",
+  "description": "Hackathon Portal",
+  "dependencies": {
+    "angular": "~1.2.20",
+    "angular-mocks": "~1.2.20",
+    "angular-ui-router": "~0.2.10",
+    "angular-resource": "~1.2.20",
+    "angular-animate": "~1.2.20"
+  }
+}

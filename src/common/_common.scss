@@ -1,0 +1,317 @@
+$code-font-stack: Consolas, Monaco, 'Andale Mono', monospace;
+
+$button-active-color: rgb(255,255,255);
+$button-active-background-color: rgb(0,0,0);
+
+$button-inactive-color: rgb(255,255,255);
+$button-inactive-background-color: rgb(102,102,102);
+
+$tab-active-border-color: rgb(0,153,255);
+$tab-inactive-border-color: rgb(51,51,51);
+
+$item-active-color: rgb(0,153,255);
+$item-inactive-color: rgb(51,51,51);
+
+$verb-active-color: rgb(255,255,255);
+$verb-active-background-color: rgb(0,153,255);
+
+$card-inactive-color: rgb(191,191,191);
+
+$verb-inactive-color: rgb(255,255,255);
+$verb-inactive-background-color: rgb(191,229,255);
+
+$banner-color: rgb(255,255,255);
+$banner-background-color: rgb(7,7,7);
+
+$body-color: rgb(51,51,51);
+$body-background-color: rgb(255,255,255);
+
+$code-input-background-color: rgb(239,248,255);
+$code-output-background-color: rgb(247,247,247);
+
+$body-font-size: 14px;
+$tab-font-size: 16px;
+$toggle-button-font-size: 14px;
+$side-menu-font-size: 16px;
+$banner-header-font-size: 20px;
+$h1-font-size: 24px;
+$h2-font-size: 16px;
+$h3-font-size: 14px;
+$h4-font-size: 14px;
+
+$side-menu-item-height: 84px;
+
+$category-tab-height: 30px;
+$category-tab-border-width: 10px;
+
+$divider-border-width: 1px;
+
+$banner-height: 600px;
+$top-header-height: 70px;
+$top-header-divider-border-width: 1px;
+$logo-gap: 36px;
+
+$code-padding: 16px;
+$input-padding: 6px;
+$button-height: 35px;
+
+@mixin code-font() {
+  font-family: $code-font-stack;
+}
+
+.non-bulleted-list {
+  padding-left: 0;
+  list-style-type: none;
+  width: 100%;
+}
+
+@font-face {
+  font-family: hack-font;
+  src: url('/dist/fonts/hack-font.otf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: hack-font;
+  src: url('/dist/fonts/hack-font-bold.otf');
+  font-weight: bold;
+}
+
+div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
+  margin: 0; padding: 0;
+}
+
+body {
+  font-family: hack-font, sans-serif;
+  font-size: $body-font-size;
+  padding-bottom: 20px;
+  color: $body-color;
+  background-color: $body-background-color;
+}
+
+h1, h2, h3, h4 {
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: $h1-font-size;
+}
+
+h2 {
+  font-size: $h2-font-size;
+}
+
+h3 {
+  font-size: $h3-font-size;
+}
+
+h4 {
+  font-size: $h4-font-size;
+}
+
+textarea, input {
+  @include code-font();
+  margin: 0;
+  padding: $input-padding;
+  border-width: 0;
+  background-color: $code-input-background-color;
+  white-space: pre;
+}
+
+button {
+  height: $button-height;
+  line-height: $button-height;
+  margin: 0;
+  padding: 0 16px;
+  border-width: 0;
+  border-radius: 0;
+  background-color: $button-active-background-color;
+  color: $button-active-color;
+  text-transform: uppercase;
+}
+
+button[disabled] {
+  background-color: $button-inactive-background-color;
+  color: $button-inactive-color;
+}
+
+pre[sync-prism] {
+  margin: 0;
+  padding: 0 $code-padding;
+  overflow: auto;
+  background-color: $code-output-background-color;
+}
+
+pre[sync-prism]>code {
+  display: block;
+  overflow: visible;
+  padding: $code-padding 0;
+}
+
+#route-view {
+}
+
+.tabs {
+  @extend .non-bulleted-list;
+}
+
+/* Clearfix */
+.tabs:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.tab {
+  display: block;
+  float: left;
+  width: calc(33.3% - 14px);
+  margin-left: 20px;
+  height: $category-tab-height;
+  font-size: $tab-font-size;
+  border: 0 solid $tab-inactive-border-color;
+  border-bottom-width: $category-tab-border-width;
+  cursor: pointer;
+  vertical-align: top;
+  text-transform: uppercase;
+  text-align: left;
+  overflow: hidden;
+}
+
+.tab.selected {
+  border-color: $tab-active-border-color;
+}
+
+.tab:first-child {
+  margin-left: 0;
+}
+
+hr.divider {
+  position: relative;
+  border: 0 solid $card-inactive-color;
+  border-bottom-width: $divider-border-width;
+}
+
+li:last-child>hr.divider {
+  display: none;
+}
+
+// ---  --- //
+
+$side-menu-width: 220px;
+$side-menu-right-margin: 20px;
+
+h1 {
+  margin-bottom: 16px;
+}
+
+#banner {
+  color: #ffffff;
+  background: #040404 url('/dist/images/car.jpg') no-repeat center center;
+}
+
+#top-header {
+  height: $top-header-height;
+  line-height: $top-header-height;
+  vertical-align: middle;
+  border-width: 0 0 $top-header-divider-border-width 0;
+  border-image: linear-gradient(90deg, transparent, #777777 20%, #777777 80%, transparent) 1;
+}
+
+#title-part-1, #title-part-2 {
+  font-size: $banner-header-font-size;
+  text-transform: uppercase;
+}
+
+#title-part-1 {
+  color: $item-active-color;
+}
+
+#title-part-2 {
+}
+
+#logos {
+  position: relative;
+  float: right;
+}
+
+#logos>a, #logos>a>img {
+  vertical-align: middle;
+}
+
+#logos>a {
+  margin-left: $logo-gap;
+}
+
+#ericsson-logo {
+  position: relative;
+  top: -1px;
+}
+
+#car-area {
+  height: #{$banner-height - $top-header-height - $top-header-divider-border-width};
+}
+
+.content-area {
+  max-width: 940px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.inner-content-area {
+  position: relative;
+  float: right;
+  clear: right;
+  width: calc(100% - #{$side-menu-width + $side-menu-right-margin});
+  height: 100%;
+}
+
+.inner-content-area>h1 {
+  margin: 30px 0;
+  text-align: left;
+}
+
+.inner-content-area>.tabs {
+  position: absolute;
+  bottom: 34px;
+}
+
+.home-route api-list {
+}
+
+.side-menu {
+  @extend .non-bulleted-list;
+  float: left;
+  width: $side-menu-width;
+  margin: 0 $side-menu-right-margin 0 0;
+}
+
+.side-menu>li, .side-menu>li>a {
+  display: block;
+  height: $side-menu-item-height;
+  line-height: $side-menu-item-height;
+  font-size: $side-menu-font-size;
+  vertical-align: middle;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.side-menu>li>a,
+.side-menu>li>a:active,
+.side-menu>li>a:hover,
+.side-menu>li>a:visited {
+  color: $item-inactive-color;
+  text-decoration: none;
+}
+
+.side-menu>li.selected>a {
+  color: $item-active-color;
+}
+
+.side-menu>li>hr.divider {
+  top: 0;
+  margin: 0;
+}

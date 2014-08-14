@@ -1,0 +1,36 @@
+{
+  "id": "2.13.4-delete-a-subscriber",
+  "docNumber": "2.13.4",
+  "name": "Delete a Subscriber",
+  "description": "Delete an existing subscriber.",
+  "categories": ["know-driver"],
+  "resourceTable": {
+    "Route": "/subscribers/v1/subscriber/delete/{id}",
+    "HTTP Verb": ["DELETE", "POST"],
+    "Authentication": "Basic Authentication"
+  },
+  "parameters": {
+    "route": {
+      "id": ""
+    }
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/subscribers/v1/subscriber/delete/12fd3e34fd3412"
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

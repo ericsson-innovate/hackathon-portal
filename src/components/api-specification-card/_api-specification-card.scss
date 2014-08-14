@@ -1,0 +1,79 @@
+$api-specification-card-body-content-margin-top: 14px;
+
+api-specification-card {
+  display: block;
+}
+
+api-specification-card>div {
+  margin-top: 16px;
+}
+
+api-specification-card>div:first-child {
+  margin-top: 0;
+}
+
+.resource-table-array-element:after {
+  content: ', ';
+}
+
+.resource-table-array-element:last-child:after {
+  content: '';
+}
+
+api-specification-card ul {
+  @extend .non-bulleted-list;
+}
+
+api-specification-card dt {
+  display: block;
+  float: left;
+  clear: left;
+  text-transform: uppercase;
+}
+
+api-specification-card dd {
+  display: span;
+  margin-left: 240px;
+  margin-bottom: 10px;
+}
+
+.api-specification-errors dd {
+  margin-left: 80px;
+}
+
+api-specification-card th {
+//  width: 160px;
+  width: 80px;
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+api-specification-card th:last-child {
+//  width: 220px;
+  width: 460px;
+}
+
+api-specification-card h3 {
+  margin-top: 34px;
+  margin-bottom: 14px;
+  font-weight: bold;
+}
+
+api-specification-card h4 {
+  margin-bottom: 10px;
+}
+
+.example-content {
+  padding: $code-padding;
+  background-color: $code-output-background-color;
+  white-space: nowrap;
+}
+
+.example-request-header {
+  @include code-font();
+}
+
+.example-content>pre[sync-prism],
+.example-content>pre[sync-prism]>code {
+  padding: 0;
+}

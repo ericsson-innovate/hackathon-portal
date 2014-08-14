@@ -1,0 +1,285 @@
+{
+  "id": "2.7.2-send-message",
+  "docNumber": "2.7.2",
+  "name": "Send Message",
+  "description": "This API is called by TCU to send a message to dispatcher.",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/vehicles/v1/{vin}/messages/{messageId}",
+    "HTTP Verb": ["POST"]
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number",
+      "messageId": "Represents the message identifier previously sent in a should tap message from dispatcher to TU or message newly created by TU. In case messageId is not provided, Send Message API shall check if there a pending request for that VIN that matches the serviceId in which case the response is sent back otherwise telematics data is simply stored in M2M DM."
+    },
+    "requestBody": [
+      {
+        "key": "requestId",
+        "type": "Integer",
+        "required": true,
+        "description": "Request identifier to query request status"
+      },
+      {
+        "key": "serviceId",
+        "type": "Integer",
+        "required": true,
+        "description": "1: door unlock, 2: door lock, 3: engineOn, 4: engineOff, 5: honkBlink, 6: diagnostics, 7: resetTroubleCodes, 8:status"
+      },
+      {
+        "key": "status",
+        "type": "Integer",
+        "required": true,
+        "description": "Status is a 2 bytes code containing error code: Zero being the success code and any other value an error code"
+      },
+      {
+        "key": "statusReport",
+        "type": "JSON",
+        "required": false,
+        "description": "Diagnostic data and trouble codes in a json format (key: value)."
+      }
+    ],
+    "responseBody": [
+      {
+        "key": "requestId",
+        "type": "Integer",
+        "required": true,
+        "description": "TODO"
+      },
+      {
+        "key": "serviceId",
+        "type": "Integer",
+        "required": true,
+        "description": "TODO"
+      },
+      {
+        "key": "status",
+        "type": "Integer",
+        "required": true,
+        "description": "TODO"
+      },
+      {
+        "key": "statusReport",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "vehiclePowerMode",
+        "type": "String",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "door",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "horn",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "lights",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "temperature",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "rainSensor",
+        "type": "Integer",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "wiperStatus",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "wiperSetting",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "defrost",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "sunroof",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "convertibleRoof",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "sideWindow",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "climateControl",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "laneDepartureStatus",
+        "type": "String",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "alarm",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "parkingBrake",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      },
+      {
+        "key": "parkingLights",
+        "type": "JSON",
+        "required": false,
+        "description": "TODO"
+      }
+    ]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500,
+    503
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/vehicles/v1/1TX123456789011223/messages/123456",
+      "body": {
+        "requestId": 123456,
+        "serviceId": 1,
+        "status": 0
+      }
+    },
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/vehicles/v1/1TX123456789011223/messages/123456",
+      "body": {
+        "requestId": 123456,
+        "serviceId": 6,
+        "status": 0,
+        "statusReport":{
+          "fuelUsage" : "10",
+          "odometer" : "1254",
+          "tirePressure" : {
+            "frontLeftTirePressure":35,
+            "frontRightTirePressure":35,
+            "rearLeftTirePressure":32,
+            "rearRightTirePressure":32
+          },
+          "oilLife" : "20",
+          "engine" : "OK",
+          "transmission" : "OK",
+          "brakesSuspension": "OK",
+          "airBags" : "OK",
+          "emissions" : "OK",
+          "abs": "OK",
+          "troubleCodes": ["P0001", "P0100", "P0200"]
+        }
+      }
+    },
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/vehicles/v1/1TX123456789011223/messages/123456",
+      "body": {
+        "requestId": 123456,
+        "serviceId": 8,
+        "status": 0,
+        "statusReport":{
+          "vehiclePowerMode": "accessory1",
+          "door": [
+            {"zone":"driver", "status": "ajar", "lock": "off"},
+            {"zone":"passenger", "status": "close", "lock": "on"},
+            {"zone":"trunk", "status": "close", "lock": "on"}
+          ],
+          "horn": {"status": "off"},
+          "lights": {"head": "off",
+            "rightTurn": "off",
+            "leftTurn": "off",
+            "brake": "off",
+            "fog": "off",
+            "hazard": "off",
+            "parking": "off",
+            "highBeam": "off"
+          },
+          "temperature": {"interiorTemperature": 21, "exteriorTemperature": 19},
+          "rainSensor": 1,
+          "wiperStatus": {"frontWiperSpeed": 1, "rearWiperSpeed": 0},
+          "wiperSetting": {"frontWiperControl": "slowest", "rearWiperControl": "off"},
+          "defrost": {
+            "defrostWindShield" : "on",
+            "defrostRearWindow": "off",
+            "defrostSideMirrors": "off"},
+          "sunroof": {
+            "openness": 100,
+            "tilt": 0
+          },
+          "convertibleRoof": {"status": "closed"},
+          "sideWindow": [
+            {"zone": "frontRight", "lock": "no", "openness": 55},
+            {"zone": "frontLeft", "lock": "no", "openness": 100},
+            {"zone": "rearRight", "lock": "yes", "openness": 0},
+            {"zone": "rearLeft", "lock": "yes", "openness": 0}
+          ],
+          "climateControl":{
+            "airflowDirection": "frontpanel",
+            "fanSpeedLevel": 1,
+            "targetTemperature": 19,
+            "airConditioning": "on",
+            "heater": "off",
+            "seatHeater": "off",
+            "seatCooler": "off",
+            "airRecirculation": "on",
+            "steeringWheelHeater": "off"},
+          "laneDepartureStatus": "running",
+          "alarm": {"status": "armed"},
+          "parkingBrake": {"status": "active"},
+          "parkingLights": {"status": "on", "setting": "enabled"}
+        }
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

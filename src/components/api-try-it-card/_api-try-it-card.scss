@@ -1,0 +1,81 @@
+$try-it-button-offset-bottom: 0px;
+$try-it-button-offset-horizontal: 0px;
+
+$try-it-margin: 8px;
+
+api-try-it-card {
+  display: block;
+  position: relative;
+}
+
+api-try-it-card h3 {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+api-try-it-card>hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+api-try-it-card label {
+  display: block;
+  margin-top: $try-it-margin;
+}
+
+.try-it-url,
+.try-it-request-area,
+.try-it-response-area {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.try-it-request-area {
+  padding-bottom: 38px;
+}
+
+.try-it-url {
+  @include code-font();
+}
+
+.try-it-parameter {
+
+}
+
+.try-it-request-body {
+  @include code-font();
+  width: calc(100% - #{$input-padding * 2});
+  height: 160px;
+  margin: $try-it-margin 0;
+}
+
+.try-it-reset-button,
+.try-it-send-button {
+  position: absolute;
+  bottom: $try-it-button-offset-bottom;
+}
+
+.try-it-reset-button {
+  left: $try-it-button-offset-horizontal;
+}
+
+.try-it-send-button {
+  right: $try-it-button-offset-horizontal;
+}
+
+.try-it-response {
+  @include code-font();
+}
+
+.try-it-status {
+  color: #44bb22;
+}
+
+.try-it-status.error {
+  color: #cc4422;
+}
+
+pre.try-it-response-body[sync-prism] {
+  margin: $try-it-margin 0;
+}

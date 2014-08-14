@@ -1,0 +1,351 @@
+{
+  "id": "2.13.6-search-subscribers",
+  "docNumber": "2.13.6",
+  "name": "Search Subscribers",
+  "description": "Return list of registered subscribers.",
+  "categories": ["know-driver"],
+  "resourceTable": {
+    "Route": "/subscribers/v1/subscriber/search",
+    "HTTP Verb": ["POST"],
+    "Authentication": "Basic Authentication"
+  },
+  "parameters": {
+    "route": {
+      "": ""
+    },
+    "requestBody": [
+      {
+        "key": "query",
+        "type": "String",
+        "required": true,
+        "description": "Query string in Lucene format. E.g.,\nuid: 12fd3e34fd3412\nvehicle:1TX123456789011223\nfirstName:joe~ AND lastName:Sel~"
+      },
+      {
+        "key": "startNum",
+        "type": "Integer",
+        "required": false,
+        "description": "The number to start the querying"
+      },
+      {
+        "key": "pageSize",
+        "type": "Integer",
+        "required": false,
+        "description": "Page size"
+      },
+      {
+        "key": "sortItem",
+        "type": "JSON",
+        "required": false,
+        "description": "List of items to be sorted"
+      }
+    ],
+    "responseBody": [
+      {
+        "key": "uid",
+        "type": "String",
+        "required": true,
+        "description": "If not specified subscriber identifier is automatically generated (unique identifier)."
+      },
+      {
+        "key": "firstName",
+        "type": "String",
+        "required": false,
+        "description": ""
+      },
+      {
+        "key": "lastName",
+        "type": "String",
+        "required": false,
+        "description": ""
+      },
+      {
+        "key": "middleName",
+        "type": "String",
+        "required": false,
+        "description": ""
+      },
+      {
+        "key": "namePrefix",
+        "type": "String",
+        "required": false,
+        "description": ""
+      },
+      {
+        "key": "picture",
+        "type": "String",
+        "required": false,
+        "description": "URI (Link) to picture"
+      },
+      {
+        "key": "dob",
+        "type": "Date",
+        "required": false,
+        "description": "Date of birth"
+      },
+      {
+        "key": "company",
+        "type": "String",
+        "required": false,
+        "description": "Company name"
+      },
+      {
+        "key": "address",
+        "type": "Address",
+        "required": false,
+        "description": "List of addresses"
+      },
+      {
+        "key": "defaultAddress",
+        "type": "Integer",
+        "required": false,
+        "description": "Index of the default address"
+      },
+      {
+        "key": "phone",
+        "type": "Phone",
+        "required": false,
+        "description": "List of phone numbers"
+      },
+      {
+        "key": "defaultPhone",
+        "type": "Integer",
+        "required": false,
+        "description": "Index of default phone"
+      },
+      {
+        "key": "email",
+        "type": "Email",
+        "required": false,
+        "description": "List of email addresses"
+      },
+      {
+        "key": "defaultEmail",
+        "type": "Integer",
+        "required": false,
+        "description": "Index of the default email"
+      },
+      {
+        "key": "vehicles",
+        "type": "VIN List",
+        "required": false,
+        "description": "List of vehicle VINs"
+      },
+      {
+        "key": "custom",
+        "type": "Meta",
+        "required": false,
+        "description": "List of metadata"
+      },
+      {
+        "key": "metas",
+        "type": "Meta List",
+        "required": false,
+        "description": "List of list of metadata "
+      }
+    ]
+  },
+  "bodyParameterFormats": {
+    "request": {
+      "sortItem": [
+        {
+          "key": "fieldName",
+          "type": "String",
+          "required": true,
+          "description": "The Field name in the Lucene index data"
+        },
+        {
+          "key": "reverse",
+          "type": "Boolean",
+          "required": true,
+          "description": "Specifies the order that the items will be sorted.\nIf the value is set to true, the items are sorted in the descending order.\nIf the value is set to false, the items are sorted in the ascending order."
+        }
+      ]
+    },
+    "response": {
+      "Address": [
+        {
+          "key": "addressIndex",
+          "type": "Integer",
+          "required": true,
+          "description": ""
+        },
+        {
+          "key": "addressType",
+          "type": "String",
+          "required": true,
+          "description": "Address type: home, work."
+        },
+        {
+          "key": "street",
+          "type": "String",
+          "required": false,
+          "description": ""
+        },
+        {
+          "key": "city",
+          "type": "String",
+          "required": true,
+          "description": ""
+        },
+        {
+          "key": "region",
+          "type": "String",
+          "required": false,
+          "description": "State, province, region"
+        },
+        {
+          "key": "country",
+          "type": "String",
+          "required": false,
+          "description": ""
+        },
+        {
+          "key": "postalCode",
+          "type": "String",
+          "required": false,
+          "description": ""
+        },
+        {
+          "key": "meta",
+          "type": "Meta",
+          "required": false,
+          "description": "List of Metadata"
+        }
+      ],
+      "Phone": [
+        {
+          "key": "phoneIndex",
+          "type": "Integer",
+          "required": true,
+          "description": ""
+        },
+        {
+          "key": "phoneType",
+          "type": "String",
+          "required": false,
+          "description": "Phone type: mobile, home, work, etc."
+        },
+        {
+          "key": "phoneNumber",
+          "type": "String",
+          "required": true,
+          "description": ""
+        },
+        {
+          "key": "deviceId",
+          "type": "String",
+          "required": false,
+          "description": "deviceId from device repository"
+        },
+        {
+          "key": "meta",
+          "type": "Meta",
+          "required": false,
+          "description": "List of Metadata"
+        }
+      ],
+      "Email": [
+        {
+          "key": "emailIndex",
+          "type": "Integer",
+          "required": true,
+          "description": ""
+        },
+        {
+          "key": "emailType",
+          "type": "String",
+          "required": false,
+          "description": "Email type: personal, work, etc."
+        },
+        {
+          "key": "emailAddress",
+          "type": "String",
+          "required": true,
+          "description": ""
+        },
+        {
+          "key": "meta",
+          "type": "Meta",
+          "required": false,
+          "description": "List of Metadata"
+        }
+      ],
+      "Meta": [
+        {
+          "key": "custom",
+          "type": "Meta",
+          "required": false,
+          "description": ""
+        }
+      ]
+    }
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/subscribers/v1/subscriber/search",
+      "body": {
+        "query": "vehicles:1TX123456789011223 AND firstName:jo*"
+      }
+    },
+    {
+      "type": "response",
+      "body": [
+        {
+          "firstName": "~firstName~",
+          "lastName": "~lastName~",
+          "middleName": "~middleName~",
+          "namePrefix": "~namePrefix~",
+          "picture": "http://site.com/pictures/picture.jpg",
+          "dob": "01/09/1973",
+          "company": "Ericsson",
+          "address":[
+            {
+              "addressIndex": 0,
+              "addressType": "Work",
+              "street": "6300 Legacy Dr.",
+              "city": "Plano",
+              "region": "Texas",
+              "country": "USA",
+              "postalCode": "75024",
+              "meta": [{"lat": "33.075486"},{"long":"-96.832809"}]
+            }
+          ],
+          "defaultAddress": 0,
+          "phone": [
+            {
+              "phoneIndex": 0,
+              "phoneType": "Home",
+              "phoneNumber": "19725830000",
+              "deviceId": "SonyXperiaZ2",
+              "meta": [{"SMS-Enabled": "Yes"}]
+            }
+          ],
+          "defaultPhone": 0,
+          "email": [
+            {
+              "emailIndex": 0,
+              "emailType": "Work",
+              "emailAddress": "name@ericsson.com",
+              "meta": [{"Display name": "My Work"}]
+            }
+          ],
+          "defaultEmail": 0,
+          "vehicles": ["1TX123456789011223","1TX123456789015555"]
+        }
+      ]
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "2.12.9-get-products",
+  "docNumber": "2.12.9",
+  "name": "",
+  "description": "",
+  "categories": ["know-driver"],
+  "resourceTable": {
+    "Route": "",
+    "HTTP Verb": [""],
+    "Authentication": "Basic Authentication"
+  },
+  "parameters": {
+    "route": {
+      "": ""
+    },
+    "requestBody": [
+      {
+        "key": "",
+        "type": "",
+        "required": false,
+        "description": ""
+      }
+    ],
+    "responseBody": [
+      {
+        "key": "",
+        "type": "",
+        "required": false,
+        "description": ""
+      }
+    ],
+    "query": []
+  },
+  "bodyParameterFormats": {
+    "request": {
+      "": [
+        {
+          "key": "",
+          "type": "",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "response": {
+      "": [
+        {
+          "key": "",
+          "type": "",
+          "required": false,
+          "description": ""
+        }
+      ]
+    }
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "",
+      "route": "",
+      "body": {
+        "": ""
+      }
+    },
+    {
+      "type": "response",
+      "description": "",
+      "body": {
+        "": ""
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

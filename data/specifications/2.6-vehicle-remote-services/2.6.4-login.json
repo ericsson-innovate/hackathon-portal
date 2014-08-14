@@ -1,0 +1,37 @@
+{
+  "id": "2.6.4-login",
+  "docNumber": "2.6.4",
+  "name": "Login",
+  "description": "Client application can use this API to validate PIN (login).",
+  "categories": ["know-car", "control-car"],
+  "resourceTable": {
+    "Route": "/remoteservices/v1/vehicle/login/{vin}",
+    "HTTP Verb": ["POST"],
+    "API Key": "Application-specific API Key. The key can be provided as part of application on-boarding to ASDP.",
+    "Authentication": "Basic Authentication: Base64(username:pin)"
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number"
+    }
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/remoteservices/v1/vehicle/login/1TX123456789011223"
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

@@ -1,0 +1,102 @@
+$api-list-item-header-height: 35px;
+$api-list-item-margin: 8px;
+$api-list-item-body-content-margin-top: 14px;
+$api-list-item-body-content-padding-bottom: 35px;
+$api-list-item-body-content-padding-top: 34px - $api-list-item-body-content-margin-top;
+
+$verb-width: 100px;
+$verb-margin-right: 20px;
+
+$card-tab-height: 30px;
+$card-tab-border-width: 10px;
+$card-tab-top-margin: 10px;
+
+li[api-list-item] {
+  position: relative;
+}
+
+/* Clearfix */
+li[api-list-item]:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+li[api-list-item]>hr.divider {
+  top: $api-list-item-margin / 2;
+  margin: 0 0 $api-list-item-margin $verb-width + $verb-margin-right;
+}
+
+.api-list-item-header {
+  height: $api-list-item-header-height;
+  line-height: $api-list-item-header-height;
+  overflow-x: visible;
+  overflow-y: hidden;
+  vertical-align: middle;
+  cursor: pointer;
+  color: $card-inactive-color;
+}
+
+.api-list-item-header>div {
+  line-height: $api-list-item-header-height + 5;
+}
+
+.api-list-item-header>.verb {
+  @include code-font();
+  float: left;
+  width: $verb-width;
+  color: $verb-inactive-color;
+  background-color: $verb-inactive-background-color;
+  text-align: center;
+}
+
+.api-list-item-header>.route {
+  @include code-font();
+  float: left;
+  margin-left: $verb-margin-right;
+}
+
+.api-list-item-header>.name {
+  float: right;
+}
+
+.api-list-item-header.selected {
+  color: $body-color;
+}
+
+.api-list-item-header.selected>.verb {
+  color: $verb-active-color;
+  background-color: $verb-active-background-color;
+}
+
+.api-list-item-body {
+  clear: both;
+  overflow-x: visible;
+  overflow-y: hidden;
+  height: 0;
+  text-align: left;
+  transition: height 0.3s;
+}
+
+.api-list-item-body.selected {
+  height: 700px;
+}
+
+.api-list-item-body>api-specification-card,
+.api-list-item-body>api-example-card,
+.api-list-item-body>api-try-it-card {
+  height: calc(100% - #{$api-list-item-body-content-margin-top + $card-tab-height + $card-tab-border-width + $api-list-item-margin + $divider-border-width + $api-list-item-body-content-padding-top + $api-list-item-body-content-padding-bottom});
+  margin-top: $api-list-item-body-content-margin-top;
+  padding: $api-list-item-body-content-padding-top 0 $api-list-item-body-content-padding-bottom;
+  overflow-x: visible;
+  overflow-y: auto;
+}
+
+.card-tabs {
+}
+
+.card-tab {
+  height: $card-tab-height;
+  border-bottom-width: $card-tab-border-width;
+  margin-top: $card-tab-top-margin;
+}

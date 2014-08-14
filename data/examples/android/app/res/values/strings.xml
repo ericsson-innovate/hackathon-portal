@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Connected Car API Demo</string>
+    <string name="action_logout">Logout</string>
+    <string name="list_api">APIs</string>
+	<string name="no_api">No API was specified</string>
+	<string name="send">Send</string>    
+	<string name="logged_out">Logged out</string>
+	<string name="empty_api">No API\'s available for this category</string>
+	<string name="api_unsupported">API not yet supported</string>
+	<string name="request">Request parameters</string>
+	<string name="response">Response body</string>
+</resources>

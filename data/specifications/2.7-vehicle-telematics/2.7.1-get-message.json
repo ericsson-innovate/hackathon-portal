@@ -1,0 +1,58 @@
+{
+  "id": "2.7.1-get-message",
+  "docNumber": "2.7.1",
+  "name": "Get Message",
+  "description": "This API is called by TCU to get message details (remote operation).",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/vehicles/v1/{vin}/messages/{messageId}",
+    "HTTP Verb": ["GET"]
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number",
+      "messageId": "Represents the message identifier previously sent in a should tap message from dispatcher to TCU"
+    },
+    "responseBody": [
+      {
+        "key": "requestId",
+        "type": "Integer",
+        "required": true,
+        "description": "Request identifier to query request status"
+      },
+      {
+        "key": "serviceId",
+        "type": "Integer",
+        "required": true,
+        "description": "1: door unlock, 2: door lock, 3: engineOn, 4: engineOff, 5: honkBlink, 6: diagnostics, 7: resetTroubleCodes, 8:status"
+      }
+    ]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500,
+    503
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "GET",
+      "route": "/vehicles/v1/1TX123456789011223/messages/123456"
+    },
+    {
+      "type": "response",
+      "body": {
+        "requestId" : 18,
+        "serviceId" : 1
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "2.7.4-ping-tcu",
+  "docNumber": "2.7.4",
+  "name": "Ping TCU",
+  "description": "This is a health check call to make sure TCU simulator is up.",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/tcu/v1/notifications",
+    "HTTP Verb": ["GET"]
+  },
+  "parameters": {},
+  "errors": [
+    301,
+    302,
+    403,
+    500,
+    503
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "GET",
+      "route": "/tcu/v1/notifications"
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

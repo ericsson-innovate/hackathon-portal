@@ -1,0 +1,37 @@
+{
+  "id": "2.6.1-sign-up",
+  "docNumber": "2.6.1",
+  "name": "Sign Up",
+  "description": "Client application can use this API to generate a one-time password and trigger an email to vehicle operator.",
+  "categories": ["know-car", "control-car"],
+  "resourceTable": {
+    "Route": "/remoteservices/v1/vehicle/signup/{vin}",
+    "HTTP Verb": ["POST"],
+    "API Key": "Application-specific API Key. The key can be provided as part of application on-boarding to ASDP.",
+    "Authentication": "Basic Authentication: Base64(username:password)"
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number"
+    }
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/remoteservices/v1/vehicle/signup/1TX123456789011223"
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

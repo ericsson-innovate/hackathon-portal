@@ -1,0 +1,69 @@
+{
+  "id": "2.7.5-tcu-notification-channel",
+  "docNumber": "2.7.5",
+  "name": "TCU Notification Channel",
+  "description": "This API is called by TCUs that do not support SMS or HTTP. ASDP will maintain an open HTTP channel (when longpoll is set to true) with TCU to get message notifications. If longpoll parameter is not specified or set to false, the response shall be returned immediately (with empty body: no json response).",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/vehicles/v1/{vin}/notifications?longpoll=true",
+    "HTTP Verb": ["GET"]
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number"
+    },
+    "responseBody": [
+      {
+        "key": "messageIds",
+        "type": "String List",
+        "required": true,
+        "description": "A list of request identifiers to query request status"
+      },
+      {
+        "key": "vin",
+        "type": "String",
+        "required": true,
+        "description": "Vehicle identifier"
+      },
+      {
+        "key": "baseURL",
+        "type": "String",
+        "required": true,
+        "description": "Dispatcher base URL"
+      }
+    ],
+    "query": ["longpoll"]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "GET",
+      "route": "/vehicles/v1/1TX123456789011223/notifications"
+    },
+    {
+      "type": "request",
+      "verb": "GET",
+      "route": "/vehicles/v1/1TX123456789011223/notifications?longpoll=true"
+    },
+    {
+      "type": "response",
+      "body": {
+        "messageId": [123456,123457],
+        "vin": "1TX123456789011223",
+        "baseURL": "http://asdp.att.com/vehicles/v1"
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

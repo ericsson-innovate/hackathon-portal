@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_pin">Pin</string>
+	<string name="prompt_vin">Vehicle Identification Number (VIN)</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_bad_login">The username and password are not valid</string>
+</resources>

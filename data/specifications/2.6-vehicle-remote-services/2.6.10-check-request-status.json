@@ -1,0 +1,164 @@
+{
+  "id": "2.6.10-check-request-status",
+  "docNumber": "2.6.10",
+  "name": "Check Request Status",
+  "description": "Remote services application can use this API to check the status of a given request (success or failure).",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/remoteservices/v1/vehicle/status/{vin}/{requestId}",
+    "HTTP Verb": ["GET"],
+    "API Key": "Application-specific API Key. The key can be provided as part of application on-boarding to ASDP.",
+    "Authentication": "Basic Authentication: Base64(username:pin)"
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number",
+      "requestId": "An identifier previously sent in the response body of a remote service request"
+    },
+    "responseBody": [
+      {
+        "key": "status",
+        "type": "String",
+        "required": true,
+        "description": "Status of previously sent request. Possible values: success, failed, queued."
+      },
+      {
+        "key": "requestTime",
+        "type": "String",
+        "required": true,
+        "description": "Request timestamp."
+      },
+      {
+        "key": "requestType",
+        "type": "String",
+        "required": true,
+        "description": "Remote service request name. Possible values: Door Unlock, Door Lock, Engine On, Engine Off, Honk Blink, Diagnostics."
+      },
+      {
+        "key": "failureReason",
+        "type": "String",
+        "required": false,
+        "description": "Reason for failure."
+      },
+      {
+        "key": "statusReport",
+        "type": "JSON",
+        "required": false,
+        "description": "Diagnostic data returned when diagnostic request is sent."
+      }
+    ]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "GET",
+      "route": "/remoteservices/v1/vehicle/status/1TX123456789011223/25"
+    },
+    {
+      "type": "response",
+      "body": {
+        "status" : "failed",
+        "requestTime" : "2013-08-04T12:09:56.235-0700",
+        "requestType" : "engineOn",
+        "failureReason" : "TimeFramePassed"
+      }
+    },
+    {
+      "type": "response",
+      "description": "Diagnostics",
+      "body": {
+        "status" : "success",
+        "requestTime" : "2013-08-04T12:09:56.235-0700",
+        "requestType" : "diagnostics",
+        "statusReport":{
+          "fuelUsage" : "10",
+          "odometer" : "1254",
+          "tirePressure" : {
+            "frontLeftTirePressure": 35,
+            "frontRightTirePressure": 35,
+            "rearLeftTirePressure": 32,
+            "rearRightTirePressure": 32
+          },
+          "oilLife" : "20",
+          "engine" : "OK",
+          "transmission" : "OK",
+          "brakesSuspension": "OK",
+          "airBags" : "OK",
+          "emissions" : "OK",
+          "abs": "OK"
+        }
+      }
+    },
+    {
+      "type": "response",
+      "description": "Vehicle Status",
+      "body": {
+        "status" : "success",
+        "requestTime" : "2013-08-04T12:09:56.235-0700",
+        "requestType" : "status",
+        "statusReport": {
+          "vehiclePowerMode": "accessory1",
+          "door": [
+            {"zone":"driver", "status": "ajar", "lock": "off"},
+            {"zone":"passenger", "status": "close", "lock": "on"},
+            {"zone":"trunk", "status": "close", "lock": "on"}
+          ],
+          "horn": {"status": "off"},
+          "lights": {
+            "head": "off",
+            "rightTurn": "off",
+            "leftTurn": "off",
+            "brake": "off",
+            "fog": "off",
+            "hazard": "off",
+            "parking": "off",
+            "highBeam": "off"
+          },
+          "temperature": {"interiorTemperature": 21, "exteriorTemperature": 19},
+          "rainSensor": 1,
+          "wiperStatus": {"frontWiperSpeed": 1, "rearWiperSpeed": 0},
+          "wiperSetting": {"frontWiperControl": "slowest", "rearWiperControl": "off"},
+          "defrost": {
+            "defrostWindShield" : "on",
+            "defrostRearWindow": "off",
+            "defrostSideMirrors": "off"},
+          "sunroof": {"openness": 100,
+            "tilt": 0},
+          "convertibleRoof": {"status": "closed"},
+          "sideWindow": [
+            {"zone": "frontRight", "lock": "no", "openness": 55},
+            {"zone": "frontLeft", "lock": "no", "openness": 100},
+            {"zone": "rearRight", "lock": "yes", "openness": 0},
+            {"zone": "rearLeft", "lock": "yes", "openness": 0}
+          ],
+          "climateControl":{
+            "airflowDirection": "frontpanel",
+            "fanSpeedLevel": 1,
+            "targetTemperature": 19,
+            "airConditioning": "on",
+            "heater": "off",
+            "seatHeater": "off",
+            "seatCooler": "off",
+            "airRecirculation": "on",
+            "steeringWheelHeater": "off"
+          },
+          "laneDepartureStatus": "running",
+          "alarm": {"status": "armed"},
+          "parkingBrake": {"status": "active"},
+          "parkingLights": {"status": "on", "setting": "enabled"}
+        }
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

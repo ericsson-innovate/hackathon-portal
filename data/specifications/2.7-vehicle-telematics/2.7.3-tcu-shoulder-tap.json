@@ -1,0 +1,57 @@
+{
+  "id": "2.7.3-tcu-shoulder-tap",
+  "docNumber": "2.7.3",
+  "name": "TCU Shoulder Tap",
+  "description": "Shoulder tap is an SMS message that shall be sent from dispatcher to notify TCU of service request.\nSince the TCU simulator does not have SMS capabilities, the SMS shall be replaced by an HTTP call.\nThis API shall be implemented on the TCU (not on the dispatcher).",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/tcu/v1/notifications",
+    "HTTP Verb": ["POST"]
+  },
+  "parameters": {
+    "requestBody": [
+      {
+        "key": "messageId",
+        "type": "Integer",
+        "required": true,
+        "description": "Request identifier to query request status"
+      },
+      {
+        "key": "vin",
+        "type": "String",
+        "required": true,
+        "description": "Vehicle identifier"
+      },
+      {
+        "key": "baseURL",
+        "type": "String",
+        "required": true,
+        "description": "Dispatcher base URL"
+      }
+    ]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    500,
+    503
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/tcu/v1/notifications",
+      "body": {
+        "messageId": 123456,
+        "vin": "1TX123456789011223",
+        "baseURL": "http://asdp.att.com/vehicles/v1"
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

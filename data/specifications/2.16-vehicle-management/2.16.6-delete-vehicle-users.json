@@ -1,0 +1,51 @@
+{
+  "id": "2.16.6-delete-vehicle-users",
+  "docNumber": "2.16.6",
+  "name": "Delete Vehicle Users",
+  "description": "Delete list of vehicle users.",
+  "categories": ["know-car"],
+  "resourceTable": {
+    "Route": "/vehicles/v1/users/delete",
+    "HTTP Verb": ["DELETE", "POST"],
+    "Authentication": "Basic Authentication"
+  },
+  "parameters": {
+    "requestBody": [
+      {
+        "key": "vin",
+        "type": "String",
+        "required": true,
+        "description": "Vehicle identification number"
+      },
+      {
+        "key": "users",
+        "type": "String List",
+        "required": true,
+        "description": "User IDs shall be added to the list of vehicle users."
+      }
+    ]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/vehicles/v1/users/delete",
+      "body": {
+        "vin": "~vin~",
+        "users": ["12dde34e222a2e"]
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

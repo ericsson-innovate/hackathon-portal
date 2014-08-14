@@ -1,0 +1,78 @@
+<div class="try-it-url">
+  HTTP {{apiItem.specification.resourceTable['HTTP Verb'][0]}} {{apiItem.tryIt.url}}
+</div>
+
+<hr>
+
+<form class="try-it-request-area"
+      name="form"
+      novalidate>
+  <h3>Request</h3>
+
+  <div ng-if="apiItem.specification.parameters.route">
+    <label ng-repeat="(key, value) in apiItem.specification.parameters.route">
+      {{key}}
+      <input type="text"
+             ng-model="apiItem.tryIt.parameters.route[key]"
+             class="try-it-parameter"
+             required
+             placeholder="{{key}}">
+    </label>
+  </div>
+
+  <div ng-if="apiItem.specification.parameters.query">
+    <label ng-repeat="queryParam in apiItem.specification.parameters.query">
+      {{queryParam}}
+      <input type="text"
+             ng-model="apiItem.tryIt.parameters.query[queryParam]"
+             class="try-it-parameter"
+             placeholder="{{queryParam}}">
+    </label>
+  </div>
+
+  <label>
+    Request body:
+    <textarea ng-model="apiItem.tryIt.parameters.requestBody"
+              class="try-it-request-body"
+              placeholder="The body of your request"></textarea>
+  </label>
+
+  <button class="try-it-reset-button"
+          ng-click="reset()">Auto Fill</button>
+  <button class="try-it-send-button"
+          ng-disabled="form.$invalid"
+          ng-click="handleSendRequestClick()">Send</button>
+</form>
+
+<hr>
+
+<div class="try-it-response-area">
+  <h3>Response</h3>
+
+  <div ng-switch on="apiItem.tryIt.requestState"
+      class="try-it-response">
+    <div ng-switch-when="waiting-to-send">
+      <em>Request not sent yet</em>
+    </div>
+
+    <div ng-switch-when="waiting-for-response">
+      Waiting for response...
+    </div>
+
+    <div ng-switch-when="error-with-request">
+      An error occurred while sending your request: {{apiItem.tryIt.response.error}}
+    </div>
+
+    <div ng-switch-when="received-response">
+      Status:
+      <span class="try-it-status"
+           ng-class="{error: apiItem.tryIt.response.error}">
+        {{apiItem.tryIt.response.status}}
+      </span>
+
+      <pre sync-prism
+           source="{{apiItem.tryIt.response.body | json}}"
+           class="language-javascript try-it-response-body"></pre>
+    </div>
+  </div>
+</div>

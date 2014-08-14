@@ -1,0 +1,28 @@
+<div ng-class="{selected: isSelected}"
+     class="api-list-item-header"
+     ng-click="handleHeaderClick()">
+  <div class="verb">{{apiItem.specification.resourceTable['HTTP Verb'][0]}}</div>
+  <div class="route">{{apiItem.specification.resourceTable.Route}}</div>
+  <div class="name">{{apiItem.specification.name}}</div>
+</div>
+
+<div ng-class="{selected: isSelected}"
+     class="api-list-item-body">
+  <ul class="card-tabs tabs">
+    <li ng-repeat="card in ['specification', 'example', 'try it']"
+        ng-click="apiItem.selectedCard = card"
+        ng-class="{selected: apiItem.selectedCard === card}"
+        class="card-tab tab">
+      {{card}}
+    </li>
+  </ul>
+
+  <api-specification-card ng-if="apiItem.selectedCard === 'specification'"
+                          api-item="apiItem"></api-specification-card>
+  <api-example-card ng-if="apiItem.selectedCard === 'example'"
+                    api-item="apiItem"></api-example-card>
+  <api-try-it-card ng-if="apiItem.selectedCard === 'try it'"
+                   api-item="apiItem"></api-try-it-card>
+</div>
+
+<hr class="divider">

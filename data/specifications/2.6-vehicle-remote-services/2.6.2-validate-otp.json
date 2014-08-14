@@ -1,0 +1,48 @@
+{
+  "id": "2.6.2-validate-otp",
+  "docNumber": "2.6.2",
+  "name": "Validate One-Time Password",
+  "description": "Client application can use this API to check if provided one-time password is valid.",
+  "categories": ["know-car", "control-car"],
+  "resourceTable": {
+    "Route": "/remoteservices/v1/vehicle/validateotp/{vin}",
+    "HTTP Verb": ["POST"],
+    "API Key": "Application-specific API Key. The key can be provided as part of application on-boarding to ASDP.",
+    "Authentication": "Basic Authentication: Base64(username:password)"
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number"
+    },
+    "requestBody": [
+      {
+        "key": "otp",
+        "type": "String",
+        "required": true,
+        "description": "One-time password"
+      }
+    ]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    404,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/remoteservices/v1/vehicle/validateotp/1TX123456789011223",
+      "body": {
+        "otp": "a23e5f54"
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}
