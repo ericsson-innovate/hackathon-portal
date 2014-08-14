@@ -44,20 +44,21 @@ angular.module('hackApp', [
 .constant('authString', 'Basic cHJvdmlkZXI6MTIzNA==')
 .constant('apiKey', 'api-key-1234')
 .constant('emulatorUrl', 'http://lightning.att.io:3000')
-//.constant('emulatorUrl', 'http://mater.att.io:3000');
-//.constant('emulatorUrl', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com');
+//.constant('emulatorUrl', 'http://mater.att.io:3000')
+//.constant('emulatorUrl', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
-.constant('specificationUrl', '/dist/data/specifications.json')
-.constant('emptyImagePath', '/dist/images/empty.gif')
-.constant('dataPath', '/data')
+.constant('specificationUrl', '/hackathon-portal/dist/data/specifications.json')
+.constant('emptyImagePath', '/hackathon-portal/dist/images/empty.gif')
+.constant('dataPath', '/hackathon-portal/data')
+.constant('rootPath', '/hackathon-portal')
 
 .constant('androidExampleUrl', '')
 .constant('iosExampleUrl', '')
 .constant('webExampleUrl', '')
 
-.constant('androidExampleCommonFilePath', '/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
-.constant('iosExampleCommonFilePath', '/data/examples/ios/example.m')
-.constant('webExampleCommonFilePath', '/dist/data/web-examples.js')
+.constant('androidExampleCommonFilePath', '/hackathon-portal/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
+.constant('iosExampleCommonFilePath', '/hackathon-portal/data/examples/ios/example.m')
+.constant('webExampleCommonFilePath', '/hackathon-portal/dist/data/web-examples.js')
 
 .constant('sideBarLinks', [
   {
@@ -65,7 +66,7 @@ angular.module('hackApp', [
     ref: 'getting-started',
     label: 'Getting Started',
     url: '/getting-started',
-    templateUrl: '/dist/templates/routes/getting-started/getting-started.html',
+    templateUrl: '/hackathon-portal/dist/templates/routes/getting-started/getting-started.html',
     controller: 'GettingStartedCtrl'
   },
   {
@@ -73,7 +74,7 @@ angular.module('hackApp', [
     ref: 'api-documentation',
     label: 'API Documentation',
     url: '/api-documentation',
-    templateUrl: '/dist/templates/routes/api-documentation/api-documentation.html',
+    templateUrl: '/hackathon-portal/dist/templates/routes/api-documentation/api-documentation.html',
     controller: 'ApiDocumentationCtrl'
   },
   {
@@ -81,7 +82,7 @@ angular.module('hackApp', [
     ref: 'sample-apps',
     label: 'Sample Apps',
     url: '/sample-apps',
-    templateUrl: '/dist/templates/routes/sample-apps/sample-apps.html',
+    templateUrl: '/hackathon-portal/dist/templates/routes/sample-apps/sample-apps.html',
     controller: 'SampleAppsCtrl'
   }
 ])
@@ -501,15 +502,16 @@ angular.module('hackController', [])
  * @requires $state
  * @requires sideBarLinks
  * @requires categories
+ * @requires rootPath
  * @description
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories) {
+.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories, rootPath) {
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
-
   $scope.hackState.categories = categories;
+  $scope.hackState.rootPath = rootPath;
 
   $scope.hackState.handleCategoryTabClick = function (category) {
     $rootScope.selectedCategory = category;
@@ -667,7 +669,7 @@ angular.module('syncPrismDirective', [])
 
 angular.module('apiExampleCardDirective', [])
 
-.constant('apiExampleCardTemplatePath', '/dist/templates/components/api-example-card/api-example-card.html')
+.constant('apiExampleCardTemplatePath', '/hackathon-portal/dist/templates/components/api-example-card/api-example-card.html')
 
 /**
  * @ngdoc directive
@@ -695,7 +697,7 @@ angular.module('apiExampleCardDirective', [])
 
 angular.module('apiListDirective', [])
 
-.constant('apiListTemplatePath', '/dist/templates/components/api-list/api-list.html')
+.constant('apiListTemplatePath', '/hackathon-portal/dist/templates/components/api-list/api-list.html')
 
 /**
  * @ngdoc directive
@@ -752,7 +754,7 @@ angular.module('apiListDirective', [])
 
 angular.module('apiListItemDirective', [])
 
-.constant('apiListItemTemplatePath', '/dist/templates/components/api-list-item/api-list-item.html')
+.constant('apiListItemTemplatePath', '/hackathon-portal/dist/templates/components/api-list-item/api-list-item.html')
 
 /**
  * @ngdoc directive
@@ -793,7 +795,7 @@ angular.module('apiListItemDirective', [])
 
 angular.module('apiSpecificationCardDirective', [])
 
-.constant('apiSpecificationCardTemplatePath', '/dist/templates/components/api-specification-card/api-specification-card.html')
+.constant('apiSpecificationCardTemplatePath', '/hackathon-portal/dist/templates/components/api-specification-card/api-specification-card.html')
 
 /**
  * @ngdoc directive
@@ -824,7 +826,7 @@ angular.module('apiSpecificationCardDirective', [])
 
 angular.module('apiTryItCardDirective', [])
 
-.constant('apiTryItCardTemplatePath', '/dist/templates/components/api-try-it-card/api-try-it-card.html')
+.constant('apiTryItCardTemplatePath', '/hackathon-portal/dist/templates/components/api-try-it-card/api-try-it-card.html')
 
 /**
  * @ngdoc directive
