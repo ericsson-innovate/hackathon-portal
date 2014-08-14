@@ -522,6 +522,9 @@ api-try-it-card label {
 .try-it-url {
   font-family: Consolas, Monaco, 'Andale Mono', monospace; }
 
+.domain-input {
+  width: 320px; }
+
 .try-it-request-body {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
   width: calc(100% - 12px);

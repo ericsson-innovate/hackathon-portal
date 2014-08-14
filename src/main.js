@@ -23,6 +23,7 @@ angular.module('hackApp', [
 
   'categoryFilter',
   'errorDescriptionFilter',
+  'orderByApiIdFilter',
 
   'syncPrismDirective',
 
@@ -88,6 +89,12 @@ angular.module('hackApp', [
 ])
 .constant('httpStatusCodes', {
   200: 'OK',
+  201: 'Created',
+  202: 'Accepted',
+  203: 'Non-Authoritative Information',
+  204: 'No Content',
+  205: 'Reset Content',
+  206: 'Partial Content',
   301: 'Moved permanently',
   302: 'Found',
   400: 'Bad request (invalid parameters)',

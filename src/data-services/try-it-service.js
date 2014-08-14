@@ -3,7 +3,12 @@
 angular.module('tryItService', [])
 
 .constant('routeParams', [
-  'vin'
+  'vin',
+  'requestId',
+  'messageId',
+  'id',
+  'userURI',
+  'senderURI'
 ])
 .constant('queryParams', [
   'longpoll'

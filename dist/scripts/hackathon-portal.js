@@ -23,6 +23,7 @@ angular.module('hackApp', [
 
   'categoryFilter',
   'errorDescriptionFilter',
+  'orderByApiIdFilter',
 
   'syncPrismDirective',
 
@@ -88,6 +89,12 @@ angular.module('hackApp', [
 ])
 .constant('httpStatusCodes', {
   200: 'OK',
+  201: 'Created',
+  202: 'Accepted',
+  203: 'Non-Authoritative Information',
+  204: 'No Content',
+  205: 'Reset Content',
+  206: 'Partial Content',
   301: 'Moved permanently',
   302: 'Found',
   400: 'Bad request (invalid parameters)',
@@ -266,6 +273,27 @@ angular.module('hackController', [])
       $state.go('api-documentation');
     }
   };
+});
+
+'use strict';
+
+angular.module('orderByApiIdFilter', [])
+
+/**
+ * @ngdoc filter
+ * @name orderByApiId
+ * @description
+ *
+ * This is a filter for ordering the API call items by ID.
+ */
+.filter('orderByApiId', function () {
+  return function (input) {
+    input.sort(function (a, b) {
+      return parseFloat(a.specification.docNumber.substr(2)) -
+          parseFloat(b.specification.docNumber.substr(2))
+    });
+    return input;
+  }
 });
 
 'use strict';
@@ -676,7 +704,12 @@ angular.module('specificationsService', [])
 angular.module('tryItService', [])
 
 .constant('routeParams', [
-  'vin'
+  'vin',
+  'requestId',
+  'messageId',
+  'id',
+  'userURI',
+  'senderURI'
 ])
 .constant('queryParams', [
   'longpoll'
