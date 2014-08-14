@@ -156,12 +156,14 @@ angular.module('apiTryItCardDirective', [])
 
             try {
               responseBody = JSON.parse(xhr.response);
+              scope.apiItem.tryIt.response.body = responseBody;
+              scope.apiItem.tryIt.response.bodyParseError = null;
             } catch (error) {
               responseBody = 'Unable to parse response body as JSON: ' + xhr.response;
               console.warn(responseBody);
+              scope.apiItem.tryIt.response.body = null;
+              scope.apiItem.tryIt.response.bodyParseError = responseBody;
             }
-
-            scope.apiItem.tryIt.response.body = responseBody;
           });
         }
 
