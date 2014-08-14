@@ -10,16 +10,14 @@ angular.module('hackController', [])
  * @requires $state
  * @requires sideBarLinks
  * @requires categories
- * @requires rootPath
  * @description
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories, rootPath) {
+.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories) {
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
-   $scope.hackState.rootPath = rootPath;
 
   $scope.hackState.handleCategoryTabClick = function (category) {
     $rootScope.selectedCategory = category;

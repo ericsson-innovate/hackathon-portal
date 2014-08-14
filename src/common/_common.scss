@@ -1,3 +1,5 @@
+$root-path: '/hackathon-portal';
+
 $code-font-stack: Consolas, Monaco, 'Andale Mono', monospace;
 
 $button-active-color: rgb(255,255,255);
@@ -67,13 +69,13 @@ $button-height: 35px;
 
 @font-face {
   font-family: hack-font;
-  src: url('/dist/fonts/hack-font.otf');
+  src: url($root-path + '/dist/fonts/hack-font.otf');
   font-weight: normal;
 }
 
 @font-face {
   font-family: hack-font;
-  src: url('/dist/fonts/hack-font-bold.otf');
+  src: url($root-path + '/dist/fonts/hack-font-bold.otf');
   font-weight: bold;
 }
 
@@ -209,7 +211,7 @@ h1 {
 
 #banner {
   color: #ffffff;
-  background: #040404 url('/dist/images/car.jpg') no-repeat center center;
+  background: #040404 url($root-path + '/dist/images/car.jpg') no-repeat center center;
 }
 
 #top-header {

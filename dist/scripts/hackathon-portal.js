@@ -50,7 +50,6 @@ angular.module('hackApp', [
 .constant('specificationUrl', hack.rootPath + '/dist/data/specifications.json')
 .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
 .constant('dataPath', hack.rootPath + '/data')
-.constant('rootPath', hack.rootPath + '')
 
 .constant('androidExampleUrl', '')
 .constant('iosExampleUrl', '')
@@ -502,16 +501,14 @@ angular.module('hackController', [])
  * @requires $state
  * @requires sideBarLinks
  * @requires categories
- * @requires rootPath
  * @description
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories, rootPath) {
+.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories) {
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
-   $scope.hackState.rootPath = rootPath;
 
   $scope.hackState.handleCategoryTabClick = function (category) {
     $rootScope.selectedCategory = category;

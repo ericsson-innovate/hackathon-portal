@@ -50,7 +50,6 @@ angular.module('hackApp', [
 .constant('specificationUrl', hack.rootPath + '/dist/data/specifications.json')
 .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
 .constant('dataPath', hack.rootPath + '/data')
-.constant('rootPath', hack.rootPath + '')
 
 .constant('androidExampleUrl', '')
 .constant('iosExampleUrl', '')
