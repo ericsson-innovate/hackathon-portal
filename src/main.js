@@ -86,7 +86,7 @@ angular.module('hackApp', [
     controller: 'SampleAppsCtrl'
   }
 ])
-.constant('httpErrorCodes', {
+.constant('httpStatusCodes', {
   200: 'OK',
   301: 'Moved permanently',
   302: 'Found',

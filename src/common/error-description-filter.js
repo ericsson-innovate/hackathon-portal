@@ -5,13 +5,13 @@ angular.module('errorDescriptionFilter', [])
 /**
  * @ngdoc filter
  * @name errorDescription
- * @requires httpErrorCodes
+ * @requires httpStatusCodes
  * @description
  *
  * This is a filter for providing the descriptions of errors according to their error codes.
  */
-.filter('errorDescription', function (httpErrorCodes) {
+.filter('errorDescription', function (httpStatusCodes) {
   return function (input) {
-    return httpErrorCodes[input] || 'Unknown error';
+    return httpStatusCodes[input] || 'Unknown error';
   }
 });

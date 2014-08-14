@@ -86,7 +86,7 @@ angular.module('hackApp', [
     controller: 'SampleAppsCtrl'
   }
 ])
-.constant('httpErrorCodes', {
+.constant('httpStatusCodes', {
   200: 'OK',
   301: 'Moved permanently',
   302: 'Found',
@@ -226,14 +226,14 @@ angular.module('errorDescriptionFilter', [])
 /**
  * @ngdoc filter
  * @name errorDescription
- * @requires httpErrorCodes
+ * @requires httpStatusCodes
  * @description
  *
  * This is a filter for providing the descriptions of errors according to their error codes.
  */
-.filter('errorDescription', function (httpErrorCodes) {
+.filter('errorDescription', function (httpStatusCodes) {
   return function (input) {
-    return httpErrorCodes[input] || 'Unknown error';
+    return httpStatusCodes[input] || 'Unknown error';
   }
 });
 
@@ -930,17 +930,14 @@ angular.module('apiTryItCardDirective', [])
     templateUrl: apiTryItCardTemplatePath,
     link: function (scope, element, attrs, apiListItemCtrl) {
       scope.apiItem.tryIt = {};
-      scope.apiItem.tryIt.parameters = {};
-      scope.apiItem.tryIt.parameters.route = {};
-      scope.apiItem.tryIt.parameters.query = {};
-      scope.apiItem.tryIt.parameters.requestBody = '';
+      scope.apiItem.tryIt.requestBody = '';
       scope.apiItem.tryIt.response = {};
 
       scope.apiItem.TryItData = TryItData;
       scope.apiItem.tryIt.requestState = 'waiting-to-send';
 
-      scope.$watch('apiItem.tryIt.parameters.route', updateUrl, true);
-      scope.$watch('apiItem.tryIt.parameters.query', updateUrl, true);
+      scope.$watch('apiItem.TryItData.queryParams', updateUrl, true);
+      scope.$watch('apiItem.TryItData.routeParams', updateUrl, true);
       scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
       scope.$watch('apiItem.selectedCard', handleCardChange);
 
@@ -958,9 +955,8 @@ angular.module('apiTryItCardDirective', [])
           for (i = 0, count = scope.apiItem.specification.parameters.query.length;
                i < count; i += 1) {
             key = scope.apiItem.specification.parameters.query[i];
-            value = scope.apiItem.tryIt.parameters.query[key];
+            value = TryItData.queryParams[key];
             route += key + '=' + (value || 'true') + '&';
-            TryItData.queryParams[key] = value;
           }
 
           route = route.substring(0, route.length - 1);
@@ -968,9 +964,8 @@ angular.module('apiTryItCardDirective', [])
 
         // Handle the route parameters
         for (key in scope.apiItem.specification.parameters.route) {
-          value = scope.apiItem.tryIt.parameters.route[key];
+          value = TryItData.routeParams[key];
           route = route.replace('{' + key + '}', value || '');
-          TryItData.routeParams[key] = value;
         }
 
         scope.apiItem.tryIt.url = TryItData.emulatorDomain + route;
@@ -983,20 +978,8 @@ angular.module('apiTryItCardDirective', [])
       }
 
       function fillWithCommonData() {
-        var key;
-
-        // Route params
-        for (key in scope.apiItem.specification.parameters.route) {
-          scope.apiItem.tryIt.parameters.route[key] = TryItData.routeParams[key];
-        }
-
-        // Query params
-        for (key in scope.apiItem.specification.parameters.query) {
-          scope.apiItem.tryIt.parameters.query[key] = TryItData.queryParams[key];
-        }
-
         // Request body params
-        scope.apiItem.tryIt.parameters.requestBody = findRequestBody();
+        scope.apiItem.tryIt.requestBody = findRequestBody();
 
         function findRequestBody() {
           var requestBody = '';
@@ -1033,7 +1016,7 @@ angular.module('apiTryItCardDirective', [])
         xhr.setRequestHeader('Authorization', authString);
         xhr.setRequestHeader('APIKey', apiKey);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(scope.apiItem.tryIt.parameters.requestBody);
+        xhr.send(scope.apiItem.tryIt.requestBody);
 
         scope.apiItem.tryIt.requestState = 'waiting-for-response';
         scope.apiItem.tryIt.response.error = false;

@@ -22,7 +22,7 @@
     <label ng-repeat="(key, value) in apiItem.specification.parameters.route">
       {{key}}
       <input type="text"
-             ng-model="apiItem.tryIt.parameters.route[key]"
+             ng-model="apiItem.TryItData.routeParams[key]"
              class="try-it-parameter"
              required
              placeholder="{{key}}">
@@ -33,7 +33,7 @@
     <label ng-repeat="queryParam in apiItem.specification.parameters.query">
       {{queryParam}}
       <input type="text"
-             ng-model="apiItem.tryIt.parameters.query[queryParam]"
+             ng-model="apiItem.TryItData.queryParams[queryParam]"
              class="try-it-parameter"
              placeholder="{{queryParam}}">
     </label>
@@ -41,7 +41,7 @@
 
   <label>
     Request body:
-    <textarea ng-model="apiItem.tryIt.parameters.requestBody"
+    <textarea ng-model="apiItem.tryIt.requestBody"
               class="try-it-request-body"
               placeholder="The body of your request"></textarea>
   </label>
