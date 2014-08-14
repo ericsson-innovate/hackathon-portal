@@ -47,18 +47,18 @@ angular.module('hackApp', [
 //.constant('emulatorUrl', 'http://mater.att.io:3000')
 //.constant('emulatorUrl', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
-.constant('specificationUrl', '/hackathon-portal/dist/data/specifications.json')
-.constant('emptyImagePath', '/hackathon-portal/dist/images/empty.gif')
-.constant('dataPath', '/hackathon-portal/data')
-.constant('rootPath', '/hackathon-portal')
+.constant('specificationUrl', hack.rootPath + '/dist/data/specifications.json')
+.constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
+.constant('dataPath', hack.rootPath + '/data')
+.constant('rootPath', hack.rootPath + '')
 
 .constant('androidExampleUrl', '')
 .constant('iosExampleUrl', '')
 .constant('webExampleUrl', '')
 
-.constant('androidExampleCommonFilePath', '/hackathon-portal/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
-.constant('iosExampleCommonFilePath', '/hackathon-portal/data/examples/ios/example.m')
-.constant('webExampleCommonFilePath', '/hackathon-portal/dist/data/web-examples.js')
+.constant('androidExampleCommonFilePath', hack.rootPath + '/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
+.constant('iosExampleCommonFilePath', hack.rootPath + '/data/examples/ios/example.m')
+.constant('webExampleCommonFilePath', hack.rootPath + '/dist/data/web-examples.js')
 
 .constant('sideBarLinks', [
   {
@@ -66,7 +66,7 @@ angular.module('hackApp', [
     ref: 'getting-started',
     label: 'Getting Started',
     url: '/getting-started',
-    templateUrl: '/hackathon-portal/dist/templates/routes/getting-started/getting-started.html',
+    templateUrl: hack.rootPath + '/dist/templates/routes/getting-started/getting-started.html',
     controller: 'GettingStartedCtrl'
   },
   {
@@ -74,7 +74,7 @@ angular.module('hackApp', [
     ref: 'api-documentation',
     label: 'API Documentation',
     url: '/api-documentation',
-    templateUrl: '/hackathon-portal/dist/templates/routes/api-documentation/api-documentation.html',
+    templateUrl: hack.rootPath + '/dist/templates/routes/api-documentation/api-documentation.html',
     controller: 'ApiDocumentationCtrl'
   },
   {
@@ -82,7 +82,7 @@ angular.module('hackApp', [
     ref: 'sample-apps',
     label: 'Sample Apps',
     url: '/sample-apps',
-    templateUrl: '/hackathon-portal/dist/templates/routes/sample-apps/sample-apps.html',
+    templateUrl: hack.rootPath + '/dist/templates/routes/sample-apps/sample-apps.html',
     controller: 'SampleAppsCtrl'
   }
 ])

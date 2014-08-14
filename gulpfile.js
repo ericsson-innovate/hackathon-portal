@@ -13,6 +13,7 @@ var projectName = 'hackathon-portal',
     IMAGES_SRC = 'src/images/**/*',
     TEMPLATES_SRC = 'src/**/*.html',
     FONTS_SRC = 'src/fonts/**/*',
+    EJS_SRC = 'index.ejs',
 
     DATA_ALL_SRC = 'data/**/*.json',
     DATA_SPECIFICATIONS_SRC = 'data/specifications/**/*.json',
@@ -24,6 +25,7 @@ var projectName = 'hackathon-portal',
     IMAGES_DIST = DIST + '/images',
     TEMPLATES_DIST = DIST + '/templates',
     FONTS_DIST = DIST + '/fonts',
+    EJS_DIST = './',
     DATA_DIST = DIST + '/data',
 
     gulp = require('gulp'),
@@ -73,6 +75,16 @@ gulp.task('fonts', function () {
       .pipe(plugins.plumber())
       .pipe(gulp.dest(FONTS_DIST))
       .pipe(plugins.notify({message: 'fonts task complete'}));
+});
+
+gulp.task('ejs', function () {
+  return gulp.src(EJS_SRC)
+      .pipe(plugins.plumber())
+      .pipe(plugins.ejs({
+        rootPath: '/hackathon-portal'
+      }))
+      .pipe(gulp.dest(EJS_DIST))
+      .pipe(plugins.notify({message: 'ejs task complete'}));
 });
 
 gulp.task('data', ['data-specifications', 'data-web-examples']);
@@ -143,11 +155,12 @@ gulp.task('watch', function () {
   gulp.watch(FONTS_SRC, ['fonts']);
   gulp.watch(DATA_ALL_SRC, ['data']);
   gulp.watch(IMAGES_SRC, ['images']);
+  gulp.watch(EJS_SRC, ['ejs']);
 
   gulp.watch(DIST + '/**/*').on('change', plugins.livereload.changed);
 });
 
 gulp.task('default', ['clean'], function () {
   gulp.start('tests-once', 'web-examples-tests-once', 'styles', 'scripts', 'images', 'templates',
-      'fonts', 'data', 'server', 'watch');
+      'fonts', 'ejs', 'data', 'server', 'watch');
 });

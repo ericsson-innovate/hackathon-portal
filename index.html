@@ -5,19 +5,33 @@
 
   <title>Hackathon Portal</title>
 
-  <link rel='shortcut icon' type='image/x-icon' href='/hackathon-portal/src/images/favicon.ico' />
+  <link rel='shortcut icon'
+        type='image/x-icon'
+        href='/hackathon-portal/src/images/favicon.ico' />
+  <link rel="stylesheet"
+        href="/hackathon-portal/lib/prism/prism.css">
+  <link rel="stylesheet"
+        href="/hackathon-portal/dist/styles/main.min.css">
 
-  <link rel="stylesheet" href="/hackathon-portal/lib/prism/prism.css">
-  <link rel="stylesheet" href="/hackathon-portal/dist/styles/main.min.css">
+  <script>
+    hack = {};
+    hack.rootPath = '/hackathon-portal';
+  </script>
 </head>
 <body ng-app="hackApp"
-    ng-controller="HackCtrl">
+      ng-controller="HackCtrl">
   <div id="banner">
     <div id="top-header">
       <div class="content-area">
         <div id="logos">
-          <a id="att-logo" href="http://www.att.com/"><img src="/dist/images/att-logo.jpg" alt="AT&T Logo"></a>
-          <a id="ericsson-logo" href="http://www.ericsson.com/"><img src="/dist/images/ericsson-logo.jpg" alt="Ericsson Logo"></a>
+          <a id="att-logo" href="http://www.att.com/">
+            <img src="/hackathon-portal/dist/images/att-logo.jpg"
+                 alt="AT&T Logo">
+          </a>
+          <a id="ericsson-logo" href="http://www.ericsson.com/">
+            <img src="/hackathon-portal/dist/images/ericsson-logo.jpg"
+                 alt="Ericsson Logo">
+          </a>
         </div>
         <span id="title-part-1">Connected Car</span>
         <span id="title-part-2">Hackathon</span>

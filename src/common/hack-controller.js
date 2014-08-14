@@ -19,7 +19,7 @@ angular.module('hackController', [])
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
-  $scope.hackState.rootPath = rootPath;
+   $scope.hackState.rootPath = rootPath;
 
   $scope.hackState.handleCategoryTabClick = function (category) {
     $rootScope.selectedCategory = category;

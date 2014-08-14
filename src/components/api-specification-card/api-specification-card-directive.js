@@ -2,7 +2,7 @@
 
 angular.module('apiSpecificationCardDirective', [])
 
-.constant('apiSpecificationCardTemplatePath', '/hackathon-portal/dist/templates/components/api-specification-card/api-specification-card.html')
+.constant('apiSpecificationCardTemplatePath', hack.rootPath + '/dist/templates/components/api-specification-card/api-specification-card.html')
 
 /**
  * @ngdoc directive
