@@ -2,7 +2,7 @@
 
 angular.module('apiListDirective', [])
 
-.constant('apiListTemplatePath', '/dist/templates/components/api-list/api-list.html')
+.constant('apiListTemplatePath', '/hackathon-portal/dist/templates/components/api-list/api-list.html')
 
 /**
  * @ngdoc directive
