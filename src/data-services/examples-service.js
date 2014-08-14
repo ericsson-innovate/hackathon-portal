@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hackExamplesService', [])
+angular.module('examplesService', [])
 
 /**
  * @ngdoc service
@@ -56,12 +56,16 @@ angular.module('hackExamplesService', [])
         };
 
         if (HackExamples.fileCache[url]) {
-          HackExamples.examplesData[apiName][platform].file.text = HackExamples.fileCache[url];
+          HackExamples.fileCache[url]
+              .then(function (value) {
+                HackExamples.examplesData[apiName][platform].file.text = value;
+              });
+          return HackExamples.fileCache[url];
         } else {
-          return $http.get(url)
+          HackExamples.fileCache[url] = $http.get(url)
               .then(function (response) {
-                HackExamples.fileCache[url] = response.data;
                 HackExamples.examplesData[apiName][platform].file.text = response.data;
+                return response.data;
               });
         }
       }

@@ -7,9 +7,10 @@ angular.module('apiTryItCardDirective', [])
 /**
  * @ngdoc directive
  * @name apiTryItCard
+ * @requires TryItData
  * @requires jsonFilter
  * @requires errorDescriptionFilter
- * @requires emulatorUrl
+ * @requires emulatorDomain
  * @requires apiTryItCardTemplatePath
  * @requires apiKey
  * @requires authString
@@ -18,7 +19,7 @@ angular.module('apiTryItCardDirective', [])
  *
  * A panel that contains input areas that enable the user to try out making a single API call.
  */
-.directive('apiTryItCard', function (jsonFilter, errorDescriptionFilter, emulatorUrl,
+.directive('apiTryItCard', function (TryItData, jsonFilter, errorDescriptionFilter,
                                      apiTryItCardTemplatePath, apiKey, authString) {
   return {
     restrict: 'E',
@@ -35,13 +36,16 @@ angular.module('apiTryItCardDirective', [])
       scope.apiItem.tryIt.parameters.requestBody = '';
       scope.apiItem.tryIt.response = {};
 
+      scope.apiItem.TryItData = TryItData;
       scope.apiItem.tryIt.requestState = 'waiting-to-send';
 
       scope.$watch('apiItem.tryIt.parameters.route', updateUrl, true);
       scope.$watch('apiItem.tryIt.parameters.query', updateUrl, true);
+      scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
+      scope.$watch('apiItem.selectedCard', handleCardChange);
 
       function updateUrl() {
-        var route, i, count, key, index;
+        var route, i, count, key, value, index;
 
         route = scope.apiItem.specification.resourceTable['Route'];
 
@@ -54,7 +58,9 @@ angular.module('apiTryItCardDirective', [])
           for (i = 0, count = scope.apiItem.specification.parameters.query.length;
                i < count; i += 1) {
             key = scope.apiItem.specification.parameters.query[i];
-            route += key + '=' + (scope.apiItem.tryIt.parameters.query[key] || 'true') + '&';
+            value = scope.apiItem.tryIt.parameters.query[key];
+            route += key + '=' + (value || 'true') + '&';
+            TryItData.queryParams[key] = value;
           }
 
           route = route.substring(0, route.length - 1);
@@ -62,32 +68,35 @@ angular.module('apiTryItCardDirective', [])
 
         // Handle the route parameters
         for (key in scope.apiItem.specification.parameters.route) {
-          route = route.replace('{' + key + '}', scope.apiItem.tryIt.parameters.route[key] || '');
+          value = scope.apiItem.tryIt.parameters.route[key];
+          route = route.replace('{' + key + '}', value || '');
+          TryItData.routeParams[key] = value;
         }
 
-        scope.apiItem.tryIt.url = emulatorUrl + route;
+        scope.apiItem.tryIt.url = TryItData.emulatorDomain + route;
       }
 
-      scope.reset = function () {
+      function handleCardChange() {
+        if (scope.apiItem.selectedCard === 'try it') {
+          fillWithCommonData();
+        }
+      }
+
+      function fillWithCommonData() {
         var key;
 
+        // Route params
         for (key in scope.apiItem.specification.parameters.route) {
-          scope.apiItem.tryIt.parameters.route[key] = generateRandomId();
+          scope.apiItem.tryIt.parameters.route[key] = TryItData.routeParams[key];
         }
 
+        // Query params
         for (key in scope.apiItem.specification.parameters.query) {
-          scope.apiItem.tryIt.parameters.query[key] = generateRandomBoolean();
+          scope.apiItem.tryIt.parameters.query[key] = TryItData.queryParams[key];
         }
 
+        // Request body params
         scope.apiItem.tryIt.parameters.requestBody = findRequestBody();
-
-        function generateRandomId() {
-          return '' + parseInt(Math.random() * 10000000000);
-        }
-
-        function generateRandomBoolean() {
-          return '' + (Math.random() < 0.5);
-        }
 
         function findRequestBody() {
           var requestBody = '';
@@ -100,6 +109,11 @@ angular.module('apiTryItCardDirective', [])
 
           return requestBody;
         }
+      }
+
+      scope.reset = function () {
+        TryItData.reset();
+        fillWithCommonData();
       };
 
       scope.handleSendRequestClick = function () {
@@ -131,12 +145,23 @@ angular.module('apiTryItCardDirective', [])
           console.log('Response body=' + xhr.response);
 
           scope.$apply(function () {
-            var customStatusText = errorDescriptionFilter(xhr.status);
+            var customStatusText, responseBody;
+
+            customStatusText = errorDescriptionFilter(xhr.status);
+
             scope.apiItem.tryIt.requestState = 'received-response';
             scope.apiItem.tryIt.response.error =
                 parseInt(xhr.status / 100) !== 2 && customStatusText;
             scope.apiItem.tryIt.response.status = xhr.status + ' (' + customStatusText + ')';
-            scope.apiItem.tryIt.response.body = JSON.parse(xhr.response);
+
+            try {
+              responseBody = JSON.parse(xhr.response);
+            } catch (error) {
+              responseBody = 'Unable to parse response body as JSON: ' + xhr.response;
+              console.warn(responseBody);
+            }
+
+            scope.apiItem.tryIt.response.body = responseBody;
           });
         }
 

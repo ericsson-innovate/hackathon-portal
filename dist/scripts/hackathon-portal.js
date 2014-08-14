@@ -26,15 +26,16 @@ angular.module('hackApp', [
 
   'syncPrismDirective',
 
-  'hackSpecificationsService',
-  'hackExamplesService',
-  'hackApiService',
-
   'apiListItemDirective',
   'apiSpecificationCardDirective',
   'apiExampleCardDirective',
   'apiTryItCardDirective',
   'apiListDirective',
+
+  'apiService',
+  'examplesService',
+  'specificationsService',
+  'tryItService',
 
   'apiDocumentationController',
   'gettingStartedController',
@@ -43,17 +44,17 @@ angular.module('hackApp', [
 
 .constant('authString', 'Basic cHJvdmlkZXI6MTIzNA==')
 .constant('apiKey', 'api-key-1234')
-.constant('emulatorUrl', 'http://lightning.att.io:3000')
-//.constant('emulatorUrl', 'http://mater.att.io:3000')
-//.constant('emulatorUrl', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
+.constant('emulatorDomain', 'http://lightning.att.io:3000')
+//.constant('emulatorDomain', 'http://mater.att.io:3000')
+//.constant('emulatorDomain', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
 .constant('specificationUrl', hack.rootPath + '/dist/data/specifications.json')
 .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
 .constant('dataPath', hack.rootPath + '/data')
 
-.constant('androidExampleUrl', '')
-.constant('iosExampleUrl', '')
-.constant('webExampleUrl', '')
+.constant('androidExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
+.constant('iosExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
+.constant('webExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
 
 .constant('androidExampleCommonFilePath', hack.rootPath + '/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
 .constant('iosExampleCommonFilePath', hack.rootPath + '/data/examples/ios/example.m')
@@ -193,7 +194,168 @@ angular.module('hackApp', [
 
 'use strict';
 
-angular.module('hackApiService', [])
+angular.module('categoryFilter', [])
+
+/**
+ * @ngdoc filter
+ * @name category
+ * @description
+ *
+ * This is a filter for only showing the API calls that belong to a given category.
+ */
+.filter('category', function () {
+  return function (input, category) {
+    var i, j, count, matches;
+
+    matches = [];
+
+    for (i = 0, j = 0, count = input.length; i < count; i += 1) {
+      if (input[i].specification.categories.indexOf(category) >= 0) {
+        matches[j++] = input[i];
+      }
+    }
+
+    return matches;
+  }
+});
+
+'use strict';
+
+angular.module('errorDescriptionFilter', [])
+
+/**
+ * @ngdoc filter
+ * @name errorDescription
+ * @requires httpErrorCodes
+ * @description
+ *
+ * This is a filter for providing the descriptions of errors according to their error codes.
+ */
+.filter('errorDescription', function (httpErrorCodes) {
+  return function (input) {
+    return httpErrorCodes[input] || 'Unknown error';
+  }
+});
+
+'use strict';
+
+angular.module('hackController', [])
+
+/**
+ * @ngdoc object
+ * @name HackCtrl
+ * @requires $scope
+ * @requires $rootScope
+ * @requires $state
+ * @requires sideBarLinks
+ * @requires categories
+ * @description
+ *
+ * Controller for the overall hackathon portal page.
+ */
+.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories) {
+  $scope.hackState = {};
+  $scope.hackState.sideBarLinks = sideBarLinks;
+  $scope.hackState.categories = categories;
+
+  $scope.hackState.handleCategoryTabClick = function (category) {
+    $rootScope.selectedCategory = category;
+
+    // Transition to the API documentation route/state
+    if ($rootScope.routeState.name !== 'api-documentation') {
+      $state.go('api-documentation');
+    }
+  };
+});
+
+'use strict';
+
+/**
+ * Defines routes via `$routeProvider`.
+ */
+
+angular.module('hackApp')
+
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks) {
+  // Re-route invalid routes back to home
+  $urlRouterProvider.otherwise(sideBarLinks[1].url);
+
+  sideBarLinks.forEach(function (link) {
+    if (link.isStateRoute) {
+      // Use UI-Router to allow for both URL and state-based routing
+      $stateProvider
+          .state(link.ref, {
+            url: link.url,
+            templateUrl: link.templateUrl,
+            controller: link.controller
+          });
+    }
+  });
+})
+
+.run(function ($rootScope, $log) {
+  $rootScope.routeState = {};
+
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    $log.debug('$stateChangeStart', toState.name);
+
+    // Allows us to use a different class for the top-level view element for each route
+    $rootScope.routeState = toState;
+
+    if (toState.name === 'api-documentation' && !$rootScope.selectedCategory) {
+      $rootScope.selectedCategory = $rootScope.defaultCategory;
+    } else {
+      $rootScope.selectedCategory = null;
+    }
+  });
+
+  $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+    $log.debug('$stateNotFound', unfoundState.name);
+  });
+
+  $rootScope.$on('$stateChangeSuccess',
+      function (event, toState, toParams, fromState, fromParams) {
+    $log.debug('$stateChangeSuccess', toState.name);
+  });
+
+  $rootScope.$on('$stateChangeError',
+      function (event, toState, toParams, fromState, fromParams, error) {
+    $log.debug('$stateChangeError', toState.name, error);
+  });
+});
+
+'use strict';
+
+angular.module('syncPrismDirective', [])
+
+/**
+ * @ngdoc directive
+ * @name syncPrism
+ * @param {string} source
+ * @description
+ *
+ * A directive for re-running Prism parsing for syntax highlighting when content changes.
+ */
+.directive('syncPrism', [function() {
+  return {
+    restrict: 'A',
+    scope: {
+      source: '@'
+    },
+    link: function(scope, element, attrs) {
+      var code = element.find('code')[0];
+
+      scope.$watch('source', function () {
+        Prism.highlightElement(code);
+      });
+    },
+    template: '<code ng-bind="source"></code>'
+  };
+}]);
+
+'use strict';
+
+angular.module('apiService', [])
 
 // TODO: change the data services to instead:
 // - get the example data from files according to where they are defined in the specifications
@@ -336,52 +498,7 @@ angular.module('hackApiService', [])
 
 'use strict';
 
-angular.module('categoryFilter', [])
-
-/**
- * @ngdoc filter
- * @name category
- * @description
- *
- * This is a filter for only showing the API calls that belong to a given category.
- */
-.filter('category', function () {
-  return function (input, category) {
-    var i, j, count, matches;
-
-    matches = [];
-
-    for (i = 0, j = 0, count = input.length; i < count; i += 1) {
-      if (input[i].specification.categories.indexOf(category) >= 0) {
-        matches[j++] = input[i];
-      }
-    }
-
-    return matches;
-  }
-});
-
-'use strict';
-
-angular.module('errorDescriptionFilter', [])
-
-/**
- * @ngdoc filter
- * @name errorDescription
- * @requires httpErrorCodes
- * @description
- *
- * This is a filter for providing the descriptions of errors according to their error codes.
- */
-.filter('errorDescription', function (httpErrorCodes) {
-  return function (input) {
-    return httpErrorCodes[input] || 'Unknown error';
-  }
-});
-
-'use strict';
-
-angular.module('hackExamplesService', [])
+angular.module('examplesService', [])
 
 /**
  * @ngdoc service
@@ -437,12 +554,16 @@ angular.module('hackExamplesService', [])
         };
 
         if (HackExamples.fileCache[url]) {
-          HackExamples.examplesData[apiName][platform].file.text = HackExamples.fileCache[url];
+          HackExamples.fileCache[url]
+              .then(function (value) {
+                HackExamples.examplesData[apiName][platform].file.text = value;
+              });
+          return HackExamples.fileCache[url];
         } else {
-          return $http.get(url)
+          HackExamples.fileCache[url] = $http.get(url)
               .then(function (response) {
-                HackExamples.fileCache[url] = response.data;
                 HackExamples.examplesData[apiName][platform].file.text = response.data;
+                return response.data;
               });
         }
       }
@@ -491,94 +612,7 @@ angular.module('hackExamplesService', [])
 
 'use strict';
 
-angular.module('hackController', [])
-
-/**
- * @ngdoc object
- * @name HackCtrl
- * @requires $scope
- * @requires $rootScope
- * @requires $state
- * @requires sideBarLinks
- * @requires categories
- * @description
- *
- * Controller for the overall hackathon portal page.
- */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories) {
-  $scope.hackState = {};
-  $scope.hackState.sideBarLinks = sideBarLinks;
-  $scope.hackState.categories = categories;
-
-  $scope.hackState.handleCategoryTabClick = function (category) {
-    $rootScope.selectedCategory = category;
-
-    // Transition to the API documentation route/state
-    if ($rootScope.routeState.name !== 'api-documentation') {
-      $state.go('api-documentation');
-    }
-  };
-});
-
-'use strict';
-
-/**
- * Defines routes via `$routeProvider`.
- */
-
-angular.module('hackApp')
-
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks) {
-  // Re-route invalid routes back to home
-  $urlRouterProvider.otherwise(sideBarLinks[1].url);
-
-  sideBarLinks.forEach(function (link) {
-    if (link.isStateRoute) {
-      // Use UI-Router to allow for both URL and state-based routing
-      $stateProvider
-          .state(link.ref, {
-            url: link.url,
-            templateUrl: link.templateUrl,
-            controller: link.controller
-          });
-    }
-  });
-})
-
-.run(function ($rootScope, $log) {
-  $rootScope.routeState = {};
-
-  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    $log.debug('$stateChangeStart', toState.name);
-
-    // Allows us to use a different class for the top-level view element for each route
-    $rootScope.routeState = toState;
-
-    if (toState.name === 'api-documentation' && !$rootScope.selectedCategory) {
-      $rootScope.selectedCategory = $rootScope.defaultCategory;
-    } else {
-      $rootScope.selectedCategory = null;
-    }
-  });
-
-  $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-    $log.debug('$stateNotFound', unfoundState.name);
-  });
-
-  $rootScope.$on('$stateChangeSuccess',
-      function (event, toState, toParams, fromState, fromParams) {
-    $log.debug('$stateChangeSuccess', toState.name);
-  });
-
-  $rootScope.$on('$stateChangeError',
-      function (event, toState, toParams, fromState, fromParams, error) {
-    $log.debug('$stateChangeError', toState.name, error);
-  });
-});
-
-'use strict';
-
-angular.module('hackSpecificationsService', [])
+angular.module('specificationsService', [])
 
 /**
  * @ngdoc service
@@ -635,32 +669,73 @@ angular.module('hackSpecificationsService', [])
 
 'use strict';
 
-angular.module('syncPrismDirective', [])
+angular.module('tryItService', [])
+
+.constant('routeParams', [
+  'vin'
+])
+.constant('queryParams', [
+  'longpoll'
+])
 
 /**
- * @ngdoc directive
- * @name syncPrism
- * @param {string} source
+ * @ngdoc service
+ * @name TryItData
+ * @requires emulatorDomain
+ * @requires routeParams
+ * @requires queryParams
  * @description
  *
- * A directive for re-running Prism parsing for syntax highlighting when content changes.
+ * This model stores the current "try it"/emulator values.
  */
-.directive('syncPrism', [function() {
-  return {
-    restrict: 'A',
-    scope: {
-      source: '@'
-    },
-    link: function(scope, element, attrs) {
-      var code = element.find('code')[0];
+.factory('TryItData', function (emulatorDomain, routeParams, queryParams) {
+  var TryItData, originalValues, i, count, key, value;
 
-      scope.$watch('source', function () {
-        Prism.highlightElement(code);
-      });
-    },
-    template: '<code ng-bind="source"></code>'
+  function generateRandomId() {
+    return '' + parseInt(Math.random() * 10000000000);
+  }
+
+  function generateRandomBoolean() {
+    return '' + (Math.random() < 0.5);
+  }
+
+  function reset() {
+    for (i = 0, count = routeParams.length; i < count; i += 1) {
+      TryItData.routeParams[routeParams[i]] = originalValues.routeParams[routeParams[i]];
+    }
+
+    for (i = 0, count = queryParams.length; i < count; i += 1) {
+      TryItData.queryParams[queryParams[i]] = originalValues.queryParams[queryParams[i]];
+    }
+
+    TryItData.emulatorDomain = originalValues.emulatorDomain;
+  }
+
+  originalValues = {
+    emulatorDomain: emulatorDomain,
+    routeParams: {},
+    queryParams: {}
   };
-}]);
+
+  TryItData = {
+    emulatorDomain: originalValues.emulatorDomain,
+    routeParams: {},
+    queryParams: {},
+    reset: reset
+  };
+
+  for (i = 0, count = routeParams.length; i < count; i += 1) {
+    originalValues.routeParams[routeParams[i]] = generateRandomId();
+  }
+
+  for (i = 0, count = queryParams.length; i < count; i += 1) {
+    originalValues.queryParams[queryParams[i]] = generateRandomBoolean();
+  }
+
+  reset();
+
+  return TryItData;
+});
 
 'use strict';
 
@@ -828,9 +903,10 @@ angular.module('apiTryItCardDirective', [])
 /**
  * @ngdoc directive
  * @name apiTryItCard
+ * @requires TryItData
  * @requires jsonFilter
  * @requires errorDescriptionFilter
- * @requires emulatorUrl
+ * @requires emulatorDomain
  * @requires apiTryItCardTemplatePath
  * @requires apiKey
  * @requires authString
@@ -839,7 +915,7 @@ angular.module('apiTryItCardDirective', [])
  *
  * A panel that contains input areas that enable the user to try out making a single API call.
  */
-.directive('apiTryItCard', function (jsonFilter, errorDescriptionFilter, emulatorUrl,
+.directive('apiTryItCard', function (TryItData, jsonFilter, errorDescriptionFilter,
                                      apiTryItCardTemplatePath, apiKey, authString) {
   return {
     restrict: 'E',
@@ -856,13 +932,16 @@ angular.module('apiTryItCardDirective', [])
       scope.apiItem.tryIt.parameters.requestBody = '';
       scope.apiItem.tryIt.response = {};
 
+      scope.apiItem.TryItData = TryItData;
       scope.apiItem.tryIt.requestState = 'waiting-to-send';
 
       scope.$watch('apiItem.tryIt.parameters.route', updateUrl, true);
       scope.$watch('apiItem.tryIt.parameters.query', updateUrl, true);
+      scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
+      scope.$watch('apiItem.selectedCard', handleCardChange);
 
       function updateUrl() {
-        var route, i, count, key, index;
+        var route, i, count, key, value, index;
 
         route = scope.apiItem.specification.resourceTable['Route'];
 
@@ -875,7 +954,9 @@ angular.module('apiTryItCardDirective', [])
           for (i = 0, count = scope.apiItem.specification.parameters.query.length;
                i < count; i += 1) {
             key = scope.apiItem.specification.parameters.query[i];
-            route += key + '=' + (scope.apiItem.tryIt.parameters.query[key] || 'true') + '&';
+            value = scope.apiItem.tryIt.parameters.query[key];
+            route += key + '=' + (value || 'true') + '&';
+            TryItData.queryParams[key] = value;
           }
 
           route = route.substring(0, route.length - 1);
@@ -883,32 +964,35 @@ angular.module('apiTryItCardDirective', [])
 
         // Handle the route parameters
         for (key in scope.apiItem.specification.parameters.route) {
-          route = route.replace('{' + key + '}', scope.apiItem.tryIt.parameters.route[key] || '');
+          value = scope.apiItem.tryIt.parameters.route[key];
+          route = route.replace('{' + key + '}', value || '');
+          TryItData.routeParams[key] = value;
         }
 
-        scope.apiItem.tryIt.url = emulatorUrl + route;
+        scope.apiItem.tryIt.url = TryItData.emulatorDomain + route;
       }
 
-      scope.reset = function () {
+      function handleCardChange() {
+        if (scope.apiItem.selectedCard === 'try it') {
+          fillWithCommonData();
+        }
+      }
+
+      function fillWithCommonData() {
         var key;
 
+        // Route params
         for (key in scope.apiItem.specification.parameters.route) {
-          scope.apiItem.tryIt.parameters.route[key] = generateRandomId();
+          scope.apiItem.tryIt.parameters.route[key] = TryItData.routeParams[key];
         }
 
+        // Query params
         for (key in scope.apiItem.specification.parameters.query) {
-          scope.apiItem.tryIt.parameters.query[key] = generateRandomBoolean();
+          scope.apiItem.tryIt.parameters.query[key] = TryItData.queryParams[key];
         }
 
+        // Request body params
         scope.apiItem.tryIt.parameters.requestBody = findRequestBody();
-
-        function generateRandomId() {
-          return '' + parseInt(Math.random() * 10000000000);
-        }
-
-        function generateRandomBoolean() {
-          return '' + (Math.random() < 0.5);
-        }
 
         function findRequestBody() {
           var requestBody = '';
@@ -921,6 +1005,11 @@ angular.module('apiTryItCardDirective', [])
 
           return requestBody;
         }
+      }
+
+      scope.reset = function () {
+        TryItData.reset();
+        fillWithCommonData();
       };
 
       scope.handleSendRequestClick = function () {
@@ -952,12 +1041,23 @@ angular.module('apiTryItCardDirective', [])
           console.log('Response body=' + xhr.response);
 
           scope.$apply(function () {
-            var customStatusText = errorDescriptionFilter(xhr.status);
+            var customStatusText, responseBody;
+
+            customStatusText = errorDescriptionFilter(xhr.status);
+
             scope.apiItem.tryIt.requestState = 'received-response';
             scope.apiItem.tryIt.response.error =
                 parseInt(xhr.status / 100) !== 2 && customStatusText;
             scope.apiItem.tryIt.response.status = xhr.status + ' (' + customStatusText + ')';
-            scope.apiItem.tryIt.response.body = JSON.parse(xhr.response);
+
+            try {
+              responseBody = JSON.parse(xhr.response);
+            } catch (error) {
+              responseBody = 'Unable to parse response body as JSON: ' + xhr.response;
+              console.warn(responseBody);
+            }
+
+            scope.apiItem.tryIt.response.body = responseBody;
           });
         }
 

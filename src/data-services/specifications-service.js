@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hackSpecificationsService', [])
+angular.module('specificationsService', [])
 
 /**
  * @ngdoc service

@@ -7,7 +7,7 @@
 
   <link rel='shortcut icon'
         type='image/x-icon'
-        href='<%= rootPath %>/src/images/favicon.ico' />
+        href='<%= rootPath %>/dist/images/favicon.ico' />
   <link rel="stylesheet"
         href="<%= rootPath %>/lib/prism/prism.css">
   <link rel="stylesheet"
@@ -84,32 +84,32 @@
   <script src="<%= rootPath %>/lib/prism/prism.js"></script>
 
   <!-- TODO: replace these individual script includes with the single minified version -->
-  <script src="<%= rootPath %>/dist/scripts/hackathon-portal.min.js"></script>
+  <!--<script src="<%= rootPath %>/dist/scripts/hackathon-portal.min.js"></script>-->
 
-  <!--<script src="<%= rootPath %>/src/main.js"></script>-->
+  <script src="<%= rootPath %>/src/main.js"></script>
 
-  <!--<script src="<%= rootPath %>/src/common/routes.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/common/asdp-emulator-parameters.js"></script>-->
+  <script src="<%= rootPath %>/src/common/routes.js"></script>
 
-  <!--<script src="<%= rootPath %>/src/common/hack-controller.js"></script>-->
+  <script src="<%= rootPath %>/src/common/hack-controller.js"></script>
 
-  <!--<script src="<%= rootPath %>/src/common/category-filter.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/common/error-description-filter.js"></script>-->
+  <script src="<%= rootPath %>/src/common/category-filter.js"></script>
+  <script src="<%= rootPath %>/src/common/error-description-filter.js"></script>
 
-  <!--<script src="<%= rootPath %>/src/common/sync-prism-directive.js"></script>-->
+  <script src="<%= rootPath %>/src/common/sync-prism-directive.js"></script>
 
-  <!--<script src="<%= rootPath %>/src/common/specifications-service.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/common/examples-service.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/common/api-service.js"></script>-->
+  <script src="<%= rootPath %>/src/components/api-list-item/api-list-item-directive.js"></script>
+  <script src="<%= rootPath %>/src/components/api-specification-card/api-specification-card-directive.js"></script>
+  <script src="<%= rootPath %>/src/components/api-example-card/api-example-card-directive.js"></script>
+  <script src="<%= rootPath %>/src/components/api-try-it-card/api-try-it-card-directive.js"></script>
+  <script src="<%= rootPath %>/src/components/api-list/api-list-directive.js"></script>
 
-  <!--<script src="<%= rootPath %>/src/components/api-list-item/api-list-item-directive.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/components/api-specification-card/api-specification-card-directive.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/components/api-example-card/api-example-card-directive.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/components/api-try-it-card/api-try-it-card-directive.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/components/api-list/api-list-directive.js"></script>-->
+  <script src="<%= rootPath %>/src/data-services/api-service.js"></script>
+  <script src="<%= rootPath %>/src/data-services/examples-service.js"></script>
+  <script src="<%= rootPath %>/src/data-services/specifications-service.js"></script>
+  <script src="<%= rootPath %>/src/data-services/try-it-service.js"></script>
 
-  <!--<script src="<%= rootPath %>/src/routes/api-documentation/api-documentation-controller.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/routes/getting-started/getting-started-controller.js"></script>-->
-  <!--<script src="<%= rootPath %>/src/routes/sample-apps/sample-apps-controller.js"></script>-->
+  <script src="<%= rootPath %>/src/routes/api-documentation/api-documentation-controller.js"></script>
+  <script src="<%= rootPath %>/src/routes/getting-started/getting-started-controller.js"></script>
+  <script src="<%= rootPath %>/src/routes/sample-apps/sample-apps-controller.js"></script>
 </body>
 </html>

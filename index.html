@@ -7,15 +7,15 @@
 
   <link rel='shortcut icon'
         type='image/x-icon'
-        href='/hackathon-portal/src/images/favicon.ico' />
+        href='/dist/images/favicon.ico' />
   <link rel="stylesheet"
-        href="/hackathon-portal/lib/prism/prism.css">
+        href="/lib/prism/prism.css">
   <link rel="stylesheet"
-        href="/hackathon-portal/dist/styles/main.min.css">
+        href="/dist/styles/main.min.css">
 
   <script>
     hack = {};
-    hack.rootPath = '/hackathon-portal';
+    hack.rootPath = '';
   </script>
 </head>
 <body ng-app="hackApp"
@@ -25,11 +25,11 @@
       <div class="content-area">
         <div id="logos">
           <a id="att-logo" href="http://www.att.com/">
-            <img src="/hackathon-portal/dist/images/att-logo.jpg"
+            <img src="/dist/images/att-logo.jpg"
                  alt="AT&T Logo">
           </a>
           <a id="ericsson-logo" href="http://www.ericsson.com/">
-            <img src="/hackathon-portal/dist/images/ericsson-logo.jpg"
+            <img src="/dist/images/ericsson-logo.jpg"
                  alt="Ericsson Logo">
           </a>
         </div>
@@ -78,38 +78,38 @@
 
   <!-- ======== Scripts ======== -->
 
-  <script src="/hackathon-portal/bower_components/angular/angular.js"></script>
-  <script src="/hackathon-portal/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
-  <script src="/hackathon-portal/lib/prism/prism.js"></script>
+  <script src="/lib/prism/prism.js"></script>
 
   <!-- TODO: replace these individual script includes with the single minified version -->
-  <script src="/hackathon-portal/dist/scripts/hackathon-portal.min.js"></script>
+  <!--<script src="/dist/scripts/hackathon-portal.min.js"></script>-->
 
-  <!--<script src="/hackathon-portal/src/main.js"></script>-->
+  <script src="/src/main.js"></script>
 
-  <!--<script src="/hackathon-portal/src/common/routes.js"></script>-->
-  <!--<script src="/hackathon-portal/src/common/asdp-emulator-parameters.js"></script>-->
+  <script src="/src/common/routes.js"></script>
 
-  <!--<script src="/hackathon-portal/src/common/hack-controller.js"></script>-->
+  <script src="/src/common/hack-controller.js"></script>
 
-  <!--<script src="/hackathon-portal/src/common/category-filter.js"></script>-->
-  <!--<script src="/hackathon-portal/src/common/error-description-filter.js"></script>-->
+  <script src="/src/common/category-filter.js"></script>
+  <script src="/src/common/error-description-filter.js"></script>
 
-  <!--<script src="/hackathon-portal/src/common/sync-prism-directive.js"></script>-->
+  <script src="/src/common/sync-prism-directive.js"></script>
 
-  <!--<script src="/hackathon-portal/src/common/specifications-service.js"></script>-->
-  <!--<script src="/hackathon-portal/src/common/examples-service.js"></script>-->
-  <!--<script src="/hackathon-portal/src/common/api-service.js"></script>-->
+  <script src="/src/components/api-list-item/api-list-item-directive.js"></script>
+  <script src="/src/components/api-specification-card/api-specification-card-directive.js"></script>
+  <script src="/src/components/api-example-card/api-example-card-directive.js"></script>
+  <script src="/src/components/api-try-it-card/api-try-it-card-directive.js"></script>
+  <script src="/src/components/api-list/api-list-directive.js"></script>
 
-  <!--<script src="/hackathon-portal/src/components/api-list-item/api-list-item-directive.js"></script>-->
-  <!--<script src="/hackathon-portal/src/components/api-specification-card/api-specification-card-directive.js"></script>-->
-  <!--<script src="/hackathon-portal/src/components/api-example-card/api-example-card-directive.js"></script>-->
-  <!--<script src="/hackathon-portal/src/components/api-try-it-card/api-try-it-card-directive.js"></script>-->
-  <!--<script src="/hackathon-portal/src/components/api-list/api-list-directive.js"></script>-->
+  <script src="/src/data-services/api-service.js"></script>
+  <script src="/src/data-services/examples-service.js"></script>
+  <script src="/src/data-services/specifications-service.js"></script>
+  <script src="/src/data-services/try-it-service.js"></script>
 
-  <!--<script src="/hackathon-portal/src/routes/api-documentation/api-documentation-controller.js"></script>-->
-  <!--<script src="/hackathon-portal/src/routes/getting-started/getting-started-controller.js"></script>-->
-  <!--<script src="/hackathon-portal/src/routes/sample-apps/sample-apps-controller.js"></script>-->
+  <script src="/src/routes/api-documentation/api-documentation-controller.js"></script>
+  <script src="/src/routes/getting-started/getting-started-controller.js"></script>
+  <script src="/src/routes/sample-apps/sample-apps-controller.js"></script>
 </body>
 </html>

@@ -26,15 +26,16 @@ angular.module('hackApp', [
 
   'syncPrismDirective',
 
-  'hackSpecificationsService',
-  'hackExamplesService',
-  'hackApiService',
-
   'apiListItemDirective',
   'apiSpecificationCardDirective',
   'apiExampleCardDirective',
   'apiTryItCardDirective',
   'apiListDirective',
+
+  'apiService',
+  'examplesService',
+  'specificationsService',
+  'tryItService',
 
   'apiDocumentationController',
   'gettingStartedController',
@@ -43,17 +44,17 @@ angular.module('hackApp', [
 
 .constant('authString', 'Basic cHJvdmlkZXI6MTIzNA==')
 .constant('apiKey', 'api-key-1234')
-.constant('emulatorUrl', 'http://lightning.att.io:3000')
-//.constant('emulatorUrl', 'http://mater.att.io:3000')
-//.constant('emulatorUrl', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
+.constant('emulatorDomain', 'http://lightning.att.io:3000')
+//.constant('emulatorDomain', 'http://mater.att.io:3000')
+//.constant('emulatorDomain', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
 .constant('specificationUrl', hack.rootPath + '/dist/data/specifications.json')
 .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
 .constant('dataPath', hack.rootPath + '/data')
 
-.constant('androidExampleUrl', '')
-.constant('iosExampleUrl', '')
-.constant('webExampleUrl', '')
+.constant('androidExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
+.constant('iosExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
+.constant('webExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
 
 .constant('androidExampleCommonFilePath', hack.rootPath + '/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
 .constant('iosExampleCommonFilePath', hack.rootPath + '/data/examples/ios/example.m')

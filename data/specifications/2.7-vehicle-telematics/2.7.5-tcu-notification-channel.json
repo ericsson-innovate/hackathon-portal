@@ -62,8 +62,8 @@
     }
   ],
   "codeExamples": {
-    "android": "/hackathon-portal/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
-    "ios": "/hackathon-portal/data/examples/ios/examples.m",
-    "web": "/hackathon-portal/dist/data/web-examples.js"
+    "android": "/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/data/examples/ios/examples.m",
+    "web": "/dist/data/web-examples.js"
   }
 }

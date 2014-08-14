@@ -4,93 +4,96 @@
 
 var projectName = 'hackathon-portal',
 
-    TESTS_SRC = 'src/**/*_test.js',
-    DATA_WEB_EXAMPLES_TESTS_SRC = 'data/examples/web/**/*_test.js',
+//    rootPath = '/hackathon-portal',
+    rootPath = '',
 
-    SCRIPTS_SRC = ['src/**/*.js', '!' + TESTS_SRC],
-    STYLES_GLOB_SRC = 'src/**/*.scss',
-    STYLES_MAIN_SRC = 'src/common/main.scss',
-    IMAGES_SRC = 'src/images/**/*',
-    TEMPLATES_SRC = 'src/**/*.html',
-    FONTS_SRC = 'src/fonts/**/*',
-    EJS_SRC = 'index.ejs',
+    testsSrc = 'src/**/*_test.js',
+    dataWebExamplesTestsSrc = 'data/examples/web/**/*_test.js',
 
-    DATA_ALL_SRC = 'data/**/*.json',
-    DATA_SPECIFICATIONS_SRC = 'data/specifications/**/*.json',
-    DATA_WEB_EXAMPLES_SRC = ['data/examples/web/**/*.js', '!' + DATA_WEB_EXAMPLES_TESTS_SRC],
+    scriptsSrc = ['src/**/*.js', '!' + testsSrc],
+    stylesGlobSrc = 'src/**/*.scss',
+    stylesMainSrc = 'src/common/main.scss',
+    imagesSrc = 'res/images/**/*',
+    templatesSrc = 'src/**/*.html',
+    fontsSrc = 'res/fonts/**/*',
+    ejsSrc = 'index.ejs',
 
-    DIST = 'dist',
-    SCRIPTS_DIST = DIST + '/scripts',
-    STYLES_DIST = DIST + '/styles',
-    IMAGES_DIST = DIST + '/images',
-    TEMPLATES_DIST = DIST + '/templates',
-    FONTS_DIST = DIST + '/fonts',
-    EJS_DIST = './',
-    DATA_DIST = DIST + '/data',
+    dataAllSrc = 'data/**/*.json',
+    dataSpecificationsSrc = 'data/specifications/**/*.json',
+    dataWebExamplesSrc = ['data/examples/web/**/*.js', '!' + dataWebExamplesTestsSrc],
+
+    dist = 'dist',
+    scriptsDist = dist + '/scripts',
+    stylesDist = dist + '/styles',
+    imagesDist = dist + '/images',
+    templatesDist = dist + '/templates',
+    fontsDist = dist + '/fonts',
+    ejsDist = './',
+    dataDist = dist + '/data',
 
     gulp = require('gulp'),
     plugins = require('gulp-load-plugins')();
 
 gulp.task('scripts', function () {
-  return gulp.src(SCRIPTS_SRC)
+  return gulp.src(scriptsSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.concat(projectName + '.js'))
-      .pipe(gulp.dest(SCRIPTS_DIST))
+      .pipe(gulp.dest(scriptsDist))
       .pipe(plugins.rename({suffix: '.min'}))
       .pipe(plugins.ngAnnotate())
       .pipe(plugins.uglify())
-      .pipe(gulp.dest(SCRIPTS_DIST))
+      .pipe(gulp.dest(scriptsDist))
       .pipe(plugins.notify({message: 'scripts task complete'}));
 });
 
 gulp.task('styles', function () {
-  return gulp.src(STYLES_MAIN_SRC)
+  return gulp.src(stylesMainSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.sass())// {sourceComments: 'map'}
       .pipe(plugins.autoprefixer('last 2 version'))
-      .pipe(gulp.dest(STYLES_DIST))
+      .pipe(gulp.dest(stylesDist))
       .pipe(plugins.rename({suffix: '.min'}))
       .pipe(plugins.minifyCss())
-      .pipe(gulp.dest(STYLES_DIST))
+      .pipe(gulp.dest(stylesDist))
       .pipe(plugins.notify({message: 'styles task complete'}));
 });
 
 gulp.task('images', function () {
-  return gulp.src(IMAGES_SRC)
+  return gulp.src(imagesSrc)
       .pipe(plugins.plumber())
     //.pipe(plugins.cache(plugins.imagemin({optimizationLevel: 3, progressive: true, interlaced: true})))// TODO: add image compression?
-      .pipe(gulp.dest(IMAGES_DIST))
+      .pipe(gulp.dest(imagesDist))
       .pipe(plugins.notify({message: 'images task complete'}));
 });
 
 gulp.task('templates', function () {
-  return gulp.src(TEMPLATES_SRC)
+  return gulp.src(templatesSrc)
       .pipe(plugins.plumber())
-      .pipe(gulp.dest(TEMPLATES_DIST))
+      .pipe(gulp.dest(templatesDist))
       .pipe(plugins.notify({message: 'templates task complete'}));
 });
 
 gulp.task('fonts', function () {
-  return gulp.src(FONTS_SRC)
+  return gulp.src(fontsSrc)
       .pipe(plugins.plumber())
-      .pipe(gulp.dest(FONTS_DIST))
+      .pipe(gulp.dest(fontsDist))
       .pipe(plugins.notify({message: 'fonts task complete'}));
 });
 
 gulp.task('ejs', function () {
-  return gulp.src(EJS_SRC)
+  return gulp.src(ejsSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.ejs({
-        rootPath: '/hackathon-portal'
+        rootPath: rootPath
       }))
-      .pipe(gulp.dest(EJS_DIST))
+      .pipe(gulp.dest(ejsDist))
       .pipe(plugins.notify({message: 'ejs task complete'}));
 });
 
 gulp.task('data', ['data-specifications', 'data-web-examples']);
 
 gulp.task('data-specifications', function () {
-  return gulp.src(DATA_SPECIFICATIONS_SRC)
+  return gulp.src(dataSpecificationsSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.jsoncombine('specifications.json', function (data) {
         var key, i, array;
@@ -101,32 +104,32 @@ gulp.task('data-specifications', function () {
         }
         return new Buffer(JSON.stringify(array));
       }))
-      .pipe(gulp.dest(DATA_DIST))
+      .pipe(gulp.dest(dataDist))
       .pipe(plugins.notify({message: 'data-specifications task complete'}));
 });
 
 gulp.task('data-web-examples', function () {
-  return gulp.src(DATA_WEB_EXAMPLES_SRC)
+  return gulp.src(dataWebExamplesSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.concat('web-examples.js'))
-      .pipe(gulp.dest(DATA_DIST))
+      .pipe(gulp.dest(dataDist))
       .pipe(plugins.notify({message: 'data-web-examples task complete'}));
 });
 
 gulp.task('web-examples-tests-once', function () {
-  return gulp.src(DATA_WEB_EXAMPLES_TESTS_SRC, {read: false})
+  return gulp.src(dataWebExamplesTestsSrc, {read: false})
       .pipe(plugins.plumber())
       .pipe(plugins.mocha({reporter: 'dot', ui: 'tdd'}));
 });
 
 gulp.task('tests-once', function () {
-  return gulp.src(TESTS_SRC)
+  return gulp.src(testsSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.karma({configFile: 'karma.conf.js', action: 'run'}));
 });
 
 gulp.task('tests-tdd', function () {
-  return gulp.src(TESTS_SRC)
+  return gulp.src(testsSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.karma({configFile: 'karma.conf.js', action: 'watch'}));
 });
@@ -138,7 +141,7 @@ gulp.task('bump', function () {
 });
 
 gulp.task('clean', function () {
-  return gulp.src(DIST, {read: false})
+  return gulp.src(dist, {read: false})
       .pipe(plugins.clean());
 });
 
@@ -149,15 +152,15 @@ gulp.task('server', function () {
 gulp.task('watch', function () {
   plugins.livereload.listen();
 
-  gulp.watch(STYLES_GLOB_SRC, ['styles']);
-  gulp.watch(SCRIPTS_SRC, ['scripts']);
-  gulp.watch(TEMPLATES_SRC, ['templates']);
-  gulp.watch(FONTS_SRC, ['fonts']);
-  gulp.watch(DATA_ALL_SRC, ['data']);
-  gulp.watch(IMAGES_SRC, ['images']);
-  gulp.watch(EJS_SRC, ['ejs']);
+  gulp.watch(stylesGlobSrc, ['styles']);
+  gulp.watch(scriptsSrc, ['scripts']);
+  gulp.watch(templatesSrc, ['templates']);
+  gulp.watch(fontsSrc, ['fonts']);
+  gulp.watch(dataAllSrc, ['data']);
+  gulp.watch(imagesSrc, ['images']);
+  gulp.watch(ejsSrc, ['ejs']);
 
-  gulp.watch(DIST + '/**/*').on('change', plugins.livereload.changed);
+  gulp.watch(dist + '/**/*').on('change', plugins.livereload.changed);
 });
 
 gulp.task('default', ['clean'], function () {

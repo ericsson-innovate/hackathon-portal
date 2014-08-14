@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hackApiService', [])
+angular.module('apiService', [])
 
 // TODO: change the data services to instead:
 // - get the example data from files according to where they are defined in the specifications

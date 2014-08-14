@@ -9,6 +9,15 @@
       novalidate>
   <h3>Request</h3>
 
+  <label>
+    Domain
+    <input type="text"
+           ng-model="apiItem.TryItData.emulatorDomain"
+           class="try-it-parameter"
+           required
+           placeholder="Domain">
+  </label>
+
   <div ng-if="apiItem.specification.parameters.route">
     <label ng-repeat="(key, value) in apiItem.specification.parameters.route">
       {{key}}
@@ -38,7 +47,7 @@
   </label>
 
   <button class="try-it-reset-button"
-          ng-click="reset()">Auto Fill</button>
+          ng-click="reset()">Reset</button>
   <button class="try-it-send-button"
           ng-disabled="form.$invalid"
           ng-click="handleSendRequestClick()">Send</button>
