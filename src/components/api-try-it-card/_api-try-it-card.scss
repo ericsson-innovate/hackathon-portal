@@ -43,6 +43,10 @@ api-try-it-card label {
 
 }
 
+.domain-input {
+  width: 320px;
+}
+
 .try-it-request-body {
   @include code-font();
   width: calc(100% - #{$input-padding * 2});
