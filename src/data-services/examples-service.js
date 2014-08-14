@@ -66,6 +66,10 @@ angular.module('examplesService', [])
               .then(function (response) {
                 HackExamples.examplesData[apiName][platform].file.text = response.data;
                 return response.data;
+              })
+              .catch(function (error) {
+                HackExamples.examplesData[apiName][platform].file.text = '';
+                return '';
               });
         }
       }
