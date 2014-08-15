@@ -27,6 +27,8 @@ angular.module('apiListDirective', [])
           .then(function (apiData) {
             scope.apiData = apiData;
           });
+
+      // TODO: I need to add sub-groups within the filtered category groups using apiItem.specification.subCategories
     },
     controller: function ($scope) {
       var selectedSpec;

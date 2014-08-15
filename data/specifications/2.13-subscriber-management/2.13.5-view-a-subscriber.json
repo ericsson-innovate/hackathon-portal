@@ -4,6 +4,7 @@
   "name": "View a Subscriber",
   "description": "Return an existing subscriber.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/subscribers/v1/subscriber/view/{id}",
     "HTTP Verb": ["GET"],

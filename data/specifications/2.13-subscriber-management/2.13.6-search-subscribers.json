@@ -4,6 +4,7 @@
   "name": "Search Subscribers",
   "description": "Return list of registered subscribers.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/subscribers/v1/subscriber/search",
     "HTTP Verb": ["POST"],

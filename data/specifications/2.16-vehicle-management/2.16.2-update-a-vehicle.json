@@ -4,6 +4,7 @@
   "name": "Update a Vehicle",
   "description": "Update an existing vehicle.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/vehicles/v1/vehicle/update/{vin}",
     "HTTP Verb": ["PUT", "POST"],

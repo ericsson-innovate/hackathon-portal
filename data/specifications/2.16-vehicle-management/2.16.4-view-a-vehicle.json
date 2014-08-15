@@ -4,6 +4,7 @@
   "name": "View a Vehicle",
   "description": "Return an existing vehicle.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/vehicles/v1/vehicle/view/{vin}",
     "HTTP Verb": ["GET"],

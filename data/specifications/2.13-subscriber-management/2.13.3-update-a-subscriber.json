@@ -4,6 +4,7 @@
   "name": "Update a Subscriber",
   "description": "Update an existing subscriber.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/subscriber/v1/subscriber/update/{id}",
     "HTTP Verb": ["PUT", "POST"],

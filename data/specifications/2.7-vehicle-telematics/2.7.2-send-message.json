@@ -4,6 +4,7 @@
   "name": "Send Message",
   "description": "This API is called by TCU to send a message to dispatcher.",
   "categories": ["know-car"],
+  "subCategories": ["Vehicle Telematics"],
   "resourceTable": {
     "Route": "/vehicles/v1/{vin}/messages/{messageId}",
     "HTTP Verb": ["POST"]

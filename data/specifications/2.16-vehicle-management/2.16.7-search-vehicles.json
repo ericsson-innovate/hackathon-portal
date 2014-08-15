@@ -4,6 +4,7 @@
   "name": "Search Vehicles",
   "description": "Return list of registered vehicles.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/vehicles/v1/vehicle/search",
     "HTTP Verb": ["POST"],

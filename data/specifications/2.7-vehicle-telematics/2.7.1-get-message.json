@@ -4,6 +4,7 @@
   "name": "Get Message",
   "description": "This API is called by TCU to get message details (remote operation).",
   "categories": ["know-car"],
+  "subCategories": ["Vehicle Telematics"],
   "resourceTable": {
     "Route": "/vehicles/v1/{vin}/messages/{messageId}",
     "HTTP Verb": ["GET"]

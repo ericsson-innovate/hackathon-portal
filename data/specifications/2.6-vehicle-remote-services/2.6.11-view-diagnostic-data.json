@@ -4,6 +4,7 @@
   "name": "View Diagnostic Data",
   "description": "Remote services application can use this API to retrieve diagnostic data from TCU.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/diagnostics/view/{vin}",
     "HTTP Verb": ["POST"],

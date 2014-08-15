@@ -1,54 +1,248 @@
 {
   "id": "2.12.11-get-user-purchases",
   "docNumber": "2.12.11",
-  "name": "",
-  "description": "",
+  "name": "Get User Purchases",
+  "description": "This operation gets the purchase record for the end user. The record search condition is defined by setting the parameters paginationRequest, sortItem and filter.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
-    "Route": "",
-    "HTTP Verb": [""],
+    "Route": "/content/v1/commerce/getUserPurchases/{userURI}",
+    "HTTP Verb": ["POST"],
     "Authentication": "Basic Authentication"
   },
   "parameters": {
     "route": {
-      "": ""
+      "userURI": "Represents the user identity in the following format: 'id:<userid>' or 'msisdn:<number>'."
     },
     "requestBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "appId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "Optional: application making this call."
+      },
+      {
+        "key": "Parameters",
+        "type": "JSON",
+        "required": false,
+        "description": "Parameters format depends on the application domain and operation."
+      },
+      {
+        "key": "Client",
+        "type": "JSON",
+        "required": false,
+        "description": "Client capabilities (deviceId)."
       }
     ],
     "responseBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "purchaseId",
+        "type": "String",
+        "required": true,
+        "description": "The purchase ID that is given when a purchase is done."
+      },
+      {
+        "key": "price",
+        "type": "Long",
         "required": false,
-        "description": ""
+        "description": "The price."
+      },
+      {
+        "key": "description",
+        "type": "String",
+        "required": false,
+        "description": "The product description."
+      },
+      {
+        "key": "created",
+        "type": "String",
+        "required": false,
+        "description": "The product description."
+      },
+      {
+        "key": "serviceId",
+        "type": "String",
+        "required": false,
+        "description": "The service ID."
+      },
+      {
+        "key": "productId",
+        "type": "String",
+        "required": false,
+        "description": "The product ID."
+      },
+      {
+        "key": "providerId",
+        "type": "String",
+        "required": false,
+        "description": "The Provider ID."
+      },
+      {
+        "key": "vatCode",
+        "type": "String",
+        "required": false,
+        "description": "The VAT code."
+      },
+      {
+        "key": "vatPrice",
+        "type": "Long",
+        "required": false,
+        "description": "The VAT price."
+      },
+      {
+        "key": "type",
+        "type": "String",
+        "required": false,
+        "description": "The purchase type. It is an enumeration type and defined as follows:\n- NORMAL\n- GIFT_PURCHASE\n- GIFT"
+      },
+      {
+        "key": "state",
+        "type": "String",
+        "required": false,
+        "description": "The purchase state. It is an enumeration type and defined as follows:\n- OPEN\n- OFFERED\n- CLOSED"
+      },
+      {
+        "key": "recurrentPurchaseId",
+        "type": "String",
+        "required": false,
+        "description": "The ID of the recurrent purchase. If the purchase is a recurrent purchase then it has a value, otherwise it is empty."
+      },
+      {
+        "key": "recurrentIntervalExpirationTime",
+        "type": "String",
+        "required": false,
+        "description": "The time when the recurrent purchase is expired."
+      },
+      {
+        "key": "recurrentCancelTime",
+        "type": "String",
+        "required": false,
+        "description": "The time when the recurrent purchase is canceled."
+      },
+      {
+        "key": "recurrenceExpirationTime",
+        "type": "String",
+        "required": false,
+        "description": "The time when the recurrence is expired."
+      },
+      {
+        "key": "renewalsAllowed",
+        "type": "Integer",
+        "required": false,
+        "description": "Total allowed renewal times of the current product."
+      },
+      {
+        "key": "renewalsDone",
+        "type": "Integer",
+        "required": false,
+        "description": "Number of renewals done."
+      },
+      {
+        "key": "meta",
+        "type": "JSON",
+        "required": false,
+        "description": "Meta property."
       }
-    ],
-    "query": []
+    ]
   },
   "bodyParameterFormats": {
     "request": {
-      "": [
+      "Parameters": [
         {
-          "key": "",
-          "type": "",
+          "key": "paginationRequest",
+          "type": "JSON",
+          "required": true,
+          "description": "Indicates the page that will be searched."
+        },
+        {
+          "key": "sortItem",
+          "type": "JSON",
           "required": false,
-          "description": ""
+          "description": "The item to be sorted."
+        },
+        {
+          "key": "filter",
+          "type": "JSON",
+          "required": false,
+          "description": "The search condition to be filtered."
         }
-      ]
-    },
-    "response": {
-      "": [
+      ],
+      "paginationRequest": [
         {
-          "key": "",
-          "type": "",
+          "key": "fromItem",
+          "type": "Integer",
+          "required": true,
+          "description": "Indicates the first index."
+        },
+        {
+          "key": "maxItems",
+          "type": "Integer",
+          "required": true,
+          "description": "The maximum items for a search. For example, if fromItem is set to 5 for index number and maxItems is set to 10 for maximum number of items, the searched record will be from numbers 5 to 15. The maximum value of maxItems is 50 by default (System configuration)."
+        }
+      ],
+      "sortItem": [
+        {
+          "key": "field",
+          "type": "String",
+          "required": true,
+          "description": "The sorted field. The search results will be ordered in this field. It is an enumeration type and defined as follows:\n- created\n- serviceId\n- productId\n- providerId\n- type\n- state"
+        },
+        {
+          "key": "order",
+          "type": "String",
+          "required": true,
+          "description": "The sorted order. It is an enumeration type and defined as follows:\n- asc: The result is shown in ascending order.\n- desc: The result is shown in descending order."
+        }
+      ],
+      "filter": [
+        {
+          "key": "id",
+          "type": "String",
           "required": false,
-          "description": ""
+          "description": "The purchase ID is used for search criteria."
+        },
+        {
+          "key": "start",
+          "type": "String",
+          "required": false,
+          "description": "The start time value indicates the time period for a search. The records of which the created time is later than the time set in start element are returned."
+        },
+        {
+          "key": "end",
+          "type": "String",
+          "required": false,
+          "description": "The end time value indicates the time period for a search. The records of which the created time is earlier than the time set in end element are returned."
+        },
+        {
+          "key": "productId",
+          "type": "String",
+          "required": false,
+          "description": "The product ID."
+        },
+        {
+          "key": "type",
+          "type": "String",
+          "required": false,
+          "description": "The purchase type. It is an enumeration type and defined as follows:\n- NORMAL\n- GIFT_PURCHASE\n- GIFT"
+        },
+        {
+          "key": "providerId",
+          "type": "String",
+          "required": false,
+          "description": "The purchase ID."
+        },
+        {
+          "key": "serviceId",
+          "type": "String",
+          "required": false,
+          "description": "The service ID."
+        },
+        {
+          "key": "state",
+          "type": "String",
+          "required": false,
+          "description": "The purchase state. It is an enumeration type and defined as follows:\n- OPEN\n- OFFERED\n- CLOSED"
         }
       ]
     }
@@ -63,18 +257,40 @@
   "examples": [
     {
       "type": "request",
-      "verb": "",
-      "route": "",
+      "verb": "POST",
+      "route": "/content/v1/commerce/getUserPurchases/msisdn:5143457900",
       "body": {
-        "": ""
+        "appId": "appStore",
+        "parameters": {
+          "paginationRequest": {"fromItem": 0, "maxItems": 10}
+        }
       }
     },
     {
       "type": "response",
-      "description": "",
-      "body": {
-        "": ""
-      }
+      "body": [
+        {
+          "purchaseId": "~purchaseId~",
+          "price": 200,
+          "description": "~description~",
+          "created": "2001-12-31T12:00:00",
+          "serviceId": "~serviceId~",
+          "productId": "~productId~",
+          "providerId": "~providerId~",
+          "vatCode": "~code~",
+          "vatPrice": 1,
+          "type": "NORMAL",
+          "state": "CLOSE",
+          "recurrentPurchaseId ": null,
+          "recurrentIntervalExpirationTime": null,
+          "recurrentUnit": null,
+          "recurrentCancelTime": null,
+          "recurrenceExpirationTime": null,
+          "renewalsAllowed": 0,
+          "renewalsDone": 0,
+          "meta": null
+        }
+      ]
     }
   ],
   "codeExamples": {

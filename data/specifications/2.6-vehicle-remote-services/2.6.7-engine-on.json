@@ -4,6 +4,7 @@
   "name": "Engine On",
   "description": "Client application can use this API to turn vehicle engine on.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["control-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/engineOn/{vin}",
     "HTTP Verb": ["POST"],

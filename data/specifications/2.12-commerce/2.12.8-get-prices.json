@@ -1,54 +1,92 @@
 {
   "id": "2.12.8-get-prices",
   "docNumber": "2.12.8",
-  "name": "",
-  "description": "",
+  "name": "getPrices",
+  "description": "This operation returns a list of assets product price.\nWhen calculating the price, the getPrices method applies the price rules, product rules and selectors. It returns multiple product information, containing one Price Quote for each product.\nIf a product has more than one Price Quotes, the one with the lowest price is returned. The method getPrices sorts the returned products by the price.\nNote:\nThe price information returned by getPrices method must not be used directly for purchase charge action. There can be other factors, which impact the actual price, for example, end user's purchase activities, new version of asset deployment, tickets held by the end user.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
-    "Route": "",
-    "HTTP Verb": [""],
+    "Route": "/content/v1/commerce/getPrices/{userURI}",
+    "HTTP Verb": ["POST"],
     "Authentication": "Basic Authentication"
   },
   "parameters": {
     "route": {
-      "": ""
+      "userURI": "Represents the user identity in the following format: 'id:<userid>' or 'msisdn:<number>'."
     },
     "requestBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "appId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "Optional: application making this call."
+      },
+      {
+        "key": "Parameters",
+        "type": "JSON",
+        "required": false,
+        "description": "Parameters format depends on the application domain and operation."
+      },
+      {
+        "key": "Client",
+        "type": "JSON",
+        "required": false,
+        "description": "Client capabilities (deviceId)."
       }
     ],
     "responseBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "currencyCode",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "The currency code."
+      },
+      {
+        "key": "metas",
+        "type": "JSON",
+        "required": false,
+        "description": "Meta data of the ticket."
+      },
+      {
+        "key": "price",
+        "type": "Long",
+        "required": true,
+        "description": "The price"
+      },
+      {
+        "key": "productId",
+        "type": "String",
+        "required": false,
+        "description": "The product ID."
+      },
+      {
+        "key": "vatCode",
+        "type": "String",
+        "required": true,
+        "description": "The VAT code."
+      },
+      {
+        "key": "vatPrice",
+        "type": "Long",
+        "required": true,
+        "description": "The VAT price."
       }
-    ],
-    "query": []
+    ]
   },
   "bodyParameterFormats": {
     "request": {
-      "": [
+      "Parameters": [
         {
-          "key": "",
-          "type": "",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "response": {
-      "": [
+          "key": "premiumResourceType",
+          "type": "String",
+          "required": true,
+          "description": "The Premium Resource Type of the assets that the product prices are requested for."
+        },
         {
-          "key": "",
-          "type": "",
+          "key": "ruleProperties",
+          "type": "JSON",
           "required": false,
-          "description": ""
+          "description": "Properties that are used for product price selection. The applicable keys of properties are as follows:- asset.common.aid: assetID\n- asset.common.type: assettype\n- asset.common.sid: serviceID\n- asset.common.pid: providerID\n- asset.type.<assettype>.\n<meta>: meta data of an asset type\n- HTTP Header keys and values\n- User-Agent: user agent name (if device ID exists, user agent does not need)"
         }
       ]
     }
@@ -63,18 +101,30 @@
   "examples": [
     {
       "type": "request",
-      "verb": "",
-      "route": "",
+      "verb": "POST",
+      "route": "/content/v1/commerce/getPrices/msisdn:5143457900",
       "body": {
-        "": ""
+        "appId": "appStore",
+        "parameters": {
+          "premiumResourceType": "HTML5"
+        },
+        "Client": {
+          "deviceId": "IMX"
+        }
       }
     },
     {
       "type": "response",
-      "description": "",
-      "body": {
-        "": ""
-      }
+      "body": [
+        {
+          "currencyCode": "$",
+          "metas": null,
+          "price": 200,
+          "productId": "~productId~",
+          "vatCode": "~vatCode~",
+          "vatPrice": 1
+        }
+      ]
     }
   ],
   "codeExamples": {

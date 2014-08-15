@@ -4,6 +4,7 @@
   "name": "Delete Vehicle Users",
   "description": "Delete list of vehicle users.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/vehicles/v1/users/delete",
     "HTTP Verb": ["DELETE", "POST"],

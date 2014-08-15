@@ -1,54 +1,156 @@
 {
   "id": "2.12.15-purchase",
   "docNumber": "2.12.15",
-  "name": "",
-  "description": "",
+  "name": "Purchase",
+  "description": "This operation performs a user purchase. The MSDP selects a product based on the specified premium resource type. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
-    "Route": "",
-    "HTTP Verb": [""],
+    "Route": "/content/v1/commerce/purchase/{userURI}",
+    "HTTP Verb": ["POST"],
     "Authentication": "Basic Authentication"
   },
   "parameters": {
     "route": {
-      "": ""
+      "userURI": "Represents the user identity in the following format: 'id:<userid>' or 'msisdn:<number>'."
     },
     "requestBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "appId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "Optional: application making this call."
+      },
+      {
+        "key": "Parameters",
+        "type": "JSON",
+        "required": false,
+        "description": "Parameters format depends on the application domain and operation."
+      },
+      {
+        "key": "Client",
+        "type": "JSON",
+        "required": false,
+        "description": "Client capabilities (deviceId)."
       }
     ],
     "responseBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "billingId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "The ID given by the billing system when a purchase is done."
+      },
+      {
+        "key": "purchaseId",
+        "type": "String",
+        "required": false,
+        "description": "The given ID of a purchase when it is done."
+      },
+      {
+        "key": "purchaseIsDone",
+        "type": "Boolean",
+        "required": true,
+        "description": "Specifies whether the purchase is done. True if a purchase is done, else False."
+      },
+      {
+        "key": "recurrentPurchaseId",
+        "type": "String",
+        "required": false,
+        "description": "The ID for the recurrent purchase given that one has been purchased."
+      },
+      {
+        "key": "statusCode",
+        "type": "Integer",
+        "required": true,
+        "description": "Status code for the operation. 0 for success (see error code table otherwise)."
+      },
+      {
+        "key": "unlimitedTicketUsed",
+        "type": "Boolean",
+        "required": true,
+        "description": "Specifies whether the ticket is unlimited to be used. True if the ticket is unlimited to be used, else False."
+      },
+      {
+        "key": "ticketConsumed",
+        "type": "Boolean",
+        "required": true,
+        "description": "Specifies whether the ticket is consumed. True if the ticket is consumed, else False."
+      },
+      {
+        "key": "transactionId",
+        "type": "String",
+        "required": false,
+        "description": "The ID of the transaction."
+      },
+      {
+        "key": "billingErrorInformation",
+        "type": "JSON",
+        "required": false,
+        "description": "Billing error information"
       }
-    ],
-    "query": []
+    ]
   },
   "bodyParameterFormats": {
     "request": {
-      "": [
+      "Parameters": [
         {
-          "key": "",
-          "type": "",
+          "key": "serviceId",
+          "type": "String",
+          "required": true,
+          "description": "The requester's service id."
+        },
+        {
+          "key": "premiumResourceType",
+          "type": "String",
+          "required": true,
+          "description": "The premium resource type."
+        },
+        {
+          "key": "subDistributionList",
+          "type": "String",
           "required": false,
-          "description": ""
+          "description": "The sub distribution list of the purchase if the purchase is related to a messaging service with sub distribution list. It is a string."
+        },
+        {
+          "key": "ruleProperties",
+          "type": "JSON",
+          "required": false,
+          "description": "Properties used for product and price selection (list of meta)."
+        },
+        {
+          "key": "purchaseMetas",
+          "type": "JSON",
+          "required": false,
+          "description": "Meta data that is stored if a purchase is done (list of meta)."
+        },
+        {
+          "key": "billingMetas",
+          "type": "JSON",
+          "required": false,
+          "description": "Meta data passed to the billing implementation. The charging operation in ParlayX payment interface is configurable by setting the value of billing-meta:doChargeFlag key. If the value is set to true, the chargeAmount method in the ParlayX payment interface is used. If the value is set to false, the reserveAmount and chargeReservation methods in  ParlayX payment interface are used."
         }
       ]
     },
     "response": {
-      "": [
+      "billingErrorInformation": [
         {
-          "key": "",
-          "type": "",
+          "key": "errorCode",
+          "type": "String",
+          "required": true,
+          "description": "Error code that indicates the billing error."
+        },
+        {
+          "key": "errorMessage",
+          "type": "String",
           "required": false,
-          "description": ""
+          "description": "The accompanying message description for the error code."
+        },
+        {
+          "key": "variables",
+          "type": "String",
+          "required": false,
+          "description": "Additional information returned from external charging system."
         }
       ]
     }
@@ -63,17 +165,31 @@
   "examples": [
     {
       "type": "request",
-      "verb": "",
-      "route": "",
+      "verb": "POST",
+      "route": "/content/v1/commerce/purchase/msisdn:5143457900",
       "body": {
-        "": ""
+        "appId": "appStore",
+        "parameters": {
+          "serviceId": "S-123455",
+          "premiumResourceType": "HTML5"
+        },
+        "Client": {
+          "deviceId": "IMX"
+        }
       }
     },
     {
       "type": "response",
-      "description": "",
       "body": {
-        "": ""
+        "billingId": "~billingId~",
+        "purchaseId": "~purchaseId~",
+        "purchaseIsdone": true,
+        "recurrentPurchaseId": "~recurrentPurchaseId~",
+        "statusCode": 0,
+        "unlimitedTicketUsed": true,
+        "ticketConsumed": true,
+        "transactionId": "~transactionId~",
+        "billingErrorInformation": null
       }
     }
   ],

@@ -4,6 +4,7 @@
   "name": "Set PIN",
   "description": "Client application can use this API to set a new PIN by providing one-time password.",
   "categories": ["know-car", "control-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/setpin/{vin}",
     "HTTP Verb": ["POST"],

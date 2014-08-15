@@ -4,6 +4,7 @@
   "name": "TCU Notification Channel",
   "description": "This API is called by TCUs that do not support SMS or HTTP. ASDP will maintain an open HTTP channel (when longpoll is set to true) with TCU to get message notifications. If longpoll parameter is not specified or set to false, the response shall be returned immediately (with empty body: no json response).",
   "categories": ["know-car"],
+  "subCategories": ["Vehicle Telematics"],
   "resourceTable": {
     "Route": "/vehicles/v1/{vin}/notifications?longpoll=true",
     "HTTP Verb": ["GET"]

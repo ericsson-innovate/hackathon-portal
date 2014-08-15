@@ -4,6 +4,7 @@
   "name": "Add a Subscriber",
   "description": "Create a new subscriber.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/subscribers/v1/subscriber/add",
     "HTTP Verb": ["POST"],

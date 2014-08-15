@@ -4,6 +4,7 @@
   "name": "Door Lock",
   "description": "Client application can use this API to lock vehicle doors.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["control-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/lock/{vin}",
     "HTTP Verb": ["POST"],

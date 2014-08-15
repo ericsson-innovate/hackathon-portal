@@ -4,6 +4,7 @@
   "name": "Login",
   "description": "Client application can use this API to validate PIN (login).",
   "categories": ["know-car", "control-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/login/{vin}",
     "HTTP Verb": ["POST"],

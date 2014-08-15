@@ -4,6 +4,7 @@
   "name": "Add a Vehicle",
   "description": "Create a new vehicle.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/vehicles/v1/vehicle/add",
     "HTTP Verb": ["POST"],

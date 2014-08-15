@@ -1,54 +1,194 @@
 {
   "id": "2.12.6-deactivate-recurrent-purchase",
   "docNumber": "2.12.6",
-  "name": "",
-  "description": "",
+  "name": "Deactivate Recurrent Purchase",
+  "description": "This operation deactivates a recurrent purchase.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
-    "Route": "",
-    "HTTP Verb": [""],
+    "Route": "/content/v1/commerce/deactivateRecurrentPurchase/{userURI}",
+    "HTTP Verb": ["POST"],
     "Authentication": "Basic Authentication"
   },
   "parameters": {
     "route": {
-      "": ""
+      "userURI": "Represents the user identity in the following format: 'id:<userid>' or 'msisdn:<number>'."
     },
     "requestBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "appId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "Optional: application making this call."
+      },
+      {
+        "key": "Parameters",
+        "type": "JSON",
+        "required": false,
+        "description": "Parameters format depends on the application domain and operation."
+      },
+      {
+        "key": "Client",
+        "type": "JSON",
+        "required": false,
+        "description": "Client capabilities (deviceId)."
       }
     ],
     "responseBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "description",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "The product description."
+      },
+      {
+        "key": "meta",
+        "type": "JSON",
+        "required": false,
+        "description": "Meta data stored together with the offer. Should be submitted when purchasing an offer."
+      },
+      {
+        "key": "premiumOfferId",
+        "type": "String",
+        "required": true,
+        "description": "The id of this specific offer."
+      },
+      {
+        "key": "price",
+        "type": "JSON",
+        "required": true,
+        "description": "The product price."
+      },
+      {
+        "key": "productId",
+        "type": "String",
+        "required": true,
+        "description": "The product ID."
+      },
+      {
+        "key": "tickets",
+        "type": "JSON",
+        "required": false,
+        "description": "List of tickets included in the offer."
       }
-    ],
-    "query": []
+    ]
   },
   "bodyParameterFormats": {
     "request": {
-      "": [
+      "Parameters": [
         {
-          "key": "",
-          "type": "",
-          "required": false,
-          "description": ""
+          "key": "recurrentPurchaseId",
+          "type": "String",
+          "required": true,
+          "description": "The ID for the recurrent purchase."
         }
       ]
     },
     "response": {
-      "": [
+      "Price": [
         {
-          "key": "",
-          "type": "",
+          "key": "currencyCode",
+          "type": "String",
           "required": false,
-          "description": ""
+          "description": "The currency code."
+        },
+        {
+          "key": "price",
+          "type": "Long",
+          "required": true,
+          "description": "The price."
+        }
+      ],
+      "Tickets": [
+        {
+          "key": "ticketId",
+          "type": "String",
+          "required": true,
+          "description": "The ticket ID."
+        },
+        {
+          "key": "state",
+          "type": "String",
+          "required": false,
+          "description": "The ticket state:\n- OPEN\n- CLOSED"
+        },
+        {
+          "key": "cont",
+          "type": "Integer",
+          "required": false,
+          "description": "The number of total usages in the defined ticket."
+        },
+        {
+          "key": "description",
+          "type": "String",
+          "required": false,
+          "description": "The ticket description."
+        },
+        {
+          "key": "expirationTime",
+          "type": "String",
+          "required": false,
+          "description": "The ticket expiration time."
+        },
+        {
+          "key": "limit",
+          "type": "Integer",
+          "required": false,
+          "description": "The maximum number of usages in the defined ticket."
+        },
+        {
+          "key": "meta",
+          "type": "JSON",
+          "required": false,
+          "description": "Meta data of the ticket."
+        },
+        {
+          "key": "productId",
+          "type": "String",
+          "required": false,
+          "description": "The product ID."
+        },
+        {
+          "key": "purchaseId",
+          "type": "String",
+          "required": true,
+          "description": "The purchase ID."
+        },
+        {
+          "key": "premiumResourceType",
+          "type": "String",
+          "required": false,
+          "description": "The premium resource type."
+        },
+        {
+          "key": "ticketType",
+          "type": "String",
+          "required": true,
+          "description": "The ticket type. The applicable types are as follows:\n- NORMAL\n- COMPENSATION\n- GIFT"
+        },
+        {
+          "key": "recurrentPurchaseId",
+          "type": "String",
+          "required": false,
+          "description": "The recurrent purchase ID."
+        },
+        {
+          "key": "recurrentExpiresTime",
+          "type": "String",
+          "required": false,
+          "description": "The time when the recurrent purchase is expired."
+        },
+        {
+          "key": "recurrentCancelTime",
+          "type": "String",
+          "required": false,
+          "description": "The time when the recurrent purchase is cancelled."
+        },
+        {
+          "key": "usageUnlimited",
+          "type": "Boolean",
+          "required": true,
+          "description": "Indicates whether the ticket can be unlimitedly used. The following values can be set:\n- True: The ticket can be used unlimitedly in a certain time period. Usually it is a subscription type, that is, unlimited usage during one month.\n- False: The ticket can be used limitedly in a certain times. Usually it is a standard ticket on which you pay a certain amount and can use it at certain times. For example, pay $5.00 and use 10 times."
         }
       ]
     }
@@ -63,18 +203,30 @@
   "examples": [
     {
       "type": "request",
-      "verb": "",
-      "route": "",
+      "verb": "POST",
+      "route": "/content/v1/commerce/deactivateRecurrentPurchase/msisdn:5143457900",
       "body": {
-        "": ""
+        "appId": "appStore",
+        "parameters": {
+          "recurrentPurchaseId": "~recurrentPurchaseId~"
+        },
+        "Client": {
+          "deviceId": "IMX"
+        }
       }
     },
     {
       "type": "response",
-      "description": "",
-      "body": {
-        "": ""
-      }
+      "body": [
+        {
+          "description": "~description~",
+          "meta": [],
+          "premiumOfferId": "~premiumOfferId~",
+          "price": {"currencyCode": "$", "price": 200},
+          "productId": "~productId~",
+          "tickets": null
+        }
+      ]
     }
   ],
   "codeExamples": {

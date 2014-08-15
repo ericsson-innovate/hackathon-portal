@@ -4,6 +4,7 @@
   "name": "Delete a Vehicle",
   "description": "Delete an existing vehicle.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/vehicles/v1/vehicle/delete/{vin}",
     "HTTP Verb": ["DELETE", "POST"],

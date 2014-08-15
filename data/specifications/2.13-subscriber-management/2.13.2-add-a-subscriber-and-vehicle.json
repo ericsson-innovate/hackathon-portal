@@ -4,6 +4,7 @@
   "name": "Add a Subscriber and Vehicle",
   "description": "Create a new subscriber and vehicle.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/subscribers/v1/subscriber-vehicle/add",
     "HTTP Verb": ["POST"],

@@ -4,6 +4,7 @@
   "name": "Update Vehicle Users",
   "description": "Update list of vehicle users.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/vehicles/v1/users/update",
     "HTTP Verb": ["UPDATE", "POST"],

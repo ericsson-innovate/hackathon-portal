@@ -4,6 +4,7 @@
   "name": "Validate One-Time Password",
   "description": "Client application can use this API to check if provided one-time password is valid.",
   "categories": ["know-car", "control-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/validateotp/{vin}",
     "HTTP Verb": ["POST"],

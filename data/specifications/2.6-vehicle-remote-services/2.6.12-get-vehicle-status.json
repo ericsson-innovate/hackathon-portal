@@ -4,6 +4,7 @@
   "name": "Get Vehicle Status",
   "description": "Remote services application can use this API to retrieve vehicle status.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["know-car"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/status/view/{vin}",
     "HTTP Verb": ["POST"],

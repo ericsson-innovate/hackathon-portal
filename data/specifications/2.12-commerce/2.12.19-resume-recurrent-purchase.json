@@ -1,54 +1,126 @@
 {
   "id": "2.12.19-resume-recurrent-purchase",
   "docNumber": "2.12.19",
-  "name": "",
-  "description": "",
+  "name": "Resume Recurrent Purchase",
+  "description": "This operation resumes a cancelled or closed recurrent purchase, and set the time stamp of the resumed purchase.\nThis method re-active a recurrent purchase that is not canceled by recurrent purchase ID, and set the resumed timestamp in the meta of previous purchase, and remove the original intent meta.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
-    "Route": "",
-    "HTTP Verb": [""],
+    "Route": "/content/v1/commerce/resumeRecurrentPurchase/{userURI}",
+    "HTTP Verb": ["POST"],
     "Authentication": "Basic Authentication"
   },
   "parameters": {
     "route": {
-      "": ""
+      "userURI": "Represents the user identity in the following format: 'id:<userid>' or 'msisdn:<number>'."
     },
     "requestBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "appId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "Optional: application making this call."
+      },
+      {
+        "key": "Parameters",
+        "type": "JSON",
+        "required": false,
+        "description": "Parameters format depends on the application domain and operation."
+      },
+      {
+        "key": "Client",
+        "type": "JSON",
+        "required": false,
+        "description": "Client capabilities (deviceId)."
       }
     ],
     "responseBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "billingId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "The ID given by the billing system when a purchase is done."
+      },
+      {
+        "key": "purchaseId",
+        "type": "String",
+        "required": false,
+        "description": "The given ID of a purchase when it is done."
+      },
+      {
+        "key": "purchaseIsDone",
+        "type": "Boolean",
+        "required": true,
+        "description": "Specifies whether the purchase is done. True if a purchase is done, else False."
+      },
+      {
+        "key": "recurrentPurchaseId",
+        "type": "String",
+        "required": false,
+        "description": "The ID for the recurrent purchase given that one has been purchased."
+      },
+      {
+        "key": "statusCode",
+        "type": "Integer",
+        "required": true,
+        "description": "Status code for the operation. 0 for success (see error code table otherwise)."
+      },
+      {
+        "key": "unlimitedTicketUsed",
+        "type": "Boolean",
+        "required": true,
+        "description": "Specifies whether the ticket is unlimited to be used. True if the ticket is unlimited to be used, else False."
+      },
+      {
+        "key": "ticketConsumed",
+        "type": "Boolean",
+        "required": true,
+        "description": "Specifies whether the ticket is consumed. True if the ticket is consumed, else False."
+      },
+      {
+        "key": "transactionId",
+        "type": "String",
+        "required": false,
+        "description": "The ID of the transaction."
+      },
+      {
+        "key": "billingErrorInformation",
+        "type": "JSON",
+        "required": false,
+        "description": "Billing error information"
       }
-    ],
-    "query": []
+    ]
   },
   "bodyParameterFormats": {
     "request": {
-      "": [
+      "Parameters": [
         {
-          "key": "",
-          "type": "",
-          "required": false,
-          "description": ""
+          "key": "recurrentPurchaseId",
+          "type": "String",
+          "required": true,
+          "description": "The id of the recurrent purchase which is used to resume the cancelled recurrent purchase."
         }
       ]
     },
     "response": {
-      "": [
+      "billingErrorInformation": [
         {
-          "key": "",
-          "type": "",
+          "key": "errorCode",
+          "type": "String",
+          "required": true,
+          "description": "Error code that indicates the billing error."
+        },
+        {
+          "key": "errorMessage",
+          "type": "String",
           "required": false,
-          "description": ""
+          "description": "The accompanying message description for the error code."
+        },
+        {
+          "key": "variables",
+          "type": "String",
+          "required": false,
+          "description": "Additional information returned from external charging system."
         }
       ]
     }
@@ -63,17 +135,30 @@
   "examples": [
     {
       "type": "request",
-      "verb": "",
-      "route": "",
+      "verb": "POST",
+      "route": "/content/v1/commerce/resumeRecurrentPurchase/msisdn:5143457900",
       "body": {
-        "": ""
+        "appId": "appStore",
+        "parameters": {
+          "recurrentPurchaseId": "S-123455"
+        },
+        "Client": {
+          "deviceId": "IMX"
+        }
       }
     },
     {
       "type": "response",
-      "description": "",
       "body": {
-        "": ""
+        "billingId": "~billingId~",
+        "purchaseId": "~purchaseId~",
+        "purchaseIsdone": true,
+        "recurrentPurchaseId": "~recurrentPurchaseId~",
+        "statusCode": 0,
+        "unlimitedTicketUsed": true,
+        "ticketConsumed": true,
+        "transactionId": "~transactionId~",
+        "billingErrorInformation": null
       }
     }
   ],

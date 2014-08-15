@@ -1,54 +1,68 @@
 {
   "id": "2.12.3-check-valid-ticket",
   "docNumber": "2.12.3",
-  "name": "",
-  "description": "",
+  "name": "Check Valid Ticket",
+  "description": "This operation checks if a user has a valid ticket with unlimited usage for a PremiumResourceType.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
-    "Route": "",
-    "HTTP Verb": [""],
+    "Route": "/content/v1/commerce/checkValidTicket/{userURI}",
+    "HTTP Verb": ["POST"],
     "Authentication": "Basic Authentication"
   },
   "parameters": {
     "route": {
-      "": ""
+      "userURI": "Represents the user identity in the following format: 'id:<userid>' or 'msisdn:<number>'."
     },
     "requestBody": [
       {
-        "key": "",
-        "type": "",
+        "key": "appId",
+        "type": "String",
         "required": false,
-        "description": ""
+        "description": "Optional: application making this call."
+      },
+      {
+        "key": "Parameters",
+        "type": "JSON",
+        "required": false,
+        "description": "Parameters format depends on the application domain and operation."
+      },
+      {
+        "key": "Client",
+        "type": "JSON",
+        "required": false,
+        "description": "Client capabilities (deviceId)."
       }
     ],
     "responseBody": [
       {
-        "key": "",
-        "type": "",
-        "required": false,
-        "description": ""
+        "key": "valid",
+        "type": "Boolean",
+        "required": true,
+        "description": "True if the ticket is valid."
       }
-    ],
-    "query": []
+    ]
   },
   "bodyParameterFormats": {
     "request": {
-      "": [
+      "Parameters": [
         {
-          "key": "",
-          "type": "",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "response": {
-      "": [
+          "key": "premiumResourceType",
+          "type": "String",
+          "required": true,
+          "description": "The premium resource that that will be checked."
+        },
         {
-          "key": "",
-          "type": "",
+          "key": "validSeconds",
+          "type": "Long",
+          "required": true,
+          "description": "For how many seconds from “time of check” that the ticket with unlimited usage shall be valid."
+        },
+        {
+          "key": "ruleProperties",
+          "type": "JSON",
           "required": false,
-          "description": ""
+          "description": "Properties used for product and price selection (list of meta)."
         }
       ]
     }
@@ -63,17 +77,20 @@
   "examples": [
     {
       "type": "request",
-      "verb": "",
-      "route": "",
+      "verb": "POST",
+      "route": "/content/v1/commerce/checkValidTicket/msisdn:5143457900",
       "body": {
-        "": ""
+        "appId": "appStore",
+        "parameters": {
+          "premiumResourceType": "HTML5",
+          "validSeconds": 3600
+        }
       }
     },
     {
       "type": "response",
-      "description": "",
       "body": {
-        "": ""
+        "valid": true
       }
     }
   ],

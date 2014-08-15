@@ -4,6 +4,7 @@
   "name": "Delete a Subscriber",
   "description": "Delete an existing subscriber.",
   "categories": ["know-driver"],
+  "subCategories": [],
   "resourceTable": {
     "Route": "/subscribers/v1/subscriber/delete/{id}",
     "HTTP Verb": ["DELETE", "POST"],
