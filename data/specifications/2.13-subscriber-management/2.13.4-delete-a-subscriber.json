@@ -1,6 +1,7 @@
 {
   "id": "2.13.4-delete-a-subscriber",
   "docNumber": "2.13.4",
+  "displayWeight": "217",
   "name": "Delete a Subscriber",
   "description": "Delete an existing subscriber.",
   "categories": ["know-driver"],

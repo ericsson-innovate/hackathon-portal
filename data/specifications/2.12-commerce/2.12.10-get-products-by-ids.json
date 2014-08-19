@@ -1,6 +1,7 @@
 {
   "id": "2.12.10-get-products-by-ids",
   "docNumber": "2.12.10",
+  "displayWeight": "100",
   "name": "Get Products By IDs",
   "description": "This operation returns the product information for the given product id list that is registered in the MSDP.",
   "categories": ["know-driver"],

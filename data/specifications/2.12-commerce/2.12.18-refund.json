@@ -1,6 +1,7 @@
 {
   "id": "2.12.18-refund",
   "docNumber": "2.12.18",
+  "displayWeight": "100",
   "name": "Refund",
   "description": "This operation performs purchase refund. A refund of a purchase contains the following actions:\n- Calling the charging interface refund method.\n- Update purchase and set it to be refunded.\n- Write a post to a file with date, premiumResourceType, purchaseId, serviceId, partnerId",
   "categories": ["know-driver"],

@@ -1,6 +1,7 @@
 {
   "id": "2.6.6-door-lock",
   "docNumber": "2.6.6",
+  "displayWeight": "349",
   "name": "Door Lock",
   "description": "Client application can use this API to lock vehicle doors.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["control-car"],

@@ -1,6 +1,7 @@
 {
   "id": "2.12.26-gift-by-premium-offer-id",
   "docNumber": "2.12.26",
+  "displayWeight": "100",
   "name": "Gift By Premium Offer ID",
   "description": "This operation performs a user purchase as a gift. The product connected to the gift purchase is selected using a product ID that is registered in the MSDP.\nThe gift output can be a ticket with limited or unlimited usage. The gift  purchase is done but it is not consumed.",
   "categories": ["know-driver"],

@@ -1,6 +1,7 @@
 {
   "id": "2.13.2-add-a-subscriber-and-vehicle",
   "docNumber": "2.13.2",
+  "displayWeight": "219",
   "name": "Add a Subscriber and Vehicle",
   "description": "Create a new subscriber and vehicle.",
   "categories": ["know-driver"],

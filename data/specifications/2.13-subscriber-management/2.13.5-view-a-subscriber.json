@@ -1,6 +1,7 @@
 {
   "id": "2.13.5-view-a-subscriber",
   "docNumber": "2.13.5",
+  "displayWeight": "216",
   "name": "View a Subscriber",
   "description": "Return an existing subscriber.",
   "categories": ["know-driver"],

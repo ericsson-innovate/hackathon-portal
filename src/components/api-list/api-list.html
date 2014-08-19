@@ -1,5 +1,5 @@
 <ul>
-  <li ng-repeat="apiItem in apiData | orderByApiId"
+  <li ng-repeat="apiItem in apiData | orderApiCalls"
       api-list-item="apiItem"
       ng-if="apiItem.specification.categories.indexOf(category) >= 0"></li>
 </ul>

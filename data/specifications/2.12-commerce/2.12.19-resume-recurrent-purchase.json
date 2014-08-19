@@ -1,6 +1,7 @@
 {
   "id": "2.12.19-resume-recurrent-purchase",
   "docNumber": "2.12.19",
+  "displayWeight": "100",
   "name": "Resume Recurrent Purchase",
   "description": "This operation resumes a cancelled or closed recurrent purchase, and set the time stamp of the resumed purchase.\nThis method re-active a recurrent purchase that is not canceled by recurrent purchase ID, and set the resumed timestamp in the meta of previous purchase, and remove the original intent meta.",
   "categories": ["know-driver"],

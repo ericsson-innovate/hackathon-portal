@@ -1,9 +1,10 @@
 {
   "id": "2.7.3-tcu-shoulder-tap",
   "docNumber": "2.7.3",
+  "displayWeight": "8",
   "name": "TCU Shoulder Tap",
   "description": "Shoulder tap is an SMS message that shall be sent from dispatcher to notify TCU of service request.\nSince the TCU simulator does not have SMS capabilities, the SMS shall be replaced by an HTTP call.\nThis API shall be implemented on the TCU (not on the dispatcher).",
-  "categories": ["know-car"],
+  "categories": ["internal"],
   "subCategories": ["Vehicle Telematics"],
   "resourceTable": {
     "Route": "/tcu/v1/notifications",

@@ -1,6 +1,7 @@
 {
   "id": "2.12.9-get-products",
   "docNumber": "2.12.9",
+  "displayWeight": "100",
   "name": "Get Products",
   "description": "This operation returns products for a given premium resource type.",
   "categories": ["know-driver"],

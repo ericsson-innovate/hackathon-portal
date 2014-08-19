@@ -1,6 +1,7 @@
 {
   "id": "2.12.12-get-user-tickets",
   "docNumber": "2.12.12",
+  "displayWeight": "100",
   "name": "Get User Tickets",
   "description": "This operation returns all active tickets with limited usage for a selected user.",
   "categories": ["know-driver"],

@@ -1,6 +1,7 @@
 {
   "id": "2.12.25-gift-by-product-id",
   "docNumber": "2.12.25",
+  "displayWeight": "100",
   "name": "Gift By Product ID",
   "description": "",
   "categories": ["know-driver"],

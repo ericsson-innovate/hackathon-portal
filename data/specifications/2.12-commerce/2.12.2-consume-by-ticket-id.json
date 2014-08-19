@@ -1,6 +1,7 @@
 {
   "id": "2.12.2-consume-by-ticket-id",
   "docNumber": "2.12.2",
+  "displayWeight": "100",
   "name": "Consume By Ticket ID",
   "description": "This operation consumes a ticket by the ticket ID.",
   "categories": ["know-driver"],

@@ -1,6 +1,7 @@
 {
   "id": "2.6.7-engine-on",
   "docNumber": "2.6.7",
+  "displayWeight": "348",
   "name": "Engine On",
   "description": "Client application can use this API to turn vehicle engine on.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["control-car"],

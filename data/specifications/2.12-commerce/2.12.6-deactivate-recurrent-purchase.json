@@ -1,6 +1,7 @@
 {
   "id": "2.12.6-deactivate-recurrent-purchase",
   "docNumber": "2.12.6",
+  "displayWeight": "100",
   "name": "Deactivate Recurrent Purchase",
   "description": "This operation deactivates a recurrent purchase.",
   "categories": ["know-driver"],

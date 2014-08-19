@@ -1,6 +1,7 @@
 {
   "id": "2.12.13-get-tickets-by-purchase-id",
   "docNumber": "2.12.13",
+  "displayWeight": "100",
   "name": "Get Tickets By Purchase ID",
   "description": "This operation gets the ticket record for the end user. The record search condition is defined by setting the parameter filter.",
   "categories": ["know-driver"],

@@ -1,6 +1,7 @@
 {
   "id": "2.12.27-refill",
   "docNumber": "2.12.27",
+  "displayWeight": "100",
   "name": "Refill",
   "description": "This operation performs a refill for ticket, which is the same Refill action as the one in Customer Care tool. If refill operation is performed, a new ticket with type COMPENSATION is created. The ticket is limited and its expiration is set as requested. The properties are copied from the selected Ticket for refilling. The relative product is set to OPEN if the status was CLOSED before the refill action.",
   "categories": ["know-driver"],

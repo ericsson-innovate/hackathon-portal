@@ -23,7 +23,7 @@ angular.module('hackApp', [
 
   'categoryFilter',
   'errorDescriptionFilter',
-  'orderByApiIdFilter',
+  'orderApiCallsFilter',
 
   'syncPrismDirective',
 

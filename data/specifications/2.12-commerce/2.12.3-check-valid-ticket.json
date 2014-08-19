@@ -1,6 +1,7 @@
 {
   "id": "2.12.3-check-valid-ticket",
   "docNumber": "2.12.3",
+  "displayWeight": "100",
   "name": "Check Valid Ticket",
   "description": "This operation checks if a user has a valid ticket with unlimited usage for a PremiumResourceType.",
   "categories": ["know-driver"],

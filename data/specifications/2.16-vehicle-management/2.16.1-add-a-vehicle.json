@@ -1,6 +1,7 @@
 {
   "id": "2.16.1-add-a-vehicle",
   "docNumber": "2.16.1",
+  "displayWeight": "299",
   "name": "Add a Vehicle",
   "description": "Create a new vehicle.",
   "categories": ["know-car"],

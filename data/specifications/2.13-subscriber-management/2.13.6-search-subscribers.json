@@ -1,6 +1,7 @@
 {
   "id": "2.13.6-search-subscribers",
   "docNumber": "2.13.6",
+  "displayWeight": "215",
   "name": "Search Subscribers",
   "description": "Return list of registered subscribers.",
   "categories": ["know-driver"],

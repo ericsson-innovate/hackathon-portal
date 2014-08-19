@@ -1,6 +1,7 @@
 {
   "id": "2.12.5-deactivate-one-time-purchase",
   "docNumber": "2.12.5",
+  "displayWeight": "100",
   "name": "Deactivate One-Time Purchase",
   "description": "This operation deactivates a one time purchase.",
   "categories": ["know-driver"],

@@ -1,6 +1,7 @@
 {
   "id": "2.12.21-extend-one-time-purchase",
   "docNumber": "2.12.21",
+  "displayWeight": "100",
   "name": "Extend One-Time Purchase",
   "description": "This operation extends the valid date of a one time purchase.",
   "categories": ["know-driver"],

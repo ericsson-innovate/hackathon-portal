@@ -1,6 +1,7 @@
 {
   "id": "2.13.1-add-a-subscriber",
   "docNumber": "2.13.1",
+  "displayWeight": "220",
   "name": "Add a Subscriber",
   "description": "Create a new subscriber.",
   "categories": ["know-driver"],

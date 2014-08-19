@@ -1,6 +1,7 @@
 {
   "id": "2.12.14-get-tickets-by-ticket-id",
   "docNumber": "2.12.14",
+  "displayWeight": "100",
   "name": "Get Ticket Usages By Ticket ID",
   "description": "This operation gets the ticket usage record by ticket ID for the end user.",
   "categories": ["know-driver"],

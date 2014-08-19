@@ -1,6 +1,7 @@
 {
   "id": "2.16.2-update-a-vehicle",
   "docNumber": "2.16.2",
+  "displayWeight": "298",
   "name": "Update a Vehicle",
   "description": "Update an existing vehicle.",
   "categories": ["know-car"],

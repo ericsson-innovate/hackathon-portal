@@ -1,9 +1,10 @@
 {
   "id": "2.7.4-ping-tcu",
   "docNumber": "2.7.4",
+  "displayWeight": "7",
   "name": "Ping TCU",
   "description": "This is a health check call to make sure TCU simulator is up.",
-  "categories": ["know-car"],
+  "categories": ["internal"],
   "subCategories": ["Vehicle Telematics"],
   "resourceTable": {
     "Route": "/tcu/v1/notifications",

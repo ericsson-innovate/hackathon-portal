@@ -1,9 +1,10 @@
 {
   "id": "2.6.10-check-request-status",
   "docNumber": "2.6.10",
+  "displayWeight": "345",
   "name": "Check Request Status",
   "description": "Remote services application can use this API to check the status of a given request (success or failure).",
-  "categories": ["know-car"],
+  "categories": ["know-car", "control-car"],
   "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/status/{vin}/{requestId}",

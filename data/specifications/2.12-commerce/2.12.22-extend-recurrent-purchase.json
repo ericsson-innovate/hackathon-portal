@@ -1,6 +1,7 @@
 {
   "id": "2.12.22-extend-recurrent-purchase",
   "docNumber": "2.12.22",
+  "displayWeight": "100",
   "name": "Extend Recurrent Purchase",
   "description": "This operation extends the expiry date and the coming renewal time of a recurrent purchase.",
   "categories": ["know-driver"],

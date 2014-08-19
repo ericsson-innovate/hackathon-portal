@@ -1,6 +1,7 @@
 {
   "id": "2.12.8-get-prices",
   "docNumber": "2.12.8",
+  "displayWeight": "100",
   "name": "getPrices",
   "description": "This operation returns a list of assets product price.\nWhen calculating the price, the getPrices method applies the price rules, product rules and selectors. It returns multiple product information, containing one Price Quote for each product.\nIf a product has more than one Price Quotes, the one with the lowest price is returned. The method getPrices sorts the returned products by the price.\nNote:\nThe price information returned by getPrices method must not be used directly for purchase charge action. There can be other factors, which impact the actual price, for example, end user's purchase activities, new version of asset deployment, tickets held by the end user.",
   "categories": ["know-driver"],

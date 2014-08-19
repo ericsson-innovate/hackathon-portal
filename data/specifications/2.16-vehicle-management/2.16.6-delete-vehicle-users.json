@@ -1,6 +1,7 @@
 {
   "id": "2.16.6-delete-vehicle-users",
   "docNumber": "2.16.6",
+  "displayWeight": "294",
   "name": "Delete Vehicle Users",
   "description": "Delete list of vehicle users.",
   "categories": ["know-car"],

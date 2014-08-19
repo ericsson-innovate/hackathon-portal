@@ -1,6 +1,7 @@
 {
   "id": "2.12.4-create-premium-offers",
   "docNumber": "2.12.4",
+  "displayWeight": "100",
   "name": "Create Premium Offers",
   "description": "Given a user and a desired premium resource, this operation returns a list of offers available to the user. One of the offers can subsequently be purchased by calling purchasePremiumOffer.",
   "categories": ["know-driver"],

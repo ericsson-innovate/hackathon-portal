@@ -1,6 +1,7 @@
 {
   "id": "2.13.3-update-a-subscriber",
   "docNumber": "2.13.3",
+  "displayWeight": "218",
   "name": "Update a Subscriber",
   "description": "Update an existing subscriber.",
   "categories": ["know-driver"],

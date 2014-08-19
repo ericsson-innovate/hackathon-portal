@@ -1,6 +1,7 @@
 {
   "id": "2.12.1-consume",
   "docNumber": "2.12.1",
+  "displayWeight": "100",
   "name": "Consume",
   "description": "This operation consumes a user's ticket connected to a specific purchase. It first checks if a user has a valid ticket with unlimited usage, if not it checks for valid ticket with limited usage. If there are available tickets it consumes one of them and add usage meta data to the TicketUsage. If there are several matches for tickets the ticket with the earliest expire date is consumed.",
   "categories": ["know-driver"],

@@ -1,6 +1,7 @@
 {
   "id": "2.16.7-search-vehicles",
   "docNumber": "2.16.7",
+  "displayWeight": "293",
   "name": "Search Vehicles",
   "description": "Return list of registered vehicles.",
   "categories": ["know-car"],

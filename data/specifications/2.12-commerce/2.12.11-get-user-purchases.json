@@ -1,6 +1,7 @@
 {
   "id": "2.12.11-get-user-purchases",
   "docNumber": "2.12.11",
+  "displayWeight": "100",
   "name": "Get User Purchases",
   "description": "This operation gets the purchase record for the end user. The record search condition is defined by setting the parameters paginationRequest, sortItem and filter.",
   "categories": ["know-driver"],

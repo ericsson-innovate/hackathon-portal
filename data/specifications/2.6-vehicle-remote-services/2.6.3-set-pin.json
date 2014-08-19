@@ -1,9 +1,10 @@
 {
   "id": "2.6.3-set-pin",
   "docNumber": "2.6.3",
+  "displayWeight": "18",
   "name": "Set PIN",
   "description": "Client application can use this API to set a new PIN by providing one-time password.",
-  "categories": ["know-car", "control-car"],
+  "categories": ["control-car"],
   "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/setpin/{vin}",

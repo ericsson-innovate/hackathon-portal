@@ -1,6 +1,7 @@
 {
   "id": "2.16.3-delete-a-vehicle",
   "docNumber": "2.16.3",
+  "displayWeight": "297",
   "name": "Delete a Vehicle",
   "description": "Delete an existing vehicle.",
   "categories": ["know-car"],

@@ -1,6 +1,7 @@
 {
   "id": "2.6.9-honk-and-blink",
   "docNumber": "2.6.9",
+  "displayWeight": "346",
   "name": "Honk and Blink",
   "description": "Client application can use this API to trigger vehicle honk and blink (car locator).\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["control-car"],

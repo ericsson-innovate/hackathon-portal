@@ -23,7 +23,7 @@ angular.module('hackApp', [
 
   'categoryFilter',
   'errorDescriptionFilter',
-  'orderByApiIdFilter',
+  'orderApiCallsFilter',
 
   'syncPrismDirective',
 
@@ -277,23 +277,27 @@ angular.module('hackController', [])
 
 'use strict';
 
-angular.module('orderByApiIdFilter', [])
+angular.module('orderApiCallsFilter', [])
 
 /**
  * @ngdoc filter
- * @name orderByApiId
+ * @name orderApiCalls
  * @description
  *
  * This is a filter for ordering the API call items by ID.
  */
-.filter('orderByApiId', function () {
+.filter('orderApiCalls', function () {
   return function (input) {
     input.sort(function (a, b) {
-      return parseFloat(a.specification.docNumber.substr(2)) -
-          parseFloat(b.specification.docNumber.substr(2))
+      if (a.specification.displayWeight !== b.specification.displayWeight) {
+        return b.specification.displayWeight - a.specification.displayWeight;
+      } else {
+        return parseFloat(a.specification.docNumber.substr(2)) -
+            parseFloat(b.specification.docNumber.substr(2))
+      }
     });
     return input;
-  }
+  };
 });
 
 'use strict';
@@ -1051,6 +1055,7 @@ angular.module('apiTryItCardDirective', [])
         xhr.setRequestHeader('Authorization', authString);
         xhr.setRequestHeader('APIKey', apiKey);
         xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.send(scope.apiItem.tryIt.requestBody);
 
         scope.apiItem.tryIt.requestState = 'waiting-for-response';

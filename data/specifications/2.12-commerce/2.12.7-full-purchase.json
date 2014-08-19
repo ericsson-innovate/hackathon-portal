@@ -1,6 +1,7 @@
 {
   "id": "2.12.7-full-purchase",
   "docNumber": "2.12.7",
+  "displayWeight": "100",
   "name": "Full Purchase",
   "description": "This operation performs a user purchase. The product connected to the purchase is completely specified using the operation parameters. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.",
   "categories": ["know-driver"],

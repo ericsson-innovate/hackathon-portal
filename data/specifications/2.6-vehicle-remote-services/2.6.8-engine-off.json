@@ -1,6 +1,7 @@
 {
   "id": "2.6.8-engine-off",
   "docNumber": "2.6.8",
+  "displayWeight": "347",
   "name": "Engine Off",
   "description": "Client application can use this API to turn vehicle engine off.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["control-car"],

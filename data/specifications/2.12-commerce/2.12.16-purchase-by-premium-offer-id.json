@@ -1,6 +1,7 @@
 {
   "id": "2.12.16-purchase-by-premium-offer-id",
   "docNumber": "2.12.16",
+  "displayWeight": "100",
   "name": "Purchase By Premium Offer ID",
   "description": "This operation perfoms a purchases for a specific premium offer by premium offer ID. To get available offers use createPremiumOffers.",
   "categories": ["know-driver"],

@@ -1,9 +1,10 @@
 {
   "id": "2.6.1-sign-up",
   "docNumber": "2.6.1",
+  "displayWeight": "20",
   "name": "Sign Up",
   "description": "Client application can use this API to generate a one-time password and trigger an email to vehicle operator.",
-  "categories": ["know-car", "control-car"],
+  "categories": ["control-car"],
   "subCategories": [],
   "resourceTable": {
     "Route": "/remoteservices/v1/vehicle/signup/{vin}",

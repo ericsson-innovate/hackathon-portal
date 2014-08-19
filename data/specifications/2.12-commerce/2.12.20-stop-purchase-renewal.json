@@ -1,6 +1,7 @@
 {
   "id": "2.12.20-stop-purchase-renewal",
   "docNumber": "2.12.20",
+  "displayWeight": "100",
   "name": "Stop Purchase Renewal",
   "description": "This operation stops a recurrent purchase that is scheduled for renewal.",
   "categories": ["know-driver"],

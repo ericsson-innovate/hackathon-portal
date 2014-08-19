@@ -1,6 +1,7 @@
 {
   "id": "2.12.23-full-gift",
   "docNumber": "2.12.23",
+  "displayWeight": "100",
   "name": "Full Gift",
   "description": "This operation performs a user purchase as a gift. The product connected to the gift purchase is completely specified using the operation parameters. The gift output can be a ticket with limited or unlimited usage. The gift purchase is done but it is not consumed.",
   "categories": ["know-driver"],

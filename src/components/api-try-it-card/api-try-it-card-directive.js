@@ -116,6 +116,7 @@ angular.module('apiTryItCardDirective', [])
         xhr.setRequestHeader('Authorization', authString);
         xhr.setRequestHeader('APIKey', apiKey);
         xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.send(scope.apiItem.tryIt.requestBody);
 
         scope.apiItem.tryIt.requestState = 'waiting-for-response';

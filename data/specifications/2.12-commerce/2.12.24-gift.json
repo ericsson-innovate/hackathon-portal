@@ -1,6 +1,7 @@
 {
   "id": "2.12.24-gift",
   "docNumber": "2.12.24",
+  "displayWeight": "100",
   "name": "Gift",
   "description": "This operation performs a user purchase as a gift. The MSDP selects a product based on the specified premium resource type. The gift output can be a ticket with limited or unlimited usage.",
   "categories": ["know-driver"],

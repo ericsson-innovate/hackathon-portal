@@ -1,9 +1,10 @@
 {
   "id": "2.7.2-send-message",
   "docNumber": "2.7.2",
+  "displayWeight": "9",
   "name": "Send Message",
   "description": "This API is called by TCU to send a message to dispatcher.",
-  "categories": ["know-car"],
+  "categories": ["internal"],
   "subCategories": ["Vehicle Telematics"],
   "resourceTable": {
     "Route": "/vehicles/v1/{vin}/messages/{messageId}",

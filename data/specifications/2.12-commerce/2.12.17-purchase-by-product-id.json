@@ -1,6 +1,7 @@
 {
   "id": "2.12.17-purchase-by-product-id",
   "docNumber": "2.12.17",
+  "displayWeight": "100",
   "name": "Purchase By Product ID",
   "description": "This operation performs a user purchase. The product connected to the purchase is selected using a product id that is registered in the MSDP. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.",
   "categories": ["know-driver"],
