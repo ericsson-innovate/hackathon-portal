@@ -57,10 +57,6 @@ angular.module('hackApp', [
 .constant('iosExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
 .constant('webExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
 
-.constant('androidExampleCommonFilePath', hack.rootPath + '/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
-.constant('iosExampleCommonFilePath', hack.rootPath + '/data/examples/ios/example.m')
-.constant('webExampleCommonFilePath', hack.rootPath + '/dist/data/web-examples.js')
-
 .constant('sideBarLinks', [
   {
     isStateRoute: true,
@@ -404,15 +400,11 @@ angular.module('apiService', [])
  * @requires HackSpecifications
  * @requires HackExamples
  * @requires categories
- * @requires androidExampleCommonFilePath
- * @requires iosExampleCommonFilePath
- * @requires webExampleCommonFilePath
  * @description
  *
  * This is the model for all of the hackathon's api.
  */
-.factory('HackApi', function ($q, $http, $log, $filter, HackSpecifications, HackExamples,
-    categories, androidExampleCommonFilePath, iosExampleCommonFilePath, webExampleCommonFilePath) {
+.factory('HackApi', function ($q, $http, $log, $filter, HackSpecifications, HackExamples) {
   function filterByCategories() {
     categories.forEach(function (category) {
       HackApi.apiDataByCategory[category.id] = $filter('category')(HackApi.apiData, category.id);
@@ -437,14 +429,14 @@ angular.module('apiService', [])
 
         HackApi.apiData[j].example[platform].text =
             extractText(exampleCompleteText, specificationId, platform);
-      }
-    }
 
-    // Append text that is common to all examples for a platform
-    // androidExampleCommonFilePath, iosExampleCommonFilePath, webExampleCommonFilePath
+        // Append text that is common to all examples within the file
+        // TODO: Johnny will have a single COMMON snippet within each example file
 //    exampleCompleteText = ; // TODO: fetch this in examples-service
 //    extractText();
-    // TODO:
+        // TODO:
+      }
+    }
 
     function extractText(exampleCompleteText, specificationId, platform) {
       var lines, startLineIndex, endLineIndex;

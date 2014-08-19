@@ -55,25 +55,25 @@
   </table>
 </div>
 
-<!--<<**;>>-->
-<!--<div class="api-specification-request-body-parameters"-->
-     <!--ng-if="apiItem.specification.parameters.requestBody">-->
-  <!--<h3>Request Parameters</h3>-->
-  <!--<table>-->
-    <!--<tr>-->
-      <!--<th>Key</th>-->
-      <!--<th>Type</th>-->
-      <!--<th>Required</th>-->
-      <!--<th>Description</th>-->
-    <!--</tr>-->
-    <!--<tr ng-repeat="param in apiItem.specification.parameters.requestBody">-->
-      <!--<td class="key">{{param.key}}</td>-->
-      <!--<td class="type">{{param.type}}</td>-->
-      <!--<td class="required">{{param.required}}</td>-->
-      <!--<td class="description">{{param.description}}</td>-->
-    <!--</tr>-->
-  <!--</table>-->
-<!--</div>-->
+<div ng-if="apiItem.specification.bodyParameterFormats.request">
+  <div ng-repeat="(key, value) in apiItem.specification.bodyParameterFormats.request">
+    <h3>{{key}} Format</h3>
+    <table>
+      <tr>
+        <th>Key</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+      <tr ng-repeat="param in value">
+        <td class="key">{{param.key}}</td>
+        <td class="type">{{param.type}}</td>
+        <td class="required">{{param.required}}</td>
+        <td class="description">{{param.description}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
 
 <div class="api-specification-response-body-parameters"
      ng-if="apiItem.specification.parameters.responseBody">
@@ -94,25 +94,25 @@
   </table>
 </div>
 
-<!--<<**;>>-->
-<!--<div class="api-specification-response-body-parameters"-->
-     <!--ng-if="apiItem.specification.parameters.responseBody">-->
-  <!--<h3>Response Parameters</h3>-->
-  <!--<table>-->
-    <!--<tr>-->
-      <!--<th>Key</th>-->
-      <!--<th>Type</th>-->
-      <!--<th>Required</th>-->
-      <!--<th>Description</th>-->
-    <!--</tr>-->
-    <!--<tr ng-repeat="param in apiItem.specification.parameters.responseBody">-->
-      <!--<td class="key">{{param.key}}</td>-->
-      <!--<td class="type">{{param.type}}</td>-->
-      <!--<td class="required">{{param.required}}</td>-->
-      <!--<td class="description">{{param.description}}</td>-->
-    <!--</tr>-->
-  <!--</table>-->
-<!--</div>-->
+<div ng-if="apiItem.specification.bodyParameterFormats.response">
+  <div ng-repeat="(key, value) in apiItem.specification.bodyParameterFormats.response">
+    <h3>{{key}} Format</h3>
+    <table>
+      <tr>
+        <th>Key</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+      <tr ng-repeat="param in value">
+        <td class="key">{{param.key}}</td>
+        <td class="type">{{param.type}}</td>
+        <td class="required">{{param.required}}</td>
+        <td class="description">{{param.description}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
 
 <div class="api-specification-errors">
   <h3>Errors</h3>
@@ -126,7 +126,12 @@
   <h3>Examples</h3>
   <ul>
     <li ng-repeat="example in apiItem.specification.examples">
-      <h4>{{example.type}}</h4>
+      <h4>
+        {{example.type}}
+        <span ng-if="example.description">
+          ({{example.description}})
+        </span>
+      </h4>
 
       <div class="example-content">
         <div ng-if="example.type === 'request'"

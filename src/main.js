@@ -57,10 +57,6 @@ angular.module('hackApp', [
 .constant('iosExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
 .constant('webExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
 
-.constant('androidExampleCommonFilePath', hack.rootPath + '/data/examples/android/app/src/com/idean/atthack/network/RequestHelper.java')
-.constant('iosExampleCommonFilePath', hack.rootPath + '/data/examples/ios/example.m')
-.constant('webExampleCommonFilePath', hack.rootPath + '/dist/data/web-examples.js')
-
 .constant('sideBarLinks', [
   {
     isStateRoute: true,

@@ -460,15 +460,26 @@ api-specification-card th {
   padding-bottom: 10px;
   text-align: left; }
 
+api-specification-card th:first-child {
+  width: 160px; }
+
 api-specification-card th:last-child {
-  width: 460px; }
+  width: 380px; }
+
+api-specification-card td {
+  padding-bottom: 6px;
+  vertical-align: top; }
 
 api-specification-card h3 {
   margin-top: 34px;
   margin-bottom: 14px;
-  font-weight: bold; }
+  font-weight: bold;
+  text-transform: none; }
 
 api-specification-card h4 {
+  margin-bottom: 10px; }
+
+.api-specification-examples li {
   margin-bottom: 10px; }
 
 .example-content {
