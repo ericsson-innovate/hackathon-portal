@@ -41,7 +41,7 @@
       "route": "/vehicles/v1/users/update",
       "body": {
         "vin": "~vin~",
-        "users": [{"userId":"12dde34e222a2d","userType":"Subscriber"}]
+        "users": ["12dde34e222a2d","12dde34e222a2e"]
       }
     }
   ],
