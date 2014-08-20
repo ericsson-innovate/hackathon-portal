@@ -302,7 +302,7 @@
   ],
   "codeExamples": {
     "android": "/app/src/com/idean/atthack/network/RequestHelper.java",
-    "ios": "/data/examples/ios/examples.m",
+    "ios": "https://raw.githubusercontent.com/ericsson-innovate/asdp-api-sampler-ios/master/ASDP%20Sampler/Network/ASDPRequestManager.m",
     "web": "/dist/data/web-examples.js"
   }
 }
