@@ -13,7 +13,7 @@
   },
   "parameters": {
     "route": {
-      "vin": ""
+      "vin": "Represents the vehicle identification number"
     },
     "requestBody": [
       {

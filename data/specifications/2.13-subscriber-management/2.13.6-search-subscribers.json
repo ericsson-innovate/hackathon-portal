@@ -12,9 +12,6 @@
     "Authentication": "Basic Authentication"
   },
   "parameters": {
-    "route": {
-      "": ""
-    },
     "requestBody": [
       {
         "key": "query",
