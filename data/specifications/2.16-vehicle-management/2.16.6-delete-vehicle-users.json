@@ -23,6 +23,7 @@
         "key": "users",
         "type": "String List",
         "required": true,
+	"defaultVal" : "[\"12dde34e222a2d\",\"12dde34e222a2e\"]",
         "description": "User IDs shall be added to the list of vehicle users."
       }
     ]

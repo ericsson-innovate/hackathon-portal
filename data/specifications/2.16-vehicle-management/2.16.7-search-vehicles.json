@@ -34,6 +34,7 @@
       {
         "key": "sortItem",
         "type": "JSON",
+	"defaultVal" : "{'fieldName':'owner', 'reverse':true}",
         "required": false,
         "description": "List of items to be sorted"
       }

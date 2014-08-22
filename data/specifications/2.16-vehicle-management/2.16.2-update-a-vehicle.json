@@ -134,12 +134,14 @@
         "key": "interiorColor",
         "type": "String",
         "required": false,
+	"defaultVal":"[{\"colorCode\": \"~code~\", \"colorName\": \"Gray\"}]",
         "description": "List of vehicle interior colors"
       },
       {
         "key": "exteriorColor",
         "type": "String",
         "required": false,
+	"defaultVal":"[{\"colorCode\": \"~code~\", \"colorName\": \"White\"}]",
         "description": "List of vehicle exterior colors"
       },
       {
@@ -182,19 +184,22 @@
         "key": "users",
         "type": "String",
         "required": false,
+	"defaultVal": "[{'userId':'12dde34e222a2deee','userType':'Subscriber'}]",
         "description": "List of {subscriberID, subscriberType}."
       },
       {
         "key": "custom",
         "type": "Meta",
         "required": false,
-        "description": "List of metadata"
+        "description": "List of metadata",
+	"defaultVal":"[{'City (MT)':' 7.5L/100km'},{'Highway (MT)':' 5.3L/100km'}]"
       },
       {
         "key": "metas",
         "type": "Meta List",
         "required": false,
-        "description": "List of list of metadata "
+        "description": "List of list of metadata ",
+	"defaultVal": "[{'accessories':[{'Rubber Floor Mats - Front':'Protect the interior of your vehicle from everyday dirt and debris with custom-made floor mats'},{'Rubber Floor Mats - Rear':'Protect the interior of your vehicle from everyday dirt and debris with custom-made floor mats'}]},{'notes':[{'Note 1':'note'},{'Note 2':'note'}]}]"
       }
     ]
   },
