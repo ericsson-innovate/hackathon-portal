@@ -275,15 +275,17 @@ h1 {
 
 #banner {
   color: #ffffff;
-  background: #040404 url('/hackathon-portal/dist/images/car.jpg') no-repeat center center; }
+  background-color: #040404; }
 
 #top-header {
+  position: relative;
   height: 70px;
   line-height: 70px;
   vertical-align: middle;
   border-width: 0 0 1px 0;
   -webkit-border-image: -webkit-linear-gradient(0deg, transparent, #777777 20%, #777777 80%, transparent) 1;
-          border-image: linear-gradient(90deg, transparent, #777777 20%, #777777 80%, transparent) 1; }
+          border-image: linear-gradient(90deg, transparent, #777777 20%, #777777 80%, transparent) 1;
+  z-index: 1; }
 
 #title-part-1, #title-part-2 {
   font-size: 20px;
@@ -306,8 +308,19 @@ h1 {
   position: relative;
   top: -1px; }
 
-#car-area {
-  height: 529px; }
+#car-image-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 600px;
+  background: transparent url('/hackathon-portal/dist/images/car.png') no-repeat center center;
+  z-index: 2; }
+
+#empty-car-area {
+  position: relative;
+  height: 529px;
+  z-index: 3; }
 
 .content-area {
   max-width: 940px;
@@ -573,3 +586,14 @@ api-list:after {
   display: table;
   clear: both;
   margin-bottom: 20px; }
+
+.sample-app-card {
+  margin-bottom: 40px; }
+
+.sample-app-card img {
+  width: 20px;
+  margin-right: 16px;
+  vertical-align: sub; }
+
+.sample-app-card h2 {
+  margin: 20px 0 10px 0; }

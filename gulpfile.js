@@ -164,6 +164,6 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('tests-once', 'web-examples-tests-once', 'styles', 'scripts', 'images', 'templates',
-      'fonts', 'ejs', 'data', 'server', 'watch');
+  gulp.start('web-examples-tests-once', 'styles', 'scripts', 'images', 'templates', 'fonts',
+      'ejs', 'data', 'server', 'watch');//, 'tests-once');
 });

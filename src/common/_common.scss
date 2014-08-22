@@ -212,15 +212,17 @@ h1 {
 
 #banner {
   color: #ffffff;
-  background: #040404 url($root-path + '/dist/images/car.jpg') no-repeat center center;
+  background-color: #040404;
 }
 
 #top-header {
+  position: relative;
   height: $top-header-height;
   line-height: $top-header-height;
   vertical-align: middle;
   border-width: 0 0 $top-header-divider-border-width 0;
   border-image: linear-gradient(90deg, transparent, #777777 20%, #777777 80%, transparent) 1;
+  z-index: 1;
 }
 
 #title-part-1, #title-part-2 {
@@ -253,8 +255,19 @@ h1 {
   top: -1px;
 }
 
-#car-area {
+#car-image-panel {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: $banner-height;
+  background: transparent url($root-path + '/dist/images/car.png') no-repeat center center;
+  z-index: 2;
+}
+
+#empty-car-area {
+  position: relative;
   height: #{$banner-height - $top-header-height - $top-header-divider-border-width};
+  z-index: 3;
 }
 
 .content-area {

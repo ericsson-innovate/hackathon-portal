@@ -24,6 +24,7 @@ angular.module('hackApp', [
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
+  'unescapeJsonStringFilter',
 
   'syncPrismDirective',
 
@@ -53,9 +54,36 @@ angular.module('hackApp', [
 .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
 .constant('dataPath', hack.rootPath + '/data')
 
-.constant('androidExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
-.constant('iosExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
-.constant('webExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
+.constant('androidExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master')
+.constant('iosExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master')
+.constant('webExampleUrl', hack.rootPath)
+
+.constant('sampleAppData', [
+  {
+    platform: 'android',
+    humanReadablePlatform: 'Android',
+    iconUrl: hack.rootPath + '/dist/images/android-icon.png',
+    repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-android',
+    readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master/README.md',
+    readmeText: 'Loading README...'
+  },
+  {
+    platform: 'ios',
+    humanReadablePlatform: 'iOS',
+    iconUrl: hack.rootPath + '/dist/images/ios-icon.png',
+    repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-ios',
+    readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master/README.md',
+    readmeText: 'Loading README...'
+  },
+  {
+    platform: 'web',
+    humanReadablePlatform: 'Web',
+    iconUrl: hack.rootPath + '/dist/images/web-icon.png',
+    repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
+    readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-javascript/master/README.md',
+    readmeText: 'Loading README...'
+  }
+])
 
 .constant('sideBarLinks', [
   {
@@ -185,11 +213,25 @@ angular.module('hackApp', [
   }
 ])
 
-.run(function ($rootScope, categories, HackApi) {
+.run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
   $rootScope.defaultCategory = categories[1];
 
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
+//      .then(loadSampleAppReadmeFiles);
+//
+//  function loadSampleAppReadmeFiles() {
+//    sampleAppData.forEach(function (sampleAppItemData) {
+//      $http.get(sampleAppItemData.readmeUrl)
+//          .then(function (response) {
+//            console.log('Loaded ' + sampleAppItemData.platform + ' README');
+//            sampleAppItemData.readmeText = response.data;
+//          })
+//          .catch(function (error) {
+//            console.log('Unable to load ' + sampleAppItemData.platform + ' README', error);
+//          });
+//    });
+//  }
 });
 
 // TODO: address the TODOs within the data JSON files
@@ -383,6 +425,38 @@ angular.module('syncPrismDirective', [])
 
 'use strict';
 
+angular.module('unescapeJsonStringFilter', [])
+
+/**
+ * @ngdoc filter
+ * @name unescapeJsonString
+ * @description
+ *
+ * This is a filter for unescaping characters in a JSON string.
+ */
+.filter('unescapeJsonString', function () {
+  var token = '########',
+      tokenRegex = /########/g;
+  return function (input) {
+    if (input[0] === '"') {
+      input.substr(1, input.length - 2);
+    }
+    return input
+        .replace(/\\\\/g, token)
+        .replace(/\\n/g, '\n')
+        .replace(/\\'/g, '\'')
+        .replace(/\\"/g, '"')
+        .replace(/\\&/g, '&')
+        .replace(/\\r/g, '\r')
+        .replace(/\\t/g, '\t')
+        .replace(/\\b/g, '\b')
+        .replace(/\\f/g, '\f')
+        .replace(tokenRegex, '\\');
+  };
+});
+
+'use strict';
+
 angular.module('apiService', [])
 
 // TODO: change the data services to instead:
@@ -412,68 +486,6 @@ angular.module('apiService', [])
     });
   }
 
-  function extractExamplesText() {
-    var newline = '\n',
-        startRegex = /^\s*\/\/ ## START /g,
-        endRegex = /^\s*\/\/ ## END /g;
-
-    var i, j, iCount, jCount, platforms, platform, specificationId, exampleCompleteText;
-
-    platforms = ['web', 'android', 'ios'];
-
-    for (i = 0, iCount = platforms.length; i < iCount; i += 1) {
-      platform = platforms[i];
-
-      for (j = 0, jCount = HackApi.apiData.length; j < jCount; j += 1) {
-        specificationId = HackApi.apiData[j].specification.id;
-        exampleCompleteText = HackApi.apiData[j].example[platform].file.text;
-
-        HackApi.apiData[j].example[platform].text =
-            extractText(exampleCompleteText, specificationId, platform);
-
-        // Append text that is common to all examples within the file
-        // TODO: Johnny will have a single COMMON snippet within each example file
-//    exampleCompleteText = ; // TODO: fetch this in examples-service
-//    extractText();
-        // TODO:
-      }
-    }
-
-    function extractText(exampleCompleteText, specificationId, platform) {
-      var lines, startLineIndex, endLineIndex;
-
-      lines = exampleCompleteText.split(newline);
-
-      // Extract the example from the text
-      startLineIndex = findFlag(startRegex, specificationId, lines, 0) + 1;
-      endLineIndex = findFlag(endRegex, specificationId, lines, startLineIndex);
-
-      // Ensure the start and end flags are present
-      if (startLineIndex >= 0 && endLineIndex >= 0) {
-        return lines.slice(startLineIndex, endLineIndex).join(newline);
-      } else {
-        console.warn('Example not found in file: platform=' + platform +
-            ', specificationId=' + specificationId);
-        return '// Example forthcoming';
-      }
-    }
-
-    function findFlag(regex, specificationId, lines, startLineIndex) {
-      var i, count;
-
-      for (i = startLineIndex, count = lines.length; i < count; i += 1) {
-        if (regex.exec(lines[i]) &&
-            lines[i].indexOf(specificationId, regex.lastIndex) === regex.lastIndex) {
-          regex.lastIndex = 0;
-          return i;
-        }
-        regex.lastIndex = 0;
-      }
-
-      return -1;
-    }
-  }
-
   var HackApi = {
     /**
      * @returns {Promise}
@@ -493,7 +505,6 @@ angular.module('apiService', [])
               };
             }
 
-            extractExamplesText();
             filterByCategories();
           });
     },
@@ -530,7 +541,7 @@ angular.module('examplesService', [])
  * @name HackExamples
  * @requires $q
  * @requires $http
- * @requires $log
+ * @requires $filter
  * @requires HackSpecifications
  * @requires dataPath
  * @requires apiList
@@ -541,9 +552,61 @@ angular.module('examplesService', [])
  *
  * This is the model for all of the hackathon's examples.
  */
-.factory('HackExamples', function ($q, $http, $log, HackSpecifications, dataPath, apiList,
+.factory('HackExamples', function ($q, $http, $filter, HackSpecifications, dataPath, apiList,
                                    androidExampleUrl, iosExampleUrl, webExampleUrl) {
-  var HackExamples = {
+  var newline = '\n',
+      startRegex = /^\s*\/\/ ## START /g,
+      endRegex = /^\s*\/\/ ## END /g,
+      commonSnippetId = 'COMMON',
+      filePromises = {},
+      HackExamples;
+
+  function extractText(exampleCompleteText, specificationId) {
+    var lines, startLineIndex, endLineIndex;
+
+    lines = exampleCompleteText.split(newline);
+
+    // Extract the example from the text
+    startLineIndex = findFlag(startRegex, specificationId, lines, 0) + 1;
+    endLineIndex = findFlag(endRegex, specificationId, lines, startLineIndex);
+
+    // Ensure the start and end flags are present
+    if (startLineIndex >= 0 && endLineIndex >= 0) {
+      return lines.slice(startLineIndex, endLineIndex).join(newline);
+    } else {
+      return null;
+    }
+
+    function findFlag(regex, specificationId, lines, startLineIndex) {
+      var i, count;
+
+      for (i = startLineIndex, count = lines.length; i < count; i += 1) {
+        if (regex.exec(lines[i]) &&
+            lines[i].indexOf(specificationId, regex.lastIndex) === regex.lastIndex) {
+          regex.lastIndex = 0;
+          return i;
+        }
+        regex.lastIndex = 0;
+      }
+
+      return -1;
+    }
+  }
+
+  function extractExampleText(exampleData, apiName, platform) {
+    var snippetText = extractText(exampleData.file.allText, apiName);
+
+    if (!snippetText) {
+      console.warn('Example not found in file: platform=' + platform + ', apiName=' + apiName);
+      snippetText =  '// Example forthcoming';
+    } else {
+      snippetText += exampleData.file.commonText;
+    }
+
+    exampleData.text = snippetText;
+  }
+
+  HackExamples = {
     /**
      * @param {string} groupDirectoryName
      * @param {string} apiName
@@ -562,6 +625,7 @@ angular.module('examplesService', [])
 
         return $q.all(promises);
       } else {
+        // Determine the complete URL for this example
         url = platform === 'android' ? androidExampleUrl : platform === 'ios' ? iosExampleUrl :
             webExampleUrl;
         url += HackSpecifications.specificationsData[apiName].codeExamples[platform];
@@ -572,29 +636,46 @@ angular.module('examplesService', [])
 
         HackExamples.examplesData[apiName][platform] = {
           file: {
-            url: url,
-            text: ''
+            allText: '',
+            commonText: ''
           },
           text: ''
         };
 
-        if (HackExamples.fileCache[url]) {
-          HackExamples.fileCache[url]
-              .then(function (value) {
-                HackExamples.examplesData[apiName][platform].file.text = value;
-              });
-          return HackExamples.fileCache[url];
-        } else {
-          HackExamples.fileCache[url] = $http.get(url)
+        // Check whether we have already made a request for this example's file
+        if (!filePromises[url]) {
+          // Make the request for this example's file
+          filePromises[url] = $http.get(url)
               .then(function (response) {
-                HackExamples.examplesData[apiName][platform].file.text = response.data;
-                return response.data;
+                var file = {};
+
+                file.allText = $filter('unescapeJsonString')(response.data);
+
+                file.commonText = extractText(file.allText, commonSnippetId, platform);
+                file.commonText = file.commonText ? newline + newline + file.commonText : '';
+
+                return file;
               })
               .catch(function (error) {
-                HackExamples.examplesData[apiName][platform].file.text = '';
-                return '';
+                var message = 'Problem retrieving example data';
+
+                console.error(message, error);
+
+                return {
+                  allText: message,
+                  commonText: ''
+                };
               });
         }
+
+        // Return the promise for this example data
+        return filePromises[url]
+            .then(function (file) {
+              // Extract this example's text from the file
+              HackExamples.examplesData[apiName][platform].file = file;
+              extractExampleText(HackExamples.examplesData[apiName][platform], apiName, platform);
+              return HackExamples.examplesData[apiName][platform];
+            });
       }
     },
     /**
@@ -632,7 +713,6 @@ angular.module('examplesService', [])
       return deferred.promise;
     },
     allDataHasBeenFetched: false,
-    fileCache: {},
     examplesData: {}
   };
 
@@ -1146,5 +1226,7 @@ angular.module('sampleAppsController', [])
  *
  * Controller for the Sample Apps page.
  */
-.controller('SampleAppsCtrl', function () {
+.controller('SampleAppsCtrl', function ($scope, sampleAppData) {
+  $scope.sampleAppsState = {};
+  $scope.sampleAppsState.sampleAppData = sampleAppData;
 });

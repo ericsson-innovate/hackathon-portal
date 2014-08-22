@@ -7,7 +7,7 @@ angular.module('examplesService', [])
  * @name HackExamples
  * @requires $q
  * @requires $http
- * @requires $log
+ * @requires $filter
  * @requires HackSpecifications
  * @requires dataPath
  * @requires apiList
@@ -18,9 +18,61 @@ angular.module('examplesService', [])
  *
  * This is the model for all of the hackathon's examples.
  */
-.factory('HackExamples', function ($q, $http, $log, HackSpecifications, dataPath, apiList,
+.factory('HackExamples', function ($q, $http, $filter, HackSpecifications, dataPath, apiList,
                                    androidExampleUrl, iosExampleUrl, webExampleUrl) {
-  var HackExamples = {
+  var newline = '\n',
+      startRegex = /^\s*\/\/ ## START /g,
+      endRegex = /^\s*\/\/ ## END /g,
+      commonSnippetId = 'COMMON',
+      filePromises = {},
+      HackExamples;
+
+  function extractText(exampleCompleteText, specificationId) {
+    var lines, startLineIndex, endLineIndex;
+
+    lines = exampleCompleteText.split(newline);
+
+    // Extract the example from the text
+    startLineIndex = findFlag(startRegex, specificationId, lines, 0) + 1;
+    endLineIndex = findFlag(endRegex, specificationId, lines, startLineIndex);
+
+    // Ensure the start and end flags are present
+    if (startLineIndex >= 0 && endLineIndex >= 0) {
+      return lines.slice(startLineIndex, endLineIndex).join(newline);
+    } else {
+      return null;
+    }
+
+    function findFlag(regex, specificationId, lines, startLineIndex) {
+      var i, count;
+
+      for (i = startLineIndex, count = lines.length; i < count; i += 1) {
+        if (regex.exec(lines[i]) &&
+            lines[i].indexOf(specificationId, regex.lastIndex) === regex.lastIndex) {
+          regex.lastIndex = 0;
+          return i;
+        }
+        regex.lastIndex = 0;
+      }
+
+      return -1;
+    }
+  }
+
+  function extractExampleText(exampleData, apiName, platform) {
+    var snippetText = extractText(exampleData.file.allText, apiName);
+
+    if (!snippetText) {
+      console.warn('Example not found in file: platform=' + platform + ', apiName=' + apiName);
+      snippetText =  '// Example forthcoming';
+    } else {
+      snippetText += exampleData.file.commonText;
+    }
+
+    exampleData.text = snippetText;
+  }
+
+  HackExamples = {
     /**
      * @param {string} groupDirectoryName
      * @param {string} apiName
@@ -39,6 +91,7 @@ angular.module('examplesService', [])
 
         return $q.all(promises);
       } else {
+        // Determine the complete URL for this example
         url = platform === 'android' ? androidExampleUrl : platform === 'ios' ? iosExampleUrl :
             webExampleUrl;
         url += HackSpecifications.specificationsData[apiName].codeExamples[platform];
@@ -49,29 +102,46 @@ angular.module('examplesService', [])
 
         HackExamples.examplesData[apiName][platform] = {
           file: {
-            url: url,
-            text: ''
+            allText: '',
+            commonText: ''
           },
           text: ''
         };
 
-        if (HackExamples.fileCache[url]) {
-          HackExamples.fileCache[url]
-              .then(function (value) {
-                HackExamples.examplesData[apiName][platform].file.text = value;
-              });
-          return HackExamples.fileCache[url];
-        } else {
-          HackExamples.fileCache[url] = $http.get(url)
+        // Check whether we have already made a request for this example's file
+        if (!filePromises[url]) {
+          // Make the request for this example's file
+          filePromises[url] = $http.get(url)
               .then(function (response) {
-                HackExamples.examplesData[apiName][platform].file.text = response.data;
-                return response.data;
+                var file = {};
+
+                file.allText = $filter('unescapeJsonString')(response.data);
+
+                file.commonText = extractText(file.allText, commonSnippetId, platform);
+                file.commonText = file.commonText ? newline + newline + file.commonText : '';
+
+                return file;
               })
               .catch(function (error) {
-                HackExamples.examplesData[apiName][platform].file.text = '';
-                return '';
+                var message = 'Problem retrieving example data';
+
+                console.error(message, error);
+
+                return {
+                  allText: message,
+                  commonText: ''
+                };
               });
         }
+
+        // Return the promise for this example data
+        return filePromises[url]
+            .then(function (file) {
+              // Extract this example's text from the file
+              HackExamples.examplesData[apiName][platform].file = file;
+              extractExampleText(HackExamples.examplesData[apiName][platform], apiName, platform);
+              return HackExamples.examplesData[apiName][platform];
+            });
       }
     },
     /**
@@ -109,7 +179,6 @@ angular.module('examplesService', [])
       return deferred.promise;
     },
     allDataHasBeenFetched: false,
-    fileCache: {},
     examplesData: {}
   };
 

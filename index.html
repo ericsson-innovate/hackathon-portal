@@ -21,6 +21,8 @@
 <body ng-app="hackApp"
       ng-controller="HackCtrl">
   <div id="banner">
+    <div id="car-image-panel"></div>
+
     <div id="top-header">
       <div class="content-area">
         <div id="logos">
@@ -38,7 +40,7 @@
       </div>
     </div>
 
-    <div id="car-area">
+    <div id="empty-car-area">
       <div class="content-area">
         <div class="inner-content-area">
           <ul class="tabs">
@@ -95,6 +97,7 @@
   <script src="/hackathon-portal/src/common/category-filter.js"></script>
   <script src="/hackathon-portal/src/common/error-description-filter.js"></script>
   <script src="/hackathon-portal/src/common/order-api-calls-filter.js"></script>
+  <script src="/hackathon-portal/src/common/unescape-json-string-filter.js"></script>
 
   <script src="/hackathon-portal/src/common/sync-prism-directive.js"></script>
 

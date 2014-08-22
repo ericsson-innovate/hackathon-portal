@@ -24,6 +24,7 @@ angular.module('hackApp', [
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
+  'unescapeJsonStringFilter',
 
   'syncPrismDirective',
 
@@ -53,9 +54,36 @@ angular.module('hackApp', [
 .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
 .constant('dataPath', hack.rootPath + '/data')
 
-.constant('androidExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
-.constant('iosExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
-.constant('webExampleUrl', hack.rootPath)// TODO: change this after the example code has been moved
+.constant('androidExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master')
+.constant('iosExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master')
+.constant('webExampleUrl', hack.rootPath)
+
+.constant('sampleAppData', [
+  {
+    platform: 'android',
+    humanReadablePlatform: 'Android',
+    iconUrl: hack.rootPath + '/dist/images/android-icon.png',
+    repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-android',
+    readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master/README.md',
+    readmeText: 'Loading README...'
+  },
+  {
+    platform: 'ios',
+    humanReadablePlatform: 'iOS',
+    iconUrl: hack.rootPath + '/dist/images/ios-icon.png',
+    repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-ios',
+    readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master/README.md',
+    readmeText: 'Loading README...'
+  },
+  {
+    platform: 'web',
+    humanReadablePlatform: 'Web',
+    iconUrl: hack.rootPath + '/dist/images/web-icon.png',
+    repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
+    readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-javascript/master/README.md',
+    readmeText: 'Loading README...'
+  }
+])
 
 .constant('sideBarLinks', [
   {
@@ -185,11 +213,25 @@ angular.module('hackApp', [
   }
 ])
 
-.run(function ($rootScope, categories, HackApi) {
+.run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
   $rootScope.defaultCategory = categories[1];
 
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
+//      .then(loadSampleAppReadmeFiles);
+//
+//  function loadSampleAppReadmeFiles() {
+//    sampleAppData.forEach(function (sampleAppItemData) {
+//      $http.get(sampleAppItemData.readmeUrl)
+//          .then(function (response) {
+//            console.log('Loaded ' + sampleAppItemData.platform + ' README');
+//            sampleAppItemData.readmeText = response.data;
+//          })
+//          .catch(function (error) {
+//            console.log('Unable to load ' + sampleAppItemData.platform + ' README', error);
+//          });
+//    });
+//  }
 });
 
 // TODO: address the TODOs within the data JSON files

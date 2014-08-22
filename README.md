@@ -1,8 +1,7 @@
 Hackathon Portal
 ================
 
-This project is a web portal that is used to explain the API calls of the AT&T Foundry Connected 
-Car API.
+This project is a web portal that is used to explain the AT&T Foundry Connected Car API.
 
 _Check out the actual site at [ericsson-innovate.github.io/hackathon-portal](http://ericsson-innovate.github.io/hackathon-portal/)_
 
