@@ -44,9 +44,10 @@ angular.module('hackApp', [
   'sampleAppsController'
 ])
 
-.constant('authString', 'Basic cHJvdmlkZXI6MTIzNA==')
 .constant('apiKey', 'api-key-1234')
 .constant('emulatorDomain', 'http://lightning.att.io:3000')
+.constant('username', 'username')
+.constant('password', 'password')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
 //.constant('emulatorDomain', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
@@ -802,7 +803,7 @@ angular.module('tryItService', [])
  *
  * This model stores the current "try it"/emulator values.
  */
-.factory('TryItData', function (emulatorDomain, routeParams, queryParams) {
+.factory('TryItData', function (emulatorDomain, apiKey, username, password, routeParams, queryParams) {
   var TryItData, originalValues, i, count, key, value;
 
   function generateRandomId() {
@@ -825,17 +826,29 @@ angular.module('tryItService', [])
     TryItData.emulatorDomain = originalValues.emulatorDomain;
   }
 
+  function updateAuthString() {
+//  authString: 'Basic cHJvdmlkZXI6MTIzNA=='
+    TryItData.authString = 'Basic ' + btoa(TryItData.username + ':' + TryItData.password);
+  }
+
   originalValues = {
     emulatorDomain: emulatorDomain,
+    apiKey: apiKey,
+    username: username,
+    password: password,
     routeParams: {},
     queryParams: {}
   };
 
   TryItData = {
     emulatorDomain: originalValues.emulatorDomain,
+    apiKey: originalValues.apiKey,
+    username: originalValues.username,
+    password: originalValues.password,
     routeParams: {},
     queryParams: {},
-    reset: reset
+    reset: reset,
+    updateAuthString: updateAuthString
   };
 
   for (i = 0, count = routeParams.length; i < count; i += 1) {
@@ -1032,7 +1045,7 @@ angular.module('apiTryItCardDirective', [])
  * A panel that contains input areas that enable the user to try out making a single API call.
  */
 .directive('apiTryItCard', function (TryItData, jsonFilter, errorDescriptionFilter,
-                                     apiTryItCardTemplatePath, apiKey, authString) {
+                                     apiTryItCardTemplatePath) {
   return {
     restrict: 'E',
     require: '^apiListItem',
@@ -1051,6 +1064,8 @@ angular.module('apiTryItCardDirective', [])
       scope.$watch('apiItem.TryItData.queryParams', updateUrl, true);
       scope.$watch('apiItem.TryItData.routeParams', updateUrl, true);
       scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
+      scope.$watch('apiItem.TryItData.username', TryItData.updateAuthString, true);
+      scope.$watch('apiItem.TryItData.password', TryItData.updateAuthString, true);
       scope.$watch('apiItem.selectedCard', handleCardChange);
 
       function updateUrl() {
@@ -1125,8 +1140,8 @@ angular.module('apiTryItCardDirective', [])
         console.log('Sending request to ' + scope.apiItem.tryIt.url);
 
         xhr.open(verb, scope.apiItem.tryIt.url, true);
-        xhr.setRequestHeader('Authorization', authString);
-        xhr.setRequestHeader('APIKey', apiKey);
+        xhr.setRequestHeader('Authorization', TryItData.authString);
+        xhr.setRequestHeader('APIKey', TryItData.apiKey);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.setRequestHeader('Accept', 'application/json');
         xhr.send(scope.apiItem.tryIt.requestBody);

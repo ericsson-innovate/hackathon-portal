@@ -44,9 +44,10 @@ angular.module('hackApp', [
   'sampleAppsController'
 ])
 
-.constant('authString', 'Basic cHJvdmlkZXI6MTIzNA==')
 .constant('apiKey', 'api-key-1234')
 .constant('emulatorDomain', 'http://lightning.att.io:3000')
+.constant('username', 'username')
+.constant('password', 'password')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
 //.constant('emulatorDomain', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 

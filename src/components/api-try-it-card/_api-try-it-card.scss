@@ -10,7 +10,11 @@ api-try-it-card {
 
 api-try-it-card h3 {
   margin-top: 14px;
-  margin-bottom: 14px;
+}
+
+api-try-it-card h4 {
+  margin: 23px 0 18px 0;
+  font-weight: bold;
 }
 
 api-try-it-card>hr {
@@ -35,8 +39,11 @@ api-try-it-card label {
   padding-bottom: 38px;
 }
 
-.try-it-url {
+.try-it-url,
+.try-it-auth-string {
   @include code-font();
+  background-color: $code-output-background-color;
+  padding: 6px;
 }
 
 .try-it-parameter {
@@ -47,11 +54,19 @@ api-try-it-card label {
   width: 400px;
 }
 
+.try-it-authentication {
+  margin-top: $try-it-margin;
+}
+
+.try-it-authentication>label {
+  margin-left: 80px;
+}
+
 .try-it-request-body {
   @include code-font();
   width: calc(100% - #{$input-padding * 2});
   height: 160px;
-  margin: $try-it-margin 0;
+  margin-bottom: $try-it-margin;
 }
 
 .try-it-reset-button,
@@ -70,6 +85,10 @@ api-try-it-card label {
 
 .try-it-response {
   @include code-font();
+}
+
+.try-it-response-area>h3 {
+  margin-bottom: 18px;
 }
 
 .try-it-status {

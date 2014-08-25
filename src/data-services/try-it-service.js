@@ -24,7 +24,7 @@ angular.module('tryItService', [])
  *
  * This model stores the current "try it"/emulator values.
  */
-.factory('TryItData', function (emulatorDomain, routeParams, queryParams) {
+.factory('TryItData', function (emulatorDomain, apiKey, username, password, routeParams, queryParams) {
   var TryItData, originalValues, i, count, key, value;
 
   function generateRandomId() {
@@ -47,17 +47,29 @@ angular.module('tryItService', [])
     TryItData.emulatorDomain = originalValues.emulatorDomain;
   }
 
+  function updateAuthString() {
+//  authString: 'Basic cHJvdmlkZXI6MTIzNA=='
+    TryItData.authString = 'Basic ' + btoa(TryItData.username + ':' + TryItData.password);
+  }
+
   originalValues = {
     emulatorDomain: emulatorDomain,
+    apiKey: apiKey,
+    username: username,
+    password: password,
     routeParams: {},
     queryParams: {}
   };
 
   TryItData = {
     emulatorDomain: originalValues.emulatorDomain,
+    apiKey: originalValues.apiKey,
+    username: originalValues.username,
+    password: originalValues.password,
     routeParams: {},
     queryParams: {},
-    reset: reset
+    reset: reset,
+    updateAuthString: updateAuthString
   };
 
   for (i = 0, count = routeParams.length; i < count; i += 1) {

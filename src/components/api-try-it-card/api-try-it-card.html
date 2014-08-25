@@ -9,6 +9,8 @@
       novalidate>
   <h3>Request</h3>
 
+  <h4>URL Values</h4>
+
   <label>
     Domain
     <input type="text"
@@ -39,12 +41,48 @@
     </label>
   </div>
 
-  <label>
-    Request body:
-    <textarea ng-model="apiItem.tryIt.requestBody"
-              class="try-it-request-body"
-              placeholder="The body of your request"></textarea>
+  <h4>Header Values</h4>
+
+  <label ng-if="apiItem.specification.resourceTable['API Key']">
+    API Key
+    <input type="text"
+           ng-model="apiItem.TryItData.apiKey"
+           class="try-it-parameter api-key-input"
+           required
+           placeholder="API Key">
   </label>
+
+  <div ng-if="apiItem.specification.resourceTable['Authentication']"
+       class="try-it-authentication">
+    <div>
+      Authentication
+      <span class="try-it-auth-string">{{apiItem.TryItData.authString}}</span>
+    </div>
+
+    <label>
+      Username
+      <input type="text"
+             ng-model="apiItem.TryItData.username"
+             class="try-it-parameter username-input"
+             required
+             placeholder="username">
+    </label>
+
+    <label>
+      Password
+      <input type="text"
+             ng-model="apiItem.TryItData.password"
+             class="try-it-parameter password-input"
+             required
+             placeholder="Password">
+    </label>
+  </div>
+
+  <h4>Request body</h4>
+
+  <textarea ng-model="apiItem.tryIt.requestBody"
+            class="try-it-request-body"
+            placeholder="The body of your request"></textarea>
 
   <button class="try-it-send-button"
           ng-disabled="form.$invalid"
@@ -69,7 +107,8 @@
     </div>
 
     <div ng-switch-when="error-with-request">
-      An error occurred while sending your request: {{apiItem.tryIt.response.error}}
+      An error occurred while sending your request:
+      {{apiItem.tryIt.response.error}}
     </div>
 
     <div ng-switch-when="received-response">
