@@ -1,9 +1,9 @@
 Hackathon Portal
 ================
 
-This project is a web portal that is used to explain the AT&T Foundry Connected Car API.
+This project is a web portal for the AT&T Foundry Connected Car API.
 
-_Check out the actual site at [ericsson-innovate.github.io/hackathon-portal](http://ericsson-innovate.github.io/hackathon-portal/)_
+_Check out the portal running at [ericsson-innovate.github.io/hackathon-portal](http://ericsson-innovate.github.io/hackathon-portal/)_
 
 These companion repositories contain sample applications for the three main platforms:
 
@@ -11,8 +11,10 @@ These companion repositories contain sample applications for the three main plat
 - iOS Application: [github.com/ericsson-innovate/asdp-api-sampler-ios](https://github.com/ericsson-innovate/asdp-api-sampler-ios)
 - Web Application: [github.com/ericsson-innovate/asdp-api-sampler-javascript](https://github.com/ericsson-innovate/asdp-api-sampler-javascript)
 
-### When Changing the Portal URL...
+### Where the Portal is Hosted
 
-- You will need to change the URL path in two places in the portal code:  
+This is designed to be hosted using GitHub Pages. But, it can certainly be hosted locally or elsewhere.
+
+If you would like to host this somewhere else, you will need to change the URL path at two places within the portal code:  
   - src/common/_common.scss
   - gulpfile.js
