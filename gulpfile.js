@@ -4,8 +4,8 @@
 
 var projectName = 'hackathon-portal',
 
-    rootPath = '/hackathon-portal',
-//    rootPath = '',
+//    rootPath = '/hackathon-portal',
+    rootPath = '',
 
     testsSrc = 'src/**/*_test.js',
     dataWebExamplesTestsSrc = 'data/examples/web/**/*_test.js',

@@ -89,10 +89,19 @@ angular.module('apiTryItCardDirective', [])
           scope.apiItem.specification.examples.forEach(function (example) {
             if (example.type === 'request' && example.body) {
               requestBody = jsonFilter(example.body);
+              requestBody = replaceVin(requestBody);
             }
           });
 
           return requestBody;
+        }
+
+        function replaceVin(requestBody) {
+          if (TryItData.routeParams['vin']) {
+            return requestBody.replace('"vin": "~vin~"', '"vin": "' + TryItData.routeParams['vin'] +'"');
+          } else {
+            return requestBody;
+          }
         }
       }
 
