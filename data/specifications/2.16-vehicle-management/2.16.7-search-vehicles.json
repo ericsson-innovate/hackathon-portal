@@ -17,7 +17,7 @@
         "key": "query",
         "type": "String",
         "required": false,
-        "description": "Query string in Lucene format. E.g.,\nowner: 12fd3e34fd3412\nvehicle:1TX123456789011223\nyear:2014 AND status:demo"
+        "description": "Query string in Lucene format. '*' wildcard supported. E.g., \nowner: 12fd3e34fd3412\nvehicle:1TX123456789011223\nyear:2014 AND status:demo"
       },
       {
         "key": "startNum",

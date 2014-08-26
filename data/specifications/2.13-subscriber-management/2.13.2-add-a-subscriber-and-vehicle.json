@@ -65,6 +65,7 @@
         "key": "address",
         "type": "Address",
         "required": false,
+	"defaultVal":"[{'addressIndex':0,'addressType':'Work','street':'6300 Legacy Dr.','city':'Plano','region':'Texas','country':'USA','postalCode':'75024','meta':[{'lat':'33.075486'},{'long':'-96.832809'}]}]",
         "description": "List of addresses"
       },
       {
@@ -77,6 +78,7 @@
         "key": "phone",
         "type": "Phone",
         "required": false,
+	"defaultVal":"[{'phoneIndex':0,'phoneType':'Home','phoneNumber':'19725830000','deviceId':'SonyXperiaZ2','meta':[{'SMS-Enabled':'Yes'}]}]",
         "description": "List of phone numbers"
       },
       {
@@ -89,6 +91,7 @@
         "key": "email",
         "type": "Email",
         "required": false,
+	"defaultVal":"[{'emailIndex':0,'emailType':'Work','emailAddress':'name@ericsson.com','meta':[{'Display name':'My Work'}]}]",
         "description": "List of email addresses"
       },
       {
@@ -101,18 +104,21 @@
         "key": "vehicle",
         "type": "Vehicle",
         "required": false,
+	"defaultVal":"{'vin':'~vin~','iccid':'~iccid~','imsi':'~imsi~','msisdn':'~msisdn~','tcusn':'tcusn ','make':'~make~','model':'~model~','year':2014,'description':'~description~','condition':'Excellent','deliveryMileage':'80000 Mile','deliveryDate':'2013-07-04','licenseNumber':'~licenseNumber~','engineNumber':'~engineNumber~','ignitionKeyNumber':'~ignitionKeyNumber~','transmissionNumber':'~transmissionNumber~','doorKeyNumber':'~doorKeyNumber~','status':'demo','doors':4,'interiorColor':[{'colorCode':'~code~','colorName':'Gray'}],'exteriorColor':[{'colorCode':'~code~','colorName':'White'}],'transmissionType':'automatic','weight':'3199 lbs','options':[{'Air Conditioning':'Includes climate control assembly'},{'Cargo Tray':'custom-fit cargo tray'}],'owner':'12dde34e222a2f','ownerType':'Subscriber','users':[{'userId':'12dde34e222a2d','userType':'Subscriber'}],'custom':[{'City (MT)':' 7.5L/100km'},{'Highway (MT)':' 5.3L/100km'}],'metas':[{'accessories':[{'Rubber Floor Mats - Front':'Protect the interior of your vehicle from everyday dirt and debris with custom-made floor mats'},{'Rubber Floor Mats - Rear':'Protect the interior of your vehicle from everyday dirt and debris with custom-made floor mats'}]},{'notes':[{'Note 1':'note'},{'Note 2':'note'}]}]}",
         "description": "Vehicle information (see add vehicle for json format)."
       },
       {
         "key": "custom",
         "type": "Meta",
         "required": false,
+	"defaultVal":"[{'website':'http://site.com'},{'defaultRingtone':'/sdcard/media/ringtones/ring.mp3'}]",
         "description": "List of metadata"
       },
       {
         "key": "metas",
         "type": "Meta List",
         "required": false,
+	"defaultVal" :"[{'links':[{'work':'http://ericsson.com'},{'facebook':'http://facebook.com/myPage'}]},{'notes':[{'Note 1':'note'},{'Note 2':'note'}]}]",
         "description": "List of list of metadata "
       }
     ],

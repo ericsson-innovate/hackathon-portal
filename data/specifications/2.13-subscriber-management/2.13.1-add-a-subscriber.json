@@ -53,7 +53,7 @@
         "key": "dob",
         "type": "Date",
         "required": false,
-        "description": "Date of birth"
+        "description": "Date of birth, e.g mm/dd/yyyy"
       },
       {
         "key": "company",
@@ -65,6 +65,7 @@
         "key": "address",
         "type": "Address",
         "required": false,
+	"defaultVal":"[{'addressIndex':0,'addressType':'Work','street':'6300 Legacy Dr.','city':'Plano','region':'Texas','country':'USA','postalCode':'75024','meta':[{'lat':'33.075486'},{'long':'-96.832809'}]}]",
         "description": "List of addresses"
       },
       {
@@ -76,6 +77,7 @@
       {
         "key": "phone",
         "type": "Phone",
+	"defaultVal":"[{'phoneIndex':0,'phoneType':'Home','phoneNumber':'19725830000','deviceId':'SonyXperiaZ2','meta':[{'SMS-Enabled':'Yes'}]}]",
         "required": false,
         "description": "List of phone numbers"
       },
@@ -89,6 +91,7 @@
         "key": "email",
         "type": "Email",
         "required": false,
+	"defaultVal":"[{'emailIndex':0,'emailType':'Work','emailAddress':'name@ericsson.com','meta':[{'Display name':'My Work'}]}]",
         "description": "List of email addresses"
       },
       {
@@ -101,18 +104,21 @@
         "key": "vehicles",
         "type": "VIN List",
         "required": false,
+	"defaultVal":"['1TX123456789011223','TX123456789015555']",
         "description": "List of vehicle VINs."
       },
       {
         "key": "custom",
         "type": "Meta",
         "required": false,
+	"defaultVal":"[{'website':'http://site.com'},{'defaultRingtone':'/sdcard/media/ringtones/ring.mp3'}]",
         "description": "List of metadata"
       },
       {
         "key": "metas",
         "type": "Meta List",
         "required": false,
+	"defaultVal" :"[{'links':[{'work':'http://ericsson.com'},{'facebook':'http://facebook.com/myPage'}]},{'notes':[{'Note 1':'note'},{'Note 2':'note'}]}]",
         "description": "List of list of metadata "
       }
     ],
