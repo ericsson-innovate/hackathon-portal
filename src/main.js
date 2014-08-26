@@ -18,6 +18,7 @@
  */
 angular.module('hackApp', [
   'ui.router',
+  'hljs',
 
   'hackController',
 
@@ -25,8 +26,6 @@ angular.module('hackApp', [
   'errorDescriptionFilter',
   'orderApiCallsFilter',
   'unescapeJsonStringFilter',
-
-  'syncPrismDirective',
 
   'apiListItemDirective',
   'apiSpecificationCardDirective',
@@ -58,6 +57,8 @@ angular.module('hackApp', [
 .constant('androidExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master')
 .constant('iosExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master')
 .constant('webExampleUrl', hack.rootPath)
+
+.constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
 .constant('sampleAppData', [
   {

@@ -8,7 +8,7 @@ api-example-card {
   display: block;
 }
 
-api-example-card>pre[sync-prism] {
+api-example-card>[hljs]>pre {
   height: calc(100% - #{$platform-tab-height + $platform-tab-border-width + $platform-tab-top-margin + $example-code-margin-top});
   margin: $example-code-margin-top 0 0 0;
 }

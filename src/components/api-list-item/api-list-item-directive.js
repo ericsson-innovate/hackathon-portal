@@ -7,13 +7,15 @@ angular.module('apiListItemDirective', [])
 /**
  * @ngdoc directive
  * @name apiListItem
+ * @requires HackExamples
+ * @requires HackApi
  * @requires apiListItemTemplatePath
  * @param {Object} apiItem
  * @description
  *
  * A panel used for displaying the specification for a single API call.
  */
-.directive('apiListItem', function (apiListItemTemplatePath) {
+.directive('apiListItem', function (HackExamples, HackApi, apiListItemTemplatePath) {
   return {
     restrict: 'A',
     require: '^apiList',
@@ -23,8 +25,8 @@ angular.module('apiListItemDirective', [])
     templateUrl: apiListItemTemplatePath,
     link: function (scope, element, attrs, apiListCtrl) {
       scope.isSelected = false;
-      scope.apiItem.selectedCard = 'specification';
-      scope.apiItem.selectedPlatform = 'web';
+      scope.apiItem.HackExamples = HackExamples;
+      scope.apiItem.HackApi = HackApi;
 
       scope.handleHeaderClick = function () {
         apiListCtrl.setSelectedSpecification(scope.isSelected ? null : scope);

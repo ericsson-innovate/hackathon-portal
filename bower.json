@@ -8,5 +8,8 @@
     "angular-ui-router": "~0.2.10",
     "angular-resource": "~1.2.20",
     "angular-animate": "~1.2.20"
+  },
+  "devDependencies": {
+    "angular-highlightjs": "~0.3.0"
   }
 }

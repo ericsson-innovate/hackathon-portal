@@ -118,14 +118,14 @@
         {{apiItem.tryIt.response.status}}
       </span>
 
-      <pre sync-prism
-           source="{{apiItem.tryIt.response.body | json}}"
-           class="language-javascript try-it-response-body"
-           ng-if="apiItem.tryIt.response.body"></pre>
-      <pre sync-prism
-           source="{{apiItem.tryIt.response.bodyParseError}}"
+      <div hljs
+           source="apiItem.tryIt.response.body | json"
+           class="language-json try-it-response-body"
+           ng-if="apiItem.tryIt.response.body"></div>
+      <div hljs
+           source="apiItem.tryIt.response.bodyParseError"
            class="try-it-response-body"
-           ng-if="apiItem.tryIt.response.bodyParseError"></pre>
+           ng-if="apiItem.tryIt.response.bodyParseError"></div>
     </div>
   </div>
 </div>

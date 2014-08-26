@@ -7,7 +7,7 @@
   "categories": ["know-driver"],
   "subCategories": [],
   "resourceTable": {
-    "Route": "/subscriber/v1/subscriber/update/{id}",
+    "Route": "/subscribers/v1/subscriber/update/{id}",
     "HTTP Verb": ["PUT", "POST"],
     "Authentication": "Basic Authentication"
   },

@@ -69,7 +69,8 @@ angular.module('apiService', [])
       return deferred.promise;
     },
     apiData: [],
-    apiDataByCategory: {}
+    apiDataByCategory: {},
+    currentCard: 'specification'
   };
 
   return HackApi;

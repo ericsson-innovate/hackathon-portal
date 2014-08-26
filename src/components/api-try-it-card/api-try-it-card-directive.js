@@ -41,7 +41,7 @@ angular.module('apiTryItCardDirective', [])
       scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
       scope.$watch('apiItem.TryItData.username', TryItData.updateAuthString, true);
       scope.$watch('apiItem.TryItData.password', TryItData.updateAuthString, true);
-      scope.$watch('apiItem.selectedCard', handleCardChange);
+      scope.$watch('apiItem.HackApi.currentCard', handleCardChange);
 
       function updateUrl() {
         var route, i, count, key, value, index;
@@ -74,7 +74,7 @@ angular.module('apiTryItCardDirective', [])
       }
 
       function handleCardChange() {
-        if (scope.apiItem.selectedCard === 'try it') {
+        if (scope.apiItem.HackApi.currentCard === 'try it') {
           fillWithCommonData();
         }
       }
@@ -154,8 +154,8 @@ angular.module('apiTryItCardDirective', [])
               scope.apiItem.tryIt.response.body = responseBody;
               scope.apiItem.tryIt.response.bodyParseError = null;
             } catch (error) {
-              responseBody = 'Unable to parse response body as JSON: ' + xhr.response;
-              console.warn(responseBody);
+              responseBody = xhr.response;
+              console.warn('Unable to parse response body as JSON: ' + responseBody);
               scope.apiItem.tryIt.response.body = null;
               scope.apiItem.tryIt.response.bodyParseError = responseBody;
             }

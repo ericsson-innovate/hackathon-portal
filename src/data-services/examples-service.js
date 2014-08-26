@@ -179,7 +179,8 @@ angular.module('examplesService', [])
       return deferred.promise;
     },
     allDataHasBeenFetched: false,
-    examplesData: {}
+    examplesData: {},
+    currentPlatform: 'web'
   };
 
   return HackExamples;

@@ -22,6 +22,9 @@ angular.module('apiExampleCardDirective', [])
     },
     templateUrl: apiExampleCardTemplatePath,
     link: function (scope, element, attrs, apiListItemCtrl) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
     }
   };
 });

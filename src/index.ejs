@@ -9,7 +9,7 @@
         type='image/x-icon'
         href='<%= rootPath %>/dist/images/favicon.ico' />
   <link rel="stylesheet"
-        href="<%= rootPath %>/lib/prism/prism.css">
+        href="<%= rootPath %>/bower_components/highlightjs/styles/vs.css">
   <link rel="stylesheet"
         href="<%= rootPath %>/dist/styles/main.min.css">
 
@@ -83,7 +83,8 @@
   <script src="<%= rootPath %>/bower_components/angular/angular.js"></script>
   <script src="<%= rootPath %>/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
-  <script src="<%= rootPath %>/lib/prism/prism.js"></script>
+  <script src="<%= rootPath %>/bower_components/highlightjs/highlight.pack.js"></script>
+  <script src="<%= rootPath %>/bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
 
   <!-- TODO: replace these individual script includes with the single minified version -->
   <!--<script src="<%= rootPath %>/dist/scripts/hackathon-portal.min.js"></script>-->
@@ -98,8 +99,6 @@
   <script src="<%= rootPath %>/src/common/error-description-filter.js"></script>
   <script src="<%= rootPath %>/src/common/order-api-calls-filter.js"></script>
   <script src="<%= rootPath %>/src/common/unescape-json-string-filter.js"></script>
-
-  <script src="<%= rootPath %>/src/common/sync-prism-directive.js"></script>
 
   <script src="<%= rootPath %>/src/components/api-list-item/api-list-item-directive.js"></script>
   <script src="<%= rootPath %>/src/components/api-specification-card/api-specification-card-directive.js"></script>

@@ -18,6 +18,7 @@
  */
 angular.module('hackApp', [
   'ui.router',
+  'hljs',
 
   'hackController',
 
@@ -25,8 +26,6 @@ angular.module('hackApp', [
   'errorDescriptionFilter',
   'orderApiCallsFilter',
   'unescapeJsonStringFilter',
-
-  'syncPrismDirective',
 
   'apiListItemDirective',
   'apiSpecificationCardDirective',
@@ -58,6 +57,8 @@ angular.module('hackApp', [
 .constant('androidExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master')
 .constant('iosExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master')
 .constant('webExampleUrl', hack.rootPath)
+
+.constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
 .constant('sampleAppData', [
   {
@@ -397,35 +398,6 @@ angular.module('hackApp')
 
 'use strict';
 
-angular.module('syncPrismDirective', [])
-
-/**
- * @ngdoc directive
- * @name syncPrism
- * @param {string} source
- * @description
- *
- * A directive for re-running Prism parsing for syntax highlighting when content changes.
- */
-.directive('syncPrism', [function() {
-  return {
-    restrict: 'A',
-    scope: {
-      source: '@'
-    },
-    link: function(scope, element, attrs) {
-      var code = element.find('code')[0];
-
-      scope.$watch('source', function () {
-        Prism.highlightElement(code);
-      });
-    },
-    template: '<code ng-bind="source"></code>'
-  };
-}]);
-
-'use strict';
-
 angular.module('unescapeJsonStringFilter', [])
 
 /**
@@ -527,7 +499,8 @@ angular.module('apiService', [])
       return deferred.promise;
     },
     apiData: [],
-    apiDataByCategory: {}
+    apiDataByCategory: {},
+    currentCard: 'specification'
   };
 
   return HackApi;
@@ -714,7 +687,8 @@ angular.module('examplesService', [])
       return deferred.promise;
     },
     allDataHasBeenFetched: false,
-    examplesData: {}
+    examplesData: {},
+    currentPlatform: 'web'
   };
 
   return HackExamples;
@@ -888,6 +862,9 @@ angular.module('apiExampleCardDirective', [])
     },
     templateUrl: apiExampleCardTemplatePath,
     link: function (scope, element, attrs, apiListItemCtrl) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
     }
   };
 });
@@ -960,13 +937,15 @@ angular.module('apiListItemDirective', [])
 /**
  * @ngdoc directive
  * @name apiListItem
+ * @requires HackExamples
+ * @requires HackApi
  * @requires apiListItemTemplatePath
  * @param {Object} apiItem
  * @description
  *
  * A panel used for displaying the specification for a single API call.
  */
-.directive('apiListItem', function (apiListItemTemplatePath) {
+.directive('apiListItem', function (HackExamples, HackApi, apiListItemTemplatePath) {
   return {
     restrict: 'A',
     require: '^apiList',
@@ -976,8 +955,8 @@ angular.module('apiListItemDirective', [])
     templateUrl: apiListItemTemplatePath,
     link: function (scope, element, attrs, apiListCtrl) {
       scope.isSelected = false;
-      scope.apiItem.selectedCard = 'specification';
-      scope.apiItem.selectedPlatform = 'web';
+      scope.apiItem.HackExamples = HackExamples;
+      scope.apiItem.HackApi = HackApi;
 
       scope.handleHeaderClick = function () {
         apiListCtrl.setSelectedSpecification(scope.isSelected ? null : scope);
@@ -1066,7 +1045,7 @@ angular.module('apiTryItCardDirective', [])
       scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
       scope.$watch('apiItem.TryItData.username', TryItData.updateAuthString, true);
       scope.$watch('apiItem.TryItData.password', TryItData.updateAuthString, true);
-      scope.$watch('apiItem.selectedCard', handleCardChange);
+      scope.$watch('apiItem.HackApi.currentCard', handleCardChange);
 
       function updateUrl() {
         var route, i, count, key, value, index;
@@ -1099,7 +1078,7 @@ angular.module('apiTryItCardDirective', [])
       }
 
       function handleCardChange() {
-        if (scope.apiItem.selectedCard === 'try it') {
+        if (scope.apiItem.HackApi.currentCard === 'try it') {
           fillWithCommonData();
         }
       }
@@ -1179,8 +1158,8 @@ angular.module('apiTryItCardDirective', [])
               scope.apiItem.tryIt.response.body = responseBody;
               scope.apiItem.tryIt.response.bodyParseError = null;
             } catch (error) {
-              responseBody = 'Unable to parse response body as JSON: ' + xhr.response;
-              console.warn(responseBody);
+              responseBody = xhr.response;
+              console.warn('Unable to parse response body as JSON: ' + responseBody);
               scope.apiItem.tryIt.response.body = null;
               scope.apiItem.tryIt.response.bodyParseError = responseBody;
             }

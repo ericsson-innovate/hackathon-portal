@@ -91,7 +91,7 @@ api-specification-card h4 {
   @include code-font();
 }
 
-.example-content>pre[sync-prism],
-.example-content>pre[sync-prism]>code {
+.example-content>[hljs]>pre,
+.example-content>[hljs]>pre>code {
   padding: 0;
 }

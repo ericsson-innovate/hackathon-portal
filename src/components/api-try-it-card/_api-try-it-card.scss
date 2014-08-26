@@ -99,6 +99,6 @@ api-try-it-card label {
   color: #cc4422;
 }
 
-pre.try-it-response-body[sync-prism] {
+div.try-it-response-body[hljs] {
   margin: $try-it-margin 0;
 }

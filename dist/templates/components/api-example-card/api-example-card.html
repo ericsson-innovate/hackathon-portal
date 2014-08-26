@@ -1,12 +1,23 @@
 <ul class="platform-tabs tabs">
   <li ng-repeat="platform in ['web', 'android', 'ios']"
-      ng-click="apiItem.selectedPlatform = platform"
-      ng-class="{selected: apiItem.selectedPlatform === platform}"
+      ng-click="handleTabClick(platform)"
+      ng-class="{selected: apiItem.HackExamples.currentPlatform === platform}"
       class="platform-tab tab">
     {{platform}}
   </li>
 </ul>
 
-<pre sync-prism
-     source="{{apiItem.example[apiItem.selectedPlatform].text}}"
-     ng-class="{'language-javascript': apiItem.selectedPlatform === 'web', 'language-java': apiItem.selectedPlatform === 'android', 'language-objectivec': apiItem.selectedPlatform === 'ios'}"></pre>
+<div ng-if="apiItem.HackExamples.currentPlatform === 'web'"
+     hljs
+     source="apiItem.example['web'].text"
+     class="language-javascript"></div>
+
+<div ng-if="apiItem.HackExamples.currentPlatform === 'android'"
+     hljs
+     source="apiItem.example['android'].text"
+     class="language-java"></div>
+
+<div ng-if="apiItem.HackExamples.currentPlatform === 'ios'"
+     hljs
+     source="apiItem.example['ios'].text"
+     class="language-objectivec"></div>

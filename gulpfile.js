@@ -16,7 +16,7 @@ var projectName = 'hackathon-portal',
     imagesSrc = 'res/images/**/*',
     templatesSrc = 'src/**/*.html',
     fontsSrc = 'res/fonts/**/*',
-    ejsSrc = 'index.ejs',
+    ejsSrc = 'src/index.ejs',
 
     dataAllSrc = 'data/**/*.json',
     dataSpecificationsSrc = 'data/specifications/**/*.json',

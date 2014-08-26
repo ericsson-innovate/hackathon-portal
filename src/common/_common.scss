@@ -140,17 +140,18 @@ button[disabled] {
   color: $button-inactive-color;
 }
 
-pre[sync-prism] {
+[hljs]>pre {
   margin: 0;
   padding: 0 $code-padding;
   overflow: auto;
   background-color: $code-output-background-color;
 }
 
-pre[sync-prism]>code {
+[hljs]>pre>code {
   display: block;
   overflow: visible;
   padding: $code-padding 0;
+  background-color: $code-output-background-color;
 }
 
 #route-view {
