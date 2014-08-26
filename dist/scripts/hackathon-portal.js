@@ -45,8 +45,8 @@ angular.module('hackApp', [
 
 .constant('apiKey', 'api-key-1234')
 .constant('emulatorDomain', 'http://lightning.att.io:3000')
-.constant('username', 'username')
-.constant('password', 'password')
+.constant('username', 'provider')
+.constant('password', '1234')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
 //.constant('emulatorDomain', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
@@ -801,7 +801,7 @@ angular.module('tryItService', [])
   }
 
   function updateAuthString() {
-//  authString: 'Basic cHJvdmlkZXI6MTIzNA=='
+//  TryItData.authString = 'Basic cHJvdmlkZXI6MTIzNA==';
     TryItData.authString = 'Basic ' + btoa(TryItData.username + ':' + TryItData.password);
   }
 

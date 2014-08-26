@@ -150,7 +150,7 @@ gulp.task('server', function () {
 });
 
 gulp.task('watch', function () {
-  plugins.livereload.listen();
+//  plugins.livereload.listen();
 
   gulp.watch(stylesGlobSrc, ['styles']);
   gulp.watch(scriptsSrc, ['scripts']);
@@ -160,7 +160,7 @@ gulp.task('watch', function () {
   gulp.watch(imagesSrc, ['images']);
   gulp.watch(ejsSrc, ['ejs']);
 
-  gulp.watch(dist + '/**/*').on('change', plugins.livereload.changed);
+//  gulp.watch(dist + '/**/*').on('change', plugins.livereload.changed);
 });
 
 gulp.task('default', ['clean'], function () {

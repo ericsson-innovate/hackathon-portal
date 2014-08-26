@@ -48,7 +48,7 @@ angular.module('tryItService', [])
   }
 
   function updateAuthString() {
-//  authString: 'Basic cHJvdmlkZXI6MTIzNA=='
+//  TryItData.authString = 'Basic cHJvdmlkZXI6MTIzNA==';
     TryItData.authString = 'Basic ' + btoa(TryItData.username + ':' + TryItData.password);
   }
 
