@@ -12,7 +12,7 @@
   <h4>URL Values</h4>
 
   <label>
-    Domain
+    <span>Domain</span>
     <input type="text"
            ng-model="apiItem.TryItData.emulatorDomain"
            class="try-it-parameter domain-input"
@@ -22,7 +22,7 @@
 
   <div ng-if="apiItem.specification.parameters.route">
     <label ng-repeat="(key, value) in apiItem.specification.parameters.route">
-      {{key}}
+      <span>{{key}}</span>
       <input type="text"
              ng-model="apiItem.TryItData.routeParams[key]"
              class="try-it-parameter"
@@ -33,7 +33,7 @@
 
   <div ng-if="apiItem.specification.parameters.query">
     <label ng-repeat="queryParam in apiItem.specification.parameters.query">
-      {{queryParam}}
+      <span>{{queryParam}}</span>
       <input type="text"
              ng-model="apiItem.TryItData.queryParams[queryParam]"
              class="try-it-parameter"
@@ -44,7 +44,7 @@
   <h4>Header Values</h4>
 
   <label ng-if="apiItem.specification.resourceTable['API Key']">
-    API Key
+    <span>API Key</span>
     <input type="text"
            ng-model="apiItem.TryItData.apiKey"
            class="try-it-parameter api-key-input"
@@ -54,13 +54,13 @@
 
   <div ng-if="apiItem.specification.resourceTable['Authentication']"
        class="try-it-authentication">
-    <div>
-      Authentication
+    <div class="try-it-authentication-header">
+      <span>Authentication</span>
       <span class="try-it-auth-string">{{apiItem.TryItData.authString}}</span>
     </div>
 
     <label>
-      Username
+      <span>Username</span>
       <input type="text"
              ng-model="apiItem.TryItData.username"
              class="try-it-parameter username-input"
@@ -69,7 +69,7 @@
     </label>
 
     <label>
-      Password
+      <span>Password</span>
       <input type="text"
              ng-model="apiItem.TryItData.password"
              class="try-it-parameter password-input"

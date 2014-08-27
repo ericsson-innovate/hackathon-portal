@@ -46,12 +46,38 @@ api-try-it-card label {
   padding: 6px;
 }
 
+api-try-it-card label>*,
+.try-it-authentication-header>span {
+  display: inline-block;
+}
+
+api-try-it-card label>span,
+.try-it-authentication-header>span:first-child {
+  width: 160px;
+  text-align: right;
+}
+
+.try-it-authentication-header>span:nth-child(2) {
+  min-width: 248px;
+}
+
+api-try-it-card label>input {
+}
+
+api-try-it-card input {
+  width: 248px;
+}
+
+.try-it-authentication input {
+  width: 168px;
+}
+
 .try-it-parameter {
 
 }
 
 .domain-input {
-  width: 400px;
+  width: 409px;
 }
 
 .try-it-authentication {
@@ -65,7 +91,7 @@ api-try-it-card label {
 .try-it-request-body {
   @include code-font();
   width: calc(100% - #{$input-padding * 2});
-  height: 160px;
+  height: 280px;
   margin-bottom: $try-it-margin;
 }
 

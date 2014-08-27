@@ -427,7 +427,7 @@ li[api-list-item] > hr.divider {
           transition: height 0.3s; }
 
 .api-list-item-body.selected {
-  height: 700px; }
+  height: 900px; }
 
 .api-list-item-body > api-specification-card, .api-list-item-body > api-example-card, .api-list-item-body > api-try-it-card {
   height: calc(100% - 118px);
@@ -554,8 +554,24 @@ api-try-it-card label {
   background-color: #f7f7f7;
   padding: 6px; }
 
+api-try-it-card label > *, .try-it-authentication-header > span {
+  display: inline-block; }
+
+api-try-it-card label > span, .try-it-authentication-header > span:first-child {
+  width: 160px;
+  text-align: right; }
+
+.try-it-authentication-header > span:nth-child(2) {
+  min-width: 248px; }
+
+api-try-it-card input {
+  width: 248px; }
+
+.try-it-authentication input {
+  width: 168px; }
+
 .domain-input {
-  width: 400px; }
+  width: 409px; }
 
 .try-it-authentication {
   margin-top: 8px; }
@@ -566,7 +582,7 @@ api-try-it-card label {
 .try-it-request-body {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
   width: calc(100% - 12px);
-  height: 160px;
+  height: 280px;
   margin-bottom: 8px; }
 
 .try-it-reset-button, .try-it-send-button {

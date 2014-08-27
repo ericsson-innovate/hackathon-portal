@@ -32,8 +32,10 @@ angular.module('hackApp')
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    if (toState.name === 'api-documentation' && !$rootScope.selectedCategory) {
-      $rootScope.selectedCategory = $rootScope.defaultCategory;
+    if (toState.name === 'api-documentation') {
+      if (!$rootScope.selectedCategory) {
+        $rootScope.selectedCategory = $rootScope.defaultCategory;
+      }
     } else {
       $rootScope.selectedCategory = null;
     }

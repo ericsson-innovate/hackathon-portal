@@ -44,7 +44,7 @@ angular.module('hackApp', [
 ])
 
 .constant('apiKey', 'api-key-1234')
-.constant('emulatorDomain', 'http://lightning.att.io:3000')
+.constant('emulatorDomain', 'http://car2.hack.att.io:3000')
 .constant('username', 'provider')
 .constant('password', '1234')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
@@ -374,8 +374,10 @@ angular.module('hackApp')
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    if (toState.name === 'api-documentation' && !$rootScope.selectedCategory) {
-      $rootScope.selectedCategory = $rootScope.defaultCategory;
+    if (toState.name === 'api-documentation') {
+      if (!$rootScope.selectedCategory) {
+        $rootScope.selectedCategory = $rootScope.defaultCategory;
+      }
     } else {
       $rootScope.selectedCategory = null;
     }
