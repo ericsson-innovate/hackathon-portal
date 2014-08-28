@@ -6,11 +6,9 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
 
 .hljs {
   display: block;
-  overflow-x: auto;
   padding: 0.5em;
   background: #fdf6e3;
   color: #657b83;
-  -webkit-text-size-adjust: none;
 }
 
 .hljs-comment,
@@ -42,7 +40,6 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
 .hljs-tag .hljs-value,
 .hljs-rules .hljs-value,
 .hljs-phpdoc,
-.hljs-dartdoc,
 .tex .hljs-formula,
 .hljs-regexp,
 .hljs-hexcolor,
@@ -71,7 +68,7 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
 .hljs-constant,
 .hljs-class .hljs-title,
 .hljs-parent,
-.hljs-type,
+.haskell .hljs-type,
 .hljs-link_reference {
   color: #b58900;
 }
@@ -88,6 +85,7 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
 .hljs-attr_selector,
 .hljs-subst,
 .hljs-cdata,
+.clojure .hljs-title,
 .css .hljs-pseudo,
 .hljs-header {
   color: #cb4b16;

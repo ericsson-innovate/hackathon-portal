@@ -3,17 +3,16 @@ Date: 17.V.2011
 Author: pumbur <pumbur@pumbur.net>
 */
 
-.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 0.5em;
+.hljs
+{
+  display: block; padding: 0.5em;
   background: #222;
-  -webkit-text-size-adjust: none;
 }
 
 .profile .hljs-header *,
 .ini .hljs-title,
-.nginx .hljs-title {
+.nginx .hljs-title
+{
   color: #fff;
 }
 
@@ -30,7 +29,8 @@ Author: pumbur <pumbur@pumbur.net>
 .hljs-tag,
 .hljs-template_comment,
 .css .hljs-rules,
-.tex .hljs-special {
+.tex .hljs-special
+{
   color: #444;
 }
 
@@ -43,20 +43,22 @@ Author: pumbur <pumbur@pumbur.net>
 .xml .hljs-value,
 .ini .hljs-value,
 .clojure .hljs-attribute,
-.coffeescript .hljs-attribute {
+.coffeescript .hljs-attribute
+{
   color: #ffcc33;
 }
 
 .hljs-number,
-.hljs-addition {
+.hljs-addition
+{
   color: #00cc66;
 }
 
 .hljs-built_in,
 .hljs-literal,
-.hljs-type,
-.hljs-typename,
+.vhdl .hljs-typename,
 .go .hljs-constant,
+.go .hljs-typename,
 .ini .hljs-keyword,
 .lua .hljs-title,
 .perl .hljs-variable,
@@ -69,8 +71,9 @@ Author: pumbur <pumbur@pumbur.net>
 .hljs-important,
 .hljs-flow,
 .hljs-inheritance,
-.parser3 .hljs-variable {
-  color: #32aaee;
+.parser3 .hljs-variable
+{
+  color: #32AAEE;
 }
 
 .hljs-keyword,
@@ -80,10 +83,13 @@ Author: pumbur <pumbur@pumbur.net>
 .css .hljs-id,
 .css .hljs-pseudo,
 .css .hljs-attr_selector,
+.lisp .hljs-title,
+.clojure .hljs-built_in,
 .hljs-winutils,
 .tex .hljs-command,
 .hljs-request,
-.hljs-status {
+.hljs-status
+{
   color: #6644aa;
 }
 
@@ -108,17 +114,18 @@ Author: pumbur <pumbur@pumbur.net>
 .tail,
 .avrasm .hljs-label,
 .tex .hljs-formula,
-.tex .hljs-formula * {
+.tex .hljs-formula *
+{
   color: #bb1166;
 }
 
 .hljs-yardoctag,
 .hljs-phpdoc,
-.hljs-dartdoc,
 .profile .hljs-header,
 .ini .hljs-title,
 .apache .hljs-tag,
-.parser3 .hljs-title {
+.parser3 .hljs-title
+{
   font-weight: bold;
 }
 
@@ -128,14 +135,26 @@ Author: pumbur <pumbur@pumbur.net>
 .xml .javascript,
 .xml .vbscript,
 .xml .css,
-.xml .hljs-cdata {
+.xml .hljs-cdata
+{
   opacity: 0.6;
 }
 
 .hljs,
+.javascript,
+.css,
+.xml,
 .hljs-subst,
 .diff .hljs-chunk,
 .css .hljs-value,
-.css .hljs-attribute {
+.css .hljs-attribute,
+.lisp .hljs-string,
+.lisp .hljs-number,
+.tail .hljs-params,
+.hljs-container,
+.haskell *,
+.erlang *,
+.erlang_repl *
+{
   color: #aaa;
 }
