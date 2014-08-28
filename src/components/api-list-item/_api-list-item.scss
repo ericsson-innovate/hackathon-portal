@@ -28,6 +28,7 @@ li[api-list-item]>hr.divider {
 }
 
 .api-list-item-header {
+  position: relative;
   height: $api-list-item-header-height;
   line-height: $api-list-item-header-height;
   overflow-x: visible;
@@ -57,7 +58,10 @@ li[api-list-item]>hr.divider {
 }
 
 .api-list-item-header>.name {
-  float: right;
+  position: absolute;
+  right: 0;
+  padding-left: 20px;
+  background-color: $body-background-color;
 }
 
 .api-list-item-header.selected {

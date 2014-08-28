@@ -533,6 +533,7 @@ angular.module('examplesService', [])
   var newline = '\n',
       startRegex = /^\s*\/\/ ## START /g,
       endRegex = /^\s*\/\/ ## END /g,
+      eitherRegex = /^\s*\/\/ ## /,
       commonSnippetId = 'COMMON',
       filePromises = {},
       HackExamples;
@@ -548,6 +549,8 @@ angular.module('examplesService', [])
 
     // Ensure the start and end flags are present
     if (startLineIndex >= 0 && endLineIndex >= 0) {
+      endLineIndex = removeAnyNestedFlags(lines, startLineIndex, endLineIndex);
+
       return lines.slice(startLineIndex, endLineIndex).join(newline);
     } else {
       return null;
@@ -566,6 +569,20 @@ angular.module('examplesService', [])
       }
 
       return -1;
+    }
+
+    function removeAnyNestedFlags(lines, startLineIndex, endLineIndex) {
+      var i;
+
+      for (i = startLineIndex; i < endLineIndex; i += 1) {
+        if (eitherRegex.test(lines[i])) {
+          lines.splice(i, 1);
+          endLineIndex--;
+          i--;
+        }
+      }
+
+      return endLineIndex;
     }
   }
 

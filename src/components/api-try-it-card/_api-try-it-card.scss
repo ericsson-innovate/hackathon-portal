@@ -46,6 +46,10 @@ api-try-it-card label {
   padding: 6px;
 }
 
+.try-it-url {
+  overflow-x: hidden;
+}
+
 api-try-it-card label>*,
 .try-it-authentication-header>span {
   display: inline-block;
