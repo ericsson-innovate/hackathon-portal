@@ -1,16 +1,14 @@
 <h1>Sample Apps</h1>
 
-<em>Sample apps forthcoming...</em>
+<div ng-repeat="sampleAppData in sampleAppsState.sampleAppData"
+     class="sample-app-card">
+  <h2>
+    <img ng-src="{{sampleAppData.iconUrl}}"
+         alt="{{sampleAppData.humanReadablePlatform}} icon">
+    {{sampleAppData.humanReadablePlatform}}
+  </h2>
 
-<!--<div ng-repeat="sampleAppData in sampleAppsState.sampleAppData"-->
-     <!--class="sample-app-card">-->
-  <!--<h2>-->
-    <!--<img ng-src="{{sampleAppData.iconUrl}}"-->
-         <!--alt="{{sampleAppData.humanReadablePlatform}} icon">-->
-    <!--{{sampleAppData.humanReadablePlatform}}-->
-  <!--</h2>-->
-
-  <!--<a ng-href="{{sampleAppData.repoUrl}}">-->
-    <!--{{sampleAppData.repoUrl}}-->
-  <!--</a>-->
-<!--</div>-->
+  <a ng-href="{{sampleAppData.repoUrl}}">
+    {{sampleAppData.repoUrl}}
+  </a>
+</div>
