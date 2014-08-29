@@ -6,9 +6,11 @@
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks) {
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks, categories) {
   // Re-route invalid routes back to home
   $urlRouterProvider.otherwise(sideBarLinks[1].url);
+
+  var apiLink;
 
   sideBarLinks.forEach(function (link) {
     if (link.isStateRoute) {
@@ -20,7 +22,33 @@ angular.module('hackApp')
             controller: link.controller
           });
     }
+
+    if ("api-documentation" == link.ref)
+        apiLink = link;
   });
+
+  if (apiLink) {
+    categories.forEach(function (category) {
+      var routeName = apiLink.ref + '.' + category.id;
+      var routeURL = '/' + category.id;
+
+      $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+
+      category['specs'].forEach(function (api) {
+        var apiName = api.replace(/\./g, '_');
+        var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
+        var routeURL = '/' + apiName;
+
+        $stateProvider.state(routeName,                       { url: routeURL,          templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+      });
+    });
+  }
 })
 
 .run(function ($rootScope, $log) {
@@ -32,10 +60,20 @@ angular.module('hackApp')
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    if (toState.name === 'api-documentation') {
+    var isApiDoc = toState.name.indexOf('api-documentation') == 0;
+
+    if (isApiDoc) {
       if (!$rootScope.selectedCategory) {
         $rootScope.selectedCategory = $rootScope.defaultCategory;
       }
+
+      var entities = toState.name.split('.');
+      $rootScope.selectedApiCategory = entities[1];
+      $rootScope.selectedApi = entities[2];
+      $rootScope.selectedApiTab = entities[3];
+      $rootScope.selectedApiExample = entities[4];
+
+      console.log($rootScope.selectedApiCategory, $rootScope.selectedApi, $rootScope.selectedApiTab, $rootScope.selectedApiExample);
     } else {
       $rootScope.selectedCategory = null;
     }
