@@ -875,58 +875,14 @@ angular.module('apiExampleCardDirective', [])
 .directive('apiExampleCard', function (apiExampleCardTemplatePath) {
   return {
     restrict: 'E',
-    require: '^apiListItem',
     scope: {
       apiItem: '='
     },
     templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs, apiListItemCtrl) {
+    link: function (scope, element, attrs) {
       scope.handleTabClick = function (platform) {
         scope.apiItem.HackExamples.currentPlatform = platform;
       };
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiListItemDirective', [])
-
-.constant('apiListItemTemplatePath', hack.rootPath + '/dist/templates/components/api-list-item/api-list-item.html')
-
-/**
- * @ngdoc directive
- * @name apiListItem
- * @requires HackExamples
- * @requires HackApi
- * @requires apiListItemTemplatePath
- * @param {Object} apiItem
- * @description
- *
- * A panel used for displaying the specification for a single API call.
- */
-.directive('apiListItem', function (HackExamples, HackApi, apiListItemTemplatePath) {
-  return {
-    restrict: 'A',
-    require: '^apiList',
-    scope: {
-      apiItem: '=apiListItem'
-    },
-    templateUrl: apiListItemTemplatePath,
-    link: function (scope, element, attrs, apiListCtrl) {
-      scope.isSelected = false;
-      scope.apiItem.HackExamples = HackExamples;
-      scope.apiItem.HackApi = HackApi;
-
-      scope.handleHeaderClick = function () {
-        apiListCtrl.setSelectedSpecification(scope.isSelected ? null : scope);
-      };
-
-      scope.setIsSelected = function (isSelected) {
-        scope.isSelected = isSelected;
-      };
-    },
-    controller: function () {
     }
   };
 });
@@ -954,38 +910,56 @@ angular.module('apiListDirective', [])
     },
     templateUrl: apiListTemplatePath,
     link: function (scope, element, attrs) {
-      scope.apiData = [];
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
 
       HackApi.getAllApiData()
           .then(function (apiData) {
-            scope.apiData = apiData;
+            scope.apiListState.apiData = apiData;
           });
 
-      // TODO: I need to add sub-groups within the filtered category groups using apiItem.specification.subCategories
-    },
-    controller: function ($scope) {
-      var selectedSpec;
-
-      selectedSpec = null;
-
-      this.setSelectedSpecification = setSelectedSpecification;
-
-      $scope.$watch('category', function () {
-        setSelectedSpecification(null);
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
       });
+    }
+  };
+});
 
-      function setSelectedSpecification(spec) {
-        var oldSelectedSpec = selectedSpec;
-        selectedSpec = spec;
+'use strict';
 
-        if (oldSelectedSpec && oldSelectedSpec !== selectedSpec) {
-          oldSelectedSpec.setIsSelected(false);
-        }
+angular.module('apiListItemDirective', [])
 
-        if (selectedSpec) {
-          selectedSpec.setIsSelected(true);
-        }
-      }
+.constant('apiListItemTemplatePath', hack.rootPath + '/dist/templates/components/api-list-item/api-list-item.html')
+
+/**
+ * @ngdoc directive
+ * @name apiListItem
+ * @requires HackExamples
+ * @requires HackApi
+ * @requires apiListItemTemplatePath
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel used for displaying the specification for a single API call.
+ */
+.directive('apiListItem', function (HackExamples, HackApi, apiListItemTemplatePath) {
+  return {
+    restrict: 'A',
+    scope: {
+      apiItem: '=apiListItem',
+      apiListState: '='
+    },
+    templateUrl: apiListItemTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiItem.HackExamples = HackExamples;
+      scope.apiItem.HackApi = HackApi;
+
+      scope.handleHeaderClick = function () {
+        scope.apiListState.selectedItemId =
+                scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
+                    null : scope.apiItem.specification.id;
+      };
     }
   };
 });
@@ -1008,12 +982,11 @@ angular.module('apiSpecificationCardDirective', [])
 .directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
   return {
     restrict: 'E',
-    require: '^apiListItem',
     scope: {
       apiItem: '='
     },
     templateUrl: apiSpecificationCardTemplatePath,
-    link: function (scope, element, attrs, apiListItemCtrl) {
+    link: function (scope, element, attrs) {
       scope.isArray = function (input) {
         return input instanceof Array;
       };
@@ -1046,12 +1019,11 @@ angular.module('apiTryItCardDirective', [])
                                      apiTryItCardTemplatePath) {
   return {
     restrict: 'E',
-    require: '^apiListItem',
     scope: {
       apiItem: '='
     },
     templateUrl: apiTryItCardTemplatePath,
-    link: function (scope, element, attrs, apiListItemCtrl) {
+    link: function (scope, element, attrs) {
       scope.apiItem.tryIt = {};
       scope.apiItem.tryIt.requestBody = '';
       scope.apiItem.tryIt.response = {};

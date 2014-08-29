@@ -255,7 +255,9 @@ button[disabled] {
   vertical-align: top;
   text-transform: uppercase;
   text-align: left;
-  overflow: hidden; }
+  overflow: hidden;
+  -webkit-transition: border-color 0.25s;
+          transition: border-color 0.25s; }
 
 .tab.selected {
   border-color: #0099ff; }
@@ -314,19 +316,20 @@ h1 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 600px;
+  height: 620px;
   background: transparent url('/hackathon-portal/dist/images/car.png') no-repeat center center;
   z-index: 2; }
 
 #empty-car-area {
   position: relative;
-  height: 529px;
+  height: 549px;
   z-index: 3; }
 
 .content-area {
   max-width: 940px;
   margin: 0 auto;
-  height: 100%; }
+  height: 100%;
+  min-height: 500px; }
 
 .inner-content-area {
   position: relative;
@@ -360,7 +363,9 @@ h1 {
 
 .side-menu > li > a, .side-menu > li > a:active, .side-menu > li > a:hover, .side-menu > li > a:visited {
   color: #333333;
-  text-decoration: none; }
+  text-decoration: none;
+  -webkit-transition: color 0.25s;
+          transition: color 0.25s; }
 
 .side-menu > li.selected > a {
   color: #0099ff; }
@@ -390,7 +395,9 @@ li[api-list-item] > hr.divider {
   overflow-y: hidden;
   vertical-align: middle;
   cursor: pointer;
-  color: #bfbfbf; }
+  color: #bfbfbf;
+  -webkit-transition: color 0.15s;
+          transition: color 0.15s; }
 
 .api-list-item-header > div {
   line-height: 40px; }
@@ -401,7 +408,9 @@ li[api-list-item] > hr.divider {
   width: 100px;
   color: white;
   background-color: #bfe5ff;
-  text-align: center; }
+  text-align: center;
+  -webkit-transition: color 0.15s, background-color 0.15s;
+          transition: color 0.15s, background-color 0.15s; }
 
 .api-list-item-header > .route {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
@@ -414,10 +423,10 @@ li[api-list-item] > hr.divider {
   padding-left: 20px;
   background-color: white; }
 
-.api-list-item-header.selected {
+li[api-list-item].selected .api-list-item-header, li[api-list-item].none-selected .api-list-item-header {
   color: #333333; }
 
-.api-list-item-header.selected > .verb {
+li[api-list-item].selected .api-list-item-header > .verb, li[api-list-item].none-selected .api-list-item-header > .verb {
   color: white;
   background-color: #0099ff; }
 
@@ -430,7 +439,7 @@ li[api-list-item] > hr.divider {
   -webkit-transition: height 0.3s;
           transition: height 0.3s; }
 
-.api-list-item-body.selected {
+li[api-list-item].selected .api-list-item-body {
   height: 900px; }
 
 .api-list-item-body > api-specification-card, .api-list-item-body > api-example-card, .api-list-item-body > api-try-it-card {

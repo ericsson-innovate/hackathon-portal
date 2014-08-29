@@ -36,6 +36,7 @@ li[api-list-item]>hr.divider {
   vertical-align: middle;
   cursor: pointer;
   color: $card-inactive-color;
+  transition: color 0.15s;
 }
 
 .api-list-item-header>div {
@@ -49,6 +50,7 @@ li[api-list-item]>hr.divider {
   color: $verb-inactive-color;
   background-color: $verb-inactive-background-color;
   text-align: center;
+  transition: color 0.15s, background-color 0.15s;
 }
 
 .api-list-item-header>.route {
@@ -64,11 +66,13 @@ li[api-list-item]>hr.divider {
   background-color: $body-background-color;
 }
 
-.api-list-item-header.selected {
+li[api-list-item].selected .api-list-item-header,
+li[api-list-item].none-selected .api-list-item-header {
   color: $body-color;
 }
 
-.api-list-item-header.selected>.verb {
+li[api-list-item].selected .api-list-item-header>.verb,
+li[api-list-item].none-selected .api-list-item-header>.verb {
   color: $verb-active-color;
   background-color: $verb-active-background-color;
 }
@@ -82,7 +86,7 @@ li[api-list-item]>hr.divider {
   transition: height 0.3s;
 }
 
-.api-list-item-body.selected {
+li[api-list-item].selected .api-list-item-body {
   height: 900px;
 }
 

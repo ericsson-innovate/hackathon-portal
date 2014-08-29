@@ -21,38 +21,18 @@ angular.module('apiListDirective', [])
     },
     templateUrl: apiListTemplatePath,
     link: function (scope, element, attrs) {
-      scope.apiData = [];
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
 
       HackApi.getAllApiData()
           .then(function (apiData) {
-            scope.apiData = apiData;
+            scope.apiListState.apiData = apiData;
           });
 
-      // TODO: I need to add sub-groups within the filtered category groups using apiItem.specification.subCategories
-    },
-    controller: function ($scope) {
-      var selectedSpec;
-
-      selectedSpec = null;
-
-      this.setSelectedSpecification = setSelectedSpecification;
-
-      $scope.$watch('category', function () {
-        setSelectedSpecification(null);
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
       });
-
-      function setSelectedSpecification(spec) {
-        var oldSelectedSpec = selectedSpec;
-        selectedSpec = spec;
-
-        if (oldSelectedSpec && oldSelectedSpec !== selectedSpec) {
-          oldSelectedSpec.setIsSelected(false);
-        }
-
-        if (selectedSpec) {
-          selectedSpec.setIsSelected(true);
-        }
-      }
     }
   };
 });

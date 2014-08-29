@@ -23,12 +23,11 @@ angular.module('apiTryItCardDirective', [])
                                      apiTryItCardTemplatePath) {
   return {
     restrict: 'E',
-    require: '^apiListItem',
     scope: {
       apiItem: '='
     },
     templateUrl: apiTryItCardTemplatePath,
-    link: function (scope, element, attrs, apiListItemCtrl) {
+    link: function (scope, element, attrs) {
       scope.apiItem.tryIt = {};
       scope.apiItem.tryIt.requestBody = '';
       scope.apiItem.tryIt.response = {};

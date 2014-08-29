@@ -18,25 +18,20 @@ angular.module('apiListItemDirective', [])
 .directive('apiListItem', function (HackExamples, HackApi, apiListItemTemplatePath) {
   return {
     restrict: 'A',
-    require: '^apiList',
     scope: {
-      apiItem: '=apiListItem'
+      apiItem: '=apiListItem',
+      apiListState: '='
     },
     templateUrl: apiListItemTemplatePath,
-    link: function (scope, element, attrs, apiListCtrl) {
-      scope.isSelected = false;
+    link: function (scope, element, attrs) {
       scope.apiItem.HackExamples = HackExamples;
       scope.apiItem.HackApi = HackApi;
 
       scope.handleHeaderClick = function () {
-        apiListCtrl.setSelectedSpecification(scope.isSelected ? null : scope);
+        scope.apiListState.selectedItemId =
+                scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
+                    null : scope.apiItem.specification.id;
       };
-
-      scope.setIsSelected = function (isSelected) {
-        scope.isSelected = isSelected;
-      };
-    },
-    controller: function () {
     }
   };
 });

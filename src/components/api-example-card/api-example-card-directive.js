@@ -16,12 +16,11 @@ angular.module('apiExampleCardDirective', [])
 .directive('apiExampleCard', function (apiExampleCardTemplatePath) {
   return {
     restrict: 'E',
-    require: '^apiListItem',
     scope: {
       apiItem: '='
     },
     templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs, apiListItemCtrl) {
+    link: function (scope, element, attrs) {
       scope.handleTabClick = function (platform) {
         scope.apiItem.HackExamples.currentPlatform = platform;
       };

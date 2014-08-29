@@ -16,12 +16,11 @@ angular.module('apiSpecificationCardDirective', [])
 .directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
   return {
     restrict: 'E',
-    require: '^apiListItem',
     scope: {
       apiItem: '='
     },
     templateUrl: apiSpecificationCardTemplatePath,
-    link: function (scope, element, attrs, apiListItemCtrl) {
+    link: function (scope, element, attrs) {
       scope.isArray = function (input) {
         return input instanceof Array;
       };

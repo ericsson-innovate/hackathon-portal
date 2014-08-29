@@ -1,5 +1,7 @@
 <ul>
-  <li ng-repeat="apiItem in apiData | orderApiCalls"
+  <li ng-repeat="apiItem in apiListState.apiData | orderApiCalls"
       api-list-item="apiItem"
+      api-list-state="apiListState"
+      ng-class="{selected: apiListState.selectedItemId === apiItem.specification.id, 'none-selected': !apiListState.selectedItemId}"
       ng-if="apiItem.specification.categories.indexOf(category) >= 0"></li>
 </ul>

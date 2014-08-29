@@ -1,13 +1,11 @@
-<div ng-class="{selected: isSelected}"
-     class="api-list-item-header"
+<div class="api-list-item-header"
      ng-click="handleHeaderClick()">
   <div class="verb">{{apiItem.specification.resourceTable['HTTP Verb'][0]}}</div>
   <div class="route">{{apiItem.specification.resourceTable.Route}}</div>
   <div class="name">{{apiItem.specification.name}}</div>
 </div>
 
-<div ng-class="{selected: isSelected}"
-     class="api-list-item-body">
+<div class="api-list-item-body">
   <ul class="card-tabs tabs">
     <li ng-repeat="card in ['specification', 'example', 'try it']"
         ng-click="apiItem.HackApi.currentCard = card"
