@@ -203,20 +203,84 @@ angular.module('hackApp', [
 .constant('categories', [
   {
     id: 'know-driver',
-    name: 'Know the Driver'
+    name: 'Know the Driver',
+    specs: [
+      '2.13.1-add-a-subscriber',
+      '2.13.2-add-a-subscriber-and-vehicle',
+      '2.13.3-update-a-subscriber',
+      '2.13.4-delete-a-subscriber',
+      '2.13.5-view-a-subscriber',
+      '2.13.6-search-subscribers',
+      '2.12.1-consume',
+      '2.12.2-consume-by-ticket-id',
+      '2.12.3-check-valid-ticket',
+      '2.12.4-create-premium-offers',
+      '2.12.5-deactivate-one-time-purchase',
+      '2.12.6-deactivate-recurrent-purchase',
+      '2.12.7-full-purchase',
+      '2.12.8-get-prices',
+      '2.12.9-get-products',
+      '2.12.10-get-products-by-ids',
+      '2.12.11-get-user-purchases',
+      '2.12.12-get-user-tickets',
+      '2.12.13-get-tickets-by-purchase-id',
+      '2.12.14-get-tickets-by-ticket-id',
+      '2.12.15-purchase',
+      '2.12.16-purchase-by-premium-offer-id',
+      '2.12.17-purchase-by-product-id',
+      '2.12.18-refund',
+      '2.12.19-resume-recurrent-purchase',
+      '2.12.20-stop-purchase-renewal',
+      '2.12.21-extend-one-time-purchase',
+      '2.12.22-extend-recurrent-purchase',
+      '2.12.23-full-gift',
+      '2.12.24-gift',
+      '2.12.25-gift-by-product-id',
+      '2.12.26-gift-by-premium-offer-id',
+      '2.12.27-refill'
+    ]
   },
   {
     id: 'know-car',
-    name: 'Know the Car'
+    name: 'Know the Car',
+    specs: [
+      '2.6.10-check-request-status',
+      '2.6.11-view-diagnostic-data',
+      '2.6.12-get-vehicle-status',
+      '2.16.1-add-a-vehicle',
+      '2.16.2-update-a-vehicle',
+      '2.16.3-delete-a-vehicle',
+      '2.16.4-view-a-vehicle',
+      '2.16.5-update-vehicle-users',
+      '2.16.6-delete-vehicle-users',
+      '2.16.7-search-vehicles'
+    ]
   },
   {
     id: 'control-car',
-    name: 'Control the Car'
+    name: 'Control the Car',
+    specs: [
+      '2.6.1-sign-up',
+      '2.6.2-validate-otp',
+      '2.6.3-set-pin',
+      '2.6.4-login',
+      '2.6.5-door-unlock',
+      '2.6.6-door-lock',
+      '2.6.7-engine-on',
+      '2.6.8-engine-off',
+      '2.6.9-honk-and-blink',
+      '2.6.10-check-request-status',
+      '2.7.1-get-message',
+      '2.7.2-send-message',
+      '2.7.3-tcu-shoulder-tap',
+      '2.7.4-ping-tcu',
+      '2.7.5-tcu-notification-channel'
+    ]
   }
 ])
 
 .run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
-  $rootScope.defaultCategory = categories[1];
+  $rootScope.defaultCategory = categories[2];
 
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
@@ -348,9 +412,11 @@ angular.module('orderApiCallsFilter', [])
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks) {
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks, categories) {
   // Re-route invalid routes back to home
   $urlRouterProvider.otherwise(sideBarLinks[1].url);
+
+  var apiLink;
 
   sideBarLinks.forEach(function (link) {
     if (link.isStateRoute) {
@@ -362,7 +428,33 @@ angular.module('hackApp')
             controller: link.controller
           });
     }
+
+    if ("api-documentation" == link.ref)
+        apiLink = link;
   });
+
+  if (apiLink) {
+    categories.forEach(function (category) {
+      var routeName = apiLink.ref + '.' + category.id;
+      var routeURL = '/' + category.id;
+
+      $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+
+      category['specs'].forEach(function (api) {
+        var apiName = api.replace(/\./g, '_');
+        var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
+        var routeURL = '/' + apiName;
+
+        $stateProvider.state(routeName,                       { url: routeURL,          templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+      });
+    });
+  }
 })
 
 .run(function ($rootScope, $log) {
@@ -374,10 +466,20 @@ angular.module('hackApp')
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    if (toState.name === 'api-documentation') {
+    var isApiDoc = toState.name.indexOf('api-documentation') == 0;
+
+    if (isApiDoc) {
       if (!$rootScope.selectedCategory) {
         $rootScope.selectedCategory = $rootScope.defaultCategory;
       }
+
+      var entities = toState.name.split('.');
+      $rootScope.selectedApiCategory = entities[1];
+      $rootScope.selectedApi = entities[2];
+      $rootScope.selectedApiTab = entities[3];
+      $rootScope.selectedApiExample = entities[4];
+
+      console.log($rootScope.selectedApiCategory, $rootScope.selectedApi, $rootScope.selectedApiTab, $rootScope.selectedApiExample);
     } else {
       $rootScope.selectedCategory = null;
     }
@@ -859,36 +961,6 @@ angular.module('tryItService', [])
 
 'use strict';
 
-angular.module('apiExampleCardDirective', [])
-
-.constant('apiExampleCardTemplatePath', hack.rootPath + '/dist/templates/components/api-example-card/api-example-card.html')
-
-/**
- * @ngdoc directive
- * @name apiExampleCard
- * @requires apiExampleCardTemplatePath
- * @param {object} example
- * @description
- *
- * A panel used for displaying platform-specific examples of a single API call.
- */
-.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.handleTabClick = function (platform) {
-        scope.apiItem.HackExamples.currentPlatform = platform;
-      };
-    }
-  };
-});
-
-'use strict';
-
 angular.module('apiListDirective', [])
 
 .constant('apiListTemplatePath', hack.rootPath + '/dist/templates/components/api-list/api-list.html')
@@ -922,6 +994,36 @@ angular.module('apiListDirective', [])
       scope.$watch('category', function () {
         scope.apiListState.selectedItemId = null;
       });
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiExampleCardDirective', [])
+
+.constant('apiExampleCardTemplatePath', hack.rootPath + '/dist/templates/components/api-example-card/api-example-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiExampleCard
+ * @requires apiExampleCardTemplatePath
+ * @param {object} example
+ * @description
+ *
+ * A panel used for displaying platform-specific examples of a single API call.
+ */
+.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiExampleCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
     }
   };
 });
