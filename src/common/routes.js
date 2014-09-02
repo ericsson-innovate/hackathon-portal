@@ -66,6 +66,7 @@ angular.module('hackApp')
       var entities = toState.name.split('.');
 
       if (entities.length > 0) {
+        // TODO: get rid of these, if they are unneeded
         $rootScope.selectedCategory = entities[1];
         $rootScope.selectedApiCategory = entities[1];
         $rootScope.selectedApi = entities[2];
@@ -76,8 +77,6 @@ angular.module('hackApp')
           $rootScope.selectedCategory = $rootScope.defaultCategory;
         }
       }
-
-      console.log($rootScope.selectedApiCategory, $rootScope.selectedApi, $rootScope.selectedApiTab, $rootScope.selectedApiExample);
     } else {
       $rootScope.selectedCategory = null;
     }

@@ -36,9 +36,9 @@ angular.module('hackController', [])
   });
 
   $scope.hackState.handleSideBarClick = function (link) {
-  	var targetState = link;
+  	var targetState = link.ref;
 
-  	if (link === 'api-documentation')
+  	if (link.ref === 'api-documentation')
 		targetState = $rootScope.defaultCategory.ref;
 
   	$state.go(targetState);

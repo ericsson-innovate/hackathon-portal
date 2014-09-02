@@ -63,7 +63,7 @@
       <li ng-repeat="item in hackState.sideBarLinks"
           ng-class="{selected: hackState.sideBarSelectedLink === item.ref}">
         <a ng-if="item.isStateRoute"
-           ng-click="hackState.handleSideBarClick(item.ref)">
+           ng-click="hackState.handleSideBarClick(item)">
           {{item.label}}
         </a>
         <a ng-if="!item.isStateRoute"
