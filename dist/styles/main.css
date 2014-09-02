@@ -321,8 +321,10 @@ h1 {
   left: 0;
   width: 100%;
   height: 640px;
-  background: transparent url('/hackathon-portal/dist/images/car.png') no-repeat center top;
-  z-index: 2; }
+  background: transparent url('/hackathon-portal/dist/images/car-1.png') no-repeat center top;
+  z-index: 2;
+  -webkit-transition: background-image 1s;
+          transition: background-image 1s; }
 
 #empty-car-area {
   position: relative;
