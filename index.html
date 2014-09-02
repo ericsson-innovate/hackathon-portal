@@ -46,7 +46,7 @@
           <ul class="tabs">
             <li ng-repeat="category in hackState.categories"
                 ng-click="hackState.handleCategoryTabClick(category)"
-                ng-class="{selected: selectedCategory === category}"
+                ng-class="{selected: myState.name === category.ref}"
                 class="tab">
               {{category.name}}
             </li>
@@ -59,9 +59,9 @@
   <div class="content-area">
     <ul class="side-menu">
       <li ng-repeat="item in hackState.sideBarLinks"
-          ng-class="{selected: routeState.name === item.ref}">
+          ng-class="{selected: hackState.sideBarSelectedLink === item.ref}">
         <a ng-if="item.isStateRoute"
-           ng-attr-ui-sref="{{item.ref}}">
+           ng-click="hackState.handleSideBarClick(item.ref)">
           {{item.label}}
         </a>
         <a ng-if="!item.isStateRoute"

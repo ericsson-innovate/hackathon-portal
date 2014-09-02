@@ -63,15 +63,19 @@ angular.module('hackApp')
     var isApiDoc = toState.name.indexOf('api-documentation') == 0;
 
     if (isApiDoc) {
-      if (!$rootScope.selectedCategory) {
-        $rootScope.selectedCategory = $rootScope.defaultCategory;
-      }
-
       var entities = toState.name.split('.');
-      $rootScope.selectedApiCategory = entities[1];
-      $rootScope.selectedApi = entities[2];
-      $rootScope.selectedApiTab = entities[3];
-      $rootScope.selectedApiExample = entities[4];
+
+      if (entities.length > 0) {
+        $rootScope.selectedCategory = entities[1];
+        $rootScope.selectedApiCategory = entities[1];
+        $rootScope.selectedApi = entities[2];
+        $rootScope.selectedApiTab = entities[3];
+        $rootScope.selectedApiExample = entities[4];
+      } else {
+        if (!$rootScope.selectedCategory) {
+          $rootScope.selectedCategory = $rootScope.defaultCategory;
+        }
+      }
 
       console.log($rootScope.selectedApiCategory, $rootScope.selectedApi, $rootScope.selectedApiTab, $rootScope.selectedApiExample);
     } else {

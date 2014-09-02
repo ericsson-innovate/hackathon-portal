@@ -204,6 +204,7 @@ angular.module('hackApp', [
   {
     id: 'know-driver',
     name: 'Know the Driver',
+    ref: 'api-documentation.know-driver',
     specs: [
       '2.13.1-add-a-subscriber',
       '2.13.2-add-a-subscriber-and-vehicle',
@@ -243,6 +244,7 @@ angular.module('hackApp', [
   {
     id: 'know-car',
     name: 'Know the Car',
+    ref: 'api-documentation.know-car',
     specs: [
       '2.6.10-check-request-status',
       '2.6.11-view-diagnostic-data',
@@ -259,6 +261,7 @@ angular.module('hackApp', [
   {
     id: 'control-car',
     name: 'Control the Car',
+    ref: 'api-documentation.control-car',
     specs: [
       '2.6.1-sign-up',
       '2.6.2-validate-otp',

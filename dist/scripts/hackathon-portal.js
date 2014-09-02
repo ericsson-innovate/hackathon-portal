@@ -204,6 +204,7 @@ angular.module('hackApp', [
   {
     id: 'know-driver',
     name: 'Know the Driver',
+    ref: 'api-documentation.know-driver',
     specs: [
       '2.13.1-add-a-subscriber',
       '2.13.2-add-a-subscriber-and-vehicle',
@@ -243,6 +244,7 @@ angular.module('hackApp', [
   {
     id: 'know-car',
     name: 'Know the Car',
+    ref: 'api-documentation.know-car',
     specs: [
       '2.6.10-check-request-status',
       '2.6.11-view-diagnostic-data',
@@ -259,6 +261,7 @@ angular.module('hackApp', [
   {
     id: 'control-car',
     name: 'Control the Car',
+    ref: 'api-documentation.control-car',
     specs: [
       '2.6.1-sign-up',
       '2.6.2-validate-otp',
@@ -369,13 +372,36 @@ angular.module('hackController', [])
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
 
+  $scope.myState = $state;
+  $scope.hackState.sideBarSelectedLink = null;
+
+  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+  	$scope.myState = toState;
+
+  	for (var i = 0; i < sideBarLinks.length; i++) {
+  		var link = sideBarLinks[i];
+
+	  	if (toState.name.indexOf(link.ref) == 0) {
+	  		$scope.hackState.sideBarSelectedLink = link.ref;
+	  		break;
+	  	}
+  	}
+  });
+
+  $scope.hackState.handleSideBarClick = function (link) {
+  	var targetState = link;
+
+  	if (link === 'api-documentation')
+		targetState = $rootScope.defaultCategory.ref;
+
+  	$state.go(targetState);
+  };
+
   $scope.hackState.handleCategoryTabClick = function (category) {
     $rootScope.selectedCategory = category;
 
     // Transition to the API documentation route/state
-    if ($rootScope.routeState.name !== 'api-documentation') {
-      $state.go('api-documentation');
-    }
+    $state.go('api-documentation.' + $rootScope.selectedCategory.id);
   };
 });
 
@@ -469,15 +495,19 @@ angular.module('hackApp')
     var isApiDoc = toState.name.indexOf('api-documentation') == 0;
 
     if (isApiDoc) {
-      if (!$rootScope.selectedCategory) {
-        $rootScope.selectedCategory = $rootScope.defaultCategory;
-      }
-
       var entities = toState.name.split('.');
-      $rootScope.selectedApiCategory = entities[1];
-      $rootScope.selectedApi = entities[2];
-      $rootScope.selectedApiTab = entities[3];
-      $rootScope.selectedApiExample = entities[4];
+
+      if (entities.length > 0) {
+        $rootScope.selectedCategory = entities[1];
+        $rootScope.selectedApiCategory = entities[1];
+        $rootScope.selectedApi = entities[2];
+        $rootScope.selectedApiTab = entities[3];
+        $rootScope.selectedApiExample = entities[4];
+      } else {
+        if (!$rootScope.selectedCategory) {
+          $rootScope.selectedCategory = $rootScope.defaultCategory;
+        }
+      }
 
       console.log($rootScope.selectedApiCategory, $rootScope.selectedApi, $rootScope.selectedApiTab, $rootScope.selectedApiExample);
     } else {
@@ -1294,7 +1324,8 @@ angular.module('apiDocumentationController', [])
  *
  * Controller for the API Documentation page.
  */
-.controller('ApiDocumentationCtrl', function () {
+.controller('ApiDocumentationCtrl', function ($rootScope) {
+	console.log($rootScope.selectedCategory)
 });
 
 'use strict';
