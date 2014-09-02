@@ -643,6 +643,15 @@ api-list:after {
   clear: both;
   margin-bottom: 20px; }
 
+.getting-started-route ul {
+  padding-left: 40px; }
+
+.getting-started-route ul li {
+  padding-bottom: 10px; }
+
+.getting-started-route pre {
+  display: inline; }
+
 .sample-app-card {
   margin-bottom: 40px; }
 
