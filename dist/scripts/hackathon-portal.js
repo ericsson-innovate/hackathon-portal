@@ -1324,8 +1324,7 @@ angular.module('apiDocumentationController', [])
  *
  * Controller for the API Documentation page.
  */
-.controller('ApiDocumentationCtrl', function ($rootScope) {
-	console.log($rootScope.selectedCategory)
+.controller('ApiDocumentationCtrl', function () {
 });
 
 'use strict';
