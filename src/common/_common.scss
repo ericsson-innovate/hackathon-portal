@@ -267,8 +267,9 @@ h1 {
   top: 0; left: 0;
   width: 100%;
   height: $banner-height;
-  background: transparent url($root-path + '/dist/images/car.png') no-repeat center top;
+  background: transparent url($root-path + '/dist/images/car-1.png') no-repeat center top;
   z-index: 2;
+  transition: background-image 1s;
 }
 
 #empty-car-area {

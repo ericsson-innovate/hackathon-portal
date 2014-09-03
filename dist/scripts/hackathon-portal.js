@@ -355,6 +355,9 @@ angular.module('errorDescriptionFilter', [])
 
 angular.module('hackController', [])
 
+.constant('car1Url', hack.rootPath + '/dist/images/car-1.png')
+.constant('car2Url', hack.rootPath + '/dist/images/car-2.png')
+
 /**
  * @ngdoc object
  * @name HackCtrl
@@ -367,7 +370,13 @@ angular.module('hackController', [])
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories) {
+.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories, car1Url,
+                                  car2Url) {
+  var previousRouteName, carImageElement;
+
+  previousRouteName = '';
+  carImageElement = angular.element(document.getElementById('car-image-panel'));
+
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
@@ -403,6 +412,20 @@ angular.module('hackController', [])
     // Transition to the API documentation route/state
     $state.go('api-documentation.' + $rootScope.selectedCategory.id);
   };
+
+  $rootScope.$watch('routeState.name', function (nextRouteName) {
+    if (previousRouteName !== nextRouteName) {
+      maybeSwitchCarImage();
+    }
+
+    previousRouteName = nextRouteName;
+  });
+
+  // TODO: this image-switching logic really should be moved to a separate directive, but for lack of time I'm putting it here
+  function maybeSwitchCarImage() {
+    var url = 'url(' + (Math.random() < 0.5 ? car1Url : car2Url) + ')';
+    carImageElement.css('background-image', url);
+  }
 });
 
 'use strict';
@@ -991,6 +1014,36 @@ angular.module('tryItService', [])
 
 'use strict';
 
+angular.module('apiExampleCardDirective', [])
+
+.constant('apiExampleCardTemplatePath', hack.rootPath + '/dist/templates/components/api-example-card/api-example-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiExampleCard
+ * @requires apiExampleCardTemplatePath
+ * @param {object} example
+ * @description
+ *
+ * A panel used for displaying platform-specific examples of a single API call.
+ */
+.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiExampleCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListDirective', [])
 
 .constant('apiListTemplatePath', hack.rootPath + '/dist/templates/components/api-list/api-list.html')
@@ -1024,36 +1077,6 @@ angular.module('apiListDirective', [])
       scope.$watch('category', function () {
         scope.apiListState.selectedItemId = null;
       });
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiExampleCardDirective', [])
-
-.constant('apiExampleCardTemplatePath', hack.rootPath + '/dist/templates/components/api-example-card/api-example-card.html')
-
-/**
- * @ngdoc directive
- * @name apiExampleCard
- * @requires apiExampleCardTemplatePath
- * @param {object} example
- * @description
- *
- * A panel used for displaying platform-specific examples of a single API call.
- */
-.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.handleTabClick = function (platform) {
-        scope.apiItem.HackExamples.currentPlatform = platform;
-      };
     }
   };
 });
