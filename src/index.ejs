@@ -48,7 +48,7 @@
           <ul class="tabs">
             <li ng-repeat="category in hackState.categories"
                 ng-click="hackState.handleCategoryTabClick(category)"
-                ng-class="{selected: myState.name === category.ref}"
+                ng-class="{selected: category.id === hackState.selectedApiCategory}"
                 class="tab">
               {{category.name}}
             </li>
