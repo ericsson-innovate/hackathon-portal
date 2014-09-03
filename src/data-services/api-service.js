@@ -44,7 +44,8 @@ angular.module('apiService', [])
               HackApi.apiData[i++] = {
                 key: apiKey,
                 specification: HackSpecifications.specificationsData[apiKey],
-                example: HackExamples.examplesData[apiKey]
+                example: HackExamples.examplesData[apiKey],
+                ref: apiKey.replace(/\./g, "_")
               };
             }
 

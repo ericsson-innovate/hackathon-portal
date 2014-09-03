@@ -13,7 +13,7 @@ angular.module('apiListDirective', [])
  *
  * A footer list used for displaying a list of navigation links.
  */
-.directive('apiList', function (HackApi, apiListTemplatePath) {
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
   return {
     restrict: 'E',
     scope: {
@@ -28,6 +28,11 @@ angular.module('apiListDirective', [])
       HackApi.getAllApiData()
           .then(function (apiData) {
             scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
           });
 
       scope.$watch('category', function () {

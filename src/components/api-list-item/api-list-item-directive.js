@@ -15,7 +15,7 @@ angular.module('apiListItemDirective', [])
  *
  * A panel used for displaying the specification for a single API call.
  */
-.directive('apiListItem', function (HackExamples, HackApi, apiListItemTemplatePath) {
+.directive('apiListItem', function ($rootScope, $state, HackExamples, HackApi, apiListItemTemplatePath) {
   return {
     restrict: 'A',
     scope: {
@@ -31,6 +31,13 @@ angular.module('apiListItemDirective', [])
         scope.apiListState.selectedItemId =
                 scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
                     null : scope.apiItem.specification.id;
+
+        var targetRef = 'api-documentation.' + $rootScope.selectedApiCategory;
+
+        if (scope.apiListState.selectedItemId != null)
+          targetRef = targetRef + '.' + scope.apiItem.ref;
+        
+        $state.go(targetRef);
       };
     }
   };
