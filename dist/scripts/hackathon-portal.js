@@ -380,9 +380,10 @@ angular.module('hackController', [])
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
+  $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
+  $scope.hackState.sideBarSelectedLink = null;
 
   $scope.myState = $state;
-  $scope.hackState.sideBarSelectedLink = null;
 
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
   	$scope.myState = toState;
@@ -395,6 +396,8 @@ angular.module('hackController', [])
 	  		break;
 	  	}
   	}
+
+    $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
   });
 
   $scope.hackState.handleSideBarClick = function (link) {
@@ -407,10 +410,10 @@ angular.module('hackController', [])
   };
 
   $scope.hackState.handleCategoryTabClick = function (category) {
-    $rootScope.selectedCategory = category;
+    $rootScope.selectedCategory = category.id;
 
     // Transition to the API documentation route/state
-    $state.go('api-documentation.' + $rootScope.selectedCategory.id);
+    $state.go('api-documentation.' + category.id);
   };
 
   $rootScope.$watch('routeState.name', function (nextRouteName) {
@@ -495,12 +498,14 @@ angular.module('hackApp')
         var routeURL = '/' + apiName;
 
         $stateProvider.state(routeName,                       { url: routeURL,          templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+
+        // TODO: implement these deeper nestings
+        // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        // $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        // $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        // $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        // $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        // $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
       });
     });
   }
