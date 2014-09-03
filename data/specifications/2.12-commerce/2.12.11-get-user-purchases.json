@@ -3,7 +3,7 @@
   "docNumber": "2.12.11",
   "displayWeight": "100",
   "name": "Get User Purchases",
-  "description": "This operation gets the purchase record for the end user. The record search condition is defined by setting the parameters paginationRequest, sortItem and filter.",
+  "description": "This operation gets the purchase record for the end user. The record search condition is defined by setting the parameters paginationRequest, sortItem and filter.\n\nAcceptable values for purchase:\nGas: { \"serviceId\" : \"S-hf0nkZQQcl-\", \"premiumResourceType\" : \"GasProduct\" }\nPizza: { \"serviceId\" : \"S-jf0nkZQQcl-\", \"premiumResourceType\" : \"PizzaProduct\" }\nParking: { \"serviceId\" : \"S-if0nkZQQcl-\", \"premiumResourceType\" : \"ParkingProduct\" }\nToll: { \"serviceId\" : \"S-kf0nkZQQcl-\", \"premiumResourceType\" : \"TollProduct\" }\nOil Change: { \"serviceId\" : \"S-mf0nkZQQcl-\", \"premiumResourceType\" : \"OilChangeProduct\" }\nCoffee: { \"serviceId\" : \"S-lf0nkZQQcl-\", \"premiumResourceType\" : \"CoffeeProduct\" }",
   "categories": ["know-driver"],
   "subCategories": [],
   "resourceTable": {
@@ -20,16 +20,18 @@
         "key": "appId",
         "type": "String",
         "required": true,
+        "defaultVal": "MyApp",
         "description": "Optional: application making this call."
       },
       {
-        "key": "Parameters",
+        "key": "parameters",
         "type": "JSON",
         "required": true,
+        "defaultVal": "{ \"paginationRequest\" : 1 }",
         "description": "Parameters format depends on the application domain and operation."
       },
       {
-        "key": "Client",
+        "key": "client",
         "type": "JSON",
         "required": false,
         "description": "Client capabilities (deviceId)."

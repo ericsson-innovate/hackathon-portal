@@ -3,7 +3,7 @@
   "docNumber": "2.12.15",
   "displayWeight": "100",
   "name": "Purchase",
-  "description": "This operation performs a user purchase. The MSDP selects a product based on the specified premium resource type. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.\n\nTest",
+  "description": "This operation performs a user purchase. The MSDP selects a product based on the specified premium resource type. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.\n\nAcceptable values for purchase:\nGas: { \"serviceId\" : \"S-hf0nkZQQcl-\", \"premiumResourceType\" : \"GasProduct\" }\nPizza: { \"serviceId\" : \"S-jf0nkZQQcl-\", \"premiumResourceType\" : \"PizzaProduct\" }\nParking: { \"serviceId\" : \"S-if0nkZQQcl-\", \"premiumResourceType\" : \"ParkingProduct\" }\nToll: { \"serviceId\" : \"S-kf0nkZQQcl-\", \"premiumResourceType\" : \"TollProduct\" }\nOil Change: { \"serviceId\" : \"S-mf0nkZQQcl-\", \"premiumResourceType\" : \"OilChangeProduct\" }\nCoffee: { \"serviceId\" : \"S-lf0nkZQQcl-\", \"premiumResourceType\" : \"CoffeeProduct\" }",
   "categories": ["know-driver"],
   "subCategories": [],
   "resourceTable": {
@@ -20,16 +20,18 @@
         "key": "appId",
         "type": "String",
         "required": true,
+        "defaultVal": "MyApp",
         "description": "Optional: application making this call."
       },
       {
-        "key": "Parameters",
+        "key": "parameters",
         "type": "JSON",
         "required": true,
+        "defaultVal": "{ \"serviceId\" : \"S-hf0nkZQQcl-\", \"premiumResourceType\" : \"GasProduct\" }",
         "description": "Parameters format depends on the application domain and operation."
       },
       {
-        "key": "Client",
+        "key": "client",
         "type": "JSON",
         "required": false,
         "description": "Client capabilities (deviceId)."
