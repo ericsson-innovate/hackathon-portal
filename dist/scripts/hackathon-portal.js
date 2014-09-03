@@ -398,9 +398,9 @@ angular.module('hackController', [])
   });
 
   $scope.hackState.handleSideBarClick = function (link) {
-  	var targetState = link;
+  	var targetState = link.ref;
 
-  	if (link === 'api-documentation')
+  	if (link.ref === 'api-documentation')
 		targetState = $rootScope.defaultCategory.ref;
 
   	$state.go(targetState);
@@ -521,6 +521,7 @@ angular.module('hackApp')
       var entities = toState.name.split('.');
 
       if (entities.length > 0) {
+        // TODO: get rid of these, if they are unneeded
         $rootScope.selectedCategory = entities[1];
         $rootScope.selectedApiCategory = entities[1];
         $rootScope.selectedApi = entities[2];
@@ -531,8 +532,6 @@ angular.module('hackApp')
           $rootScope.selectedCategory = $rootScope.defaultCategory;
         }
       }
-
-      console.log($rootScope.selectedApiCategory, $rootScope.selectedApi, $rootScope.selectedApiTab, $rootScope.selectedApiExample);
     } else {
       $rootScope.selectedCategory = null;
     }
@@ -631,7 +630,8 @@ angular.module('apiService', [])
               HackApi.apiData[i++] = {
                 key: apiKey,
                 specification: HackSpecifications.specificationsData[apiKey],
-                example: HackExamples.examplesData[apiKey]
+                example: HackExamples.examplesData[apiKey],
+                ref: apiKey.replace(/\./g, "_")
               };
             }
 
@@ -1057,7 +1057,7 @@ angular.module('apiListDirective', [])
  *
  * A footer list used for displaying a list of navigation links.
  */
-.directive('apiList', function (HackApi, apiListTemplatePath) {
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
   return {
     restrict: 'E',
     scope: {
@@ -1072,6 +1072,11 @@ angular.module('apiListDirective', [])
       HackApi.getAllApiData()
           .then(function (apiData) {
             scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
           });
 
       scope.$watch('category', function () {
@@ -1098,7 +1103,7 @@ angular.module('apiListItemDirective', [])
  *
  * A panel used for displaying the specification for a single API call.
  */
-.directive('apiListItem', function (HackExamples, HackApi, apiListItemTemplatePath) {
+.directive('apiListItem', function ($rootScope, $state, HackExamples, HackApi, apiListItemTemplatePath) {
   return {
     restrict: 'A',
     scope: {
@@ -1114,6 +1119,13 @@ angular.module('apiListItemDirective', [])
         scope.apiListState.selectedItemId =
                 scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
                     null : scope.apiItem.specification.id;
+
+        var targetRef = 'api-documentation.' + $rootScope.selectedApiCategory;
+
+        if (scope.apiListState.selectedItemId != null)
+          targetRef = targetRef + '.' + scope.apiItem.ref;
+        
+        $state.go(targetRef);
       };
     }
   };
