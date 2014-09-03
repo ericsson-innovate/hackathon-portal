@@ -42,8 +42,7 @@ gulp.task('scripts', function () {
       .pipe(plugins.rename({suffix: '.min'}))
       .pipe(plugins.ngAnnotate())
       .pipe(plugins.uglify())
-      .pipe(gulp.dest(scriptsDist))
-      .pipe(plugins.notify({message: 'scripts task complete'}));
+      .pipe(gulp.dest(scriptsDist));
 });
 
 gulp.task('styles', function () {
@@ -54,30 +53,26 @@ gulp.task('styles', function () {
       .pipe(gulp.dest(stylesDist))
       .pipe(plugins.rename({suffix: '.min'}))
       .pipe(plugins.minifyCss())
-      .pipe(gulp.dest(stylesDist))
-      .pipe(plugins.notify({message: 'styles task complete'}));
+      .pipe(gulp.dest(stylesDist));
 });
 
 gulp.task('images', function () {
   return gulp.src(imagesSrc)
       .pipe(plugins.plumber())
     //.pipe(plugins.cache(plugins.imagemin({optimizationLevel: 3, progressive: true, interlaced: true})))// TODO: add image compression?
-      .pipe(gulp.dest(imagesDist))
-      .pipe(plugins.notify({message: 'images task complete'}));
+      .pipe(gulp.dest(imagesDist));
 });
 
 gulp.task('templates', function () {
   return gulp.src(templatesSrc)
       .pipe(plugins.plumber())
-      .pipe(gulp.dest(templatesDist))
-      .pipe(plugins.notify({message: 'templates task complete'}));
+      .pipe(gulp.dest(templatesDist));
 });
 
 gulp.task('fonts', function () {
   return gulp.src(fontsSrc)
       .pipe(plugins.plumber())
-      .pipe(gulp.dest(fontsDist))
-      .pipe(plugins.notify({message: 'fonts task complete'}));
+      .pipe(gulp.dest(fontsDist));
 });
 
 gulp.task('ejs', function () {
@@ -86,8 +81,7 @@ gulp.task('ejs', function () {
       .pipe(plugins.ejs({
         rootPath: rootPath
       }))
-      .pipe(gulp.dest(ejsDist))
-      .pipe(plugins.notify({message: 'ejs task complete'}));
+      .pipe(gulp.dest(ejsDist));
 });
 
 gulp.task('data', ['data-specifications', 'data-web-examples']);
@@ -104,16 +98,14 @@ gulp.task('data-specifications', function () {
         }
         return new Buffer(JSON.stringify(array));
       }))
-      .pipe(gulp.dest(dataDist))
-      .pipe(plugins.notify({message: 'data-specifications task complete'}));
+      .pipe(gulp.dest(dataDist));
 });
 
 gulp.task('data-web-examples', function () {
   return gulp.src(dataWebExamplesSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.concat('web-examples.js'))
-      .pipe(gulp.dest(dataDist))
-      .pipe(plugins.notify({message: 'data-web-examples task complete'}));
+      .pipe(gulp.dest(dataDist));
 });
 
 gulp.task('web-examples-tests-once', function () {
