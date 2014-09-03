@@ -20,6 +20,7 @@ api-specification-card>div:first-child {
   content: '';
 }
 
+api-specification-card>.description,
 api-specification-card td {
   white-space: pre-wrap;
 }

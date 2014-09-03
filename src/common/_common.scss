@@ -313,7 +313,8 @@ h1 {
   margin: 0 $side-menu-right-margin 0 0;
 }
 
-.side-menu>li, .side-menu>li>a {
+.side-menu>li>a,
+.side-menu>li>div {
   display: block;
   height: $side-menu-item-height;
   line-height: $side-menu-item-height;
@@ -322,6 +323,40 @@ h1 {
   text-align: left;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.side-menu>li>div {
+  cursor: default;
+}
+
+.api-documentation-categories {
+  @extend .non-bulleted-list;
+  padding-left: 18px;
+}
+
+.api-documentation-categories>li {
+  text-indent: -5px;
+  margin: 20px 0;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.api-documentation-categories>li:before {
+  content: '\2014';
+  position: relative;
+  left: -5px;
+}
+
+.api-documentation-categories>li:first-child {
+  margin-top: 0px;
+}
+
+.api-documentation-categories>li:last-child {
+  margin-bottom: 30px;
+}
+
+.api-documentation-categories>li.selected {
+  color: $item-active-color;
 }
 
 a,

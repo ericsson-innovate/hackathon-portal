@@ -158,7 +158,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-.non-bulleted-list, .tabs, .side-menu, api-specification-card ul, api-list > ul {
+.non-bulleted-list, .tabs, .side-menu, .api-documentation-categories, api-specification-card ul, api-list > ul {
   padding-left: 0;
   list-style-type: none;
   width: 100%; }
@@ -357,7 +357,7 @@ h1 {
   width: 220px;
   margin: 0 20px 0 0; }
 
-.side-menu > li, .side-menu > li > a {
+.side-menu > li > a, .side-menu > li > div {
   display: block;
   height: 84px;
   line-height: 84px;
@@ -366,6 +366,32 @@ h1 {
   text-align: left;
   text-transform: uppercase;
   cursor: pointer; }
+
+.side-menu > li > div {
+  cursor: default; }
+
+.api-documentation-categories {
+  padding-left: 18px; }
+
+.api-documentation-categories > li {
+  text-indent: -5px;
+  margin: 20px 0;
+  text-transform: uppercase;
+  cursor: pointer; }
+
+.api-documentation-categories > li:before {
+  content: '\2014';
+  position: relative;
+  left: -5px; }
+
+.api-documentation-categories > li:first-child {
+  margin-top: 0px; }
+
+.api-documentation-categories > li:last-child {
+  margin-bottom: 30px; }
+
+.api-documentation-categories > li.selected {
+  color: #0099ff; }
 
 a, a:active, a:hover, a:visited {
   text-decoration: none; }
@@ -477,7 +503,7 @@ api-specification-card > div:first-child {
 .resource-table-array-element:last-child:after {
   content: ''; }
 
-api-specification-card td {
+api-specification-card > .description, api-specification-card td {
   white-space: pre-wrap; }
 
 api-specification-card dt {
