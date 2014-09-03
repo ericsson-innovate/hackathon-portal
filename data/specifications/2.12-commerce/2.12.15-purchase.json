@@ -3,7 +3,7 @@
   "docNumber": "2.12.15",
   "displayWeight": "100",
   "name": "Purchase",
-  "description": "This operation performs a user purchase. The MSDP selects a product based on the specified premium resource type. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.",
+  "description": "This operation performs a user purchase. The MSDP selects a product based on the specified premium resource type. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.\n\nTest",
   "categories": ["know-driver"],
   "subCategories": [],
   "resourceTable": {
@@ -19,13 +19,13 @@
       {
         "key": "appId",
         "type": "String",
-        "required": false,
+        "required": true,
         "description": "Optional: application making this call."
       },
       {
         "key": "Parameters",
         "type": "JSON",
-        "required": false,
+        "required": true,
         "description": "Parameters format depends on the application domain and operation."
       },
       {

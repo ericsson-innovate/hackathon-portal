@@ -19,13 +19,13 @@
       {
         "key": "appId",
         "type": "String",
-        "required": false,
+        "required": true,
         "description": "Optional: application making this call."
       },
       {
         "key": "Parameters",
         "type": "JSON",
-        "required": false,
+        "required": true,
         "description": "Parameters format depends on the application domain and operation."
       },
       {
