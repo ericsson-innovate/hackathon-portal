@@ -75,7 +75,7 @@ angular.module('hackApp')
         $rootScope.selectedApiTab = entities[3];
         $rootScope.selectedApiExample = entities[4];
       } else {
-        if (!$rootScope.selectedCategory) {
+        if ($rootScope.selectedCategory == null) {
           $rootScope.selectedCategory = $rootScope.defaultCategory;
         }
       }

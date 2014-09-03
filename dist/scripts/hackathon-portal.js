@@ -386,6 +386,11 @@ angular.module('hackController', [])
   $scope.myState = $state;
 
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    if (toState.name === 'api-documentation') {
+      $state.go($rootScope.defaultCategory.ref);
+      return;
+    }
+
   	$scope.myState = toState;
 
   	for (var i = 0; i < sideBarLinks.length; i++) {
@@ -533,7 +538,7 @@ angular.module('hackApp')
         $rootScope.selectedApiTab = entities[3];
         $rootScope.selectedApiExample = entities[4];
       } else {
-        if (!$rootScope.selectedCategory) {
+        if ($rootScope.selectedCategory == null) {
           $rootScope.selectedCategory = $rootScope.defaultCategory;
         }
       }
@@ -1120,7 +1125,28 @@ angular.module('apiListItemDirective', [])
       scope.apiItem.HackExamples = HackExamples;
       scope.apiItem.HackApi = HackApi;
 
-      scope.handleHeaderClick = function () {
+      // TODO: implement scroll to selected API
+      // var GetScreenCordinates = function(obj) {
+      //   var p = {};
+      //   p.x = obj.offsetLeft;
+      //   p.y = obj.offsetTop;
+      //   while (obj.offsetParent) {
+      //     p.x = p.x + obj.offsetParent.offsetLeft;
+      //     p.y = p.y + obj.offsetParent.offsetTop;
+      //     if (obj == document.getElementsByTagName("body")[0]) {
+      //       break;
+      //     }
+      //     else {
+      //       obj = obj.offsetParent;
+      //     }
+      //   }
+      //   return p;
+      // };
+
+      scope.handleHeaderClick = function (evt) {
+        // var rect = GetScreenCordinates(evt.target);
+        // window.scrollTo(0, rect.y);
+
         scope.apiListState.selectedItemId =
                 scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
                     null : scope.apiItem.specification.id;

@@ -33,6 +33,11 @@ angular.module('hackController', [])
   $scope.myState = $state;
 
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    if (toState.name === 'api-documentation') {
+      $state.go($rootScope.defaultCategory.ref);
+      return;
+    }
+
   	$scope.myState = toState;
 
   	for (var i = 0; i < sideBarLinks.length; i++) {

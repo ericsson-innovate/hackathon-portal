@@ -27,7 +27,28 @@ angular.module('apiListItemDirective', [])
       scope.apiItem.HackExamples = HackExamples;
       scope.apiItem.HackApi = HackApi;
 
-      scope.handleHeaderClick = function () {
+      // TODO: implement scroll to selected API
+      // var GetScreenCordinates = function(obj) {
+      //   var p = {};
+      //   p.x = obj.offsetLeft;
+      //   p.y = obj.offsetTop;
+      //   while (obj.offsetParent) {
+      //     p.x = p.x + obj.offsetParent.offsetLeft;
+      //     p.y = p.y + obj.offsetParent.offsetTop;
+      //     if (obj == document.getElementsByTagName("body")[0]) {
+      //       break;
+      //     }
+      //     else {
+      //       obj = obj.offsetParent;
+      //     }
+      //   }
+      //   return p;
+      // };
+
+      scope.handleHeaderClick = function (evt) {
+        // var rect = GetScreenCordinates(evt.target);
+        // window.scrollTo(0, rect.y);
+
         scope.apiListState.selectedItemId =
                 scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
                     null : scope.apiItem.specification.id;

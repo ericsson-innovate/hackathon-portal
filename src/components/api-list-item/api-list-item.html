@@ -1,5 +1,5 @@
 <div class="api-list-item-header"
-     ng-click="handleHeaderClick()">
+     ng-click="handleHeaderClick($event)">
   <div class="verb">{{apiItem.specification.resourceTable['HTTP Verb'][0]}}</div>
   <div class="route">{{apiItem.specification.resourceTable.Route}}</div>
   <div class="name">{{apiItem.specification.name}}</div>
