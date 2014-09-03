@@ -671,10 +671,19 @@ api-list:after {
   clear: both;
   margin-bottom: 20px; }
 
-.getting-started-route ul {
+.getting-started-route {
+  padding-bottom: 40px; }
+
+.getting-started-route h2 {
+  padding-bottom: 10px; }
+
+.getting-started-route a.sans {
+  font-family: Courier, sans; }
+
+.getting-started-route ol, ul {
   padding-left: 40px; }
 
-.getting-started-route ul li {
+.getting-started-route ol, ul li {
   padding-bottom: 10px; }
 
 .getting-started-route pre {

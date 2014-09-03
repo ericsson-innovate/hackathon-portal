@@ -44,7 +44,7 @@ angular.module('hackApp', [
 ])
 
 .constant('apiKey', 'api-key-1234')
-.constant('emulatorDomain', 'http://car2.hack.att.io:3000')
+.constant('emulatorDomain', 'http://car1.hack.att.io:3000')
 .constant('username', 'provider')
 .constant('password', '1234')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
