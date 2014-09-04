@@ -3,7 +3,7 @@
   "docNumber": "2.12.15",
   "displayWeight": "100",
   "name": "Purchase",
-  "description": "This operation performs a user purchase. The MSDP selects a product based on the specified premium resource type. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.\n\nAcceptable values for purchase:\nGas: { \"serviceId\" : \"S-hf0nkZQQcl-\", \"premiumResourceType\" : \"GasProduct\" }\nPizza: { \"serviceId\" : \"S-jf0nkZQQcl-\", \"premiumResourceType\" : \"PizzaProduct\" }\nParking: { \"serviceId\" : \"S-if0nkZQQcl-\", \"premiumResourceType\" : \"ParkingProduct\" }\nToll: { \"serviceId\" : \"S-kf0nkZQQcl-\", \"premiumResourceType\" : \"TollProduct\" }\nOil Change: { \"serviceId\" : \"S-mf0nkZQQcl-\", \"premiumResourceType\" : \"OilChangeProduct\" }\nCoffee: { \"serviceId\" : \"S-lf0nkZQQcl-\", \"premiumResourceType\" : \"CoffeeProduct\" }",
+  "description": "This operation performs a user purchase. The MSDP selects a product based on the specified premium resource type. The purchase output can be a ticket with limited or unlimited usage. The purchase is done but it is not consumed.\n\nAcceptable values for purchase:\nGas: { \"serviceId\" : \"S-hf0nkZQQcl-\", \"premiumResourceType\" : \"GasPRT\" }\nPizza: { \"serviceId\" : \"S-jf0nkZQQcl-\", \"premiumResourceType\" : \"PizzaPRT\" }\nParking: { \"serviceId\" : \"S-if0nkZQQcl-\", \"premiumResourceType\" : \"ParkingPRT\" }\nToll: { \"serviceId\" : \"S-kf0nkZQQcl-\", \"premiumResourceType\" : \"TollPRT\" }\nOil Change: { \"serviceId\" : \"S-mf0nkZQQcl-\", \"premiumResourceType\" : \"OilChangePRT\" }\nCoffee: { \"serviceId\" : \"S-lf0nkZQQcl-\", \"premiumResourceType\" : \"CoffeePRT\" }",
   "categories": ["know-driver"],
   "subCategories": [],
   "resourceTable": {
@@ -27,7 +27,7 @@
         "key": "parameters",
         "type": "JSON",
         "required": true,
-        "defaultVal": "{ \"serviceId\" : \"S-hf0nkZQQcl-\", \"premiumResourceType\" : \"GasProduct\" }",
+        "defaultVal": "{ \"serviceId\" : \"S-hf0nkZQQcl-\", \"premiumResourceType\" : \"GasPRT\" }",
         "description": "Parameters format depends on the application domain and operation."
       },
       {
