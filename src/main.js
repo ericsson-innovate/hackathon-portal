@@ -279,6 +279,3 @@ angular.module('hackApp', [
 //    });
 //  }
 });
-
-// TODO: address the TODOs within the data JSON files
-// TODO: make sure that the server can handle all of the requests that this fetching causes... run some stress tests?
