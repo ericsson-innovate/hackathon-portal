@@ -261,6 +261,7 @@ angular.module('hackApp', [
 
 .run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
   $rootScope.defaultCategory = categories[2];
+  $rootScope.carouselHasRunOnce = false;
 
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();

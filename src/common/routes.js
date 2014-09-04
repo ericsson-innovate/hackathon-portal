@@ -59,6 +59,11 @@ angular.module('hackApp')
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     $log.debug('$stateChangeStart', toState.name);
 
+    // If we are coming from another page, then do not continue with the carousel auto-transition
+    if ($rootScope.routeState.name) {
+        $rootScope.carouselHasRunOnce = true;
+    }
+
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 

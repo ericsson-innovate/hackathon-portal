@@ -261,6 +261,7 @@ angular.module('hackApp', [
 
 .run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
   $rootScope.defaultCategory = categories[2];
+  $rootScope.carouselHasRunOnce = false;
 
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
@@ -341,8 +342,8 @@ angular.module('hackController', [])
  */
 .controller('HackCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories,
                                   swiffyAnimations) {
-  var carImagePanel, currentSwiffyWrapper, currentSwiffyStage, carouselTimeout,
-      carouselHasRunOnce, currentSwiffyIndex;
+  var carImagePanel, currentSwiffyWrapper, currentSwiffyStage, carouselTimeout, currentSwiffyIndex,
+      isFirstViewContentLoadedEvent;
 
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
@@ -358,8 +359,8 @@ angular.module('hackController', [])
   carImagePanel = document.getElementById('car-image-panel');
   currentSwiffyStage = null;
   carouselTimeout = null;
-  carouselHasRunOnce = false;
   currentSwiffyIndex = 0;
+  isFirstViewContentLoadedEvent = true;
 
   $rootScope.$on('$stateChangeSuccess', handleStateChangeSuccess);
 
@@ -368,9 +369,27 @@ angular.module('hackController', [])
   $scope.hackState.handleAnimationTabClick = handleAnimationTabClick;
 
   $rootScope.$on('$viewContentLoaded', function (event) {
-    $timeout(function () {
-      handleAnimationTabClick(swiffyAnimations[currentSwiffyIndex], false);
-    }, 500);
+    if (isFirstViewContentLoadedEvent) {
+      console.log('Triggering swiffy animation from the initial load of the page');
+
+      isFirstViewContentLoadedEvent = false;
+
+      $timeout(function () {
+        handleAnimationTabClick(swiffyAnimations[currentSwiffyIndex], false);
+      }, 500);
+    }
+  });
+
+  $scope.$on("$destroy", function () {
+    console.log('HackCtrl $destroy');
+
+    if (currentSwiffyStage) {
+      currentSwiffyStage.destroy();
+    }
+
+    if (currentSwiffyWrapper) {
+      currentSwiffyWrapper.innerHTML = '';
+    }
   });
 
   // ---  --- //
@@ -396,6 +415,8 @@ angular.module('hackController', [])
   }
 
   function handleSideBarClick(link) {
+    console.log('Side bar item click');
+
     var targetState = link.ref;
 
     if (link.ref === 'api-documentation')
@@ -405,6 +426,8 @@ angular.module('hackController', [])
   }
 
   function handleCategoryTabClick(category) {
+    console.log('Category tab click');
+
     $rootScope.selectedApiCategory = category.id;
 
     // Transition to the API documentation route/state
@@ -412,25 +435,31 @@ angular.module('hackController', [])
   }
 
   function handleAnimationTabClick(animation, wasHumanClick) {
-    delayedDestroy(currentSwiffyStage, currentSwiffyWrapper);
+    console.log('Animation tab click: wasHumanClick=' + wasHumanClick);
 
-    $scope.hackState.selectedAnimation = animation;
+    // Do not allow animations to run that were triggered from timeouts that occurred after the
+    // auto-transition was cancelled
+    if (wasHumanClick || !$rootScope.carouselHasRunOnce) {
+      delayedDestroy(currentSwiffyStage, currentSwiffyWrapper);
 
-    addNewSwiffyAnimation(animation.swiffyObject);
+      $scope.hackState.selectedAnimation = animation;
+
+      addNewSwiffyAnimation(animation.swiffyObject);
+    }
 
     // Cancel any current auto-transition timeout
     if (carouselTimeout) {
       $timeout.cancel(carouselTimeout);
+      carouselTimeout = null;
     }
 
     // Was this "click" triggered as part of the auto-transition?
-    if (!carouselHasRunOnce && !wasHumanClick) {
+    if (!$rootScope.carouselHasRunOnce && !wasHumanClick) {
       // Start a timeout for the next auto-transition
       carouselTimeout = $timeout(function () {
         // Stop the auto-transition after running through each animation once
         if (currentSwiffyIndex >= 3) {
-          carouselHasRunOnce = true;
-          carouselTimeout = null;
+          $rootScope.carouselHasRunOnce = true;
           return;
         }
 
@@ -438,6 +467,8 @@ angular.module('hackController', [])
 
         handleAnimationTabClick(swiffyAnimations[currentSwiffyIndex], false);
       }, 6000);
+    } else {
+      $rootScope.carouselHasRunOnce = true;
     }
 
     // ---  --- //
@@ -447,14 +478,22 @@ angular.module('hackController', [])
         swiffyWrapper.className += ' hidden';
       }
 
-      if (swiffyStage) {
-        setTimeout(function () {
+      setTimeout(function () {
+        console.log('Destroying old swiffy animation');
+
+        if (swiffyStage) {
           swiffyStage.destroy();
-        }, 700);
-      }
+        }
+
+        if (swiffyWrapper) {
+          swiffyWrapper.innerHTML = '';
+        }
+      }, 700);
     }
 
     function addNewSwiffyAnimation(swiffyObject) {
+      console.log('Starting new swiffy animation');
+
       // Create a wrapper element
       currentSwiffyWrapper = document.createElement('div');
       currentSwiffyWrapper.className += ' swiffy-wrapper';
@@ -558,6 +597,11 @@ angular.module('hackApp')
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     $log.debug('$stateChangeStart', toState.name);
+
+    // If we are coming from another page, then do not continue with the carousel auto-transition
+    if ($rootScope.routeState.name) {
+        $rootScope.carouselHasRunOnce = true;
+    }
 
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
