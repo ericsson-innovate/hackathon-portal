@@ -12,9 +12,10 @@ angular.module('hackController', [])
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories,
+.controller('HackCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories,
                                   swiffyAnimations) {
-  var carImagePanel, currentSwiffyElement, currentSwiffyStage;
+  var carImagePanel, currentSwiffyWrapper, currentSwiffyStage, carouselTimeout,
+      carouselHasRunOnce, currentSwiffyIndex;
 
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
@@ -29,6 +30,9 @@ angular.module('hackController', [])
   // TODO: this is a quick fix; the animation logic really ought to be moved to a separate directive
   carImagePanel = document.getElementById('car-image-panel');
   currentSwiffyStage = null;
+  carouselTimeout = null;
+  carouselHasRunOnce = false;
+  currentSwiffyIndex = 0;
 
   $rootScope.$on('$stateChangeSuccess', handleStateChangeSuccess);
 
@@ -36,7 +40,11 @@ angular.module('hackController', [])
   $scope.hackState.handleCategoryTabClick = handleCategoryTabClick;
   $scope.hackState.handleAnimationTabClick = handleAnimationTabClick;
 
-  handleAnimationTabClick(swiffyAnimations[0]);
+  $rootScope.$on('$viewContentLoaded', function (event) {
+    $timeout(function () {
+      handleAnimationTabClick(swiffyAnimations[currentSwiffyIndex], false);
+    }, 500);
+  });
 
   // ---  --- //
 
@@ -76,30 +84,64 @@ angular.module('hackController', [])
     $state.go('api-documentation.' + category.id);
   }
 
-  function handleAnimationTabClick(animation) {
-    delayedDestroy(currentSwiffyStage, currentSwiffyElement);
+  function handleAnimationTabClick(animation, wasHumanClick) {
+    delayedDestroy(currentSwiffyStage, currentSwiffyWrapper);
 
     $scope.hackState.selectedAnimation = animation;
 
-    currentSwiffyStage = new swiffy.Stage(carImagePanel, animation.swiffyObject, {});
-    currentSwiffyStage.start();
+    addNewSwiffyAnimation(animation.swiffyObject);
 
-//    setTimeout(function () {
-//      var allDivs = carImagePanel.querySelectorAll('div');
-//      currentSwiffyElement = allDivs[allDivs.length - 1];
-//      currentSwiffyElement.className += ' shown';
-//    }, 10);
+    // Cancel any current auto-transition timeout
+    if (carouselTimeout) {
+      $timeout.cancel(carouselTimeout);
+    }
 
-    function delayedDestroy(swiffyStage, swiffyElement) {
-      if (swiffyElement) {
-        swiffyElement.style.opacity = 0;
+    // Was this "click" triggered as part of the auto-transition?
+    if (!carouselHasRunOnce && !wasHumanClick) {
+      // Start a timeout for the next auto-transition
+      carouselTimeout = $timeout(function () {
+        // Stop the auto-transition after running through each animation once
+        if (currentSwiffyIndex >= 3) {
+          carouselHasRunOnce = true;
+          carouselTimeout = null;
+          return;
+        }
+
+        currentSwiffyIndex = (currentSwiffyIndex + 1) % 4;
+
+        handleAnimationTabClick(swiffyAnimations[currentSwiffyIndex], false);
+      }, 6000);
+    }
+
+    // ---  --- //
+
+    function delayedDestroy(swiffyStage, swiffyWrapper) {
+      if (swiffyWrapper) {
+        swiffyWrapper.className += ' hidden';
       }
 
       if (swiffyStage) {
-//        setTimeout(function () {
+        setTimeout(function () {
           swiffyStage.destroy();
-//        }, 700);
+        }, 700);
       }
+    }
+
+    function addNewSwiffyAnimation(swiffyObject) {
+      // Create a wrapper element
+      currentSwiffyWrapper = document.createElement('div');
+      currentSwiffyWrapper.className += ' swiffy-wrapper';
+
+      // Add the wrapper element as the first child of the swiffy container panel
+      if (carImagePanel.firstChild) {
+        carImagePanel.insertBefore(currentSwiffyWrapper, carImagePanel.firstChild);
+      } else {
+        carImagePanel.appendChild(currentSwiffyWrapper);
+      }
+
+      // Create and start the swiffy animation
+      currentSwiffyStage = new swiffy.Stage(currentSwiffyWrapper, swiffyObject, {});
+      currentSwiffyStage.start();
     }
   }
 });

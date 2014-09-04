@@ -96,4 +96,8 @@ angular.module('hackApp')
       function (event, toState, toParams, fromState, fromParams, error) {
     $log.debug('$stateChangeError', toState.name, error);
   });
+
+  $rootScope.$on('$viewContentLoaded', function (event) {
+    console.log('$viewContentLoaded');
+  });
 });
