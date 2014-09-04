@@ -69,18 +69,17 @@ angular.module('hackApp')
 
       if (entities.length > 0) {
         // TODO: get rid of these, if they are unneeded
-        $rootScope.selectedCategory = entities[1];
         $rootScope.selectedApiCategory = entities[1];
         $rootScope.selectedApi = entities[2];
         $rootScope.selectedApiTab = entities[3];
         $rootScope.selectedApiExample = entities[4];
       } else {
-        if ($rootScope.selectedCategory == null) {
-          $rootScope.selectedCategory = $rootScope.defaultCategory;
+        if ($rootScope.selectedApiCategory == null) {
+          $rootScope.selectedApiCategory = $rootScope.defaultCategory;
         }
       }
     } else {
-      $rootScope.selectedCategory = null;
+      $rootScope.selectedApiCategory = null;
     }
   });
 
@@ -96,5 +95,9 @@ angular.module('hackApp')
   $rootScope.$on('$stateChangeError',
       function (event, toState, toParams, fromState, fromParams, error) {
     $log.debug('$stateChangeError', toState.name, error);
+  });
+
+  $rootScope.$on('$viewContentLoaded', function (event) {
+    console.log('$viewContentLoaded');
   });
 });

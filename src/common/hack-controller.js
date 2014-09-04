@@ -8,77 +8,140 @@ angular.module('hackController', [])
 /**
  * @ngdoc object
  * @name HackCtrl
- * @requires $scope
- * @requires $rootScope
- * @requires $state
- * @requires sideBarLinks
- * @requires categories
  * @description
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories, car1Url,
-                                  car2Url) {
-  var previousRouteName, carImageElement;
-
-  previousRouteName = '';
-  carImageElement = angular.element(document.getElementById('car-image-panel'));
+.controller('HackCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories,
+                                  swiffyAnimations) {
+  var carImagePanel, currentSwiffyWrapper, currentSwiffyStage, carouselTimeout,
+      carouselHasRunOnce, currentSwiffyIndex;
 
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
+  $scope.hackState.swiffyAnimations = swiffyAnimations;
   $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
+  $scope.hackState.selectedAnimation = null;
   $scope.hackState.sideBarSelectedLink = null;
 
   $scope.myState = $state;
 
-  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+  // TODO: this is a quick fix; the animation logic really ought to be moved to a separate directive
+  carImagePanel = document.getElementById('car-image-panel');
+  currentSwiffyStage = null;
+  carouselTimeout = null;
+  carouselHasRunOnce = false;
+  currentSwiffyIndex = 0;
+
+  $rootScope.$on('$stateChangeSuccess', handleStateChangeSuccess);
+
+  $scope.hackState.handleSideBarClick = handleSideBarClick;
+  $scope.hackState.handleCategoryTabClick = handleCategoryTabClick;
+  $scope.hackState.handleAnimationTabClick = handleAnimationTabClick;
+
+  $rootScope.$on('$viewContentLoaded', function (event) {
+    $timeout(function () {
+      handleAnimationTabClick(swiffyAnimations[currentSwiffyIndex], false);
+    }, 500);
+  });
+
+  // ---  --- //
+
+  function handleStateChangeSuccess(event, toState, toParams, fromState, fromParams) {
     if (toState.name === 'api-documentation') {
       $state.go($rootScope.defaultCategory.ref);
       return;
     }
 
-  	$scope.myState = toState;
+    $scope.myState = toState;
 
-  	for (var i = 0; i < sideBarLinks.length; i++) {
-  		var link = sideBarLinks[i];
+    for (var i = 0; i < sideBarLinks.length; i++) {
+      var link = sideBarLinks[i];
 
-	  	if (toState.name.indexOf(link.ref) == 0) {
-	  		$scope.hackState.sideBarSelectedLink = link.ref;
-	  		break;
-	  	}
-  	}
+      if (toState.name.indexOf(link.ref) == 0) {
+        $scope.hackState.sideBarSelectedLink = link.ref;
+        break;
+      }
+    }
 
     $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
-  });
+  }
 
-  $scope.hackState.handleSideBarClick = function (link) {
-  	var targetState = link.ref;
+  function handleSideBarClick(link) {
+    var targetState = link.ref;
 
-  	if (link.ref === 'api-documentation')
-		targetState = $rootScope.defaultCategory.ref;
+    if (link.ref === 'api-documentation')
+      targetState = $rootScope.defaultCategory.ref;
 
-  	$state.go(targetState);
-  };
+    $state.go(targetState);
+  }
 
-  $scope.hackState.handleCategoryTabClick = function (category) {
-    $rootScope.selectedCategory = category.id;
+  function handleCategoryTabClick(category) {
+    $rootScope.selectedApiCategory = category.id;
 
     // Transition to the API documentation route/state
     $state.go('api-documentation.' + category.id);
-  };
+  }
 
-  $rootScope.$watch('routeState.name', function (nextRouteName) {
-    if (previousRouteName !== nextRouteName) {
-      maybeSwitchCarImage();
+  function handleAnimationTabClick(animation, wasHumanClick) {
+    delayedDestroy(currentSwiffyStage, currentSwiffyWrapper);
+
+    $scope.hackState.selectedAnimation = animation;
+
+    addNewSwiffyAnimation(animation.swiffyObject);
+
+    // Cancel any current auto-transition timeout
+    if (carouselTimeout) {
+      $timeout.cancel(carouselTimeout);
     }
 
-    previousRouteName = nextRouteName;
-  });
+    // Was this "click" triggered as part of the auto-transition?
+    if (!carouselHasRunOnce && !wasHumanClick) {
+      // Start a timeout for the next auto-transition
+      carouselTimeout = $timeout(function () {
+        // Stop the auto-transition after running through each animation once
+        if (currentSwiffyIndex >= 3) {
+          carouselHasRunOnce = true;
+          carouselTimeout = null;
+          return;
+        }
 
-  // TODO: this image-switching logic really should be moved to a separate directive, but for lack of time I'm putting it here
-  function maybeSwitchCarImage() {
-    var url = 'url(' + (Math.random() < 0.5 ? car1Url : car2Url) + ')';
-    carImageElement.css('background-image', url);
+        currentSwiffyIndex = (currentSwiffyIndex + 1) % 4;
+
+        handleAnimationTabClick(swiffyAnimations[currentSwiffyIndex], false);
+      }, 6000);
+    }
+
+    // ---  --- //
+
+    function delayedDestroy(swiffyStage, swiffyWrapper) {
+      if (swiffyWrapper) {
+        swiffyWrapper.className += ' hidden';
+      }
+
+      if (swiffyStage) {
+        setTimeout(function () {
+          swiffyStage.destroy();
+        }, 700);
+      }
+    }
+
+    function addNewSwiffyAnimation(swiffyObject) {
+      // Create a wrapper element
+      currentSwiffyWrapper = document.createElement('div');
+      currentSwiffyWrapper.className += ' swiffy-wrapper';
+
+      // Add the wrapper element as the first child of the swiffy container panel
+      if (carImagePanel.firstChild) {
+        carImagePanel.insertBefore(currentSwiffyWrapper, carImagePanel.firstChild);
+      } else {
+        carImagePanel.appendChild(currentSwiffyWrapper);
+      }
+
+      // Create and start the swiffy animation
+      currentSwiffyStage = new swiffy.Stage(currentSwiffyWrapper, swiffyObject, {});
+      currentSwiffyStage.start();
+    }
   }
 });

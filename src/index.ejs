@@ -3,6 +3,8 @@
 <head lang="en">
   <meta charset="UTF-8">
 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
   <title>Hackathon Portal</title>
 
   <link rel='shortcut icon'
@@ -23,37 +25,19 @@
   <div id="banner">
     <div id="car-image-panel"></div>
 
-    <div id="top-header">
-      <div class="content-area">
-        <div id="logos">
-          <a id="att-logo" href="http://www.att.com/">
-            <img src="<%= rootPath %>/dist/images/att-logo.jpg"
-                 alt="AT&amp;T Logo">
-          </a>
-          <a id="ericsson-logo" href="http://www.ericsson.com/">
-            <img src="<%= rootPath %>/dist/images/ericsson-logo.jpg"
-                 alt="Ericsson Logo">
-          </a>
-        </div>
-        <span id="title-part-1">Connected Car</span>
-        <span id="title-part-2">Hackathon</span>
-      </div>
-    </div>
-
-    <div id="header-divider"></div>
-
     <div id="empty-car-area">
       <div class="content-area">
+
         <div class="inner-content-area">
-          <ul class="tabs">
-            <li ng-repeat="category in hackState.categories"
-                ng-click="hackState.handleCategoryTabClick(category)"
-                ng-class="{selected: category.id === hackState.selectedApiCategory}"
-                class="tab">
-              {{category.name}}
-            </li>
-          </ul>
         </div>
+
+        <ul class="tabs">
+          <li ng-repeat="animation in hackState.swiffyAnimations"
+              ng-click="hackState.handleAnimationTabClick(animation, true)"
+              ng-class="{selected: animation === hackState.selectedAnimation}"
+              class="tab">
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -96,6 +80,8 @@
 
   <!-- ======== Scripts ======== -->
 
+  <script src="https://www.gstatic.com/swiffy/v7.0/runtime.js"></script>
+
   <script src="<%= rootPath %>/bower_components/angular/angular.js"></script>
   <script src="<%= rootPath %>/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
@@ -108,6 +94,7 @@
   <script src="<%= rootPath %>/src/main.js"></script>
 
   <script src="<%= rootPath %>/src/common/routes.js"></script>
+  <script src="<%= rootPath %>/src/common/swiffy-objects.js"></script>
 
   <script src="<%= rootPath %>/src/common/hack-controller.js"></script>
 
