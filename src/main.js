@@ -32,6 +32,7 @@ angular.module('hackApp', [
   'apiExampleCardDirective',
   'apiTryItCardDirective',
   'apiListDirective',
+  'swiffyDirective',
 
   'apiService',
   'examplesService',
