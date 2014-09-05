@@ -6,7 +6,8 @@
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks, categories) {
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks,
+                  categories) {
   // Re-route invalid routes back to home
   $urlRouterProvider.otherwise(sideBarLinks[1].url);
 
@@ -20,6 +21,17 @@ angular.module('hackApp')
             url: link.url,
             templateUrl: link.templateUrl,
             controller: link.controller
+//            resolve: {
+//              routeDelayHack: function ($q) {
+//                var deferred = $q.defer();
+//
+//                setTimeout(function () {
+//                  deferred.resolve();
+//                }, 300);
+//
+//                return deferred.promise;
+//              }
+//            }
           });
     }
 
@@ -57,6 +69,8 @@ angular.module('hackApp')
   $rootScope.routeState = {};
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    var isApiDoc;
+
     $log.debug('$stateChangeStart', toState.name);
 
     // If we are coming from another page, then do not continue with the carousel auto-transition
@@ -67,7 +81,7 @@ angular.module('hackApp')
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    var isApiDoc = toState.name.indexOf('api-documentation') == 0;
+    isApiDoc = toState.name.indexOf('api-documentation') == 0;
 
     if (isApiDoc) {
       var entities = toState.name.split('.');

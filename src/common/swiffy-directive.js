@@ -2,8 +2,6 @@
 
 angular.module('swiffyDirective', [])
 
-.constant('swiffyTemplatePath', hack.rootPath + '/dist/templates/components/swiffy/swiffy.html')
-
 /**
  * @ngdoc directive
  * @name swiffy
@@ -11,10 +9,9 @@ angular.module('swiffyDirective', [])
  *
  * A panel for managing animations using swiffy.
  */
-.directive('swiffy', function ($rootScope, $timeout, swiffyAnimations, swiffyTemplatePath) {
+.directive('swiffy', function ($rootScope, $timeout, swiffyAnimations) {
   return {
     restrict: 'A',
-    templateUrl: swiffyTemplatePath,
     link: function (scope, element, attrs) {
       var currentSwiffyWrapper, currentSwiffyStage, carouselTimeout, currentSwiffyIndex,
           isFirstViewContentLoadedEvent;
