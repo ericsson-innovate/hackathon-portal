@@ -13,11 +13,11 @@ angular.module('hackController', [])
  * Controller for the overall hackathon portal page.
  */
 .controller('HackCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories,
-                                  swiffyAnimations) {
+                                  animations) {
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
-  $scope.hackState.swiffyAnimations = swiffyAnimations;
+  $scope.hackState.animations = animations;
   $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
   $scope.hackState.selectedAnimation = null;
   $scope.hackState.sideBarSelectedLink = null;

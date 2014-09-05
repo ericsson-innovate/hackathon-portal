@@ -23,7 +23,7 @@
 <body ng-app="hackApp"
       ng-controller="HackCtrl">
   <div id="banner">
-    <div id="car-image-panel" swiffy></div>
+    <div id="car-image-panel" animations></div>
 
     <div id="empty-car-area">
       <div class="content-area">
@@ -32,7 +32,7 @@
         </div>
 
         <ul class="tabs">
-          <li ng-repeat="animation in hackState.swiffyAnimations"
+          <li ng-repeat="animation in hackState.animations"
               ng-click="hackState.handleAnimationTabClick(animation, true)"
               ng-class="{selected: animation === hackState.selectedAnimation}"
               class="tab">
@@ -80,8 +80,6 @@
 
   <!-- ======== Scripts ======== -->
 
-  <script src="https://www.gstatic.com/swiffy/v7.0/runtime.js"></script>
-
   <script src="/bower_components/angular/angular.js"></script>
   <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
@@ -94,11 +92,10 @@
   <script src="/src/main.js"></script>
 
   <script src="/src/common/routes.js"></script>
-  <script src="/src/common/swiffy-objects.js"></script>
 
   <script src="/src/common/hack-controller.js"></script>
 
-  <script src="/src/common/swiffy-directive.js"></script>
+  <script src="/src/common/animations-directive.js"></script>
 
   <script src="/src/common/category-filter.js"></script>
   <script src="/src/common/error-description-filter.js"></script>

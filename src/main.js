@@ -22,6 +22,8 @@ angular.module('hackApp', [
 
   'hackController',
 
+  'animationsDirective',
+
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
@@ -32,7 +34,6 @@ angular.module('hackApp', [
   'apiExampleCardDirective',
   'apiTryItCardDirective',
   'apiListDirective',
-  'swiffyDirective',
 
   'apiService',
   'examplesService',
@@ -257,6 +258,25 @@ angular.module('hackApp', [
       '2.7.4-ping-tcu',
       '2.7.5-tcu-notification-channel'
     ]
+  }
+])
+
+.constant('animations', [
+  {// TODO: define animation parameters
+    id: 'animation-1',
+    parameters: {}
+  },
+  {
+    id: 'animation-2',
+    parameters: {}
+  },
+  {
+    id: 'animation-3',
+    parameters: {}
+  },
+  {
+    id: 'animation-4',
+    parameters: {}
   }
 ])
 

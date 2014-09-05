@@ -21,17 +21,6 @@ angular.module('hackApp')
             url: link.url,
             templateUrl: link.templateUrl,
             controller: link.controller
-//            resolve: {
-//              routeDelayHack: function ($q) {
-//                var deferred = $q.defer();
-//
-//                setTimeout(function () {
-//                  deferred.resolve();
-//                }, 300);
-//
-//                return deferred.promise;
-//              }
-//            }
           });
     }
 
