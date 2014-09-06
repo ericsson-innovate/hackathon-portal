@@ -40,7 +40,7 @@
     <ul class="tabs">
       <li ng-repeat="animation in hackState.animations"
           ng-click="hackState.handleAnimationTabClick(animation, true)"
-          ng-class="{selected: animation.label === scope.selectedLabel}"
+          ng-class="{selected: animation.label === selectedLabel}"
           class="tab">
           {{scope.selectedLabel}}
       </li>

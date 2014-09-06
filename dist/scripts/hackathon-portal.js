@@ -1035,29 +1035,28 @@ angular.module('animationsDirective', [])
  *
  * A panel for managing animations.
  */
-.directive('animations', function ($rootScope, $timeout, animationsTemplatePath) {
+.directive('animations', function ($rootScope, $interval, animationsTemplatePath) {
   return {
     restrict: 'A',
+
     scope: {
       hackState: '=',
       animations: '='
     },
-    templateUrl: animationsTemplatePath,
-    link: function (scope, element, attrs) {
-      // TODO:
 
+    templateUrl: animationsTemplatePath,
+
+    link: function (scope, element, attrs) {
       scope.hack = hack;
       scope.selectedLabel = null;
       scope.timeline = null;
       
-      var currentAnimationWrapper, carouselTimeout, currentAnimationIndex,
-          isFirstViewContentLoadedEvent;
+      var carouselInterval, isFirstViewContentLoadedEvent;
 
       // Add an event handler to the parent scope
       scope.hackState.handleAnimationTabClick = handleAnimationTabClick;
 
-      carouselTimeout = null;
-      currentAnimationIndex = 0;
+      carouselInterval = null;
       isFirstViewContentLoadedEvent = true;
 
       $rootScope.$on('$viewContentLoaded', function (event) {
@@ -1123,14 +1122,23 @@ angular.module('animationsDirective', [])
 
           scope.timeline.add("end");
 
-          scope.timeline.eventCallback("onUpdate", function() {
-            scope.selectedLabel = scope.timeline.currentLabel();
-            // TODO: need to notify angular that shit changed
+          carouselInterval = $interval(function() {
+            var currentLabel = scope.timeline.currentLabel();
+
+            if (scope.selectedLabel != currentLabel) {
+                scope.selectedLabel = currentLabel;
+            }
+          }, 500);
+
+          scope.$on('$destroy', function() {
+            // Make sure that the interval is destroyed too
+            if (carouselInterval != null) {
+              carouselInterval.cancel();
+              carouselInterval = null;
+            }
           });
         }
       });
-
-      // ---  --- //
 
       function handleAnimationTabClick(animation, wasHumanClick) {
         scope.timeline.seek(animation.label, false);
