@@ -89,7 +89,7 @@ angular.module('hackApp', [
   },
   {
     platform: 'angularjs',
-    humanReadablePlatform: 'AT&amp;T Drive UI Kit',
+    humanReadablePlatform: 'AT&T Drive UI Kit',
     iconUrl: hack.rootPath + '/dist/images/angularjs-icon.png',
     repoUrl: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
     readmeUrl: 'https://raw.githubusercontent.com/ericsson-innovate/ATT-Drive-UI-Framework/master/README.md',
