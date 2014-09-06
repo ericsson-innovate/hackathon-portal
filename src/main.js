@@ -22,6 +22,8 @@ angular.module('hackApp', [
 
   'hackController',
 
+  'animationsDirective',
+
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
@@ -259,8 +261,32 @@ angular.module('hackApp', [
   }
 ])
 
+.constant('animations', [
+  {
+    id: 'animation-1',
+    label: 'set-1',
+    parameters: {}
+  },
+  {
+    id: 'animation-2',
+    label: 'set-2',
+    parameters: {}
+  },
+  {
+    id: 'animation-3',
+    label: 'set-3',
+    parameters: {}
+  },
+  {
+    id: 'animation-4',
+    label: 'set-4',
+    parameters: {}
+  }
+])
+
 .run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
   $rootScope.defaultCategory = categories[2];
+  $rootScope.carouselHasRunOnce = false;
 
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
@@ -279,6 +305,3 @@ angular.module('hackApp', [
 //    });
 //  }
 });
-
-// TODO: address the TODOs within the data JSON files
-// TODO: make sure that the server can handle all of the requests that this fetching causes... run some stress tests?

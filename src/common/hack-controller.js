@@ -8,77 +8,66 @@ angular.module('hackController', [])
 /**
  * @ngdoc object
  * @name HackCtrl
- * @requires $scope
- * @requires $rootScope
- * @requires $state
- * @requires sideBarLinks
- * @requires categories
  * @description
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories, car1Url,
-                                  car2Url) {
-  var previousRouteName, carImageElement;
-
-  previousRouteName = '';
-  carImageElement = angular.element(document.getElementById('car-image-panel'));
-
+.controller('HackCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories,
+                                  animations) {
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
+  $scope.hackState.animations = animations;
   $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
+  $scope.hackState.selectedAnimation = null;
   $scope.hackState.sideBarSelectedLink = null;
 
   $scope.myState = $state;
 
-  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+  $rootScope.$on('$stateChangeSuccess', handleStateChangeSuccess);
+
+  $scope.hackState.handleSideBarClick = handleSideBarClick;
+  $scope.hackState.handleCategoryTabClick = handleCategoryTabClick;
+
+  // ---  --- //
+
+  function handleStateChangeSuccess(event, toState, toParams, fromState, fromParams) {
     if (toState.name === 'api-documentation') {
       $state.go($rootScope.defaultCategory.ref);
       return;
     }
 
-  	$scope.myState = toState;
+    $scope.myState = toState;
 
-  	for (var i = 0; i < sideBarLinks.length; i++) {
-  		var link = sideBarLinks[i];
+    for (var i = 0; i < sideBarLinks.length; i++) {
+      var link = sideBarLinks[i];
 
-	  	if (toState.name.indexOf(link.ref) == 0) {
-	  		$scope.hackState.sideBarSelectedLink = link.ref;
-	  		break;
-	  	}
-  	}
+      if (toState.name.indexOf(link.ref) == 0) {
+        $scope.hackState.sideBarSelectedLink = link.ref;
+        break;
+      }
+    }
 
     $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
-  });
+  }
 
-  $scope.hackState.handleSideBarClick = function (link) {
-  	var targetState = link.ref;
+  function handleSideBarClick(link) {
+    console.log('Side bar item click');
 
-  	if (link.ref === 'api-documentation')
-		targetState = $rootScope.defaultCategory.ref;
+    var targetState = link.ref;
 
-  	$state.go(targetState);
-  };
+    if (link.ref === 'api-documentation')
+      targetState = $rootScope.defaultCategory.ref;
 
-  $scope.hackState.handleCategoryTabClick = function (category) {
-    $rootScope.selectedCategory = category.id;
+    $state.go(targetState);
+  }
+
+  function handleCategoryTabClick(category) {
+    console.log('Category tab click');
+
+    $rootScope.selectedApiCategory = category.id;
 
     // Transition to the API documentation route/state
     $state.go('api-documentation.' + category.id);
-  };
-
-  $rootScope.$watch('routeState.name', function (nextRouteName) {
-    if (previousRouteName !== nextRouteName) {
-      maybeSwitchCarImage();
-    }
-
-    previousRouteName = nextRouteName;
-  });
-
-  // TODO: this image-switching logic really should be moved to a separate directive, but for lack of time I'm putting it here
-  function maybeSwitchCarImage() {
-    var url = 'url(' + (Math.random() < 0.5 ? car1Url : car2Url) + ')';
-    carImageElement.css('background-image', url);
   }
 });

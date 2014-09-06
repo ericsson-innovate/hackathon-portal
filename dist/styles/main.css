@@ -178,6 +178,7 @@ div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
   padding: 0; }
 
 body {
+  width: 100%;
   font-family: hack-font, sans-serif;
   font-size: 14px;
   padding-bottom: 20px;
@@ -277,6 +278,9 @@ h1 {
   margin-bottom: 16px; }
 
 #banner {
+  position: relative;
+  width: 100%;
+  height: 600px;
   color: #ffffff;
   background-color: #040404; }
 
@@ -318,21 +322,34 @@ h1 {
 #car-image-panel {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 640px;
-  background: transparent url('/hackathon-portal/dist/images/car-1.png') no-repeat center top;
+  left: -100%;
+  right: -100%;
+  margin: auto;
+  width: 1400px;
+  height: 600px;
+  overflow: hidden;
   z-index: 2;
   -webkit-transition: background-image 1s;
           transition: background-image 1s; }
 
+.animiations-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: opacity 0.7s;
+          transition: opacity 0.7s; }
+
+.animations-wrapper.hidden {
+  opacity: 0; }
+
 #empty-car-area {
   position: relative;
-  height: 569px;
+  height: 100%;
   z-index: 3; }
 
 .content-area {
-  max-width: 940px;
+  position: relative;
+  width: 940px;
   margin: 0 auto;
   height: 100%;
   min-height: 500px; }
@@ -348,9 +365,12 @@ h1 {
   margin: 30px 0;
   text-align: left; }
 
-.inner-content-area > .tabs {
+.content-area > .tabs {
   position: absolute;
   bottom: 34px; }
+
+.content-area > .tabs > .tab {
+  width: calc(25% - 15px); }
 
 .side-menu {
   float: left;
@@ -670,6 +690,62 @@ api-list:after {
   display: table;
   clear: both;
   margin-bottom: 20px; }
+
+@font-face {
+  font-family: good-news-sans-reg-ext;
+  src: url('/hackathon-portal/dist/fonts/good-news-sans-reg-ext.otf');
+  font-weight: normal; }
+
+#top-bar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 100; }
+
+.car-hero {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 0; }
+
+#car-hero-screen {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.7;
+  z-index: 1; }
+
+.car-question-set {
+  position: absolute;
+  top: 274px;
+  left: 469px;
+  z-index: 10;
+  width: 800px;
+  font-style: good-news-sans-reg-ext; }
+
+.car-question-style-top {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  color: white;
+  font-size: 25pt; }
+
+.car-question-style-middle {
+  position: absolute;
+  top: 45px;
+  left: 0px;
+  color: #0099FF;
+  font-size: 30pt; }
+
+.car-question-style-bottom {
+  position: absolute;
+  top: 95px;
+  left: 0px;
+  color: white;
+  font-size: 35pt; }
 
 .getting-started-route {
   padding-bottom: 40px; }

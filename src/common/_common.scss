@@ -49,7 +49,7 @@ $category-tab-border-width: 10px;
 
 $divider-border-width: 1px;
 
-$banner-height: 640px;
+$banner-height: 600px;
 $top-header-height: 70px;
 $top-header-divider-border-width: 1px;
 $logo-gap: 36px;
@@ -85,6 +85,7 @@ div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
 }
 
 body {
+  width: 100%;
   font-family: hack-font, sans-serif;
   font-size: $body-font-size;
   padding-bottom: 20px;
@@ -213,6 +214,9 @@ h1 {
 }
 
 #banner {
+  position: relative;
+  width: 100%;
+  height: $banner-height;
   color: #ffffff;
   background-color: #040404;
 }
@@ -264,22 +268,35 @@ h1 {
 
 #car-image-panel {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%;
+  top: 0; left: -100%; right: -100%;
+  margin: auto;
+  width: 1400px;
   height: $banner-height;
-  background: transparent url($root-path + '/dist/images/car-1.png') no-repeat center top;
+  overflow: hidden;
+//  background: transparent url($root-path + '/dist/images/car-1.png') no-repeat center top;
   z-index: 2;
   transition: background-image 1s;
 }
 
+.animiations-wrapper {
+  position: absolute;
+  width: 100%; height: 100%;
+  transition: opacity 0.7s;
+}
+
+.animations-wrapper.hidden {
+  opacity: 0;
+}
+
 #empty-car-area {
   position: relative;
-  height: #{$banner-height - $top-header-height - $top-header-divider-border-width};
+  height: 100%;
   z-index: 3;
 }
 
 .content-area {
-  max-width: 940px;
+  position: relative;
+  width: 940px;
   margin: 0 auto;
   height: 100%;
   min-height: 500px;
@@ -298,9 +315,13 @@ h1 {
   text-align: left;
 }
 
-.inner-content-area>.tabs {
+.content-area>.tabs {
   position: absolute;
   bottom: 34px;
+}
+
+.content-area>.tabs>.tab {
+  width: calc(25% - 15px);
 }
 
 .home-route api-list {

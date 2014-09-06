@@ -1,0 +1,50 @@
+<div id="car-image-panel" >
+  <img class="car-hero" id="car-hero-1" ng-src="{{hack.rootPath}}/dist/images/car-1.png" />
+  <img class="car-hero" id="car-hero-2" ng-src="{{hack.rootPath}}/dist/images/car-2.png" />
+
+  <div id="car-hero-screen"></div>
+
+  <div id="car-question-set-1" class="car-question-set">
+    <div class="car-question-style-top" id ="car-question-set-1-question-1">WHAT IF</div>
+    <div class="car-question-style-middle" id ="car-question-set-1-question-2">YOUR CAR COULD PASSIVELY</div>
+    <div class="car-question-style-bottom" id ="car-question-set-1-question-3">CROUDSOURCE SAFETY DATA?</div>
+  </div>
+
+  <div id="car-question-set-2" class="car-question-set">
+    <div class="car-question-style-top" id ="car-question-set-2-question-1">WHAT IF</div>
+    <div class="car-question-style-middle" id ="car-question-set-2-question-2">YOUR CAR WAS A DROPBOX</div>
+    <div class="car-question-style-bottom" id ="car-question-set-2-question-3">TO RECEIVE PACKAGES?</div>
+  </div>
+
+  <div id="car-question-set-3" class="car-question-set">
+    <div class="car-question-style-top" id ="car-question-set-3-question-1">WHAT IF</div>
+    <div class="car-question-style-middle" id ="car-question-set-3-question-2">YOUR CAR COULD FIND</div>
+    <div class="car-question-style-bottom" id ="car-question-set-3-question-3">AND PAY PARKING FOR YOU?</div>
+  </div>
+
+  <div id="car-question-set-4" class="car-question-set">
+    <div class="car-question-style-top" id ="car-question-set-4-question-1"></div>
+    <div class="car-question-style-middle" id ="car-question-set-4-question-2">WHAT WILL</div>
+    <div class="car-question-style-bottom" id ="car-question-set-4-question-3">YOU DO WITH IT?</div>
+  </div>
+
+  <img id="top-bar" ng-src="{{hack.rootPath}}/dist/images/topbar.png" />
+</div>
+
+<div id="empty-car-area">
+  <div class="content-area">
+
+    <div class="inner-content-area">
+    </div>
+
+    <ul class="tabs">
+      <li ng-repeat="animation in hackState.animations"
+          ng-click="hackState.handleAnimationTabClick(animation, true)"
+          ng-class="{selected: animation.label === selectedLabel}"
+          class="tab">
+          {{scope.selectedLabel}}
+      </li>
+    </ul>
+  </div>
+</div>
+

@@ -6,7 +6,8 @@
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks, categories) {
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks,
+                  categories) {
   // Re-route invalid routes back to home
   $urlRouterProvider.otherwise(sideBarLinks[1].url);
 
@@ -57,30 +58,36 @@ angular.module('hackApp')
   $rootScope.routeState = {};
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    var isApiDoc;
+
     $log.debug('$stateChangeStart', toState.name);
+
+    // If we are coming from another page, then do not continue with the carousel auto-transition
+    if ($rootScope.routeState.name) {
+        $rootScope.carouselHasRunOnce = true;
+    }
 
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    var isApiDoc = toState.name.indexOf('api-documentation') == 0;
+    isApiDoc = toState.name.indexOf('api-documentation') == 0;
 
     if (isApiDoc) {
       var entities = toState.name.split('.');
 
       if (entities.length > 0) {
         // TODO: get rid of these, if they are unneeded
-        $rootScope.selectedCategory = entities[1];
         $rootScope.selectedApiCategory = entities[1];
         $rootScope.selectedApi = entities[2];
         $rootScope.selectedApiTab = entities[3];
         $rootScope.selectedApiExample = entities[4];
       } else {
-        if ($rootScope.selectedCategory == null) {
-          $rootScope.selectedCategory = $rootScope.defaultCategory;
+        if ($rootScope.selectedApiCategory == null) {
+          $rootScope.selectedApiCategory = $rootScope.defaultCategory;
         }
       }
     } else {
-      $rootScope.selectedCategory = null;
+      $rootScope.selectedApiCategory = null;
     }
   });
 
@@ -96,5 +103,9 @@ angular.module('hackApp')
   $rootScope.$on('$stateChangeError',
       function (event, toState, toParams, fromState, fromParams, error) {
     $log.debug('$stateChangeError', toState.name, error);
+  });
+
+  $rootScope.$on('$viewContentLoaded', function (event) {
+    console.log('$viewContentLoaded');
   });
 });

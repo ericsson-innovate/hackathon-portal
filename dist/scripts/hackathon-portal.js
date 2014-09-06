@@ -22,6 +22,8 @@ angular.module('hackApp', [
 
   'hackController',
 
+  'animationsDirective',
+
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
@@ -259,8 +261,32 @@ angular.module('hackApp', [
   }
 ])
 
+.constant('animations', [
+  {
+    id: 'animation-1',
+    label: 'set-1',
+    parameters: {}
+  },
+  {
+    id: 'animation-2',
+    label: 'set-2',
+    parameters: {}
+  },
+  {
+    id: 'animation-3',
+    label: 'set-3',
+    parameters: {}
+  },
+  {
+    id: 'animation-4',
+    label: 'set-4',
+    parameters: {}
+  }
+])
+
 .run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
   $rootScope.defaultCategory = categories[2];
+  $rootScope.carouselHasRunOnce = false;
 
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
@@ -279,9 +305,6 @@ angular.module('hackApp', [
 //    });
 //  }
 });
-
-// TODO: address the TODOs within the data JSON files
-// TODO: make sure that the server can handle all of the requests that this fetching causes... run some stress tests?
 
 'use strict';
 
@@ -338,78 +361,67 @@ angular.module('hackController', [])
 /**
  * @ngdoc object
  * @name HackCtrl
- * @requires $scope
- * @requires $rootScope
- * @requires $state
- * @requires sideBarLinks
- * @requires categories
  * @description
  *
  * Controller for the overall hackathon portal page.
  */
-.controller('HackCtrl', function ($scope, $rootScope, $state, sideBarLinks, categories, car1Url,
-                                  car2Url) {
-  var previousRouteName, carImageElement;
-
-  previousRouteName = '';
-  carImageElement = angular.element(document.getElementById('car-image-panel'));
-
+.controller('HackCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories,
+                                  animations) {
   $scope.hackState = {};
   $scope.hackState.sideBarLinks = sideBarLinks;
   $scope.hackState.categories = categories;
+  $scope.hackState.animations = animations;
   $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
+  $scope.hackState.selectedAnimation = null;
   $scope.hackState.sideBarSelectedLink = null;
 
   $scope.myState = $state;
 
-  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+  $rootScope.$on('$stateChangeSuccess', handleStateChangeSuccess);
+
+  $scope.hackState.handleSideBarClick = handleSideBarClick;
+  $scope.hackState.handleCategoryTabClick = handleCategoryTabClick;
+
+  // ---  --- //
+
+  function handleStateChangeSuccess(event, toState, toParams, fromState, fromParams) {
     if (toState.name === 'api-documentation') {
       $state.go($rootScope.defaultCategory.ref);
       return;
     }
 
-  	$scope.myState = toState;
+    $scope.myState = toState;
 
-  	for (var i = 0; i < sideBarLinks.length; i++) {
-  		var link = sideBarLinks[i];
+    for (var i = 0; i < sideBarLinks.length; i++) {
+      var link = sideBarLinks[i];
 
-	  	if (toState.name.indexOf(link.ref) == 0) {
-	  		$scope.hackState.sideBarSelectedLink = link.ref;
-	  		break;
-	  	}
-  	}
+      if (toState.name.indexOf(link.ref) == 0) {
+        $scope.hackState.sideBarSelectedLink = link.ref;
+        break;
+      }
+    }
 
     $scope.hackState.selectedApiCategory = $rootScope.selectedApiCategory;
-  });
+  }
 
-  $scope.hackState.handleSideBarClick = function (link) {
-  	var targetState = link.ref;
+  function handleSideBarClick(link) {
+    console.log('Side bar item click');
 
-  	if (link.ref === 'api-documentation')
-		targetState = $rootScope.defaultCategory.ref;
+    var targetState = link.ref;
 
-  	$state.go(targetState);
-  };
+    if (link.ref === 'api-documentation')
+      targetState = $rootScope.defaultCategory.ref;
 
-  $scope.hackState.handleCategoryTabClick = function (category) {
-    $rootScope.selectedCategory = category.id;
+    $state.go(targetState);
+  }
+
+  function handleCategoryTabClick(category) {
+    console.log('Category tab click');
+
+    $rootScope.selectedApiCategory = category.id;
 
     // Transition to the API documentation route/state
     $state.go('api-documentation.' + category.id);
-  };
-
-  $rootScope.$watch('routeState.name', function (nextRouteName) {
-    if (previousRouteName !== nextRouteName) {
-      maybeSwitchCarImage();
-    }
-
-    previousRouteName = nextRouteName;
-  });
-
-  // TODO: this image-switching logic really should be moved to a separate directive, but for lack of time I'm putting it here
-  function maybeSwitchCarImage() {
-    var url = 'url(' + (Math.random() < 0.5 ? car1Url : car2Url) + ')';
-    carImageElement.css('background-image', url);
   }
 });
 
@@ -446,7 +458,8 @@ angular.module('orderApiCallsFilter', [])
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks, categories) {
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks,
+                  categories) {
   // Re-route invalid routes back to home
   $urlRouterProvider.otherwise(sideBarLinks[1].url);
 
@@ -497,30 +510,36 @@ angular.module('hackApp')
   $rootScope.routeState = {};
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    var isApiDoc;
+
     $log.debug('$stateChangeStart', toState.name);
+
+    // If we are coming from another page, then do not continue with the carousel auto-transition
+    if ($rootScope.routeState.name) {
+        $rootScope.carouselHasRunOnce = true;
+    }
 
     // Allows us to use a different class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    var isApiDoc = toState.name.indexOf('api-documentation') == 0;
+    isApiDoc = toState.name.indexOf('api-documentation') == 0;
 
     if (isApiDoc) {
       var entities = toState.name.split('.');
 
       if (entities.length > 0) {
         // TODO: get rid of these, if they are unneeded
-        $rootScope.selectedCategory = entities[1];
         $rootScope.selectedApiCategory = entities[1];
         $rootScope.selectedApi = entities[2];
         $rootScope.selectedApiTab = entities[3];
         $rootScope.selectedApiExample = entities[4];
       } else {
-        if ($rootScope.selectedCategory == null) {
-          $rootScope.selectedCategory = $rootScope.defaultCategory;
+        if ($rootScope.selectedApiCategory == null) {
+          $rootScope.selectedApiCategory = $rootScope.defaultCategory;
         }
       }
     } else {
-      $rootScope.selectedCategory = null;
+      $rootScope.selectedApiCategory = null;
     }
   });
 
@@ -536,6 +555,10 @@ angular.module('hackApp')
   $rootScope.$on('$stateChangeError',
       function (event, toState, toParams, fromState, fromParams, error) {
     $log.debug('$stateChangeError', toState.name, error);
+  });
+
+  $rootScope.$on('$viewContentLoaded', function (event) {
+    console.log('$viewContentLoaded');
   });
 });
 
@@ -997,6 +1020,131 @@ angular.module('tryItService', [])
   reset();
 
   return TryItData;
+});
+
+'use strict';
+
+angular.module('animationsDirective', [])
+
+.constant('animationsTemplatePath', hack.rootPath + '/dist/templates/components/animations/animations.html')
+
+/**
+ * @ngdoc directive
+ * @name animations
+ * @description
+ *
+ * A panel for managing animations.
+ */
+.directive('animations', function ($rootScope, $interval, animationsTemplatePath) {
+  return {
+    restrict: 'A',
+
+    scope: {
+      hackState: '=',
+      animations: '='
+    },
+
+    templateUrl: animationsTemplatePath,
+
+    link: function (scope, element, attrs) {
+      scope.hack = hack;
+      scope.selectedLabel = null;
+      scope.timeline = null;
+      
+      var carouselInterval, isFirstViewContentLoadedEvent;
+
+      // Add an event handler to the parent scope
+      scope.hackState.handleAnimationTabClick = handleAnimationTabClick;
+
+      carouselInterval = null;
+      isFirstViewContentLoadedEvent = true;
+
+      $rootScope.$on('$viewContentLoaded', function (event) {
+        if (isFirstViewContentLoadedEvent) {
+          console.log('Triggering animation from the initial load of the page');
+
+          isFirstViewContentLoadedEvent = false;
+
+          var carScreen = document.getElementById('car-hero-screen');
+          var carScreenInitialAlpha = 0.7;
+
+          var questionSet1 = [
+            document.getElementById('car-question-set-1-question-1'),
+            document.getElementById('car-question-set-1-question-2'),
+            document.getElementById('car-question-set-1-question-3')
+          ];
+
+          var questionSet2 = [
+            document.getElementById('car-question-set-2-question-1'),
+            document.getElementById('car-question-set-2-question-2'),
+            document.getElementById('car-question-set-2-question-3')
+          ];
+
+          var questionSet3 = [
+            document.getElementById('car-question-set-3-question-1'),
+            document.getElementById('car-question-set-3-question-2'),
+            document.getElementById('car-question-set-3-question-3')
+          ];
+
+          var questionSet4 = [
+            document.getElementById('car-question-set-4-question-1'),
+            document.getElementById('car-question-set-4-question-2'),
+            document.getElementById('car-question-set-4-question-3')
+          ];
+
+          scope.timeline = new TimelineMax();
+
+          scope.timeline.add("start");
+
+          scope.timeline.add("set-1", "+=2");
+          scope.timeline.add(TweenMax.from(carScreen, 1.5, {alpha:0}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet1, 1.75, {x:"60", alpha:0}, 0.3), "-=1.0");
+          scope.timeline.add(TweenMax.staggerTo(questionSet1, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+
+          scope.timeline.add("set-2", "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet2, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
+          scope.timeline.add(TweenMax.staggerTo(questionSet2, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+
+          scope.timeline.add("set-3", "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet3, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
+          scope.timeline.add(TweenMax.staggerTo(questionSet3, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+
+          scope.timeline.add("set-4", "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet4, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
+          scope.timeline.add(TweenMax.staggerTo(questionSet4, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+
+          scope.timeline.add("end");
+
+          carouselInterval = $interval(function() {
+            var currentLabel = scope.timeline.currentLabel();
+
+            if (scope.selectedLabel != currentLabel) {
+                scope.selectedLabel = currentLabel;
+            }
+          }, 500);
+
+          scope.$on('$destroy', function() {
+            // Make sure that the interval is destroyed too
+            if (carouselInterval != null) {
+              carouselInterval.cancel();
+              carouselInterval = null;
+            }
+          });
+        }
+      });
+
+      function handleAnimationTabClick(animation, wasHumanClick) {
+        scope.timeline.seek(animation.label, false);
+      }
+    }
+  };
 });
 
 'use strict';
