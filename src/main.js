@@ -262,20 +262,24 @@ angular.module('hackApp', [
 ])
 
 .constant('animations', [
-  {// TODO: define animation parameters
+  {
     id: 'animation-1',
+    label: 'set-1',
     parameters: {}
   },
   {
     id: 'animation-2',
+    label: 'set-2',
     parameters: {}
   },
   {
     id: 'animation-3',
+    label: 'set-3',
     parameters: {}
   },
   {
     id: 'animation-4',
+    label: 'set-4',
     parameters: {}
   }
 ])

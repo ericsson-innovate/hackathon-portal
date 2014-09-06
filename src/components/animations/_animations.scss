@@ -1,3 +1,9 @@
+@font-face {
+  font-family: good-news-sans-reg-ext;
+  src: url($root-path + '/dist/fonts/good-news-sans-reg-ext.otf');
+  font-weight: normal;
+}
+
 #top-bar {
 	position: absolute;
 	top: 0px;
@@ -29,6 +35,7 @@
 	left: 469px;
 	z-index: 10;
 	width: 800px;
+	font-style: good-news-sans-reg-ext;
 }
 
 .car-question-style-top {
@@ -41,7 +48,7 @@
 
 .car-question-style-middle {
 	position: absolute;
-	top: 30px;
+	top: 45px;
 	left: 0px;
 	color: #0099FF;
 	font-size: 30pt;
@@ -49,7 +56,7 @@
 
 .car-question-style-bottom {
 	position: absolute;
-	top: 65px;
+	top: 95px;
 	left: 0px;
 	color: white;
 	font-size: 35pt;

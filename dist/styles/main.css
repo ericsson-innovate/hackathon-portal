@@ -165,12 +165,12 @@ table {
 
 @font-face {
   font-family: hack-font;
-  src: url('/hackathon-portal/dist/fonts/hack-font.otf');
+  src: url('/dist/fonts/hack-font.otf');
   font-weight: normal; }
 
 @font-face {
   font-family: hack-font;
-  src: url('/hackathon-portal/dist/fonts/hack-font-bold.otf');
+  src: url('/dist/fonts/hack-font-bold.otf');
   font-weight: bold; }
 
 div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
@@ -691,6 +691,11 @@ api-list:after {
   clear: both;
   margin-bottom: 20px; }
 
+@font-face {
+  font-family: good-news-sans-reg-ext;
+  src: url('/dist/fonts/good-news-sans-reg-ext.otf');
+  font-weight: normal; }
+
 #top-bar {
   position: absolute;
   top: 0px;
@@ -718,7 +723,8 @@ api-list:after {
   top: 274px;
   left: 469px;
   z-index: 10;
-  width: 800px; }
+  width: 800px;
+  font-style: good-news-sans-reg-ext; }
 
 .car-question-style-top {
   position: absolute;
@@ -729,14 +735,14 @@ api-list:after {
 
 .car-question-style-middle {
   position: absolute;
-  top: 30px;
+  top: 45px;
   left: 0px;
   color: #0099FF;
   font-size: 30pt; }
 
 .car-question-style-bottom {
   position: absolute;
-  top: 65px;
+  top: 95px;
   left: 0px;
   color: white;
   font-size: 35pt; }

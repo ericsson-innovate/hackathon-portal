@@ -23,6 +23,7 @@ angular.module('animationsDirective', [])
       // TODO:
 
       scope.hack = hack;
+      scope.selectedLabel = null;
       scope.timeline = null;
       
       var currentAnimationWrapper, carouselTimeout, currentAnimationIndex,
@@ -40,6 +41,9 @@ angular.module('animationsDirective', [])
           console.log('Triggering animation from the initial load of the page');
 
           isFirstViewContentLoadedEvent = false;
+
+          var carScreen = document.getElementById('car-hero-screen');
+          var carScreenInitialAlpha = 0.7;
 
           var questionSet1 = [
             document.getElementById('car-question-set-1-question-1'),
@@ -67,101 +71,46 @@ angular.module('animationsDirective', [])
 
           scope.timeline = new TimelineMax();
 
-          scope.timeline.add(TweenMax.staggerFrom(questionSet1, 1.75, {x:"60", alpha:0}, 0.3));
+          scope.timeline.add("start");
+
+          scope.timeline.add("set-1", "+=2");
+          scope.timeline.add(TweenMax.from(carScreen, 1.5, {alpha:0}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet1, 1.75, {x:"60", alpha:0}, 0.3), "-=1.0");
           scope.timeline.add(TweenMax.staggerTo(questionSet1, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
 
-          scope.timeline.add(TweenMax.staggerFrom(questionSet2, 1.75, {x:"60", alpha:0}, 0.3), "+=2");
+          scope.timeline.add("set-2", "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet2, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
           scope.timeline.add(TweenMax.staggerTo(questionSet2, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
 
-          scope.timeline.add(TweenMax.staggerFrom(questionSet3, 1.75, {x:"60", alpha:0}, 0.3), "+=2");
+          scope.timeline.add("set-3", "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet3, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
           scope.timeline.add(TweenMax.staggerTo(questionSet3, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
 
-          scope.timeline.add(TweenMax.staggerFrom(questionSet4, 1.75, {x:"60", alpha:0}, 0.3), "+=2");
+          scope.timeline.add("set-4", "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.staggerFrom(questionSet4, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
           scope.timeline.add(TweenMax.staggerTo(questionSet4, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
 
-//          $timeout(function () {
-//            handleAnimationTabClick(animations[currentAnimationIndex], false);
-//          }, 500);
+          scope.timeline.add("end");
+
+          scope.timeline.eventCallback("onUpdate", function() {
+            scope.selectedLabel = scope.timeline.currentLabel();
+            // TODO: need to notify angular that shit changed
+          });
         }
       });
 
       // ---  --- //
 
       function handleAnimationTabClick(animation, wasHumanClick) {
-        console.log('Animation tab click: wasHumanClick=' + wasHumanClick);
-
-//        // Do not allow animations to run that were triggered from timeouts that occurred after the
-//        // auto-transition was cancelled
-//        if (wasHumanClick || !$rootScope.carouselHasRunOnce) {
-//          delayedDestroy(currentSwiffyStage, currentAnimationWrapper);
-//
-//          scope.hackState.selectedAnimation = animation;
-//
-//          addNewSwiffyAnimation(animation.swiffyObject);
-//        }
-//
-//        // Cancel any current auto-transition timeout
-//        if (carouselTimeout) {
-//          $timeout.cancel(carouselTimeout);
-//          carouselTimeout = null;
-//        }
-//
-//        // Was this "click" triggered as part of the auto-transition?
-//        if (!$rootScope.carouselHasRunOnce && !wasHumanClick) {
-//          // Start a timeout for the next auto-transition
-//          carouselTimeout = $timeout(function () {
-//            // Stop the auto-transition after running through each animation once
-//            if (currentAnimationIndex >= 3) {
-//              $rootScope.carouselHasRunOnce = true;
-//              return;
-//            }
-//
-//            currentAnimationIndex = (currentAnimationIndex + 1) % 4;
-//
-//            handleAnimationTabClick(swiffyAnimations[currentAnimationIndex], false);
-//          }, 6000);
-//        } else {
-//          $rootScope.carouselHasRunOnce = true;
-//        }
+        scope.timeline.seek(animation.label, false);
       }
-
-//      function delayedDestroy(swiffyStage, swiffyWrapper) {
-//        if (swiffyWrapper) {
-//          swiffyWrapper.addClass('hidden');
-//        }
-//
-//        setTimeout(function () {
-//          console.log('Destroying old swiffy animation');
-//
-//          destroySwiffy(swiffyStage, swiffyWrapper);
-//        }, 700);
-//      }
-//
-//      function addNewSwiffyAnimation(swiffyObject) {
-//        console.log('Starting new swiffy animation');
-//
-//        // Create a wrapper element
-//        currentAnimationWrapper = angular.element('<div></div>');
-//        currentAnimationWrapper.addClass(' animations-wrapper');
-//
-//        // Add the wrapper element as the first child of the swiffy container panel
-//        element.prepend(currentAnimationWrapper);
-//
-//        // Create and start the swiffy animation
-//        currentSwiffyStage = new swiffy.Stage(currentAnimationWrapper[0], swiffyObject, {});
-//        currentSwiffyStage.start();
-//      }
-//
-//      function destroySwiffy(swiffyStage, swiffyWrapper) {
-//        if (swiffyStage) {
-//          swiffyStage.destroy();
-//        }
-//
-//        if (swiffyWrapper) {
-//          swiffyWrapper.empty();
-//          swiffyWrapper.remove();
-//        }
-//      }
     }
   };
 });
