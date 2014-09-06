@@ -1043,6 +1043,7 @@ angular.module('animationsDirective', [])
       // TODO:
 
       scope.hack = hack;
+      scope.timeline = null;
       
       var currentAnimationWrapper, carouselTimeout, currentAnimationIndex,
           isFirstViewContentLoadedEvent;
@@ -1059,6 +1060,44 @@ angular.module('animationsDirective', [])
           console.log('Triggering animation from the initial load of the page');
 
           isFirstViewContentLoadedEvent = false;
+
+          var questionSet1 = [
+            document.getElementById('car-question-set-1-question-1'),
+            document.getElementById('car-question-set-1-question-2'),
+            document.getElementById('car-question-set-1-question-3')
+          ];
+
+          var questionSet2 = [
+            document.getElementById('car-question-set-2-question-1'),
+            document.getElementById('car-question-set-2-question-2'),
+            document.getElementById('car-question-set-2-question-3')
+          ];
+
+          var questionSet3 = [
+            document.getElementById('car-question-set-3-question-1'),
+            document.getElementById('car-question-set-3-question-2'),
+            document.getElementById('car-question-set-3-question-3')
+          ];
+
+          var questionSet4 = [
+            document.getElementById('car-question-set-4-question-1'),
+            document.getElementById('car-question-set-4-question-2'),
+            document.getElementById('car-question-set-4-question-3')
+          ];
+
+          scope.timeline = new TimelineMax();
+
+          scope.timeline.add(TweenMax.staggerFrom(questionSet1, 1.75, {x:"60", alpha:0}, 0.3));
+          scope.timeline.add(TweenMax.staggerTo(questionSet1, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+
+          scope.timeline.add(TweenMax.staggerFrom(questionSet2, 1.75, {x:"60", alpha:0}, 0.3), "+=2");
+          scope.timeline.add(TweenMax.staggerTo(questionSet2, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+
+          scope.timeline.add(TweenMax.staggerFrom(questionSet3, 1.75, {x:"60", alpha:0}, 0.3), "+=2");
+          scope.timeline.add(TweenMax.staggerTo(questionSet3, 1, {x:"-60", alpha:0}, 0.3), "+=3");
+
+          scope.timeline.add(TweenMax.staggerFrom(questionSet4, 1.75, {x:"60", alpha:0}, 0.3), "+=2");
+          scope.timeline.add(TweenMax.staggerTo(questionSet4, 1, {x:"-60", alpha:0}, 0.3), "+=3");
 
 //          $timeout(function () {
 //            handleAnimationTabClick(animations[currentAnimationIndex], false);
