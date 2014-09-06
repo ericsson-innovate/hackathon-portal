@@ -2,6 +2,8 @@
 
 angular.module('animationsDirective', [])
 
+.constant('animationsTemplatePath', hack.rootPath + '/dist/templates/components/animations/animations.html')
+
 /**
  * @ngdoc directive
  * @name animations
@@ -9,11 +11,19 @@ angular.module('animationsDirective', [])
  *
  * A panel for managing animations.
  */
-.directive('animations', function ($rootScope, $timeout) {
+.directive('animations', function ($rootScope, $timeout, animationsTemplatePath) {
   return {
     restrict: 'A',
+    scope: {
+      hackState: '=',
+      animations: '='
+    },
+    templateUrl: animationsTemplatePath,
     link: function (scope, element, attrs) {
       // TODO:
+
+      scope.hack = hack;
+      
       var currentAnimationWrapper, carouselTimeout, currentAnimationIndex,
           isFirstViewContentLoadedEvent;
 

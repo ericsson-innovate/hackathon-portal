@@ -22,25 +22,7 @@
 </head>
 <body ng-app="hackApp"
       ng-controller="HackCtrl">
-  <div id="banner">
-    <div id="car-image-panel" animations></div>
-
-    <div id="empty-car-area">
-      <div class="content-area">
-
-        <div class="inner-content-area">
-        </div>
-
-        <ul class="tabs">
-          <li ng-repeat="animation in hackState.animations"
-              ng-click="hackState.handleAnimationTabClick(animation, true)"
-              ng-class="{selected: animation === hackState.selectedAnimation}"
-              class="tab">
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <div id="banner" animations="hackState.animations" hack-state="hackState"></div>
 
   <div class="content-area">
     <ul class="side-menu">
@@ -86,6 +68,10 @@
   <script src="/bower_components/highlightjs/highlight.pack.js"></script>
   <script src="/bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
 
+  <script src="/bower_components/greensock/src/minified/TweenMax.min.js"></script>
+  <script src="/bower_components/greensock/src/minified/TimelineMax.min.js"></script>
+  <script src="/bower_components/greensock/src/minified/easing/EasePack.min.js"></script>
+
   <!-- TODO: replace these individual script includes with the single minified version -->
   <!--<script src="/dist/scripts/hackathon-portal.min.js"></script>-->
 
@@ -94,8 +80,6 @@
   <script src="/src/common/routes.js"></script>
 
   <script src="/src/common/hack-controller.js"></script>
-
-  <script src="/src/common/animations-directive.js"></script>
 
   <script src="/src/common/category-filter.js"></script>
   <script src="/src/common/error-description-filter.js"></script>
@@ -107,6 +91,7 @@
   <script src="/src/components/api-example-card/api-example-card-directive.js"></script>
   <script src="/src/components/api-try-it-card/api-try-it-card-directive.js"></script>
   <script src="/src/components/api-list/api-list-directive.js"></script>
+  <script src="/src/components/animations/animations-directive.js"></script>
 
   <script src="/src/data-services/api-service.js"></script>
   <script src="/src/data-services/examples-service.js"></script>

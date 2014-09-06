@@ -165,12 +165,12 @@ table {
 
 @font-face {
   font-family: hack-font;
-  src: url('/dist/fonts/hack-font.otf');
+  src: url('/hackathon-portal/dist/fonts/hack-font.otf');
   font-weight: normal; }
 
 @font-face {
   font-family: hack-font;
-  src: url('/dist/fonts/hack-font-bold.otf');
+  src: url('/hackathon-portal/dist/fonts/hack-font-bold.otf');
   font-weight: bold; }
 
 div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
@@ -690,6 +690,56 @@ api-list:after {
   display: table;
   clear: both;
   margin-bottom: 20px; }
+
+#top-bar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 100; }
+
+.car-hero {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 0; }
+
+#car-hero-screen {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.7;
+  z-index: 1; }
+
+.car-question-set {
+  position: absolute;
+  top: 274px;
+  left: 469px;
+  z-index: 10;
+  width: 800px; }
+
+.car-question-style-top {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  color: white;
+  font-size: 25pt; }
+
+.car-question-style-middle {
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  color: #0099FF;
+  font-size: 30pt; }
+
+.car-question-style-bottom {
+  position: absolute;
+  top: 65px;
+  left: 0px;
+  color: white;
+  font-size: 35pt; }
 
 .getting-started-route {
   padding-bottom: 40px; }
