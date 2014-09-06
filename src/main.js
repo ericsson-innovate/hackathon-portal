@@ -86,6 +86,14 @@ angular.module('hackApp', [
     repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
     readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-javascript/master/README.md',
     readmeText: 'Loading README...'
+  },
+  {
+    platform: 'angularjs',
+    humanReadablePlatform: 'UI Kit',
+    iconUrl: hack.rootPath + '/dist/images/angularjs-icon.png',
+    repoUrl: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
+    readmeUrl: 'https://raw.githubusercontent.com/ericsson-innovate/ATT-Drive-UI-Framework/master/README.md',
+    readmeText: 'Loading README...'
   }
 ])
 
