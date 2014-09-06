@@ -706,7 +706,8 @@ api-list:after {
   position: absolute;
   top: 0px;
   left: 0px;
-  z-index: 0; }
+  z-index: 0;
+  background-color: black; }
 
 #car-hero-screen {
   position: absolute;
