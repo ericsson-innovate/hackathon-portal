@@ -35,11 +35,9 @@ angular.module('animationsDirective', [])
       carouselInterval = null;
       isFirstViewContentLoadedEvent = true;
 
-      $rootScope.$on('$viewContentLoaded', function (event) {
+      // $rootScope.$on('$viewContentLoaded', function (event) {
         if (isFirstViewContentLoadedEvent) {
           console.log('Triggering animation from the initial load of the page');
-
-          isFirstViewContentLoadedEvent = false;
 
           var carScreen = document.getElementById('car-hero-screen');
           var carScreenInitialAlpha = 0.7;
@@ -113,8 +111,10 @@ angular.module('animationsDirective', [])
               carouselInterval = null;
             }
           });
+
+          isFirstViewContentLoadedEvent = false;
         }
-      });
+      // });
 
       function handleAnimationTabClick(animation, wasHumanClick) {
         scope.timeline.seek(animation.label, false);
