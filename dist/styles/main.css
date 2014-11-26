@@ -748,6 +748,9 @@ api-list:after {
   color: white;
   font-size: 35pt; }
 
+markdown-block {
+  display: block; }
+
 .getting-started-route {
   padding-bottom: 40px; }
 
