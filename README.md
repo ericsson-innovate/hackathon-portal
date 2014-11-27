@@ -11,10 +11,10 @@ These companion repositories contain sample applications for the three main plat
 - iOS Application: [github.com/ericsson-innovate/asdp-api-sampler-ios](https://github.com/ericsson-innovate/asdp-api-sampler-ios)
 - Web Application: [github.com/ericsson-innovate/asdp-api-sampler-javascript](https://github.com/ericsson-innovate/asdp-api-sampler-javascript)
 
-### Where the Portal is Hosted
+# Where the Portal is Hosted
 
 This is designed to be hosted using GitHub Pages. But, it can certainly be hosted locally or elsewhere.
 
 If you would like to host this somewhere else, you will need to change the URL path at two places within the portal code:  
-  - src/common/_common.scss
-  - gulpfile.js
+- src/common/_common.scss
+- gulpfile.js

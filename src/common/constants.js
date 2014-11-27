@@ -19,6 +19,8 @@ angular.module('hackApp')
 
     .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
+    .constant('uiKitDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/README.md')// TODO: update this
+
     .constant('sampleAppData', [
       {
         platform: 'android',

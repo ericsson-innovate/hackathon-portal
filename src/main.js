@@ -40,6 +40,7 @@ angular.module('hackApp', [
   'examplesService',
   'specificationsService',
   'tryItService',
+  'uiKitApiService',
 
   'apiDocumentationController',
   'driveApiController',
