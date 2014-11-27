@@ -48,9 +48,12 @@ angular.module('uiKitApiService', [])
        * @returns {Array.<Section>}
        */
       function parseDocumentationIntoSections(documentationText) {
+        console.log('UiKitApi: documentationText: raw: ', documentationText);// TODO: remove me
         documentationText = documentationText.replace(startAndEndQuotRegex, '');
         documentationText = documentationText.replace(/\\n/g, '\n');// TODO: unescape other possible characters
+        console.log('UiKitApi: documentationText: after unescaping: ', documentationText);// TODO: remove me
         var convertedMarkdown = parseMarkdown(documentationText);
+        console.log('UiKitApi: convertedMarkdown', convertedMarkdown);// TODO: remove me
         var sections = extractSections(convertedMarkdown);
         parseSectionsForSyntaxHighlighting(sections);
         return sections;
