@@ -14,7 +14,7 @@ angular.module('uiKitApiService', [])
       var codeBlockRegex = /<pre>\s*<code>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
       var codeBlockReplacement = '<div hljs source="\'$1\'" class="language-javascript"></div>';
 
-      var sectionHeaderRegex = /<h1 ?(?:.*?)*>\s*(.*?)\s*<\/h1>/gi;
+      var sectionHeaderRegex = /<h1(?:.*?)>\s*(.*?)\s*<\/h1>/gi;
 
       var startAndEndQuotRegex = /(?:^"|"$)/g;
 
@@ -48,12 +48,9 @@ angular.module('uiKitApiService', [])
        * @returns {Array.<Section>}
        */
       function parseDocumentationIntoSections(documentationText) {
-        console.log('UiKitApi: documentationText: raw: ', documentationText);// TODO: remove me
         documentationText = documentationText.replace(startAndEndQuotRegex, '');
         documentationText = documentationText.replace(/\\n/g, '\n');// TODO: unescape other possible characters
-        console.log('UiKitApi: documentationText: after unescaping: ', documentationText);// TODO: remove me
         var convertedMarkdown = parseMarkdown(documentationText);
-        console.log('UiKitApi: convertedMarkdown', convertedMarkdown);// TODO: remove me
         var sections = extractSections(convertedMarkdown);
         parseSectionsForSyntaxHighlighting(sections);
         return sections;
@@ -83,8 +80,11 @@ angular.module('uiKitApiService', [])
         // Add a section for the content before the first header
         addSection('Introduction', null);
 
+        result = sectionHeaderRegex.exec(convertedMarkdown);
+
         // Iterate over the h1 elements within the overall converted markdown text
-        while ((result = sectionHeaderRegex.exec(convertedMarkdown)) !== null) {
+        while (result !== null) {
+          debugger;
           // Set the markdown content of the previous section (now that we know where that section ends)
           sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex, result.index);
 
@@ -93,7 +93,11 @@ angular.module('uiKitApiService', [])
 
           // Save the starting index of the content for this new section
           previousContentIndex = result.index + result[0].length;
+
+          result = sectionHeaderRegex.exec(convertedMarkdown);
         }
+
+        debugger;
 
         // Set the markdown content of the previous section (now that we know where that section ends)
         sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex);

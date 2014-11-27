@@ -1062,7 +1062,7 @@ angular.module('uiKitApiService', [])
       var codeBlockRegex = /<pre>\s*<code>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
       var codeBlockReplacement = '<div hljs source="\'$1\'" class="language-javascript"></div>';
 
-      var sectionHeaderRegex = /<h1 ?(?:.*?)*>\s*(.*?)\s*<\/h1>/gi;
+      var sectionHeaderRegex = /<h1(?:.*?)>\s*(.*?)\s*<\/h1>/gi;
 
       var startAndEndQuotRegex = /(?:^"|"$)/g;
 
@@ -1096,12 +1096,9 @@ angular.module('uiKitApiService', [])
        * @returns {Array.<Section>}
        */
       function parseDocumentationIntoSections(documentationText) {
-        console.log('UiKitApi: documentationText: raw: ', documentationText);// TODO: remove me
         documentationText = documentationText.replace(startAndEndQuotRegex, '');
         documentationText = documentationText.replace(/\\n/g, '\n');// TODO: unescape other possible characters
-        console.log('UiKitApi: documentationText: after unescaping: ', documentationText);// TODO: remove me
         var convertedMarkdown = parseMarkdown(documentationText);
-        console.log('UiKitApi: convertedMarkdown', convertedMarkdown);// TODO: remove me
         var sections = extractSections(convertedMarkdown);
         parseSectionsForSyntaxHighlighting(sections);
         return sections;
@@ -1131,8 +1128,11 @@ angular.module('uiKitApiService', [])
         // Add a section for the content before the first header
         addSection('Introduction', null);
 
+        result = sectionHeaderRegex.exec(convertedMarkdown);
+
         // Iterate over the h1 elements within the overall converted markdown text
-        while ((result = sectionHeaderRegex.exec(convertedMarkdown)) !== null) {
+        while (result !== null) {
+          debugger;
           // Set the markdown content of the previous section (now that we know where that section ends)
           sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex, result.index);
 
@@ -1141,7 +1141,11 @@ angular.module('uiKitApiService', [])
 
           // Save the starting index of the content for this new section
           previousContentIndex = result.index + result[0].length;
+
+          result = sectionHeaderRegex.exec(convertedMarkdown);
         }
+
+        debugger;
 
         // Set the markdown content of the previous section (now that we know where that section ends)
         sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex);
@@ -1342,6 +1346,50 @@ angular.module('apiExampleCardDirective', [])
 
 'use strict';
 
+angular.module('apiListDirective', [])
+
+.constant('apiListTemplatePath', hack.rootPath + '/dist/templates/components/api-list/api-list.html')
+
+/**
+ * @ngdoc directive
+ * @name apiList
+ * @requires HackApi
+ * @requires apiListTemplatePath
+ * @description
+ *
+ * A footer list used for displaying a list of navigation links.
+ */
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      category: '='
+    },
+    templateUrl: apiListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
+
+      HackApi.getAllApiData()
+          .then(function (apiData) {
+            scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
+          });
+
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
+      });
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListItemDirective', [])
 
 .constant('apiListItemTemplatePath', hack.rootPath + '/dist/templates/components/api-list-item/api-list-item.html')
@@ -1402,50 +1450,6 @@ angular.module('apiListItemDirective', [])
         
         $state.go(targetRef);
       };
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiListDirective', [])
-
-.constant('apiListTemplatePath', hack.rootPath + '/dist/templates/components/api-list/api-list.html')
-
-/**
- * @ngdoc directive
- * @name apiList
- * @requires HackApi
- * @requires apiListTemplatePath
- * @description
- *
- * A footer list used for displaying a list of navigation links.
- */
-.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      category: '='
-    },
-    templateUrl: apiListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiListState = {};
-      scope.apiListState.apiData = [];
-      scope.apiListState.selectedItemId = null;
-
-      HackApi.getAllApiData()
-          .then(function (apiData) {
-            scope.apiListState.apiData = apiData;
-
-            if ($rootScope.selectedApi != null) {
-              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
-              console.log(scope.apiListState.selectedItemId);
-            }
-          });
-
-      scope.$watch('category', function () {
-        scope.apiListState.selectedItemId = null;
-      });
     }
   };
 });
