@@ -86,7 +86,7 @@ Vehicle properties that are not supported by a given VIC will not be returned in
 
 |Parameter            |Type        |Required   |Read only   |Description   |
 |--- |--- |--- |--- |--- |
-|**Vehicle identification** 
+|**Vehicle identification** |
 |identification.vin    |String        |True    |Yes            |Vehicle |identification number    |
 |identification.wmi |String |False |Yes |World Manufacture Identifier|
 |identification.iccid |String |False |Yes |Integrated Circuit Card Identifier|
@@ -107,15 +107,15 @@ Vehicle properties that are not supported by a given VIC will not be returned in
 |identification.category |String |True |Yes |Sedan, SUV, …|
 |identification.owner.id |String |True |Yes |Owner ID|
 |identification.owner.type |String |True |Yes |Owner Type: subscriber, dealer, oem|
-|**Vehicle equipment**    
+|**Vehicle equipment**    |
 |devices |{array} |False |Yes |Vehicle devices: HU, TCU, Rear screens, DAC, etc|
 |devices.deviceId |String |True |Yes |Device identifier|
 |devices.description |String |False |Yes |Device description|
 |devices.metas |{array} |False |Yes |Device metadata (array of attribute:value)|
-|**Vehicle life cycle**    
+|**Vehicle life cycle**    |
 |lifecycle.status |String |True |Yes |Inventory, demo, trial, retail, service, junk|
 |lifecycle.condition |String |False |Yes |Vehicle condition. Excellent, Good, Poor, Unknown.|
-|**Vehicle configuration** 
+|**Vehicle configuration** |
 |configuration.totalDoors |Integer |False |Yes |Number of doors|
 |configuration.fuelType |String |False |Yes |Fuel type|
 |configuration.refuelPosition |String |False |Yes |Side of the vehicle with access to the fuel door|
@@ -128,7 +128,7 @@ Vehicle properties that are not supported by a given VIC will not be returned in
 |configuration.transmissionType |String |False |Yes |Vehicle transmission type|
 |configuration.weight |Float |False |Yes |Vehicle weight|
 |configuration.options |{array} |False |Yes |Vehicle options (array of attribute: value)|
-|**Vehicle status** 
+|**Vehicle status** |
 |vehicleSpeed.speed |Integer |False |Yes |Vehicle speed (KM/h or MP/h|
 |vehicleSpeed.averageSpeed |Integer |False |Yes |Estimated average speed in KM/h |
 |vehicleCompass.direction |Float |False |Yes |Degree direction of the vehicle compass to be used by navigation identify the car direction| inside garage or when it is not moving|
@@ -143,7 +143,7 @@ Vehicle properties that are not supported by a given VIC will not be returned in
 |engineOil.change |Boolean |False |Yes |Engine oil change indicator status|
 |engineCoolant.level |Integer |False |Yes |Engine coolant level as percentage of fullness|
 |engineCoolant.temperature |Integer |False |Yes |Engine coolant temperature(in degrees Celsius)|
-|**Vehicle climate control** 
+|**Vehicle climate control** |
 |climateControl.airflowDirection |String |False |No |Airflow direction: "frontpanel", "floorduct",   "bilevel", "defrostfloor"|
 |climateControl.fanSpeedLevel |Integer |False |No |Fan speed of the air flowing (0: off, 1: weakest ~ 10: strongest )|
 |climateControl.targetTemperature |Integer |False |No |Desired temperature(in degrees Celsius)|
@@ -155,7 +155,7 @@ Vehicle properties that are not supported by a given VIC will not be returned in
 |climateControl.steeringWheelHeater |Integer |False |No |Steering wheel heater (0: off, 1: least warm ~ 10: warmest)|
 |sideWindow.lock |Boolean |False |No |Whether or not the window is locked T/F|
 |sideWindow.openness |Integer |False |No |Side window as a percentage of openness. (0:Closed, 100:Fully Opened)|
-|**Driving safety** 
+|**Driving safety** |
 |door.status |String |False |Yes |Door status enum: "open", "ajar", "close"|
 |door.lock |Boolean |False |No |Whether or not the door is locked T/F|
 |airBagStatus.activated |Boolean |False |Yes |Whether or not the airbag is activated T/F|
@@ -1827,7 +1827,7 @@ Below properties is a subset of possible attributes that a Media service may sup
 |currentMedia.position|Integer|False|No|Last position before pausing or switching.|
 |currentMedia.duration|Integer|False|Yes|Length of media|
 |playlist|{array}|False|Yes|Array of Media objects (same attributes as currentMedia).|
-|**Player parameters*|
+|**Player parameters**|
 |player.action|String|False|No|play, pause, resume, stop, seek, load, nextTrack, previousTrack|
 |player.controls|Boolean|False|No|Media player controls|
 |player.audio|String|No|No|Muted|
