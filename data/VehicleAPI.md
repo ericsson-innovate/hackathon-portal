@@ -2261,7 +2261,7 @@ Unsubscribe from SMS
 **Returns:** void
 
 ####Example
-  ```javascript
+```javascript
 function unsubscribe(){
      drive.sms.inbox.messages.unsubscribe(handle);
 }

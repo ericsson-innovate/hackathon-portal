@@ -82,4 +82,3 @@ Now you are ready to build your first app, and the API is readly available.
 - Change SPAN IP
 - Change SPAN Port
 - Rebuild SDK
-- 

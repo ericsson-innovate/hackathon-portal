@@ -1690,19 +1690,33 @@ angular.module('markdownBlockDirective', [])
           }
 
           function compileCodeBlocks() {
-            //var matches = element[0].querySelectorAll('[hljs]');
-            //
-            //var i, count;
-            //
-            //for (i = 0, count = matches.length; i < count; i += 1) {
-            //  var hljsElement = angular.element(matches[i]);
-            //  var codeBlockElement = $compile(hljsElement)(scope);
-            //  hljsElement.replaceWith(codeBlockElement);
-            //}
+            var matches = element[0].querySelectorAll('[hljs]');
+
+            var i, count;
+
+            for (i = 0, count = matches.length; i < count; i += 1) {
+              var hljsElement = angular.element(matches[i]);
+              var codeBlockElement = $compile(hljsElement)(scope);
+              hljsElement.replaceWith(codeBlockElement);
+            }
           }
         }
       };
     });
+
+'use strict';
+
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+.controller('ApiDocumentationCtrl', function () {
+});
 
 angular.module('driveApiController', [])
     // TODO: rename this route; rename other routes; add other routes
@@ -1731,20 +1745,6 @@ angular.module('driveApiController', [])
         $scope.sampleAppsState.selectedSection = section;
       }
     });
-
-'use strict';
-
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-.controller('ApiDocumentationCtrl', function () {
-});
 
 'use strict';
 
