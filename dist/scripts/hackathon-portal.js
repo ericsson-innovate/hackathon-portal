@@ -118,7 +118,8 @@ angular.module('hackApp')
 
     .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
-    .constant('uiKitDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/README.md')// TODO: update this
+    .constant('uiKitDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md')
+    .constant('setupUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/Setup.md')
 
     .constant('sampleAppData', [
       {
@@ -183,7 +184,7 @@ angular.module('hackApp')
       {
         isStateRoute: true,
         ref: 'drive-api',
-        label: 'Drive API',
+        label: 'UI Kit',
         url: '/drive-api',
         templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
         controller: 'DriveApiCtrl'
