@@ -21,7 +21,7 @@ For instance, if an application wants to use the vehicle information SDK, the ap
 
 ---
 
-## <a name="vehicle-information"></a>Vehicle Information
+## Vehicle Information
 This Javascript SDK allows retrieving and setting vehicle information.
 The following interface represents a base interface to all vehicle properties (from W3C):
 
@@ -388,7 +388,7 @@ function isAvailable(){
 }
 ```
 
-## <a name="navigation"></a>Navigation
+## Navigation
 This Javascript SDK allows interacting with navigation system.
 The following interface represents a base interface to all navigation properties:
 ```javascript
@@ -800,7 +800,7 @@ function isAvailable(){
 }
 ```
 
-##<a name="identity"></a>Identity
+##Identity
 This Javascript SDK allows interacting with Identity Manager.
 The following interface represents a base interface to all identity properties:
 ```javascript
@@ -1073,7 +1073,7 @@ function isAvailable(){
 }
 ```
 
-## <a name="application-and-system-settings"></a>Application and System Settings
+## Application and System Settings
 This Javascript SDK allows managing application and system settings. Applications can use this SDK to store and retrieve their own settings and benefit from built in data events handling.
 
 The following interface represents a base interface to all system/application properties:
@@ -1443,7 +1443,7 @@ function subscribe(){
 ####Example
 ```javascript
 function unsubscribe(){
-     drive.settings.system.unsubscribe(handle);
+  drive.settings.system.unsubscribe(handle);
 }
 ```
 
@@ -1467,33 +1467,33 @@ When available method returns not_supported_policy, application can subscribe to
 ####Example
 ```javascript
 function isAvailable(){
-    return drive.settings.system.available();
+  return drive.settings.system.available();
 }
 ```
 
-## <a name="notifications"></a>Notifications
+## Notifications
 This Javascript SDK allows interacting with notifications service.
 The following interface represents a base interface to all notification properties:
 ```javascript
 interface NotificationInterface {
-    Promise get (optional object options);
-    Promise set (object value, optional object options);
-    Promise delete (object value, optional object options);
-    Integer subscribe (InterfaceCallback callback, optional object options);
-    void unsubscribe (Integer handle);
-    Availability available ();
+  Promise get (optional object options);
+  Promise set (object value, optional object options);
+  Promise delete (object value, optional object options);
+  Integer subscribe (InterfaceCallback callback, optional object options);
+  void unsubscribe (Integer handle);
+  Availability available ();
 };
 callback InterfaceCallback = void(object value, EventType eventType); ();
 
 enum EventType {
-"create",
-"read",
-"update",
-"delete"
+  "create",
+  "read",
+  "update",
+  "delete"
 };
 
 interface CommonDataType {
-    readonly    attribute DOMTimeStamp timeStamp;
+  readonly attribute DOMTimeStamp timeStamp;
 };
 ```
 
@@ -1782,7 +1782,7 @@ function isAvailable(){
 }
 ```
 
-## <a name="media"></a>Media
+## Media
 This Javascript SDK allows interacting with media player.
 The following interface represents a base interface to all media player properties:
 
@@ -2034,7 +2034,7 @@ function isAvailable(){
 }
 ```
 
-## <a name="sms"></a>SMS
+## SMS
 This Javascript SDK allows interacting with SMS/MMS Messaging.
 The following interface represents a base interface to all SMS/MMS properties:
 ```javascript
@@ -2150,7 +2150,7 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 **Description:** The get method returns SMS information object.
 
 **Parameters:**
-- {object} options Optional -Options object allows specifying filters.
+- {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with sms information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving SMS information.
 
@@ -2187,7 +2187,7 @@ function getInbox(){
 ####Example: Send SMS
 ```javascript
 function resolve(){
-///success
+  ///success
 }
 
 function reject(error){
@@ -2195,7 +2195,7 @@ function reject(error){
 }
 
 function sendSMS(){
-drive.sms.outbox.set({"type":"sms", "destination":"5556667777", "data":"hello"}).then(resolve,reject);
+  drive.sms.outbox.set({"type":"sms", "destination":"5556667777", "data":"hello"}).then(resolve,reject);
 }
 ```
 
@@ -2215,7 +2215,7 @@ drive.sms.outbox.set({"type":"sms", "destination":"5556667777", "data":"hello"})
 ####Example:
 ```javascript
 function resolve(){
-///success
+  ///success
 }
 
 function reject(error){
@@ -2246,7 +2246,7 @@ function newMessages(messages){
 }
 
 function subscribe(){
-handle=drive.sms.inbox.messages.subscribe(newMessages);
+  handle=drive.sms.inbox.messages.subscribe(newMessages);
 }
 ```
 
@@ -2263,7 +2263,7 @@ Unsubscribe from SMS
 ####Example
 ```javascript
 function unsubscribe(){
-     drive.sms.inbox.messages.unsubscribe(handle);
+  drive.sms.inbox.messages.unsubscribe(handle);
 }
 ```
 
@@ -2288,33 +2288,33 @@ See policy manager section for more details.
 ####Example
 ```javascript
 function isAvailable(){
-    return drive.sms.outbox.available();
+  return drive.sms.outbox.available();
 }
 ```
 
-## <a name="search-service"></a>Search service
+## Search service
 This Javascript SDK allows interacting with search service.
 The following interface represents a base interface to all Search properties:
 ```javascript
 interface SearchInterface {
-    Promise get (optional object options);
-    Promise set (object value, optional object options);
-    Promise delete (object value, optional object options);
-    Integer subscribe (InterfaceCallback callback, optional object options);
-    void unsubscribe (Integer handle);
-    Availability available ();
+  Promise get (optional object options);
+  Promise set (object value, optional object options);
+  Promise delete (object value, optional object options);
+  Integer subscribe (InterfaceCallback callback, optional object options);
+  void unsubscribe (Integer handle);
+  Availability available ();
 };
 callback InterfaceCallback = void(object value, EventType eventType); ();
 
 enum EventType {
-"create",
-"read",
-"update",
-"delete"
+  "create",
+  "read",
+  "update",
+  "delete"
 };
 
 interface CommonDataType {
-    readonly    attribute DOMTimeStamp timeStamp;
+  readonly attribute DOMTimeStamp timeStamp;
 };
 ```
 
@@ -2636,15 +2636,15 @@ Below properties is a subset of possible attributes that Search service may supp
 ####Example: get contacts
 ```javascript
 function logResults(items){
-   console.log(items);
+  console.log(items);
 }
 
 function logError(error){
-   console.log(error);
+  console.log(error);
 }
 
 function getResults(){
-   drive.search.results.get().then(logResults,logError);
+  drive.search.results.get().then(logResults,logError);
 }
 ```
 
@@ -2675,21 +2675,20 @@ function reject(error){
 }
 
 function searchPOIs(){
-drive.search.request.set({"requestId":"poi-1", "serviceType":"poi", "query":"gas station", "metas":{"currentPostion":true,"radius":5000}}).then(resolve,reject);
+  drive.search.request.set({"requestId":"poi-1", "serviceType":"poi", "query":"gas station", "metas":{"currentPostion":true,"radius":5000}}).then(resolve,reject);
 }
 
 function getResults(results){
-console.log(results);
+  console.log(results);
 }
 ```
 
 ####Example: Search current weather
 ```javascript
-var handle=
-drive.search.results.subscribe(getResults,{"requestId":"w-1"});
+var handle=drive.search.results.subscribe(getResults,{"requestId":"w-1"});
 
 function resolve(){
-///success
+  ///success
 }
 
 function reject(error){
@@ -2697,11 +2696,11 @@ function reject(error){
 }
 
 function getCurrentWeather(){
-drive.search.request.set({"requestId":"w-1", "serviceType":"weather", "query":"", "contentType":"current", "metas":{"currentPostion":true}}).then(resolve,reject);
+  drive.search.request.set({"requestId":"w-1", "serviceType":"weather", "query":"", "contentType":"current", "metas":{"currentPostion":true}}).then(resolve,reject);
 }
 
 function getResults(results){
-console.log(results);
+  console.log(results);
 }
 ```
 
@@ -2711,7 +2710,7 @@ var handle=
 drive.search.results.subscribe(getResults,{"requestId":"w-1"});
 
 function resolve(){
-///success
+  ///success
 }
 
 function reject(error){
@@ -2719,11 +2718,11 @@ function reject(error){
 }
 
 function getCurrentWeather(){
-drive.search.request.set({"requestId":"w-1", "serviceType":"weather", "query":"", "contentType":"forecast", "metas":{"currentPostion":true}}).then(resolve,reject);
+  drive.search.request.set({"requestId":"w-1", "serviceType":"weather", "query":"", "contentType":"forecast", "metas":{"currentPostion":true}}).then(resolve,reject);
 }
 
 function getResults(results){
-console.log(results);
+  console.log(results);
 }
 ```
 
@@ -2743,7 +2742,7 @@ console.log(results);
 ####Example:
 ```javascript
 function resolve(){
-///success
+  ///success
 }
 
 function reject(error){
@@ -2791,7 +2790,7 @@ handle=drive.search.results.subscribe(getResults);
 ####Example
 ```javascript
 function unsubscribe(){
-     drive.search.results.unsubscribe(handle);
+  drive.search.results.unsubscribe(handle);
 }
 ```
 
@@ -2815,33 +2814,33 @@ When available method returns not_supported_policy, application can subscribe to
 ####Example
 ```javascript
 function isAvailable(){
-    return drive.search.requests.available();
+  return drive.search.requests.available();
 }
 ```
 
-## <a name="site-automation"></a>Site Automation (Digital Life)
+## Site Automation (Digital Life)
 This Javascript SDK describes how to interact with site automation.
 The following interface represents a base interface to all site automation properties:
 ```javascript
 interface SiteAutomationInterface {
-    Promise get (optional object options);
-    Promise set (object value, optional object options);
-    Promise delete (object value, optional object options);
-    Integer subscribe (InterfaceCallback callback, optional object options);
-    void unsubscribe (Integer handle);
-    Availability available ();
+  Promise get (optional object options);
+  Promise set (object value, optional object options);
+  Promise delete (object value, optional object options);
+  Integer subscribe (InterfaceCallback callback, optional object options);
+  void unsubscribe (Integer handle);
+  Availability available ();
 };
 callback InterfaceCallback = void(object value, EventType eventType); ();
 
 enum EventType {
-"create",
-"read",
-"update",
-"delete"
+  "create",
+  "read",
+  "update",
+  "delete"
 };
 
 interface CommonDataType {
-    readonly    attribute DOMTimeStamp timeStamp;
+  readonly  attribute DOMTimeStamp timeStamp;
 };
 ```
 CommonDataType interface represents common data type for all data types.
@@ -2929,15 +2928,15 @@ Below properties is a subset of possible attributes that site automation may sup
 ####Example: get site automation resource status
 ```javascript
 function logStatus(results){
-   console.log(results.status);
+  console.log(results.status);
 }
 
 function logError(error){
-   console.log(error);
+  console.log(error);
 }
 
 function getResourceStatus(){
-   drive.sa.results.get().then(logStatus,logError);
+  drive.sa.results.get().then(logStatus,logError);
 }
 ```
 
@@ -2957,15 +2956,15 @@ function getResourceStatus(){
 ####Example: Send request
 ```javascript
 function resolve(){
-///success
+  ///success
 }
 
 function reject(error){
-   console.log(error);
+  console.log(error);
 }
 
 function sendRequest(){
-   drive.sa.requests.set({"action":"get", "type":"resource", "id":"garagedoor-1", "siteIds":["home"]}).then(resolve,reject);
+  drive.sa.requests.set({"action":"get", "type":"resource", "id":"garagedoor-1", "siteIds":["home"]}).then(resolve,reject);
 }
 ```
 
@@ -2985,7 +2984,7 @@ function sendRequest(){
 ####Example:
 ```javascript
 function resolve(){
-///success
+  ///success
 }
 
 function reject(error){
@@ -3016,7 +3015,7 @@ function resourcesResult(results){
 }
 
 function subscribe(){
-handle=drive.sa.results.subscribe(resourcesResult, {"requestId":"set.alarm"});
+  handle=drive.sa.results.subscribe(resourcesResult, {"requestId":"set.alarm"});
 }
 ```
 
@@ -3033,7 +3032,7 @@ handle=drive.sa.results.subscribe(resourcesResult, {"requestId":"set.alarm"});
 ####Example
 ```javascript
 function unsubscribe(){
-     drive.sa.results.unsubscribe(handle);
+  drive.sa.results.unsubscribe(handle);
 }
 ```
 
@@ -3057,7 +3056,7 @@ When available method returns not_supported_policy, application can subscribe to
 ####Example:
 ```javascript
 function isAvailable(){
-    return drive.sa.requests.available();
+  return drive.sa.requests.available();
 }
 ```
 
