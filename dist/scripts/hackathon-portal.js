@@ -1063,7 +1063,7 @@ angular.module('uiKitApiService', [])
       var codeBlockRegex = /<pre>\s*<code>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
       var codeBlockReplacement = '<div hljs source="\'$1\'" class="language-javascript"></div>';
 
-      var sectionHeaderRegex = /<h1(?:.*?)>\s*(.*?)\s*<\/h1>/gi;
+      var sectionHeaderRegex = /<h2(?:.*?)>\s*(.*?)\s*<\/h2>/gi;
 
       var startAndEndQuotRegex = /(?:^"|"$)/g;
 
@@ -1133,7 +1133,6 @@ angular.module('uiKitApiService', [])
 
         // Iterate over the h1 elements within the overall converted markdown text
         while (result !== null) {
-          debugger;
           // Set the markdown content of the previous section (now that we know where that section ends)
           sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex, result.index);
 
@@ -1145,8 +1144,6 @@ angular.module('uiKitApiService', [])
 
           result = sectionHeaderRegex.exec(convertedMarkdown);
         }
-
-        debugger;
 
         // Set the markdown content of the previous section (now that we know where that section ends)
         sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex);
@@ -1693,33 +1690,19 @@ angular.module('markdownBlockDirective', [])
           }
 
           function compileCodeBlocks() {
-            var matches = element[0].querySelectorAll('[hljs]');
-
-            var i, count;
-
-            for (i = 0, count = matches.length; i < count; i += 1) {
-              var hljsElement = angular.element(matches[i]);
-              var codeBlockElement = $compile(hljsElement)(scope);
-              hljsElement.replaceWith(codeBlockElement);
-            }
+            //var matches = element[0].querySelectorAll('[hljs]');
+            //
+            //var i, count;
+            //
+            //for (i = 0, count = matches.length; i < count; i += 1) {
+            //  var hljsElement = angular.element(matches[i]);
+            //  var codeBlockElement = $compile(hljsElement)(scope);
+            //  hljsElement.replaceWith(codeBlockElement);
+            //}
           }
         }
       };
     });
-
-'use strict';
-
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-.controller('ApiDocumentationCtrl', function () {
-});
 
 angular.module('driveApiController', [])
     // TODO: rename this route; rename other routes; add other routes
@@ -1748,6 +1731,20 @@ angular.module('driveApiController', [])
         $scope.sampleAppsState.selectedSection = section;
       }
     });
+
+'use strict';
+
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+.controller('ApiDocumentationCtrl', function () {
+});
 
 'use strict';
 

@@ -84,84 +84,84 @@ Below properties is a subset of possible attributes that a Vehicle Information C
 
 Vehicle properties that are not supported by a given VIC will not be returned in a get method performed on parent object but will trigger an error if methods (get, set, delete, subscribe) are called on a specific unsupported property.
 
-|Parameter   	        |Type   	    |Required  	|Read only  	|Description  	|
-|---	|---	|---	|---	|---	|
+|Parameter            |Type        |Required   |Read only   |Description   |
+|--- |--- |--- |--- |--- |
 |**Vehicle identification** 
-|identification.vin   	|String   	    |True   	|Yes   	        |Vehicle |identification number   	|
-|identification.wmi	|String	|False	|Yes	|World Manufacture Identifier|
-|identification.iccid	|String	|False	|Yes	|Integrated Circuit Card Identifier|
-|identification.imsi	|String	|False	|Yes	|International Mobile Subscriber Identity|
-|identification.tcusn	|String	|False	|Yes	|TCU Serial Number|
-|identification.vehicleType	|String	|False	|Yes	|Vehicle type|
-|identification.brand	|String	|False	|Yes	|Vehicle brand|
-|identification.model	|String	|False	|Yes	|Vehicle model|
-|identification.description	|String	|False	|Yes	|Model name description|
-|identification.year	|Integer	|False	|Yes	|Vehicle model year|
-|identification.deliveryMileage	|Long	|False	|Yes	|Odometer at delivery|
-|identification.deliveryDate	|Date	|False	|Yes	|Sale date (retail)|
-|identification.licenseNumber	|String	|False	|Yes	|License plate number|
-|identification.transmissionNumber	|String	|False	|Yes	|Transmission serial number|
-|identification.engineNumber	|String	|False	|Yes	|Serial number of the engine|
-|identification.ignitionKeyNumber	|String	|False	|Yes	|Vehicle ignition key number|
-|identification.doorKeyNumber	|String	|False	|Yes	|Door key number|
-|identification.category	|String	|True	|Yes	|Sedan, SUV, …|
-|identification.owner.id	|String	|True	|Yes	|Owner ID|
-|identification.owner.type	|String	|True	|Yes	|Owner Type: subscriber, dealer, oem|
-|**Vehicle equipment**				
-|devices	|{array}	|False	|Yes	|Vehicle devices: HU, TCU, Rear screens, DAC, etc|
-|devices.deviceId	|String	|True	|Yes	|Device identifier|
-|devices.description	|String	|False	|Yes	|Device description|
-|devices.metas	|{array}	|False	|Yes	|Device metadata (array of attribute:value)|
-|**Vehicle life cycle**				
-|lifecycle.status	|String	|True	|Yes	|Inventory, demo, trial, retail, service, junk|
-|lifecycle.condition	|String	|False	|Yes	|Vehicle condition. Excellent, Good, Poor, Unknown.|
-|**Vehicle configuration**	
-|configuration.totalDoors	|Integer	|False	|Yes	|Number of doors|
-|configuration.fuelType	|String	|False	|Yes	|Fuel type|
-|configuration.refuelPosition	|String	|False	|Yes	|Side of the vehicle with access to the fuel door|
-|configuration.color.interior	|{array}	|False	|Yes	|Vehicle interior colors|
-|configuration.color.interior.colorCode	|String	|True	|Yes	|Color code|
-|configuration.color.interior.colorName	|String	|False	|Yes	|Color description|
-|configuration.color.exterior	|{array}	|False	|Yes	|Vehicle exterior colors|
-|configuration.color.exterior.colorCode	|String	|True	|Yes	|Color code|
-|configuration.color.exterior.colorName	|String	|False	|Yes	|Color description|
-|configuration.transmissionType	|String	|False	|Yes	|Vehicle transmission type|
-|configuration.weight	|Float	|False	|Yes	|Vehicle weight|
-|configuration.options	|{array}	|False	|Yes	|Vehicle options (array of attribute: value)|
-|**Vehicle status**	
-|vehicleSpeed.speed	|Integer	|False	|Yes	|Vehicle speed (KM/h or MP/h|
-|vehicleSpeed.averageSpeed	|Integer	|False	|Yes	|Estimated average speed in KM/h |
-|vehicleCompass.direction	|Float	|False	|Yes	|Degree direction of the vehicle compass to be used by navigation identify the car direction| inside garage or when it is not moving|
-|engineSpeed.speed	|Integer	|False	|Yes	|Engine RPM 10X1000.|
-|transmission.transmissionMode	|String	|False	|Yes	|Transmission mode: P R N D |
-|chime.status	|Boolean	|False	|Yes	|Chime status when a door is open: T/F|
-|fuel.level	|Integer	|False	|Yes	|Fuel level as a percentage of fullness|
-|fuel.range	|Integer	|False	|Yes	|Estimated fuel range in kilometers/miles (depending on unit configuration)|
-|engineOil.remaining	|Integer	|False	|Yes	|Remaining engine oil as percentage of fullness|
-|engineOil.temperature	|Long	|False	|Yes	|Engine Oil Temperature(in degrees Celsius)|
-|engineOil.pressure	|Integer	|False	|Yes	|Engine Oil Pressure in PSi|
-|engineOil.change	|Boolean	|False	|Yes	|Engine oil change indicator status|
-|engineCoolant.level	|Integer	|False	|Yes	|Engine coolant level as percentage of fullness|
-|engineCoolant.temperature	|Integer	|False	|Yes	|Engine coolant temperature(in degrees Celsius)|
-|**Vehicle climate control**	
-|climateControl.airflowDirection	|String	|False	|No	|Airflow direction: "frontpanel", "floorduct",   "bilevel", "defrostfloor"|
-|climateControl.fanSpeedLevel	|Integer	|False	|No	|Fan speed of the air flowing (0: off, 1: weakest ~ 10: strongest )|
-|climateControl.targetTemperature	|Integer	|False	|No	|Desired temperature(in degrees Celsius)|
-|climateControl.airConditioning	|Boolean	|False	|No	|Air conditioning system T/F|
-|climateControl.heater	|Boolean	|False	|No	|Heating system T/F|
-|climateControl.seatHeater	|Integer	|False	|No	|Seat warmer (0: off, 1: least warm ~ 10: warmest)|
-|climateControl.seatCooler	|Integer	|False	|No	|Seat ventilation (0: off, 1: least warm ~ 10: warmest)|
-|climateControl.airRecirculation	|Boolean	|False	|No	|Air recirculation. (True : on, False : pulling in outside air)|
-|climateControl.steeringWheelHeater	|Integer	|False	|No	|Steering wheel heater (0: off, 1: least warm ~ 10: warmest)|
-|sideWindow.lock	|Boolean	|False	|No	|Whether or not the window is locked T/F|
-|sideWindow.openness	|Integer	|False	|No	|Side window as a percentage of openness. (0:Closed, 100:Fully Opened)|
-|**Driving safety**	
-|door.status	|String	|False	|Yes	|Door status enum: "open", "ajar", "close"|
-|door.lock	|Boolean	|False	|No	|Whether or not the door is locked T/F|
-|airBagStatus.activated	|Boolean	|False	|Yes	|Whether or not the airbag is activated T/F|
-|airBagStatus.deployed	|Boolean	|False	|Yes	|Whether the airbag is deployed T/F|
-|seat.occupant	|String	|False	|Yes	|Status of seat occupant enum: "adult", "child", "vacant"|
-|seat.seatbelt	|Boolean	|False	|Yes	|Whether or not the seat belt is fasten T/F|
+|identification.vin    |String        |True    |Yes            |Vehicle |identification number    |
+|identification.wmi |String |False |Yes |World Manufacture Identifier|
+|identification.iccid |String |False |Yes |Integrated Circuit Card Identifier|
+|identification.imsi |String |False |Yes |International Mobile Subscriber Identity|
+|identification.tcusn |String |False |Yes |TCU Serial Number|
+|identification.vehicleType |String |False |Yes |Vehicle type|
+|identification.brand |String |False |Yes |Vehicle brand|
+|identification.model |String |False |Yes |Vehicle model|
+|identification.description |String |False |Yes |Model name description|
+|identification.year |Integer |False |Yes |Vehicle model year|
+|identification.deliveryMileage |Long |False |Yes |Odometer at delivery|
+|identification.deliveryDate |Date |False |Yes |Sale date (retail)|
+|identification.licenseNumber |String |False |Yes |License plate number|
+|identification.transmissionNumber |String |False |Yes |Transmission serial number|
+|identification.engineNumber |String |False |Yes |Serial number of the engine|
+|identification.ignitionKeyNumber |String |False |Yes |Vehicle ignition key number|
+|identification.doorKeyNumber |String |False |Yes |Door key number|
+|identification.category |String |True |Yes |Sedan, SUV, …|
+|identification.owner.id |String |True |Yes |Owner ID|
+|identification.owner.type |String |True |Yes |Owner Type: subscriber, dealer, oem|
+|**Vehicle equipment**    
+|devices |{array} |False |Yes |Vehicle devices: HU, TCU, Rear screens, DAC, etc|
+|devices.deviceId |String |True |Yes |Device identifier|
+|devices.description |String |False |Yes |Device description|
+|devices.metas |{array} |False |Yes |Device metadata (array of attribute:value)|
+|**Vehicle life cycle**    
+|lifecycle.status |String |True |Yes |Inventory, demo, trial, retail, service, junk|
+|lifecycle.condition |String |False |Yes |Vehicle condition. Excellent, Good, Poor, Unknown.|
+|**Vehicle configuration** 
+|configuration.totalDoors |Integer |False |Yes |Number of doors|
+|configuration.fuelType |String |False |Yes |Fuel type|
+|configuration.refuelPosition |String |False |Yes |Side of the vehicle with access to the fuel door|
+|configuration.color.interior |{array} |False |Yes |Vehicle interior colors|
+|configuration.color.interior.colorCode |String |True |Yes |Color code|
+|configuration.color.interior.colorName |String |False |Yes |Color description|
+|configuration.color.exterior |{array} |False |Yes |Vehicle exterior colors|
+|configuration.color.exterior.colorCode |String |True |Yes |Color code|
+|configuration.color.exterior.colorName |String |False |Yes |Color description|
+|configuration.transmissionType |String |False |Yes |Vehicle transmission type|
+|configuration.weight |Float |False |Yes |Vehicle weight|
+|configuration.options |{array} |False |Yes |Vehicle options (array of attribute: value)|
+|**Vehicle status** 
+|vehicleSpeed.speed |Integer |False |Yes |Vehicle speed (KM/h or MP/h|
+|vehicleSpeed.averageSpeed |Integer |False |Yes |Estimated average speed in KM/h |
+|vehicleCompass.direction |Float |False |Yes |Degree direction of the vehicle compass to be used by navigation identify the car direction| inside garage or when it is not moving|
+|engineSpeed.speed |Integer |False |Yes |Engine RPM 10X1000.|
+|transmission.transmissionMode |String |False |Yes |Transmission mode: P R N D |
+|chime.status |Boolean |False |Yes |Chime status when a door is open: T/F|
+|fuel.level |Integer |False |Yes |Fuel level as a percentage of fullness|
+|fuel.range |Integer |False |Yes |Estimated fuel range in kilometers/miles (depending on unit configuration)|
+|engineOil.remaining |Integer |False |Yes |Remaining engine oil as percentage of fullness|
+|engineOil.temperature |Long |False |Yes |Engine Oil Temperature(in degrees Celsius)|
+|engineOil.pressure |Integer |False |Yes |Engine Oil Pressure in PSi|
+|engineOil.change |Boolean |False |Yes |Engine oil change indicator status|
+|engineCoolant.level |Integer |False |Yes |Engine coolant level as percentage of fullness|
+|engineCoolant.temperature |Integer |False |Yes |Engine coolant temperature(in degrees Celsius)|
+|**Vehicle climate control** 
+|climateControl.airflowDirection |String |False |No |Airflow direction: "frontpanel", "floorduct",   "bilevel", "defrostfloor"|
+|climateControl.fanSpeedLevel |Integer |False |No |Fan speed of the air flowing (0: off, 1: weakest ~ 10: strongest )|
+|climateControl.targetTemperature |Integer |False |No |Desired temperature(in degrees Celsius)|
+|climateControl.airConditioning |Boolean |False |No |Air conditioning system T/F|
+|climateControl.heater |Boolean |False |No |Heating system T/F|
+|climateControl.seatHeater |Integer |False |No |Seat warmer (0: off, 1: least warm ~ 10: warmest)|
+|climateControl.seatCooler |Integer |False |No |Seat ventilation (0: off, 1: least warm ~ 10: warmest)|
+|climateControl.airRecirculation |Boolean |False |No |Air recirculation. (True : on, False : pulling in outside air)|
+|climateControl.steeringWheelHeater |Integer |False |No |Steering wheel heater (0: off, 1: least warm ~ 10: warmest)|
+|sideWindow.lock |Boolean |False |No |Whether or not the window is locked T/F|
+|sideWindow.openness |Integer |False |No |Side window as a percentage of openness. (0:Closed, 100:Fully Opened)|
+|**Driving safety** 
+|door.status |String |False |Yes |Door status enum: "open", "ajar", "close"|
+|door.lock |Boolean |False |No |Whether or not the door is locked T/F|
+|airBagStatus.activated |Boolean |False |Yes |Whether or not the airbag is activated T/F|
+|airBagStatus.deployed |Boolean |False |Yes |Whether the airbag is deployed T/F|
+|seat.occupant |String |False |Yes |Status of seat occupant enum: "adult", "child", "vacant"|
+|seat.seatbelt |Boolean |False |Yes |Whether or not the seat belt is fasten T/F|
 
 ##Get Vehicle information
 **Usage:** `drive.vehicleinfo.get(options).then(resolve, reject);`
@@ -262,7 +262,7 @@ var zone = Zone;
 var vehicleinfo = drive.vehicleinfo;
 
 function resolve(){
-///success	
+///success 
 }
 
 function reject(error){
@@ -543,16 +543,9 @@ Below properties is a subset of possible attributes that a navigation system may
 |pois.track.waypoints.visible|Boolean|False|Yes|When set to True |track waypoint will be visible on the map|
 |pois.track.metas|{array}|False|Yes|Array of {attribute: value}|
 |map.zoomLevel|Integer|False|No|0 to 20+ (20 is street level)|
-|map.zoomToPoiType|{array}|False|No|"String array of POI types: This makes the map to zoom in/out so that all POI of specified types are visible. 
-Values:
-Empty array/null: normal mode
-[“all”]: zoom to all POI types
-[“all”, “<me>”]: all POI type and include the vehicle.
-[“type1”,”type2”,…]: zoom to specified POI types (parking, restaurant, etc). POI type <me> refers to the vehicle."|
+|map.zoomToPoiType|{array}|False|No|"String array of POI types: This makes the map to zoom in/out so that all POI of specified types are visible. Values: Empty array/null: normal mode [“all”]: zoom to all POI types [“all”, “<me>”]: all POI type and include the vehicle. [“type1”,”type2”,…]: zoom to specified POI types (parking, restaurant, etc). POI type <me> refers to the vehicle."|
 |map.zoomToPoiId|String|False|No|POI ID: This makes the map to zoom in/out so that specified poi ID becomes visible (center to).|
-"map.follow|String|False|No|"Make map follow a specific POI name instead of following the car. Values:
-“<me>” empty null: follow vehicle
-<poi ID>: follow specified POI ID. This parameter should be ignored if the specified POI ID does not exist."|
+|map.follow|String|False|No|"Make map follow a specific POI name instead of following the car. Values: “<me>” empty null: follow vehicle <poi ID>: follow specified POI ID. This parameter should be ignored if the specified POI ID does not exist."|
 
 
 ###Get Navigation Information
@@ -837,97 +830,96 @@ interface CommonDataType {
 ###Identity properties
 Below properties is a subset of possible attributes that identity manager supports. More attributes shall be added in the next version of this SDK.
 
-|Parameter	|Type	|Required	|Read only	|Description|
+|Parameter |Type |Required |Read only |Description|
 |---    |---    |---    |---    |--- |
-|**Current Session**	|
-|session.loggedInTime	 |Long	|False	    |Yes	|Session duration in milliseconds |
-|session.timeOut	|Long	|False	|Yes	|Session timeout in milliseconds |
-|session.loggedIn	|Boolean |True	|Yes	|Set to true is user is logged in.|
-|session.reset	|Boolean	|False	|No	|When reset is true, the user should be prompted to change PIN. Default is false.|
-|session.login	|{array}	|False	|No	|Request to login. Identity manager will remove this request when processed and set loggedIn to true if susccessfull. |
-|session.login.userId	|String	|True	|No	|userId |
-|session.login.pin	|String	|True	|No	|PIN|
-|session.login.oldPin	|String	|False	|No	|If specified, identity manager will change current oldPin with specified PIN.|
-|session.status	|String	|False	|Yes	|Status of current login request. Possible values:
-connecting, connected or failure: with error message|
-|**Current User**|	
-|currentUser	|{object}	|True	|Yes	|Current user info|
-|currentUser.uid	|String	|True	|Yes	|If not specified subscriber identifier is automatically generated (unique identifier).|
-|currentUser.language	|String	|False	|No	|User preferred language|
-|currentUser.firstName	|String	|False	|Yes	| 
-|currentUser.lastName	|String	|False	|Yes	|
-|currentUser.middleName	|String	|False	|Yes	|
-|currentUser.namePrefix	|String	|False	|Yes	|
-|currentUser.picture	|String	|False	|Yes	|URI (Link) to picture|
-|currentUser.dob	|Date	|False	|Yes	|Date of birth|
-|currentUser.owner	|Boolean	|False	|Yes	|Owner of the vehicle if set to true.|
-|currentUser.company	|String	|False	|Yes	|Company name|
-|currentUser.address.default	|{object}	|False	|Yes	|Default address|
-|currentUser.address.default.addressType	|String	|True	|Yes	|Address type: home, work.|
-|currentUser.address.default.street	|String	|False	Yes	|
-|currentUser.address.default.city	|String	|True	Yes	|
-|currentUser.address.default.region	|String	|False	|Yes	|State, province or region|
-|currentUser.address.default.country	|String	|False	|Yes|	
-|currentUser.address.default.postalCode	|String	|False	|Yes zip or postalCode|
-|currentUser.address.default.metas	|{array}	|False	|Yes, Array of {attribute: value}|
-|currentUser.addresses	|{array}	|False	|Yes	|Array of other addresses. Same attributes as default address.|
-|currentUser.default.phone	|{object}	|False	|Yes | Default phone|
-|currentUser.default.phone.phoneType	|String	|False	|Yes | Phone type: mobile, home, work, etc.|
-|currentUser.default.phone.phoneNumber	|String	|True	|Yes|	
-|currentUser.default.phone.deviceId	|String	|False	|Yes	|DeviceId from device repository|
-|currentUser.default.phone.metas	|{array}	|False |Yes	Array of {attribute: value}|
-|currentUser.phones	|{array}	|False	|Yes	|Array of phones (same attribute as default phone).|
-|currentUser.default.email |{object}	|False	|Yes	|Default email.|
-|currentUser.default.email.emailType	|String	|False	|Yes	| Email type: personal, work, etc.|
-|currentUser.default.email.emailAddress	|String	|True	|Yes|	
-|currentUser.default.email.metas	|{array}	|False	|Yes	|Array of {attribute: value}|
-|currentUser.emails	|{array}	|False	|Yes	|Other emails (same attributes as default email).|
-|currentUser.metas	|{array}	|False	|Yes	|Array of {attribute: value}|
-|currentUser.groups	|{object}	|False	|Yes	|Contact groups array|
-|currentUser.groups.id	|String	|True	|Yes	|Group identifier|
-|currentUser.groups.name	|String	|True	|Yes	|Group name|
-|currentUser.contacts	|{object}	|False	|Yes	|Contacts array|
-|currentUser.contacts.uid	|String	|True	|Yes	|User identifier|
-|currentUser.contacts.firstName	|String	|False	|Yes	|First name|
-|currentUser.contacts.lastName	|String	|False	|Yes|	Last name|
-|currentUser.contacts.middleName	|String	False	yes	Middle name|
-|currentUser.contacts.namePrefix	|String	|False	|Yes	|Name prefix|
-|currentUser.contacts.picture	|String	|False	|Yes	|URI (link) to picture|
-|currentUser.contacts.dob	|Date	|False |Yes	|Date of birth|
-|currentUser.contacts.company	|String	|False	|Yes	|Company name|
-|currentUser.contacts.address	|{object}	|False	|Yes	Array of addresses|
-|currentUser.contacts.address.id	|String	|True	|Yes	Address identifier|
-|currentUser.contacts.address.type |String	|False	|Yes	|Address type: home, work, ...|
-|currentUser.contacts.address.street	|String	|False	|Yes	|Address street number, name, apartment, etc.|
-|currentUser.contacts.address.city	|String	|False	|Yes	|City name|
-|currentUser.contacts.address.region	|String	|False	|Yes	State, province, …|
-|currentUser.contacts.address.country	|String	|False	|Yes	|Country name|
-|currentUser.contacts.address.postalCode	|String	|False	|Yes	|Postal/Zip code|
-|currentUser.contacts.address.metas	|{array}	|False	|Yes	|Array of {key, value} objects|
-|currentUser.contacts.address.defaultAddress	|{object}	|False	|Yes |Primary address object| 
-|currentUser.contacts.phone	|{object}	|False |Yes	|Array of phones|
-|currentUser.contacts.phone.id	|String	|True	|Yes	|Phone identifier|
-|currentUser.contacts.phone.type	|String	|False	|Yes	|Phone type: mobile, home, work, …|
-|currentUser.contacts.phone.number	|String	|True	|Yes	|Phone number|
-|currentUser.contacts.phone.deviceId	|String	|False	|Yes	|Device identifier. Refers to device repository.|
-|currentUser.contacts.phone.metas	|{array}	|False	|Yes	|Array of {key, value} objects|
-|currentUser.contacts.phone.defaultPhone	|{object}	|False	|Yes	|Primary phone object|
-|currentUser.contacts.email	|{object}	|False	|Yes	|Array of emails|
-|currentUser.contacts.email.id	|String  |True	|Yes	|Email identifier|
-|currentUser.contacts.email.type	|String	|False	|Yes	|Email type: mobile, home, work, …|
-|currentUser.contacts.email.address	|String	|True	|Yes	|Email address|
-|currentUser.contacts.email.metas	|{array}	|False	|Yes	|Array of {key, value} objects|
-|currentUser.contacts.email.defaultEmail	|{object} |False	|Yes	|Primary email object|
-|currentUser.contacts.groupId	|String |False	|Yes	|Group identifier|
-|**User accounts**	|
-|users.accounts	|{object}	|False	|Yes	|Application accounts (credentials to login to application’s backend system)|
-|users.accounts.appId	|String	|True	|Yes	|Application ID|
-|users.accounts.userId	|String	|True	|Yes	|User identification|
-|users.accounts.authToken	|String	|True	|Yes	|Password, PIN, token.|
-|users.accounts.authMethod	|String	|True	|Yes	|Basic authentication, oAuth, etc.|
-|users.accounts.reset	|Boolean	|True	|Yes	|When reset is true, the user should be prompted to change PIN. Default is false.|
-|**vehicle users**|	
-|users	|{array}	|False	|Yes	|Array of subscribers (vehicle users). Same attribute as currentUser.|
+|**Current Session** |
+|session.loggedInTime  |Long |False     |Yes |Session duration in milliseconds |
+|session.timeOut |Long |False |Yes |Session timeout in milliseconds |
+|session.loggedIn |Boolean |True |Yes |Set to true is user is logged in.|
+|session.reset |Boolean |False |No |When reset is true, the user should be prompted to change PIN. Default is false.|
+|session.login |{array} |False |No |Request to login. Identity manager will remove this request when processed and set loggedIn to true if susccessfull. |
+|session.login.userId |String |True |No |userId |
+|session.login.pin |String |True |No |PIN|
+|session.login.oldPin |String |False |No |If specified, identity manager will change current oldPin with specified PIN.|
+|session.status |String |False |Yes |Status of current login request. Possible values: connecting, connected or failure: with error message|
+|**Current User**| 
+|currentUser |{object} |True |Yes |Current user info|
+|currentUser.uid |String |True |Yes |If not specified subscriber identifier is automatically generated (unique identifier).|
+|currentUser.language |String |False |No |User preferred language|
+|currentUser.firstName |String |False |Yes | 
+|currentUser.lastName |String |False |Yes |
+|currentUser.middleName |String |False |Yes |
+|currentUser.namePrefix |String |False |Yes |
+|currentUser.picture |String |False |Yes |URI (Link) to picture|
+|currentUser.dob |Date |False |Yes |Date of birth|
+|currentUser.owner |Boolean |False |Yes |Owner of the vehicle if set to true.|
+|currentUser.company |String |False |Yes |Company name|
+|currentUser.address.default |{object} |False |Yes |Default address|
+|currentUser.address.default.addressType |String |True |Yes |Address type: home, work.|
+|currentUser.address.default.street |String |False Yes |
+|currentUser.address.default.city |String |True Yes |
+|currentUser.address.default.region |String |False |Yes |State, province or region|
+|currentUser.address.default.country |String |False |Yes| 
+|currentUser.address.default.postalCode |String |False |Yes zip or postalCode|
+|currentUser.address.default.metas |{array} |False |Yes, Array of {attribute: value}|
+|currentUser.addresses |{array} |False |Yes |Array of other addresses. Same attributes as default address.|
+|currentUser.default.phone |{object} |False |Yes | Default phone|
+|currentUser.default.phone.phoneType |String |False |Yes | Phone type: mobile, home, work, etc.|
+|currentUser.default.phone.phoneNumber |String |True |Yes| 
+|currentUser.default.phone.deviceId |String |False |Yes |DeviceId from device repository|
+|currentUser.default.phone.metas |{array} |False |Yes Array of {attribute: value}|
+|currentUser.phones |{array} |False |Yes |Array of phones (same attribute as default phone).|
+|currentUser.default.email |{object} |False |Yes |Default email.|
+|currentUser.default.email.emailType |String |False |Yes | Email type: personal, work, etc.|
+|currentUser.default.email.emailAddress |String |True |Yes| 
+|currentUser.default.email.metas |{array} |False |Yes |Array of {attribute: value}|
+|currentUser.emails |{array} |False |Yes |Other emails (same attributes as default email).|
+|currentUser.metas |{array} |False |Yes |Array of {attribute: value}|
+|currentUser.groups |{object} |False |Yes |Contact groups array|
+|currentUser.groups.id |String |True |Yes |Group identifier|
+|currentUser.groups.name |String |True |Yes |Group name|
+|currentUser.contacts |{object} |False |Yes |Contacts array|
+|currentUser.contacts.uid |String |True |Yes |User identifier|
+|currentUser.contacts.firstName |String |False |Yes |First name|
+|currentUser.contacts.lastName |String |False |Yes| Last name|
+|currentUser.contacts.middleName |String False yes Middle name|
+|currentUser.contacts.namePrefix |String |False |Yes |Name prefix|
+|currentUser.contacts.picture |String |False |Yes |URI (link) to picture|
+|currentUser.contacts.dob |Date |False |Yes |Date of birth|
+|currentUser.contacts.company |String |False |Yes |Company name|
+|currentUser.contacts.address |{object} |False |Yes Array of addresses|
+|currentUser.contacts.address.id |String |True |Yes Address identifier|
+|currentUser.contacts.address.type |String |False |Yes |Address type: home, work, ...|
+|currentUser.contacts.address.street |String |False |Yes |Address street number, name, apartment, etc.|
+|currentUser.contacts.address.city |String |False |Yes |City name|
+|currentUser.contacts.address.region |String |False |Yes State, province, …|
+|currentUser.contacts.address.country |String |False |Yes |Country name|
+|currentUser.contacts.address.postalCode |String |False |Yes |Postal/Zip code|
+|currentUser.contacts.address.metas |{array} |False |Yes |Array of {key, value} objects|
+|currentUser.contacts.address.defaultAddress |{object} |False |Yes |Primary address object| 
+|currentUser.contacts.phone |{object} |False |Yes |Array of phones|
+|currentUser.contacts.phone.id |String |True |Yes |Phone identifier|
+|currentUser.contacts.phone.type |String |False |Yes |Phone type: mobile, home, work, …|
+|currentUser.contacts.phone.number |String |True |Yes |Phone number|
+|currentUser.contacts.phone.deviceId |String |False |Yes |Device identifier. Refers to device repository.|
+|currentUser.contacts.phone.metas |{array} |False |Yes |Array of {key, value} objects|
+|currentUser.contacts.phone.defaultPhone |{object} |False |Yes |Primary phone object|
+|currentUser.contacts.email |{object} |False |Yes |Array of emails|
+|currentUser.contacts.email.id |String  |True |Yes |Email identifier|
+|currentUser.contacts.email.type |String |False |Yes |Email type: mobile, home, work, …|
+|currentUser.contacts.email.address |String |True |Yes |Email address|
+|currentUser.contacts.email.metas |{array} |False |Yes |Array of {key, value} objects|
+|currentUser.contacts.email.defaultEmail |{object} |False |Yes |Primary email object|
+|currentUser.contacts.groupId |String |False |Yes |Group identifier|
+|**User accounts** |
+|users.accounts |{object} |False |Yes |Application accounts (credentials to login to application’s backend system)|
+|users.accounts.appId |String |True |Yes |Application ID|
+|users.accounts.userId |String |True |Yes |User identification|
+|users.accounts.authToken |String |True |Yes |Password, PIN, token.|
+|users.accounts.authMethod |String |True |Yes |Basic authentication, oAuth, etc.|
+|users.accounts.reset |Boolean |True |Yes |When reset is true, the user should be prompted to change PIN. Default is false.|
+|**vehicle users**| 
+|users |{array} |False |Yes |Array of subscribers (vehicle users). Same attribute as currentUser.|
 
 
 ###Get Identity Information
@@ -1113,11 +1105,11 @@ interface CommonDataType {
 ###System properties
 Below properties is a subset of possible attributes that system settings support. More attributes shall be added in the next version of this SDK.
 
-|Parameter	|Type	|Required	|Read only	|Description|
+|Parameter |Type |Required |Read only |Description|
 |---    |---    |---    |---    |--- |
-|system.baseUrl	|String	|True	|Yes	|ASDP base URL in the following format: https://asdphost:port/ |
-|system.language	|String	|True	|No	|Default system language|
-|system.metric	|Boolean	|True	|No	|Unit of mesure Metric (True)|
+|system.baseUrl |String |True |Yes |ASDP base URL in the following format: https://asdphost:port/ |
+|system.language |String |True |No |Default system language|
+|system.metric |Boolean |True |No |Unit of mesure Metric (True)|
 
 ###Application properties
 Application properties shall start with application name.
@@ -1165,8 +1157,7 @@ Application properties shall start with application name.
 |vehicleinfo.users.mirror.mirrorPan|short|False|No|Mirror pan position in percentage distance travelled, from left to right position (Unit: percentage, Resolution: 1, Min: -100, Max: 100, 0 represents center position)|
 |vehicleinfo.users.steeringWheel.steeringWheelTelescopingPosition|Integer|False|No|Steering wheel position as percentage of extension from the dash (Unit: percentage, Resolution: 1, Min: 0, Max: 100, 0 represents steering wheel positioned closest to dash)|
 |vehicleinfo.users.steeringWheel.steeringWheelPositionTilt|Integer|False|No|Steering wheel position as percentage of tilt (Unit: percentage, Resolution: 1, Min: 0, Max: 100, 0 represents steering wheel tilted lowest downward-facing position)|
-|vehicleinfo.users.driveMode|String|False|No|""comfort",  "auto", "sport",
- "eco", "manual""|
+|vehicleinfo.users.driveMode|String|False|No|""comfort",  "auto", "sport", "eco", "manual""|
 |vehicleinfo.users.seatAjustment.reclineSeatBack|short|False|No|Seat back recline position as percent to completely reclined (Unit: percentage, Resolution: 1, Min: -100, Max: 100, center 0 represents the seatback upright at a 90 degree angle)|
 |vehicleinfo.users.seatAjustment.seatSlide|Integer|False|No|Seat slide position as percentage of distance travelled away from forwardmost position (Unit: percentage, Resolution: 1, Min: 0, Max: 100, 0 represents seat position farthest forward)|
 |vehicleinfo.users.seatAjustment.seatCushionHeight|Integer|False|No|Seat cushion height position as a percentage of upward distance travelled (Unit: percentage, Resolution: 1, Min: 0, Max: 100, 0 represents the lowest seat position)|
@@ -2100,8 +2091,7 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 |sms.outbox.messages.priority|String|False|Yes|Message priority (high or low)|
 |sms.outbox.messages.read|Boolean|False|no|Flag that indicates if messages was read (true) or not (false)|
 |sms.outbox.messages.time|Date|False|Yes, date and time message sent|
-|sms.outbox.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1).|
- 0 mean message not segmented"|
+|sms.outbox.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1).|0 mean message not segmented"|
 |sms.inbox.messages.type|String|False|Yes, sms or mms|
 |sms.inbox.messages.refId|Float|False|Yes|Unique referenceID. Should be the same for all segments of a multi part message|
 |sms.inbox.messages.sender|String|False|Yes|Sender phone number|
@@ -2110,8 +2100,7 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 |sms.inbox.messages.priority|String|False|Yes, message priority (high or low)|
 |sms.inbox.messages.read|Boolean|False|no|Flag that indicates if messages was read (true) or not (false)|
 |sms.inbox.messages.time|Date|False|Yes, arrival date and time |
-|sms.inbox.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1).
- 0 mean message not segmented"|
+|sms.inbox.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1). 0 mean message not segmented"|
 |sms.draft.messages.type|String|False|Yes, sms or mms|
 |sms.draft.messages.refId|Float|False|Yes|Unique referenceID. Should be the same for all segments of a multi part message|
 |sms.draft.messages.sender|String|False|Yes, Sender phone number|
@@ -2120,8 +2109,7 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 |sms.draft.messages.priority|String|False|Yes|Message priority (high or low)|
 |sms.draft.messages.read|Boolean|False|no|Flag that indicates if messages was read (true) or not (false)|
 |sms.draft.messages.time|Date|False|Yes|creation date and time |
-|sms.draft.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1).
- 0 mean message not segmented"|
+|sms.draft.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1). 0 mean message not segmented"|
 |sms.scheduled.messages.type|String|False|Yes, sms or mms|
 |sms.scheduled.messages.refId|Float|False|Yes|Unique referenceID. Should be the same for all segments of a multi part message|
 |sms.scheduled.messages.sender|String|False|Yes, sender phone number|
@@ -2130,8 +2118,7 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 |sms.scheduled.messages.priority|String|False|Yes|Message priority (high or low)|
 |sms.scheduled.messages.read|Boolean|False|no|Flag that indicates if messages was read (true) or not (false)|
 |sms.scheduled.messages.time|Date|False|Yes|scheduled date and time |
-|sms.scheduled.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1).
- 0 mean message not segmented"|
+|sms.scheduled.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1). 0 mean message not segmented"|
 |sms.locked.messages.type|String|False|Yes sms or mms|
 |sms.locked.messages.refId|Float|False|Yes|Unique referenceID. Should be the same for all segments of a multi part message|
 |sms.locked.messages.sender|String|False|Yes|Sender phone number|
@@ -2140,8 +2127,7 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 |sms.locked.messages.priority|String|False|Yes, message priority (high or low)|
 |sms.locked.messages.read|Boolean|False|no|Flag that indicates if messages was read (true) or not (false)|
 |sms.locked.messages.time|Date|False|Yes, arrival date and time |
-|sms.locked.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1).|
- 0 mean message not segmented"|
+|sms.locked.messages.segmentNumber|Integer|False|No|"Segment order of multi part message ( start at 1).|0 mean message not segmented"|
 |sms.spam.messages.type|String|False|Yes||sms or mms|
 |sms.spam.messages.refId|Float|False|Yes|Unique referenceID. Should be the same for all segments of a multi part message|
 |sms.spam.messages.sender|String|False|Yes|Sender phone number|
@@ -2155,8 +2141,8 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 |sms.sent.messages.sender|String|False|Yes|Sender phone number|
 |sms.sent.messages.destination|String|False|Yes, destination phone number|
 |sms.sent.messages.data|String|False|Yes|Message body|
-|sms.sent.messages.priority|String|False	|Yes. message priority (high or low)|
-|sms.sent.messages.time	|Date|False	|Yes, date and time message sent|
+|sms.sent.messages.priority|String|False |Yes. message priority (high or low)|
+|sms.sent.messages.time |Date|False |Yes, date and time message sent|
 
 ###Get SMS/MMS Messages
 **Usage:** `drive.sms.get(options).then(resolve, reject);`
@@ -2865,7 +2851,7 @@ Below properties is a subset of possible attributes that site automation may sup
 
 |Parameter|Type|Required|Read only|Description|
 |--- |--- |--- |--- |--- |
-sa|{object}|False|yes|Application name|
+|sa|{object}|False|yes|Application name|
 |**Requests**|
 |sa.requests|{array}|False|yes|Site automation requests|
 |sa.requests.requestId|String|False|No|Request Identifier. If not specified the requestId will be set to the same value as action. This allows sharing results among apps.|
@@ -3077,18 +3063,18 @@ function isAvailable(){
 
 **Error object format**
 
-|Parameter	|Type	|Required	|Description|
+|Parameter |Type |Required |Description|
 |---    |---    |---    |---    |
-|error	|String	|True	|Error code|
-|message	|String	|False	|Error message|
+|error |String |True |Error code|
+|message |String |False |Error message|
 
 **Common error codes**
 
-|Code	|Description|
+|Code |Description|
 |---    |---    |
-|invalid_parameter	|Invalid parameters|
-|not_authenticated	|Not authenticated|
-|not_authorized	|Not authorized|
-|connection_timeout	|Communication error|
+|invalid_parameter |Invalid parameters|
+|not_authenticated |Not authenticated|
+|not_authorized |Not authorized|
+|connection_timeout |Communication error|
 
 
