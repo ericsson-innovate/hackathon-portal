@@ -1,0 +1,35 @@
+home-page-section {
+  display: block;
+
+  padding: 40px 0;
+
+  p {
+    margin: 20px 0;
+  }
+
+  > hr {
+    margin-bottom: 24px;
+  }
+
+  > .section-body {
+    display: flex;
+
+    > .home-section-side-bar-links {
+      @extend .non-bulleted-list;
+
+      flex: 0 0 220px;
+
+      > li {
+        padding-bottom: 8px;
+        border: 0 solid $home-page-alternate-background-color;
+        border-bottom-width: $markdown-list-item-border-width;
+
+        cursor: pointer;
+      }
+    }
+
+    > .content {
+      margin-right: 20px;
+    }
+  }
+}

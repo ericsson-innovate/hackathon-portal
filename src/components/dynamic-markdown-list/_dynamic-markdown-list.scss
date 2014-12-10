@@ -1,0 +1,17 @@
+dynamic-markdown-list {
+  display: block;
+
+  ul {
+    @extend .non-bulleted-list;
+  }
+
+  [dynamic-markdown-list-item].selected {
+    > markdown-block {
+      max-height: 700px;
+    }
+
+    > hr.separator {
+      border-color: $item-active-color;
+    }
+  }
+}

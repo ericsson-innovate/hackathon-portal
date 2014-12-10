@@ -34,13 +34,16 @@ angular.module('hackApp', [
   'apiExampleCardDirective',
   'apiTryItCardDirective',
   'apiListDirective',
+  'dynamicMarkdownListDirective',
+  'dynamicMarkdownListItemDirective',
+  'homePageSectionDirective',
   'markdownBlockDirective',
 
   'apiService',
   'examplesService',
   'specificationsService',
   'tryItService',
-  'uiKitApiService',
+  'markdownDataService',
 
   'homeController',
   'driveApiController',

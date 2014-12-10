@@ -1,6 +1,9 @@
 angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
+      var codeBlockRegex = /<pre>\s*<code(?: class="(.*?)")?>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
+      var codeBlockReplacement = '<div hljs source="\'$2\'" class="language-($1)"></div>';
+
       return {
         restrict: 'E',
         scope: {
@@ -12,13 +15,17 @@ angular.module('markdownBlockDirective', [])
           // ---  --- //
 
           function onConvertedMarkdownChange() {
+            scope.syntaxHighlightedMarkdown = parseHtmlForSyntaxHighlighting(scope.convertedMarkdown);
+
             // Add the markdown content to the DOM
-            element.html(scope.convertedMarkdown);
+            element.html(scope.syntaxHighlightedMarkdown);
 
             compileCodeBlocks();
           }
 
           function compileCodeBlocks() {
+            // TODO: instead of using the above regex and then searching for [hljs] elements, search for the raw pre elements; then check for a child code element; then use element.html and element.replaceWith to add and compile the hljs element
+
             var matches = element[0].querySelectorAll('[hljs]');
 
             var i, count;
@@ -28,6 +35,14 @@ angular.module('markdownBlockDirective', [])
               var codeBlockElement = $compile(hljsElement)(scope);
               hljsElement.replaceWith(codeBlockElement);
             }
+          }
+
+          /**
+           * @param {String} htmlText
+           * @returns {String}
+           */
+          function parseHtmlForSyntaxHighlighting(htmlText) {
+            return htmlText.replace(codeBlockRegex, codeBlockReplacement);
           }
         }
       };

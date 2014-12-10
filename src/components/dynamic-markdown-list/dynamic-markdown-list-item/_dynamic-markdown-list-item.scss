@@ -1,0 +1,19 @@
+[dynamic-markdown-list-item] {
+  display: block;
+
+  h2 {
+    cursor: pointer;
+  }
+
+  > markdown-block {
+    height: auto;
+    max-height: 0px;
+    overflow: auto;
+    transition: max-height 0.3s;
+  }
+
+  > hr.separator {
+    border: 0 solid $home-page-alternate-background-color;
+    border-bottom-width: $markdown-list-item-border-width;
+  }
+}

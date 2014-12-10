@@ -1,0 +1,17 @@
+<h1>
+  {{title}}
+</h1>
+
+<hr>
+
+<div class="section-body">
+  <div class="content"
+       ng-transclude></div>
+
+  <ul class="home-section-side-bar-links">
+    <li ng-repeat="link in sideBarLinks"
+        ng-click="handleSideBarLinkClick(link)">
+      {{link.label}}
+    </li>
+  </ul>
+</div>

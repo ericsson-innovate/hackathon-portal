@@ -1,0 +1,8 @@
+<ul>
+  <li dynamic-markdown-list-item
+      ng-repeat="section in markdownListState.sections"
+      markdown-list-state="markdownListState"
+      section="section"
+      ng-class="{selected: markdownListState.selectedSection === section}">
+  </li>
+</ul>

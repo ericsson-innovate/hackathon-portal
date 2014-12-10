@@ -1,18 +1,55 @@
-<h1>Drive API</h1>
+<header class="full-width-bar">
 
-<ul>
-  <li ng-repeat="section in sampleAppsState.sections"
-      ng-click="handleSectionClick(section)"
-      style="cursor: pointer;">
-    {{section.title}}
-  </li>
-</ul>
+</header>
+
+<div class="sections">
+  <home-page-section class="full-width-bar"
+                     title="Getting Started"
+                     side-bar-links="homeState.homeGettingStartedSectionSideBarLinks">
+    <dynamic-markdown-list url="{{homeState.setupDocUrl}}"></dynamic-markdown-list>
+  </home-page-section>
+
+  <home-page-section class="full-width-bar"
+                     title="Sample Apps"
+                     side-bar-links="homeState.homeSampleAppsSectionSideBarLinks">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+  </home-page-section>
+
+  <home-page-section class="full-width-bar"
+                     title="UI Kit"
+                     side-bar-links="homeState.homeUiKitSectionSideBarLinks">
+    <dynamic-markdown-list url="{{homeState.uiKitDocUrl}}"></dynamic-markdown-list>
+  </home-page-section>
+
+  <home-page-section class="full-width-bar"
+                     title="Drive API"
+                     side-bar-links="homeState.homeDriveApiSectionSideBarLinks">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+    </p>
+  </home-page-section>
+</div>
 
 <hr>
 
-<h1>{{sampleAppsState.selectedSection.title}}</h1>
-
-<markdown-block converted-markdown="{{sampleAppsState.selectedSection.convertedMarkdown}}"></markdown-block>
-
-<br>
 <a ng-attr-ui-sref="drive-api.api-documentation.know-car">Go to old portal</a>

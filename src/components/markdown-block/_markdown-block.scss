@@ -1,3 +1,58 @@
+$markdown-block-body-content-margin-top: 14px;
+
 markdown-block {
   display: block;
+}
+
+markdown-block>div {
+  margin-top: 16px;
+}
+
+markdown-block td {
+  white-space: pre-wrap;
+}
+
+markdown-block dt {
+  display: block;
+  float: left;
+  clear: left;
+}
+
+markdown-block dd {
+  display: span;
+  margin-left: 240px;
+  margin-bottom: 10px;
+}
+
+markdown-block th {
+  //  width: 160px;
+  width: 80px;
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+markdown-block th:first-child {
+  //  width: 220px;
+  width: 160px;
+}
+
+markdown-block th:last-child {
+  //  width: 220px;
+  width: 380px;
+}
+
+markdown-block td {
+  padding-bottom: 6px;
+  vertical-align: top;
+}
+
+markdown-block h3 {
+  margin-top: 34px;
+  margin-bottom: 14px;
+  font-weight: bold;
+  text-transform: none;
+}
+
+markdown-block h4 {
+  margin-bottom: 10px;
 }
