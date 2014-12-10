@@ -9,7 +9,7 @@
 
 angular.module('uiKitApiService', [])
 
-    .factory('UiKitApi', function ($q, $http, uiKitDocUrl) {
+    .factory('UiKitApi', function ($q, $http) {
       // TODO: do we need to support different code blocks having different languages?
       var codeBlockRegex = /<pre>\s*<code>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
       var codeBlockReplacement = '<div hljs source="\'$1\'" class="language-javascript"></div>';
@@ -20,13 +20,11 @@ angular.module('uiKitApiService', [])
 
       var converter = new Showdown.converter({extensions: ['table']});
 
-      var sections = [];
+      var sections = {};
 
       var UiKitApi = {
         fetchDocumentation: fetchDocumentation,
-        getSections: function () {
-          return sections;
-        }
+        getSections: getSections
       };
 
       return UiKitApi;
@@ -36,12 +34,16 @@ angular.module('uiKitApiService', [])
       /**
        * @returns {Promise}
        */
-      function fetchDocumentation() {
-        return $http.get(uiKitDocUrl)
+      function fetchDocumentation(url) {
+        return $http.get(url)
             .then(function (response) {
-              sections = parseDocumentationIntoSections(response.data);
+              sections[url] = parseDocumentationIntoSections(response.data);
             });
       }
+
+    function getSections(url) {
+      return sections[url];
+    }
 
       /**
        * @param {String} documentationText

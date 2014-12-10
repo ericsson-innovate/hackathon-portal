@@ -42,8 +42,9 @@ angular.module('hackApp', [
   'tryItService',
   'uiKitApiService',
 
-  'apiDocumentationController',
+  'homeController',
   'driveApiController',
+  'apiDocumentationController',
   'gettingStartedController',
   'sampleAppsController'
 ])

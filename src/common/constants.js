@@ -57,38 +57,47 @@ angular.module('hackApp')
       }
     ])
 
+    .constant('topLevelRoutes', [
+      {
+        ref: 'home',
+        url: '/home',
+        isAbstract: false,
+        templateUrl: hack.rootPath + '/dist/templates/routes/home/home.html',
+        controller: 'HomeCtrl'
+      },
+      {
+        ref: 'drive-api',
+        url: '/drive-api',
+        isAbstract: true,
+        templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
+        controller: 'DriveApiCtrl'
+      }
+    ])
+
     .constant('sideBarLinks', [
       {
         isStateRoute: true,
-        ref: 'getting-started',
+        ref: 'drive-api.getting-started',
         label: 'Getting Started',
         url: '/getting-started',
-        templateUrl: hack.rootPath + '/dist/templates/routes/getting-started/getting-started.html',
+        templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
         controller: 'GettingStartedCtrl'
       },
       {
         isStateRoute: true,
-        ref: 'api-documentation',
+        ref: 'drive-api.api-documentation',
         label: 'API Documentation',
         url: '/api-documentation',
-        templateUrl: hack.rootPath + '/dist/templates/routes/api-documentation/api-documentation.html',
+        templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/api-documentation/api-documentation.html',
         controller: 'ApiDocumentationCtrl'
       },
       {
         isStateRoute: true,
-        ref: 'sample-apps',
+        ref: 'drive-api.sample-apps',
         label: 'Sample Apps',
         url: '/sample-apps',
-        templateUrl: hack.rootPath + '/dist/templates/routes/sample-apps/sample-apps.html',
+        templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/sample-apps/sample-apps.html',
         controller: 'SampleAppsCtrl'
-      },
-      {
-        isStateRoute: true,
-        ref: 'drive-api',
-        label: 'UI Kit',
-        url: '/drive-api',
-        templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
-        controller: 'DriveApiCtrl'
       }
     ])
     .constant('httpStatusCodes', {
@@ -159,7 +168,7 @@ angular.module('hackApp')
       {
         id: 'know-driver',
         name: 'Know the Driver',
-        ref: 'api-documentation.know-driver',
+        ref: 'drive-api.api-documentation.know-driver',
         specs: [
           '2.13.1-add-a-subscriber',
           '2.13.2-add-a-subscriber-and-vehicle',
@@ -199,7 +208,7 @@ angular.module('hackApp')
       {
         id: 'know-car',
         name: 'Know the Car',
-        ref: 'api-documentation.know-car',
+        ref: 'drive-api.api-documentation.know-car',
         specs: [
           '2.6.10-check-request-status',
           '2.6.11-view-diagnostic-data',
@@ -216,7 +225,7 @@ angular.module('hackApp')
       {
         id: 'control-car',
         name: 'Control the Car',
-        ref: 'api-documentation.control-car',
+        ref: 'drive-api.api-documentation.control-car',
         specs: [
           '2.6.1-sign-up',
           '2.6.2-validate-otp',

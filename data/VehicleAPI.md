@@ -54,8 +54,8 @@ interface Zone {
 enum Availability {
 "available",
 "readonly",
-"not_supported",           
-"not_supported_yet",       
+"not_supported",
+"not_supported_yet",
 "not_supported_security",
 "not_supported_policy",
 "not_supported_other"

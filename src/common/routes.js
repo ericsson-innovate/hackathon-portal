@@ -6,12 +6,21 @@
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, sideBarLinks,
-                  categories) {
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideBarLinks, categories) {
   // Re-route invalid routes back to home
-  $urlRouterProvider.otherwise(sideBarLinks[1].url);
+  $urlRouterProvider.otherwise(topLevelRoutes[1].url + sideBarLinks[1].url);// TODO: change this to re-route to topLevelRoutes[0].url
 
   var apiLink;
+
+  topLevelRoutes.forEach(function (route) {
+    $stateProvider
+        .state(route.ref, {
+          url: route.url,
+          abstract: route.isAbstract,
+          templateUrl: route.templateUrl,
+          controller: route.controller
+        });
+  });
 
   sideBarLinks.forEach(function (link) {
     if (link.isStateRoute) {
@@ -24,7 +33,7 @@ angular.module('hackApp')
           });
     }
 
-    if ("api-documentation" == link.ref)
+    if ("drive-api.api-documentation" == link.ref)
         apiLink = link;
   });
 
@@ -40,7 +49,7 @@ angular.module('hackApp')
         var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
         var routeURL = '/' + apiName;
 
-        $stateProvider.state(routeName,                       { url: routeURL,          templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
 
         // TODO: implement these deeper nestings
         // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
@@ -67,20 +76,20 @@ angular.module('hackApp')
         $rootScope.carouselHasRunOnce = true;
     }
 
-    // Allows us to use a different class for the top-level view element for each route
+    // Allows us to use a different CSS class for the top-level view element for each route
     $rootScope.routeState = toState;
 
-    isApiDoc = toState.name.indexOf('api-documentation') == 0;
+    isApiDoc = toState.name.indexOf('drive-api.api-documentation') === 0;
 
     if (isApiDoc) {
       var entities = toState.name.split('.');
 
-      if (entities.length > 0) {
+      if (entities.length > 1) {
         // TODO: get rid of these, if they are unneeded
-        $rootScope.selectedApiCategory = entities[1];
-        $rootScope.selectedApi = entities[2];
-        $rootScope.selectedApiTab = entities[3];
-        $rootScope.selectedApiExample = entities[4];
+        $rootScope.selectedApiCategory = entities[2];
+        $rootScope.selectedApi = entities[3];
+        $rootScope.selectedApiTab = entities[4];
+        $rootScope.selectedApiExample = entities[5];
       } else {
         if ($rootScope.selectedApiCategory == null) {
           $rootScope.selectedApiCategory = $rootScope.defaultCategory;

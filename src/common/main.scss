@@ -9,7 +9,8 @@
 @import '../components/animations/animations';
 @import '../components/markdown-block/markdown-block';
 
-@import '../routes/api-documentation/api-documentation';
+@import '../routes/home/home';
 @import '../routes/drive-api/drive-api';
-@import '../routes/getting-started/getting-started';
-@import '../routes/sample-apps/sample-apps';
+@import '../routes/drive-api/api-documentation/api-documentation';
+@import '../routes/drive-api/getting-started/getting-started';
+@import '../routes/drive-api/sample-apps/sample-apps';

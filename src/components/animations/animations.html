@@ -38,8 +38,8 @@
     </div>
 
     <ul class="tabs">
-      <li ng-repeat="animation in hackState.animations"
-          ng-click="hackState.handleAnimationTabClick(animation, true)"
+      <li ng-repeat="animation in driveApiState.animations"
+          ng-click="driveApiState.handleAnimationTabClick(animation, true)"
           ng-class="{selected: animation.label === selectedLabel}"
           class="tab">
           {{scope.selectedLabel}}

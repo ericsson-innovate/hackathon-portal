@@ -16,7 +16,7 @@ angular.module('animationsDirective', [])
     restrict: 'A',
 
     scope: {
-      hackState: '=',
+      driveApiState: '=',
       animations: '='
     },
 
@@ -30,7 +30,7 @@ angular.module('animationsDirective', [])
       var carouselInterval, isFirstViewContentLoadedEvent;
 
       // Add an event handler to the parent scope
-      scope.hackState.handleAnimationTabClick = handleAnimationTabClick;
+      scope.driveApiState.handleAnimationTabClick = handleAnimationTabClick;
 
       carouselInterval = null;
       isFirstViewContentLoadedEvent = true;

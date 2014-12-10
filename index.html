@@ -9,77 +9,44 @@
 
   <link rel='shortcut icon'
         type='image/x-icon'
-        href='/hackathon-portal/dist/images/favicon.ico' />
+        href='/dist/images/favicon.ico' />
   <link rel="stylesheet"
-        href="/hackathon-portal/bower_components/highlightjs/styles/vs.css">
+        href="/bower_components/highlightjs/styles/vs.css">
   <link rel="stylesheet"
-        href="/hackathon-portal/dist/styles/main.min.css">
+        href="/dist/styles/main.min.css">
 
   <script>
     hack = {};
-    hack.rootPath = '/hackathon-portal';
+    hack.rootPath = '';
   </script>
 </head>
 <body ng-app="hackApp"
       ng-controller="HackCtrl">
-  <div id="banner" animations="hackState.animations" hack-state="hackState"></div>
 
-  <div class="content-area">
-    <ul class="side-menu">
-      <li ng-repeat="item in hackState.sideBarLinks"
-          ng-class="{selected: hackState.sideBarSelectedLink === item.ref && item.ref !== 'api-documentation'}">
-
-        <a ng-if="item.isStateRoute && item.ref !== 'api-documentation'"
-           ng-click="hackState.handleSideBarClick(item)">
-          {{item.label}}
-        </a>
-        <a ng-if="!item.isStateRoute && item.ref !== 'api-documentation'"
-           ng-attr-href="{{item.ref}}">
-          {{item.label}}
-        </a>
-
-        <div ng-if="item.ref === 'api-documentation'">
-          {{item.label}}
-        </div>
-
-        <ul ng-if="item.ref === 'api-documentation'"
-            class="api-documentation-categories">
-          <li ng-repeat="category in hackState.categories"
-              ng-click="hackState.handleCategoryTabClick(category)"
-              ng-class="{selected: category.id === hackState.selectedApiCategory}">
-            {{category.name}}
-          </li>
-        </ul>
-
-        <hr class="divider">
-      </li>
-    </ul>
-
-    <div ui-view
-         id="route-view"
-         class="{{routeState.name + '-route'}} inner-content-area"></div>
-  </div>
+  <div ui-view
+     id="route-view"
+     class="{{routeState.name + '-route'}}"></div>
 
   <!-- ======== Scripts ======== -->
 
-  <script src="/hackathon-portal/bower_components/showdown/src/showdown.js"></script>
-  <script src="/hackathon-portal/bower_components/showdown/src/extensions/table.js"></script>
-  <!--<script src="/hackathon-portal/bower_components/showdown/compressed/showdown.js"></script>-->
-  <!--<script src="/hackathon-portal/bower_components/showdown/compressed/extensions/github.js"></script>-->
-  <!--<script src="/hackathon-portal/bower_components/showdown/compressed/extensions/google-prettify.js"></script>-->
-  <!--<script src="/hackathon-portal/bower_components/showdown/compressed/extensions/twitter.js"></script>-->
+  <script src="/bower_components/showdown/src/showdown.js"></script>
+  <script src="/bower_components/showdown/src/extensions/table.js"></script>
+  <!--<script src="/bower_components/showdown/compressed/showdown.js"></script>-->
+  <!--<script src="/bower_components/showdown/compressed/extensions/github.js"></script>-->
+  <!--<script src="/bower_components/showdown/compressed/extensions/google-prettify.js"></script>-->
+  <!--<script src="/bower_components/showdown/compressed/extensions/twitter.js"></script>-->
 
-  <script src="/hackathon-portal/bower_components/angular/angular.js"></script>
-  <script src="/hackathon-portal/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
-  <script src="/hackathon-portal/bower_components/highlightjs/highlight.pack.js"></script>
-  <script src="/hackathon-portal/bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
+  <script src="/bower_components/highlightjs/highlight.pack.js"></script>
+  <script src="/bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
 
-  <script src="/hackathon-portal/bower_components/greensock/src/minified/TweenMax.min.js"></script>
-  <script src="/hackathon-portal/bower_components/greensock/src/minified/TimelineMax.min.js"></script>
-  <script src="/hackathon-portal/bower_components/greensock/src/minified/easing/EasePack.min.js"></script>
+  <script src="/bower_components/greensock/src/minified/TweenMax.min.js"></script>
+  <script src="/bower_components/greensock/src/minified/TimelineMax.min.js"></script>
+  <script src="/bower_components/greensock/src/minified/easing/EasePack.min.js"></script>
 
-  <!--<script src="/hackathon-portal/dist/scripts/hackathon-portal.min.js"></script>-->
-  <script src="/hackathon-portal/dist/scripts/hackathon-portal.js"></script>
+  <!--<script src="/dist/scripts/hackathon-portal.min.js"></script>-->
+  <script src="/dist/scripts/hackathon-portal.js"></script>
 </body>
 </html>

@@ -1,15 +1,36 @@
-<h1>Drive API</h1>
+<div id="banner" animations="driveApiState.animations" drive-api-state="driveApiState"></div>
 
-<ul>
-  <li ng-repeat="section in sampleAppsState.sections"
-      ng-click="handleSectionClick(section)"
-      style="cursor: pointer;">
-    {{section.title}}
-  </li>
-</ul>
+<div class="content-area">
+  <ul class="side-menu">
+    <li ng-repeat="item in driveApiState.sideBarLinks"
+        ng-class="{selected: driveApiState.sideBarSelectedLink === item.ref && item.ref !== 'drive-api.api-documentation'}">
 
-<hr>
+      <a ng-if="item.isStateRoute && item.ref !== 'drive-api.api-documentation'"
+         ng-click="driveApiState.handleSideBarClick(item)">
+        {{item.label}}
+      </a>
+      <a ng-if="!item.isStateRoute && item.ref !== 'drive-api.api-documentation'"
+         ng-attr-href="{{item.ref}}">
+        {{item.label}}
+      </a>
 
-<h1>{{sampleAppsState.selectedSection.title}}</h1>
+      <div ng-if="item.ref === 'drive-api.api-documentation'">
+        {{item.label}}
+      </div>
 
-<markdown-block converted-markdown="{{sampleAppsState.selectedSection.convertedMarkdown}}"></markdown-block>
+      <ul ng-if="item.ref === 'drive-api.api-documentation'"
+          class="api-documentation-categories">
+        <li ng-repeat="category in driveApiState.categories"
+            ng-click="driveApiState.handleCategoryTabClick(category)"
+            ng-class="{selected: category.id === driveApiState.selectedApiCategory}">
+          {{category.name}}
+        </li>
+      </ul>
+
+      <hr class="divider">
+    </li>
+  </ul>
+
+  <div ui-view
+       class="{{routeState.name + '-route'}} inner-content-area"></div>
+</div>

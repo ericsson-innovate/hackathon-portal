@@ -1,0 +1,18 @@
+<h1>Drive API</h1>
+
+<ul>
+  <li ng-repeat="section in sampleAppsState.sections"
+      ng-click="handleSectionClick(section)"
+      style="cursor: pointer;">
+    {{section.title}}
+  </li>
+</ul>
+
+<hr>
+
+<h1>{{sampleAppsState.selectedSection.title}}</h1>
+
+<markdown-block converted-markdown="{{sampleAppsState.selectedSection.convertedMarkdown}}"></markdown-block>
+
+<br>
+<a ng-attr-ui-sref="drive-api.api-documentation.know-car">Go to old portal</a>
