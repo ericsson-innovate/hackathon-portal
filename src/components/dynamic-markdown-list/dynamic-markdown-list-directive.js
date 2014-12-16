@@ -6,7 +6,7 @@ angular.module('dynamicMarkdownListDirective', [])
   return {
     restrict: 'E',
     scope: {
-      url: '@'
+      id: '@'
     },
     templateUrl: dynamicMarkdownListTemplatePath,
     link: function (scope, element, attrs) {
@@ -23,7 +23,7 @@ angular.module('dynamicMarkdownListDirective', [])
       // ---  --- //
 
       function onMarkdownUpdate() {
-        scope.markdownListState.sections = MarkdownData.getSections(scope.url);
+        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
         scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
       }
     }

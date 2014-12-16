@@ -1,5 +1,5 @@
-$root-path: '/hackathon-portal';
-//$root-path: '';
+//$root-path: '/hackathon-portal';
+$root-path: '';
 
 $code-font-stack: Consolas, Monaco, 'Andale Mono', monospace;
 
@@ -434,4 +434,23 @@ $markdown-list-item-border-width: $category-tab-border-width;
 
 .full-width-bar:after {
   left: 100%;
+}
+
+// --- Styles for the new API documentation page --- //
+
+$api-docs-side-bar-background-color: rgb(241, 241, 241);
+$header-background-color: rgb(5, 112, 180);
+$header-secondary-background-color: rgb(128, 205, 254);
+$api-docs-link-normal-color: rgb(66, 132, 196);
+$api-docs-link-hover-color: rgb(128, 205, 254);
+$api-docs-link-active-color: rgb(171, 57, 52);
+
+a {
+  color: $api-docs-link-normal-color
+}
+a:hover {
+  color: $api-docs-link-hover-color
+}
+a:active {
+  color: $api-docs-link-active-color;
 }

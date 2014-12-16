@@ -158,19 +158,19 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-.non-bulleted-list, .tabs, .side-menu, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links {
+.non-bulleted-list, .tabs, .side-menu, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links, .api-docs-route .content-block .side-bar .side-bar-collection ul {
   padding-left: 0;
   list-style-type: none;
   width: 100%; }
 
 @font-face {
   font-family: hack-font;
-  src: url('/hackathon-portal/dist/fonts/hack-font.otf');
+  src: url('/dist/fonts/hack-font.otf');
   font-weight: normal; }
 
 @font-face {
   font-family: hack-font;
-  src: url('/hackathon-portal/dist/fonts/hack-font-bold.otf');
+  src: url('/dist/fonts/hack-font-bold.otf');
   font-weight: bold; }
 
 div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
@@ -447,6 +447,15 @@ a, a:active, a:hover, a:visited {
 .full-width-bar:after {
   left: 100%; }
 
+a {
+  color: #4284c4; }
+
+a:hover {
+  color: #80cdfe; }
+
+a:active {
+  color: #ab3934; }
+
 li[api-list-item] {
   position: relative; }
 
@@ -712,7 +721,7 @@ api-list:after {
 
 @font-face {
   font-family: good-news-sans-reg-ext;
-  src: url('/hackathon-portal/dist/fonts/good-news-sans-reg-ext.otf');
+  src: url('/dist/fonts/good-news-sans-reg-ext.otf');
   font-weight: normal; }
 
 #top-bar {
@@ -788,6 +797,17 @@ dynamic-markdown-list {
     border: 0 solid #efefef;
     border-bottom-width: 10px; }
 
+.hack-header {
+  height: 80px;
+  line-height: 80px;
+  padding-left: 30px;
+  font-size: 32px;
+  vertical-align: middle; }
+
+.hack-header, .hack-header:before, .hack-header:after {
+  color: white;
+  background-color: #0570b4; }
+
 home-page-section {
   display: block;
   padding: 40px 0; }
@@ -856,12 +876,29 @@ markdown-block h3 {
 markdown-block h4 {
   margin-bottom: 10px; }
 
+.api-docs-route .content-block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .api-docs-route .content-block .side-bar {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 360px;
+        -ms-flex: 0 0 360px;
+            flex: 0 0 360px;
+    padding: 0 30px;
+    background-color: #f1f1f1; }
+    .api-docs-route .content-block .side-bar .side-bar-collection {
+      margin: 40px 0; }
+      .api-docs-route .content-block .side-bar .side-bar-collection h2 {
+        font-size: 24px; }
+      .api-docs-route .content-block .side-bar .side-bar-collection li {
+        margin: 16px 0;
+        font-size: 18px;
+        cursor: pointer; }
+
 .home-route {
   overflow-x: hidden; }
-  .home-route header {
-    height: 600px; }
-  .home-route header, .home-route header:before, .home-route header:after {
-    background-color: black; }
   .home-route .sections home-page-section:nth-child(even), .home-route .sections home-page-section:nth-child(even):before, .home-route .sections home-page-section:nth-child(even):after {
     background-color: #efefef; }
 

@@ -1,24 +1,25 @@
-/**
- * @typedef {Object} Section
- * @property {Number} index
- * @property {String} title
- * @property {String} convertedMarkdown
- */
-
 angular.module('markdownDataService', [])
 
-  .factory('MarkdownData', function ($q, $http) {
+  .factory('MarkdownData', function ($q, $http, $filter, $rootScope, dataCollections, dataLoadedEvent) {
+    /**
+     * @typedef {Object} Section
+     * @property {Number} index
+     * @property {String} id
+     * @property {String} title
+     * @property {String} convertedMarkdown
+     */
+
     var sectionHeaderRegex = /<h2(?:.*?)>\s*(.*?)\s*<\/h2>/gi;
 
     var startAndEndQuotRegex = /(?:^"|"$)/g;
 
+    var dataPromise = null;
+
     var converter = new Showdown.converter({extensions: ['table']});
 
-    var sections = {};
-
     var MarkdownData = {
-      fetchDocumentation: fetchDocumentation,
-      getSections: getSections
+      fetchDocumentation: fetchAllDocumentation,
+      getCollection: getCollection
     };
 
     return MarkdownData;
@@ -28,15 +29,49 @@ angular.module('markdownDataService', [])
     /**
      * @returns {Promise}
      */
-    function fetchDocumentation(url) {
-      return $http.get(url)
-        .then(function (response) {
-          sections[url] = parseDocumentationIntoSections(response.data);
+    function fetchAllDocumentation() {
+      if (dataPromise) {
+        return dataPromise;
+      } else {
+        var promises = dataCollections.map(function (collection) {
+          return $http.get(collection.url)
+            .then(function (response) {
+              switch (collection.type) {
+                case 'markdown-api':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                case 'json-api':
+                  // TODO: integrate this into the old JSON parsing logic?
+                  break;
+                case 'markdown-setup':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                default:
+                  throw new Error('Invalid data collection type: ' + collection.type);
+              }
+            });
         });
+
+        dataPromise = $q.all(promises)
+          .then(function () {
+            $rootScope.$broadcast(dataLoadedEvent, dataCollections);
+            return dataCollections;
+          });
+
+        return dataPromise;
+      }
     }
 
-    function getSections(url) {
-      return sections[url];
+    function getCollection(id) {
+      var i, count;
+
+      for (i = 0, count = dataCollections.length; i < count; i += 1) {
+        if (dataCollections[i].id === id) {
+          return dataCollections[i];
+        }
+      }
+
+      return null;
     }
 
     /**
@@ -104,8 +139,11 @@ angular.module('markdownDataService', [])
       // ---  --- //
 
       function addSection(title, convertedMarkdown) {
+        var id = $filter('sectionTitleToStateId')(title);
+
         sections[index] = {
           index: index,
+          id: id,
           title: title,
           convertedMarkdown: convertedMarkdown
         };

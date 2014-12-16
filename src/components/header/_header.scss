@@ -1,0 +1,14 @@
+.hack-header {
+  height: 80px;
+  line-height: 80px;
+  padding-left: 30px;
+  font-size: 32px;
+  vertical-align: middle;
+}
+
+.hack-header,
+.hack-header:before,
+.hack-header:after {
+  color: white;
+  background-color: $header-background-color;
+}

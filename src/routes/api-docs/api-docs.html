@@ -1,0 +1,27 @@
+<hack-header></hack-header>
+
+<div class="content-block">
+  <div class="side-bar">
+    <div class="side-bar-collection"
+         ng-repeat="collection in apiDocsState.dataCollections"
+         ng-class="{selected: apiDocsState.selectedCollection === collection}">
+      <h2>
+        {{collection.label}}
+      </h2>
+
+      <ul>
+        <li ng-repeat="section in collection.sections"
+            ng-class="{selected: apiDocsState.selectedSection === section}"
+            ng-click="handleSideBarLinkClick(collection, section)">
+          <a ng-attr-ui-sref="section.id">
+            {{section.title}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <markdown-block converted-markdown="{{apiDocsState.selectedSection.convertedMarkdown}}"></markdown-block>
+</div>
+
+<a ng-attr-ui-sref="drive-api.api-documentation.know-car">Go to old portal</a>

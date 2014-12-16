@@ -19,8 +19,40 @@ angular.module('hackApp')
 
   .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
-  .constant('uiKitDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md')
-  .constant('setupDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/Setup.md')
+  .constant('dataLoadedEvent', 'dataLoadedEvent')
+
+  // TODO: add support for the old JSON data format
+  // TODO: change one of these API doc URLs
+  .constant('dataCollections', [
+    {
+      id: 'vehicle-apps-api',
+      label: 'Vehicle Apps API',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md',
+      type: 'markdown-api',
+      sections: []
+    },
+    {
+      id: 'vehicle-ui-api',
+      label: 'Vehicle UI API',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md',
+      type: 'markdown-api',
+      sections: []
+    },
+    {
+      id: 'web-apps-api',
+      label: 'Web Apps API',
+      url: hack.rootPath + '/dist/data/specifications.json',
+      type: 'json-api',
+      sections: []
+    },
+    {
+      id: 'setup',
+      label: 'Setup',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/Setup.md',
+      type: 'markdown-setup',
+      sections: []
+    }
+  ])
 
   .constant('sampleAppData', [
     {
@@ -71,6 +103,13 @@ angular.module('hackApp')
       isAbstract: true,
       templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
       controller: 'DriveApiCtrl'
+    },
+    {
+      ref: 'api-docs',
+      url: '/api-docs/{collectionId}{sectionId:(?:/[^/]+)?}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl'
     }
   ])
 

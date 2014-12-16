@@ -27,6 +27,7 @@ angular.module('hackApp', [
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
+  'sectionTitleToStateIdFilter',
   'unescapeJsonStringFilter',
 
   'apiListItemDirective',
@@ -36,6 +37,7 @@ angular.module('hackApp', [
   'apiListDirective',
   'dynamicMarkdownListDirective',
   'dynamicMarkdownListItemDirective',
+  'headerDirective',
   'homePageSectionDirective',
   'markdownBlockDirective',
 
@@ -45,8 +47,10 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
-  'homeController',
   'driveApiController',
+  'homeController',
+  'apiDocsController',
+
   'apiDocumentationController',
   'gettingStartedController',
   'sampleAppsController'
@@ -122,8 +126,40 @@ angular.module('hackApp')
 
   .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
-  .constant('uiKitDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md')
-  .constant('setupDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/Setup.md')
+  .constant('dataLoadedEvent', 'dataLoadedEvent')
+
+  // TODO: add support for the old JSON data format
+  // TODO: change one of these API doc URLs
+  .constant('dataCollections', [
+    {
+      id: 'vehicle-apps-api',
+      label: 'Vehicle Apps API',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md',
+      type: 'markdown-api',
+      sections: []
+    },
+    {
+      id: 'vehicle-ui-api',
+      label: 'Vehicle UI API',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md',
+      type: 'markdown-api',
+      sections: []
+    },
+    {
+      id: 'web-apps-api',
+      label: 'Web Apps API',
+      url: hack.rootPath + '/dist/data/specifications.json',
+      type: 'json-api',
+      sections: []
+    },
+    {
+      id: 'setup',
+      label: 'Setup',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/Setup.md',
+      type: 'markdown-setup',
+      sections: []
+    }
+  ])
 
   .constant('sampleAppData', [
     {
@@ -174,6 +210,13 @@ angular.module('hackApp')
       isAbstract: true,
       templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
       controller: 'DriveApiCtrl'
+    },
+    {
+      ref: 'api-docs',
+      url: '/api-docs/{collectionId}{sectionId:(?:/[^/]+)?}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl'
     }
   ])
 
@@ -476,117 +519,130 @@ angular.module('orderApiCallsFilter', [])
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideBarLinks, categories) {
-  // Re-route invalid routes back to home
-  $urlRouterProvider.otherwise(topLevelRoutes[1].url + sideBarLinks[1].url);// TODO: change this to re-route to topLevelRoutes[0].url
+  .config(function ($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideBarLinks, categories) {
+    // Re-route invalid routes back to home
+    $urlRouterProvider.otherwise(topLevelRoutes[1].url + sideBarLinks[1].url);// TODO: change this to re-route to topLevelRoutes[0].url
 
-  var apiLink;
+    var apiLink;
 
-  topLevelRoutes.forEach(function (route) {
-    $stateProvider
+    topLevelRoutes.forEach(function (route) {
+      $stateProvider
         .state(route.ref, {
           url: route.url,
           abstract: route.isAbstract,
           templateUrl: route.templateUrl,
-          controller: route.controller
+          controller: route.controller,
+          resolve: {
+            'collections': function (MarkdownData) {
+              return MarkdownData.fetchDocumentation();
+            }
+          }
         });
-  });
+    });
 
-  sideBarLinks.forEach(function (link) {
-    if (link.isStateRoute) {
-      // Use UI-Router to allow for both URL and state-based routing
-      $stateProvider
+    sideBarLinks.forEach(function (link) {
+      if (link.isStateRoute) {
+        // Use UI-Router to allow for both URL and state-based routing
+        $stateProvider
           .state(link.ref, {
             url: link.url,
             templateUrl: link.templateUrl,
             controller: link.controller
           });
-    }
+      }
 
-    if ("drive-api.api-documentation" == link.ref)
+      if ("drive-api.api-documentation" == link.ref)
         apiLink = link;
-  });
+    });
 
-  if (apiLink) {
-    categories.forEach(function (category) {
-      var routeName = apiLink.ref + '.' + category.id;
-      var routeURL = '/' + category.id;
-
-      $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-
-      category['specs'].forEach(function (api) {
-        var apiName = api.replace(/\./g, '_');
-        var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
-        var routeURL = '/' + apiName;
+    if (apiLink) {
+      categories.forEach(function (category) {
+        var routeName = apiLink.ref + '.' + category.id;
+        var routeURL = '/' + category.id;
 
         $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
 
-        // TODO: implement these deeper nestings
-        // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        category['specs'].forEach(function (api) {
+          var apiName = api.replace(/\./g, '_');
+          var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
+          var routeURL = '/' + apiName;
+
+          $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+
+          // TODO: implement these deeper nestings
+          // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        });
       });
-    });
-  }
-})
+    }
+  })
 
-.run(function ($rootScope, $log) {
-  $rootScope.routeState = {};
+  .run(function ($rootScope, $log) {
+    $rootScope.routeState = {};
 
-  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    var isApiDoc;
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+      var isApiDoc;
 
-    $log.debug('$stateChangeStart', toState.name);
+      $log.debug('$stateChangeStart', toState.name);
 
-    // If we are coming from another page, then do not continue with the carousel auto-transition
-    if ($rootScope.routeState.name) {
+      // If we are coming from another page, then do not continue with the carousel auto-transition
+      if ($rootScope.routeState.name) {
         $rootScope.carouselHasRunOnce = true;
-    }
-
-    // Allows us to use a different CSS class for the top-level view element for each route
-    $rootScope.routeState = toState;
-
-    isApiDoc = toState.name.indexOf('drive-api.api-documentation') === 0;
-
-    if (isApiDoc) {
-      var entities = toState.name.split('.');
-
-      if (entities.length > 1) {
-        // TODO: get rid of these, if they are unneeded
-        $rootScope.selectedApiCategory = entities[2];
-        $rootScope.selectedApi = entities[3];
-        $rootScope.selectedApiTab = entities[4];
-        $rootScope.selectedApiExample = entities[5];
-      } else {
-        if ($rootScope.selectedApiCategory == null) {
-          $rootScope.selectedApiCategory = $rootScope.defaultCategory;
-        }
       }
-    } else {
-      $rootScope.selectedApiCategory = null;
-    }
-  });
 
-  $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-    $log.debug('$stateNotFound', unfoundState.name);
-  });
+      // Allows us to use a different CSS class for the top-level view element for each route
+      $rootScope.routeState = toState;
 
-  $rootScope.$on('$stateChangeSuccess',
+      isApiDoc = toState.name.indexOf('drive-api.api-documentation') === 0;
+
+      if (isApiDoc) {
+        var entities = toState.name.split('.');
+
+        if (entities.length > 1) {
+          // TODO: get rid of these, if they are unneeded
+          $rootScope.selectedApiCategory = entities[2];
+          $rootScope.selectedApi = entities[3];
+          $rootScope.selectedApiTab = entities[4];
+          $rootScope.selectedApiExample = entities[5];
+        } else {
+          if ($rootScope.selectedApiCategory == null) {
+            $rootScope.selectedApiCategory = $rootScope.defaultCategory;
+          }
+        }
+      } else {
+        $rootScope.selectedApiCategory = null;
+      }
+    });
+
+    $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+      $log.debug('$stateNotFound', unfoundState.name);
+    });
+
+    $rootScope.$on('$stateChangeSuccess',
       function (event, toState, toParams, fromState, fromParams) {
-    $log.debug('$stateChangeSuccess', toState.name);
-  });
+        $log.debug('$stateChangeSuccess', toState.name);
+      });
 
-  $rootScope.$on('$stateChangeError',
+    $rootScope.$on('$stateChangeError',
       function (event, toState, toParams, fromState, fromParams, error) {
-    $log.debug('$stateChangeError', toState.name, error);
+        $log.debug('$stateChangeError', toState.name, error);
+      });
+
+    $rootScope.$on('$viewContentLoaded', function (event) {
+      console.log('$viewContentLoaded');
+    });
   });
 
-  $rootScope.$on('$viewContentLoaded', function (event) {
-    console.log('$viewContentLoaded');
-  });
+angular.module('sectionTitleToStateIdFilter', [])
+
+.filter('sectionTitleToStateId', function () {
+  return function (input) {
+    return input.toLowerCase().replace(' ', '-').replace(/\W/, '');
+  }
 });
 
 'use strict';
@@ -905,27 +961,28 @@ angular.module('examplesService', [])
   return HackExamples;
 });
 
-/**
- * @typedef {Object} Section
- * @property {Number} index
- * @property {String} title
- * @property {String} convertedMarkdown
- */
-
 angular.module('markdownDataService', [])
 
-  .factory('MarkdownData', function ($q, $http) {
+  .factory('MarkdownData', function ($q, $http, $filter, $rootScope, dataCollections, dataLoadedEvent) {
+    /**
+     * @typedef {Object} Section
+     * @property {Number} index
+     * @property {String} id
+     * @property {String} title
+     * @property {String} convertedMarkdown
+     */
+
     var sectionHeaderRegex = /<h2(?:.*?)>\s*(.*?)\s*<\/h2>/gi;
 
     var startAndEndQuotRegex = /(?:^"|"$)/g;
 
+    var dataPromise = null;
+
     var converter = new Showdown.converter({extensions: ['table']});
 
-    var sections = {};
-
     var MarkdownData = {
-      fetchDocumentation: fetchDocumentation,
-      getSections: getSections
+      fetchDocumentation: fetchAllDocumentation,
+      getCollection: getCollection
     };
 
     return MarkdownData;
@@ -935,15 +992,49 @@ angular.module('markdownDataService', [])
     /**
      * @returns {Promise}
      */
-    function fetchDocumentation(url) {
-      return $http.get(url)
-        .then(function (response) {
-          sections[url] = parseDocumentationIntoSections(response.data);
+    function fetchAllDocumentation() {
+      if (dataPromise) {
+        return dataPromise;
+      } else {
+        var promises = dataCollections.map(function (collection) {
+          return $http.get(collection.url)
+            .then(function (response) {
+              switch (collection.type) {
+                case 'markdown-api':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                case 'json-api':
+                  // TODO: integrate this into the old JSON parsing logic?
+                  break;
+                case 'markdown-setup':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                default:
+                  throw new Error('Invalid data collection type: ' + collection.type);
+              }
+            });
         });
+
+        dataPromise = $q.all(promises)
+          .then(function () {
+            $rootScope.$broadcast(dataLoadedEvent, dataCollections);
+            return dataCollections;
+          });
+
+        return dataPromise;
+      }
     }
 
-    function getSections(url) {
-      return sections[url];
+    function getCollection(id) {
+      var i, count;
+
+      for (i = 0, count = dataCollections.length; i < count; i += 1) {
+        if (dataCollections[i].id === id) {
+          return dataCollections[i];
+        }
+      }
+
+      return null;
     }
 
     /**
@@ -1011,8 +1102,11 @@ angular.module('markdownDataService', [])
       // ---  --- //
 
       function addSection(title, convertedMarkdown) {
+        var id = $filter('sectionTitleToStateId')(title);
+
         sections[index] = {
           index: index,
+          id: id,
           title: title,
           convertedMarkdown: convertedMarkdown
         };
@@ -1656,7 +1750,7 @@ angular.module('dynamicMarkdownListDirective', [])
   return {
     restrict: 'E',
     scope: {
-      url: '@'
+      id: '@'
     },
     templateUrl: dynamicMarkdownListTemplatePath,
     link: function (scope, element, attrs) {
@@ -1673,9 +1767,25 @@ angular.module('dynamicMarkdownListDirective', [])
       // ---  --- //
 
       function onMarkdownUpdate() {
-        scope.markdownListState.sections = MarkdownData.getSections(scope.url);
+        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
         scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
       }
+    }
+  };
+});
+
+angular.module('headerDirective', [])
+
+.constant('headerTemplatePath', hack.rootPath + '/dist/templates/components/header/header.html')
+
+.directive('hackHeader', function (headerTemplatePath) {
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+    },
+    templateUrl: headerTemplatePath,
+    link: function (scope, element, attrs) {
     }
   };
 });
@@ -1757,6 +1867,27 @@ angular.module('markdownBlockDirective', [])
       };
     });
 
+angular.module('apiDocsController', [])
+
+  .controller('ApiDocsCtrl', function ($scope, $stateParams, dataCollections) {
+    $scope.apiDocsState = {};
+    $scope.apiDocsState.dataCollections = dataCollections;
+    $scope.apiDocsState.selectedCollection =
+      dataCollections[($stateParams.collectionId ? $stateParams.collectionId : 0)];
+    $scope.apiDocsState.selectedSection =
+      $scope.apiDocsState.selectedCollection[($stateParams.sectionId ? $stateParams.sectionId : 0)];
+
+    $scope.handleSideBarLinkClick = handleSideBarLinkClick;
+
+    // ---  --- //
+
+    function handleSideBarLinkClick(collection, section) {
+      console.log('API docs side bar section link clicked', collection.label, section.title);
+      $scope.apiDocsState.selectedCollection = collection;
+      $scope.apiDocsState.selectedSection = section;
+    }
+  });
+
 angular.module('driveApiController', [])
 
   .controller('DriveApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories, animations) {
@@ -1820,12 +1951,9 @@ angular.module('driveApiController', [])
 
 angular.module('homeController', [])
 
-  .controller('HomeCtrl', function ($scope, uiKitDocUrl, setupDocUrl, homeGettingStartedSectionSideBarLinks,
-                                    homeSampleAppsSectionSideBarLinks, homeUiKitSectionSideBarLinks,
-                                    homeDriveApiSectionSideBarLinks) {
+  .controller('HomeCtrl', function ($scope, homeGettingStartedSectionSideBarLinks, homeSampleAppsSectionSideBarLinks,
+                                    homeUiKitSectionSideBarLinks, homeDriveApiSectionSideBarLinks) {
     $scope.homeState = {};
-    $scope.homeState.uiKitDocUrl = uiKitDocUrl;
-    $scope.homeState.setupDocUrl = setupDocUrl;
     $scope.homeState.homeGettingStartedSectionSideBarLinks = homeGettingStartedSectionSideBarLinks;
     $scope.homeState.homeSampleAppsSectionSideBarLinks = homeSampleAppsSectionSideBarLinks;
     $scope.homeState.homeUiKitSectionSideBarLinks = homeUiKitSectionSideBarLinks;

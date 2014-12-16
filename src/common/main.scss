@@ -9,11 +9,14 @@
 @import '../components/animations/animations';
 @import '../components/dynamic-markdown-list/dynamic-markdown-list';
 @import '../components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item';
+@import '../components/header/header';
 @import '../components/home-page-section/home-page-section';
 @import '../components/markdown-block/markdown-block';
 
-@import '../routes/home/home';
+@import '../routes/api-docs/api-docs';
 @import '../routes/drive-api/drive-api';
+@import '../routes/home/home';
+
 @import '../routes/drive-api/api-documentation/api-documentation';
 @import '../routes/drive-api/getting-started/getting-started';
 @import '../routes/drive-api/sample-apps/sample-apps';

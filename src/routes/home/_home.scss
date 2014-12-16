@@ -2,16 +2,6 @@
 
   overflow-x: hidden;
 
-  header {
-    height: 600px;
-  }
-
-  header,
-  header:before,
-  header:after {
-    background-color: black;
-  }
-
   .sections {
     home-page-section:nth-child(even),
     home-page-section:nth-child(even):before,
