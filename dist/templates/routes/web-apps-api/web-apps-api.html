@@ -1,0 +1,38 @@
+<div id="banner"
+     animations="webAppsApiState.animations"
+     web-apps-api-state="webAppsApiState"></div>
+
+<div class="content-area">
+  <ul class="side-menu">
+    <li ng-repeat="item in webAppsApiState.sideBarLinks"
+        ng-class="{selected: webAppsApiState.sideBarSelectedLink === item.ref && item.ref !== 'web-apps-api.api-documentation'}">
+
+      <a ng-if="item.isStateRoute && item.ref !== 'web-apps-api.api-documentation'"
+         ng-click="webAppsApiState.handleSideBarClick(item)">
+        {{item.label}}
+      </a>
+      <a ng-if="!item.isStateRoute && item.ref !== 'web-apps-api.api-documentation'"
+         ng-attr-href="{{item.ref}}">
+        {{item.label}}
+      </a>
+
+      <div ng-if="item.ref === 'web-apps-api.api-documentation'">
+        {{item.label}}
+      </div>
+
+      <ul ng-if="item.ref === 'web-apps-api.api-documentation'"
+          class="api-documentation-categories">
+        <li ng-repeat="category in webAppsApiState.categories"
+            ng-click="webAppsApiState.handleCategoryTabClick(category)"
+            ng-class="{selected: category.id === webAppsApiState.selectedApiCategory}">
+          {{category.name}}
+        </li>
+      </ul>
+
+      <hr class="divider">
+    </li>
+  </ul>
+
+  <div ui-view
+       class="{{routeState.name + '-route'}} inner-content-area"></div>
+</div>

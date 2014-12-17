@@ -14,7 +14,8 @@ angular.module('hackApp')
 
     topLevelRoutes.forEach(function (route) {
       $stateProvider
-        .state(route.ref, {
+        .state({
+          name: route.ref,
           url: route.url,
           abstract: route.isAbstract,
           templateUrl: route.templateUrl,
@@ -23,7 +24,8 @@ angular.module('hackApp')
             'collections': function (MarkdownData) {
               return MarkdownData.fetchDocumentation();
             }
-          }
+          },
+          params: route.defaultParams
         });
     });
 
@@ -31,30 +33,32 @@ angular.module('hackApp')
       if (link.isStateRoute) {
         // Use UI-Router to allow for both URL and state-based routing
         $stateProvider
-          .state(link.ref, {
+          .state({
+            name: link.ref,
             url: link.url,
             templateUrl: link.templateUrl,
             controller: link.controller
           });
       }
 
-      if ("drive-api.api-documentation" == link.ref)
+      if ('web-apps-api.api-documentation' === link.ref) {
         apiLink = link;
+      }
     });
 
     if (apiLink) {
       categories.forEach(function (category) {
         var routeName = apiLink.ref + '.' + category.id;
-        var routeURL = '/' + category.id;
+        var routeUrl = '/' + category.id;
 
-        $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state({ name: routeName, url: routeUrl, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
 
         category['specs'].forEach(function (api) {
           var apiName = api.replace(/\./g, '_');
           var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
-          var routeURL = '/' + apiName;
+          var routeUrl = '/' + apiName;
 
-          $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          $stateProvider.state({ name: routeName, url: routeUrl, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
 
           // TODO: implement these deeper nestings
           // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
@@ -84,7 +88,7 @@ angular.module('hackApp')
       // Allows us to use a different CSS class for the top-level view element for each route
       $rootScope.routeState = toState;
 
-      isApiDoc = toState.name.indexOf('drive-api.api-documentation') === 0;
+      isApiDoc = toState.name.indexOf('web-apps-api.api-documentation') === 0;
 
       if (isApiDoc) {
         var entities = toState.name.split('.');

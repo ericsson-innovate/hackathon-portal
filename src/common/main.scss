@@ -14,9 +14,9 @@
 @import '../components/markdown-block/markdown-block';
 
 @import '../routes/api-docs/api-docs';
-@import '../routes/drive-api/drive-api';
+@import '../routes/web-apps-api/web-apps-api';
 @import '../routes/home/home';
 
-@import '../routes/drive-api/api-documentation/api-documentation';
-@import '../routes/drive-api/getting-started/getting-started';
-@import '../routes/drive-api/sample-apps/sample-apps';
+@import '../routes/web-apps-api/api-documentation/api-documentation';
+@import '../routes/web-apps-api/getting-started/getting-started';
+@import '../routes/web-apps-api/sample-apps/sample-apps';

@@ -47,7 +47,7 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
-  'driveApiController',
+  'webAppsApiController',
   'homeController',
   'apiDocsController',
 

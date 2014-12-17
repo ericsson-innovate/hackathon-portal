@@ -47,7 +47,7 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
-  'driveApiController',
+  'webAppsApiController',
   'homeController',
   'apiDocsController',
 
@@ -202,47 +202,75 @@ angular.module('hackApp')
       url: '/home',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/home/home.html',
-      controller: 'HomeCtrl'
+      controller: 'HomeCtrl',
+      defaultParams: {
+      }
     },
     {
-      ref: 'drive-api',
-      url: '/drive-api',
+      ref: 'web-apps-api',
+      url: '/web-apps-api',
       isAbstract: true,
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
-      controller: 'DriveApiCtrl'
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/web-apps-api.html',
+      controller: 'WebAppsApiCtrl',
+      defaultParams: {
+        // TODO: add the new structure for route IDs to the old routing logic
+      }
     },
     {
-      ref: 'api-docs',
-      url: '/api-docs/{collectionId}{sectionId:(?:/[^/]+)?}',
+      ref: 'vehicle-apps-api',
+      url: '/vehicle-apps-api/{sectionId}',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
-      controller: 'ApiDocsCtrl'
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'context-initialization'
+      }
+    },
+    {
+      ref: 'vehicle-ui-api',
+      url: '/vehicle-ui-api/{sectionId}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'context-initialization'
+      }
+    },
+    {
+      ref: 'setup',
+      url: '/setup/{sectionId}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'introduction'
+      }
     }
   ])
 
   .constant('sideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Getting Started',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     },
     {
       isStateRoute: true,
-      ref: 'drive-api.api-documentation',
+      ref: 'web-apps-api.api-documentation',
       label: 'API Documentation',
       url: '/api-documentation',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/api-documentation/api-documentation.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
       controller: 'ApiDocumentationCtrl'
     },
     {
       isStateRoute: true,
-      ref: 'drive-api.sample-apps',
+      ref: 'web-apps-api.sample-apps',
       label: 'Sample Apps',
       url: '/sample-apps',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/sample-apps/sample-apps.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
       controller: 'SampleAppsCtrl'
     }
   ])
@@ -250,10 +278,10 @@ angular.module('hackApp')
   .constant('homeGettingStartedSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
@@ -261,10 +289,10 @@ angular.module('hackApp')
   .constant('homeSampleAppsSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
@@ -272,21 +300,21 @@ angular.module('hackApp')
   .constant('homeUiKitSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
 
-  .constant('homeDriveApiSectionSideBarLinks', [
+  .constant('homeWebAppsApiSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
@@ -359,7 +387,7 @@ angular.module('hackApp')
     {
       id: 'know-driver',
       name: 'Know the Driver',
-      ref: 'drive-api.api-documentation.know-driver',
+      ref: 'web-apps-api.api-documentation.know-driver',
       specs: [
         '2.13.1-add-a-subscriber',
         '2.13.2-add-a-subscriber-and-vehicle',
@@ -399,7 +427,7 @@ angular.module('hackApp')
     {
       id: 'know-car',
       name: 'Know the Car',
-      ref: 'drive-api.api-documentation.know-car',
+      ref: 'web-apps-api.api-documentation.know-car',
       specs: [
         '2.6.10-check-request-status',
         '2.6.11-view-diagnostic-data',
@@ -416,7 +444,7 @@ angular.module('hackApp')
     {
       id: 'control-car',
       name: 'Control the Car',
-      ref: 'drive-api.api-documentation.control-car',
+      ref: 'web-apps-api.api-documentation.control-car',
       specs: [
         '2.6.1-sign-up',
         '2.6.2-validate-otp',
@@ -527,7 +555,8 @@ angular.module('hackApp')
 
     topLevelRoutes.forEach(function (route) {
       $stateProvider
-        .state(route.ref, {
+        .state({
+          name: route.ref,
           url: route.url,
           abstract: route.isAbstract,
           templateUrl: route.templateUrl,
@@ -536,7 +565,8 @@ angular.module('hackApp')
             'collections': function (MarkdownData) {
               return MarkdownData.fetchDocumentation();
             }
-          }
+          },
+          params: route.defaultParams
         });
     });
 
@@ -544,30 +574,32 @@ angular.module('hackApp')
       if (link.isStateRoute) {
         // Use UI-Router to allow for both URL and state-based routing
         $stateProvider
-          .state(link.ref, {
+          .state({
+            name: link.ref,
             url: link.url,
             templateUrl: link.templateUrl,
             controller: link.controller
           });
       }
 
-      if ("drive-api.api-documentation" == link.ref)
+      if ('web-apps-api.api-documentation' === link.ref) {
         apiLink = link;
+      }
     });
 
     if (apiLink) {
       categories.forEach(function (category) {
         var routeName = apiLink.ref + '.' + category.id;
-        var routeURL = '/' + category.id;
+        var routeUrl = '/' + category.id;
 
-        $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        $stateProvider.state({ name: routeName, url: routeUrl, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
 
         category['specs'].forEach(function (api) {
           var apiName = api.replace(/\./g, '_');
           var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
-          var routeURL = '/' + apiName;
+          var routeUrl = '/' + apiName;
 
-          $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          $stateProvider.state({ name: routeName, url: routeUrl, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
 
           // TODO: implement these deeper nestings
           // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
@@ -597,7 +629,7 @@ angular.module('hackApp')
       // Allows us to use a different CSS class for the top-level view element for each route
       $rootScope.routeState = toState;
 
-      isApiDoc = toState.name.indexOf('drive-api.api-documentation') === 0;
+      isApiDoc = toState.name.indexOf('web-apps-api.api-documentation') === 0;
 
       if (isApiDoc) {
         var entities = toState.name.split('.');
@@ -1278,7 +1310,7 @@ angular.module('animationsDirective', [])
     restrict: 'A',
 
     scope: {
-      driveApiState: '=',
+      webAppsApiState: '=',
       animations: '='
     },
 
@@ -1292,7 +1324,7 @@ angular.module('animationsDirective', [])
       var carouselInterval, isFirstViewContentLoadedEvent;
 
       // Add an event handler to the parent scope
-      scope.driveApiState.handleAnimationTabClick = handleAnimationTabClick;
+      scope.webAppsApiState.handleAnimationTabClick = handleAnimationTabClick;
 
       carouselInterval = null;
       isFirstViewContentLoadedEvent = true;
@@ -1514,7 +1546,7 @@ angular.module('apiListItemDirective', [])
                 scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
                     null : scope.apiItem.specification.id;
 
-        var targetRef = 'drive-api.api-documentation.' + $rootScope.selectedApiCategory;
+        var targetRef = 'web-apps-api.api-documentation.' + $rootScope.selectedApiCategory;
 
         if (scope.apiListState.selectedItemId != null)
           targetRef = targetRef + '.' + scope.apiItem.ref;
@@ -1888,28 +1920,39 @@ angular.module('apiDocsController', [])
     }
   });
 
-angular.module('driveApiController', [])
+angular.module('homeController', [])
 
-  .controller('DriveApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories, animations) {
-    $scope.driveApiState = {};
-    $scope.driveApiState.sideBarLinks = sideBarLinks;
-    $scope.driveApiState.categories = categories;
-    $scope.driveApiState.animations = animations;
-    $scope.driveApiState.selectedApiCategory = $rootScope.selectedApiCategory;
-    $scope.driveApiState.selectedAnimation = null;
-    $scope.driveApiState.sideBarSelectedLink = null;
+  .controller('HomeCtrl', function ($scope, homeGettingStartedSectionSideBarLinks, homeSampleAppsSectionSideBarLinks,
+                                    homeUiKitSectionSideBarLinks, homeWebAppsApiSectionSideBarLinks) {
+    $scope.homeState = {};
+    $scope.homeState.homeGettingStartedSectionSideBarLinks = homeGettingStartedSectionSideBarLinks;
+    $scope.homeState.homeSampleAppsSectionSideBarLinks = homeSampleAppsSectionSideBarLinks;
+    $scope.homeState.homeUiKitSectionSideBarLinks = homeUiKitSectionSideBarLinks;
+    $scope.homeState.homeWebAppsApiSectionSideBarLinks = homeWebAppsApiSectionSideBarLinks;
+  });
+
+angular.module('webAppsApiController', [])
+
+  .controller('WebAppsApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories, animations) {
+    $scope.webAppsApiState = {};
+    $scope.webAppsApiState.sideBarLinks = sideBarLinks;
+    $scope.webAppsApiState.categories = categories;
+    $scope.webAppsApiState.animations = animations;
+    $scope.webAppsApiState.selectedApiCategory = $rootScope.selectedApiCategory;
+    $scope.webAppsApiState.selectedAnimation = null;
+    $scope.webAppsApiState.sideBarSelectedLink = null;
 
     $scope.myState = $state;
 
     $rootScope.$on('$stateChangeSuccess', handleStateChangeSuccess);
 
-    $scope.driveApiState.handleSideBarClick = handleSideBarClick;
-    $scope.driveApiState.handleCategoryTabClick = handleCategoryTabClick;
+    $scope.webAppsApiState.handleSideBarClick = handleSideBarClick;
+    $scope.webAppsApiState.handleCategoryTabClick = handleCategoryTabClick;
 
     // ---  --- //
 
     function handleStateChangeSuccess(event, toState, toParams, fromState, fromParams) {
-      if (toState.name === 'drive-api.api-documentation') {
+      if (toState.name === 'web-apps-api.api-documentation') {
         $state.go($rootScope.defaultCategory.ref);
         return;
       }
@@ -1920,12 +1963,12 @@ angular.module('driveApiController', [])
         var link = sideBarLinks[i];
 
         if (toState.name.indexOf(link.ref) == 0) {
-          $scope.driveApiState.sideBarSelectedLink = link.ref;
+          $scope.webAppsApiState.sideBarSelectedLink = link.ref;
           break;
         }
       }
 
-      $scope.driveApiState.selectedApiCategory = $rootScope.selectedApiCategory;
+      $scope.webAppsApiState.selectedApiCategory = $rootScope.selectedApiCategory;
     }
 
     function handleSideBarClick(link) {
@@ -1933,7 +1976,7 @@ angular.module('driveApiController', [])
 
       var targetState = link.ref;
 
-      if (link.ref === 'drive-api.api-documentation')
+      if (link.ref === 'web-apps-api.api-documentation')
         targetState = $rootScope.defaultCategory.ref;
 
       $state.go(targetState);
@@ -1945,19 +1988,8 @@ angular.module('driveApiController', [])
       $rootScope.selectedApiCategory = category.id;
 
       // Transition to the API documentation route/state
-      $state.go('drive-api.api-documentation.' + category.id);
+      $state.go('web-apps-api.api-documentation.' + category.id);
     }
-  });
-
-angular.module('homeController', [])
-
-  .controller('HomeCtrl', function ($scope, homeGettingStartedSectionSideBarLinks, homeSampleAppsSectionSideBarLinks,
-                                    homeUiKitSectionSideBarLinks, homeDriveApiSectionSideBarLinks) {
-    $scope.homeState = {};
-    $scope.homeState.homeGettingStartedSectionSideBarLinks = homeGettingStartedSectionSideBarLinks;
-    $scope.homeState.homeSampleAppsSectionSideBarLinks = homeSampleAppsSectionSideBarLinks;
-    $scope.homeState.homeUiKitSectionSideBarLinks = homeUiKitSectionSideBarLinks;
-    $scope.homeState.homeDriveApiSectionSideBarLinks = homeDriveApiSectionSideBarLinks;
   });
 
 angular.module('dynamicMarkdownListItemDirective', [])

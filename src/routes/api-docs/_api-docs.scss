@@ -1,6 +1,6 @@
-$side-bar-width: 360px;
+$side-bar-width: 290px;
 
-.api-docs-route {
+#route-view {
   .content-block {
     display: flex;
 
@@ -13,16 +13,20 @@ $side-bar-width: 360px;
         margin: 40px 0;
 
         h2 {
-          font-size: 24px;
+          font-size: 20px;
         }
 
         ul {
           @extend .non-bulleted-list;
+          margin-top: 24px;
         }
 
         li {
-          margin: 16px 0;
-          font-size: 18px;
+          margin: 12px 0;
+          font-size: 16px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
           cursor: pointer;
         }
 

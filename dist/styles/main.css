@@ -158,7 +158,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-.non-bulleted-list, .tabs, .side-menu, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links, .api-docs-route .content-block .side-bar .side-bar-collection ul {
+.non-bulleted-list, .tabs, .side-menu, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links, #route-view .content-block .side-bar .side-bar-collection ul {
   padding-left: 0;
   list-style-type: none;
   width: 100%; }
@@ -798,10 +798,10 @@ dynamic-markdown-list {
     border-bottom-width: 10px; }
 
 .hack-header {
-  height: 80px;
-  line-height: 80px;
+  height: 70px;
+  line-height: 70px;
   padding-left: 30px;
-  font-size: 32px;
+  font-size: 28px;
   vertical-align: middle; }
 
 .hack-header, .hack-header:before, .hack-header:after {
@@ -876,25 +876,30 @@ markdown-block h3 {
 markdown-block h4 {
   margin-bottom: 10px; }
 
-.api-docs-route .content-block {
+#route-view .content-block {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
-  .api-docs-route .content-block .side-bar {
+  #route-view .content-block .side-bar {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 360px;
-        -ms-flex: 0 0 360px;
-            flex: 0 0 360px;
+    -webkit-flex: 0 0 290px;
+        -ms-flex: 0 0 290px;
+            flex: 0 0 290px;
     padding: 0 30px;
     background-color: #f1f1f1; }
-    .api-docs-route .content-block .side-bar .side-bar-collection {
+    #route-view .content-block .side-bar .side-bar-collection {
       margin: 40px 0; }
-      .api-docs-route .content-block .side-bar .side-bar-collection h2 {
-        font-size: 24px; }
-      .api-docs-route .content-block .side-bar .side-bar-collection li {
-        margin: 16px 0;
-        font-size: 18px;
+      #route-view .content-block .side-bar .side-bar-collection h2 {
+        font-size: 20px; }
+      #route-view .content-block .side-bar .side-bar-collection ul {
+        margin-top: 24px; }
+      #route-view .content-block .side-bar .side-bar-collection li {
+        margin: 12px 0;
+        font-size: 16px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
         cursor: pointer; }
 
 .home-route {

@@ -95,47 +95,75 @@ angular.module('hackApp')
       url: '/home',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/home/home.html',
-      controller: 'HomeCtrl'
+      controller: 'HomeCtrl',
+      defaultParams: {
+      }
     },
     {
-      ref: 'drive-api',
-      url: '/drive-api',
+      ref: 'web-apps-api',
+      url: '/web-apps-api',
       isAbstract: true,
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
-      controller: 'DriveApiCtrl'
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/web-apps-api.html',
+      controller: 'WebAppsApiCtrl',
+      defaultParams: {
+        // TODO: add the new structure for route IDs to the old routing logic
+      }
     },
     {
-      ref: 'api-docs',
-      url: '/api-docs/{collectionId}{sectionId:(?:/[^/]+)?}',
+      ref: 'vehicle-apps-api',
+      url: '/vehicle-apps-api/{sectionId}',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
-      controller: 'ApiDocsCtrl'
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'context-initialization'
+      }
+    },
+    {
+      ref: 'vehicle-ui-api',
+      url: '/vehicle-ui-api/{sectionId}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'context-initialization'
+      }
+    },
+    {
+      ref: 'setup',
+      url: '/setup/{sectionId}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'introduction'
+      }
     }
   ])
 
   .constant('sideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Getting Started',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     },
     {
       isStateRoute: true,
-      ref: 'drive-api.api-documentation',
+      ref: 'web-apps-api.api-documentation',
       label: 'API Documentation',
       url: '/api-documentation',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/api-documentation/api-documentation.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
       controller: 'ApiDocumentationCtrl'
     },
     {
       isStateRoute: true,
-      ref: 'drive-api.sample-apps',
+      ref: 'web-apps-api.sample-apps',
       label: 'Sample Apps',
       url: '/sample-apps',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/sample-apps/sample-apps.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
       controller: 'SampleAppsCtrl'
     }
   ])
@@ -143,10 +171,10 @@ angular.module('hackApp')
   .constant('homeGettingStartedSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
@@ -154,10 +182,10 @@ angular.module('hackApp')
   .constant('homeSampleAppsSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
@@ -165,21 +193,21 @@ angular.module('hackApp')
   .constant('homeUiKitSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
 
-  .constant('homeDriveApiSectionSideBarLinks', [
+  .constant('homeWebAppsApiSectionSideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Side Bar Link',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     }
   ])
@@ -252,7 +280,7 @@ angular.module('hackApp')
     {
       id: 'know-driver',
       name: 'Know the Driver',
-      ref: 'drive-api.api-documentation.know-driver',
+      ref: 'web-apps-api.api-documentation.know-driver',
       specs: [
         '2.13.1-add-a-subscriber',
         '2.13.2-add-a-subscriber-and-vehicle',
@@ -292,7 +320,7 @@ angular.module('hackApp')
     {
       id: 'know-car',
       name: 'Know the Car',
-      ref: 'drive-api.api-documentation.know-car',
+      ref: 'web-apps-api.api-documentation.know-car',
       specs: [
         '2.6.10-check-request-status',
         '2.6.11-view-diagnostic-data',
@@ -309,7 +337,7 @@ angular.module('hackApp')
     {
       id: 'control-car',
       name: 'Control the Car',
-      ref: 'drive-api.api-documentation.control-car',
+      ref: 'web-apps-api.api-documentation.control-car',
       specs: [
         '2.6.1-sign-up',
         '2.6.2-validate-otp',

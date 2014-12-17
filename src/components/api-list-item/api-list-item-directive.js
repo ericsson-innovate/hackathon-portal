@@ -53,7 +53,7 @@ angular.module('apiListItemDirective', [])
                 scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
                     null : scope.apiItem.specification.id;
 
-        var targetRef = 'drive-api.api-documentation.' + $rootScope.selectedApiCategory;
+        var targetRef = 'web-apps-api.api-documentation.' + $rootScope.selectedApiCategory;
 
         if (scope.apiListState.selectedItemId != null)
           targetRef = targetRef + '.' + scope.apiItem.ref;
