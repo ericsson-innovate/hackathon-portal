@@ -32,14 +32,14 @@
 </div>
 
 <div id="empty-car-area">
-  <div class="content-area">
+  <div class="content-column">
 
-    <div class="inner-content-area">
+    <div class="inner-content-column">
     </div>
 
     <ul class="tabs">
-      <li ng-repeat="animation in webAppsApiState.animations"
-          ng-click="webAppsApiState.handleAnimationTabClick(animation, true)"
+      <li ng-repeat="animation in animations"
+          ng-click="handleAnimationTabClick(animation, true)"
           ng-class="{selected: animation.label === selectedLabel}"
           class="tab">
           {{scope.selectedLabel}}

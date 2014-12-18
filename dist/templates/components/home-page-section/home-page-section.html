@@ -8,10 +8,17 @@
   <div class="content"
        ng-transclude></div>
 
-  <ul class="home-section-side-bar-links">
-    <li ng-repeat="link in sideBarLinks"
-        ng-click="handleSideBarLinkClick(link)">
-      {{link.label}}
+  <ul class="home-section-side-bar-links"
+      ng-if="sideBarLinks">
+    <li ng-repeat="link in sideBarLinks">
+      <a ng-attr-ui-sref="{{link.state}}"
+         ng-if="link.isStateRoute">
+        {{link.label}}
+      </a>
+      <a ng-href="{{link.url}}"
+         ng-if="!link.isStateRoute">
+        {{link.label}}
+      </a>
     </li>
   </ul>
 </div>

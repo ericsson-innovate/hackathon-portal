@@ -248,6 +248,79 @@ angular.module('hackApp')
     }
   ])
 
+  .constant('homeSectionsSideBarLinks', {
+    'gettingStarted': [
+      {
+        isStateRoute: true,
+        state: 'setup',
+        label: 'Developer Environment Setup Guide'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download UI Design Assets'
+      }
+    ],
+    'headUnitSimulator': [
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download Head Unit Simulator'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Head Unit Simulator Settings'
+      }
+    ],
+    'sampleApps': [
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download Sample Apps'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Hello World App'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Navigation App'
+      }
+    ],
+    'uiApi': [
+      {
+        isStateRoute: true,
+        state: 'vehicle-ui-api',
+        label: 'Preview UI API'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download App Framework'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download UI Design Assets'
+      }
+    ],
+    'vehicleApi': [
+      {
+        isStateRoute: true,
+        state: 'vehicle-apps-api',
+        label: 'Vehicle API'
+      },
+      {
+        isStateRoute: true,
+        state: 'web-apps-api',
+        label: 'Web API'
+      }
+    ]
+  })
+
   .constant('sideBarLinks', [
     {
       isStateRoute: true,
@@ -272,50 +345,6 @@ angular.module('hackApp')
       url: '/sample-apps',
       templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
       controller: 'SampleAppsCtrl'
-    }
-  ])
-
-  .constant('homeGettingStartedSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeSampleAppsSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeUiKitSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeWebAppsApiSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
     }
   ])
 
@@ -1305,26 +1334,25 @@ angular.module('animationsDirective', [])
  *
  * A panel for managing animations.
  */
-.directive('animations', function ($rootScope, $interval, animationsTemplatePath) {
+.directive('animations', function ($rootScope, $interval, animations, animationsTemplatePath) {
   return {
     restrict: 'A',
 
     scope: {
-      webAppsApiState: '=',
-      animations: '='
     },
 
     templateUrl: animationsTemplatePath,
 
     link: function (scope, element, attrs) {
       scope.hack = hack;
+      scope.animations = animations;
       scope.selectedLabel = null;
       scope.timeline = null;
       
       var carouselInterval, isFirstViewContentLoadedEvent;
 
       // Add an event handler to the parent scope
-      scope.webAppsApiState.handleAnimationTabClick = handleAnimationTabClick;
+      scope.handleAnimationTabClick = handleAnimationTabClick;
 
       carouselInterval = null;
       isFirstViewContentLoadedEvent = true;
@@ -1836,15 +1864,6 @@ angular.module('homePageSectionDirective', [])
     },
     templateUrl: homePageSectionTemplatePath,
     link: function (scope, element, attrs) {
-      scope.handleSideBarLinkClick = handleSideBarLinkClick;
-
-      // ---  --- //
-
-      function handleSideBarLinkClick(link) {
-        console.log('Home page section side bar link clicked', scope.title, link.label);
-
-        // TODO:
-      }
     }
   };
 });
@@ -1901,43 +1920,35 @@ angular.module('markdownBlockDirective', [])
 
 angular.module('apiDocsController', [])
 
-  .controller('ApiDocsCtrl', function ($scope, $stateParams, dataCollections) {
+  .controller('ApiDocsCtrl', function ($scope, $state, $stateParams, MarkdownData) {
     $scope.apiDocsState = {};
-    $scope.apiDocsState.dataCollections = dataCollections;
-    $scope.apiDocsState.selectedCollection =
-      dataCollections[($stateParams.collectionId ? $stateParams.collectionId : 0)];
+    $scope.apiDocsState.selectedCollection = MarkdownData.getCollection($state.current.name);
     $scope.apiDocsState.selectedSection =
-      $scope.apiDocsState.selectedCollection[($stateParams.sectionId ? $stateParams.sectionId : 0)];
+      $scope.apiDocsState.selectedCollection.sections[($stateParams.sectionId ? $stateParams.sectionId : 0)];
 
     $scope.handleSideBarLinkClick = handleSideBarLinkClick;
 
     // ---  --- //
 
-    function handleSideBarLinkClick(collection, section) {
-      console.log('API docs side bar section link clicked', collection.label, section.title);
-      $scope.apiDocsState.selectedCollection = collection;
+    function handleSideBarLinkClick(section) {
+      console.log('API docs side bar section link clicked', section.title);
       $scope.apiDocsState.selectedSection = section;
     }
   });
 
 angular.module('homeController', [])
 
-  .controller('HomeCtrl', function ($scope, homeGettingStartedSectionSideBarLinks, homeSampleAppsSectionSideBarLinks,
-                                    homeUiKitSectionSideBarLinks, homeWebAppsApiSectionSideBarLinks) {
+  .controller('HomeCtrl', function ($scope, homeSectionsSideBarLinks) {
     $scope.homeState = {};
-    $scope.homeState.homeGettingStartedSectionSideBarLinks = homeGettingStartedSectionSideBarLinks;
-    $scope.homeState.homeSampleAppsSectionSideBarLinks = homeSampleAppsSectionSideBarLinks;
-    $scope.homeState.homeUiKitSectionSideBarLinks = homeUiKitSectionSideBarLinks;
-    $scope.homeState.homeWebAppsApiSectionSideBarLinks = homeWebAppsApiSectionSideBarLinks;
+    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
   });
 
 angular.module('webAppsApiController', [])
 
-  .controller('WebAppsApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories, animations) {
+  .controller('WebAppsApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories) {
     $scope.webAppsApiState = {};
     $scope.webAppsApiState.sideBarLinks = sideBarLinks;
     $scope.webAppsApiState.categories = categories;
-    $scope.webAppsApiState.animations = animations;
     $scope.webAppsApiState.selectedApiCategory = $rootScope.selectedApiCategory;
     $scope.webAppsApiState.selectedAnimation = null;
     $scope.webAppsApiState.sideBarSelectedLink = null;
@@ -2034,20 +2045,6 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
-
-'use strict';
-
 angular.module('sampleAppsController', [])
 
 /**
@@ -2060,4 +2057,18 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });

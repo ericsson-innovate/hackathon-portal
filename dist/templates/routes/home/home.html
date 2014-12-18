@@ -1,53 +1,134 @@
-<hack-header class="full-width-bar"></hack-header>
+<div id="banner"
+     class="full-width-bar"
+     animations></div>
 
 <div class="sections">
-  <home-page-section class="full-width-bar"
-                     title="Getting Started"
-                     side-bar-links="homeState.homeGettingStartedSectionSideBarLinks">
-    <dynamic-markdown-list id="setup"></dynamic-markdown-list>
+  <home-page-section title="Introduction">
+    <p>
+      AT&T Drive connected vehicle cloud provides a way for automotive manufacturers to deliver cloud-based infotainment features to vehicles and provides tight integration between apps and services.
+    </p>
+
+    <p>
+      This accelerator toolkit is built to offer app developers a fast way to build and deploy AngularJS/HTML5 based apps to AT&T Drive CVC and contains these resources:
+    </p>
+    <ul>
+      <li>Sample apps for quick start</li>
+      <li>Common UI Kit API for rapid development</li>
+      <li>Vehicle Data and Event Controller API</li>
+      <li>Packaging and deployment to app marketplace</li>
+    </ul>
   </home-page-section>
 
-  <home-page-section class="full-width-bar"
-                     title="Sample Apps"
-                     side-bar-links="homeState.homeSampleAppsSectionSideBarLinks">
+  <home-page-section title="Getting Started"
+                     side-bar-links="homeState.homeSectionsSideBarLinks['gettingStarted']">
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      Amongst the components of this toolkit is a head unit simulator that will allow you to test and debug your app as you build it. Some assembly is required and the instruction are included here, just follow the environment setup instructions.
     </p>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      Once you have the head unit simulator running you should pull the code for example apps from the repository to begin writing your first app.
     </p>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      Get the code here: [github url]<!-- TODO -->
     </p>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      To run the app framework follow the steps in Developer Environment Setup Guide section.
+    </p>
+
+    <h3>
+      For UI Designers:
+    </h3>
+
+    <p>
+      Additionally you can take advantage of the UI design tools to build visual flows using readily available elements already coded into the sample AngularJS apps directives. It is important to keep your apps in line with the rest of the apps and services in the car.
+    </p>
+    <ul>
+      <li>Design Guidelines</li>
+      <li>Omnigraffle stencil and templates</li>
+      <li>Photoshop UI spine</li>
+    </ul>
+
+    <p>
+      Manual process not covered at this time:
+    </p>
+    <ul>
+      <li>Voice Commands API</li>
+      <li>Commerce API</li>
+    </ul>
+  </home-page-section>
+
+  <home-page-section title="Head Unit Simulator"
+                     side-bar-links="homeState.homeSectionsSideBarLinks['headUnitSimulator']">
+    <p>
+      Need download instructions
+    </p>
+
+    <h3>Previewing Your App</h3>
+    <ol>
+      <li>Run head unit simulator then open Settings > Developer and enter your app IP or url. Make sure your app is pointing to SPAN IP at 127.0.0.1 and the port matches the port listed in settings.</li>
+      <li>Enable Developer Mode and open the tray.</li>
+      <li>You will see your app icon.</li>
+      <li>Tap to launch you app.</li>
+    </ol>
+  </home-page-section>
+
+  <home-page-section title="Sample Apps"
+                     side-bar-links="homeState.homeSectionsSideBarLinks['sampleApps']">
+    <p>
+      Easiest way to get started is by seeding an example app that will contain all UI elements and corresponding AngularJS directives. Then in a most typical AngularJS way build your app components that extend the use of the default UI Kit elements and interaction patterns.
+    </p>
+    <p>
+      To seed the example app using grunt in the terminal window run `command here` and give the full path where you wish to put your app. Then run `http-server` inside of that directory to open your app in localhost: http://127.0.0.1:8080
     </p>
   </home-page-section>
 
-  <home-page-section class="full-width-bar"
-                     title="UI Kit"
-                     side-bar-links="homeState.homeUiKitSectionSideBarLinks">
-    <dynamic-markdown-list id="vehicle-ui-api"></dynamic-markdown-list>
+  <home-page-section title="UI Kit"
+                     side-bar-links="homeState.homeSectionsSideBarLinks['uiApi']">
+    <p>
+      AT&T Drive supports a common application framework for app development. The objective is to allow Automotive OEM to optimize the experience of all apps and services effortlessly in one single location.
+    </p>
+    <p>
+      UI Kit contains the UI elements with very basic styling and interaction, and when used the apps will provide a unified experience across the app ecosystem.
+    </p>
+    <p>
+      Apps developed for AT&T Drive CVC should all contain the common structure that is already built-in into the sample apps. App menu, routes, and two-view example is available to speed up the development time.
+    </p>
+
+    <h3>
+      Design Assets:
+    </h3>
+    <p>
+      You can take advantage of the UI design tools to build visual flows using readily available elements already coded into the sample AngularJS apps directives. It is important to keep your apps in line with the rest of the apps and services in the car.
+    </p>
+    <ul>
+      <li>Design Guidelines</li>
+      <li>Omnigraffle stencil and templates</li>
+      <li>Photoshop UI spine</li>
+    </ul>
   </home-page-section>
 
-  <home-page-section class="full-width-bar"
-                     title="Drive API"
-                     side-bar-links="homeState.homeWebAppsApiSectionSideBarLinks">
+  <home-page-section title="Drive API"
+                     side-bar-links="homeState.homeSectionsSideBarLinks['vehicleApi']">
+    <h3>
+      Head Unit JavaScript API
+    </h3>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      Head Unit apps built for AT&T Drive communicate with other apps and services via Data and Event Controller (DEC). Sample apps contain the necessary libraries required to interface with services like navigation or vehicle itself.
     </p>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      DEC will also maintain the user settings and app preferences in the cloud as well as identity management so that the user remains authenticated with same credentials across all apps and services in the vehicle.
     </p>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      DEC JavaScript API is evolving to include upcoming features and enhancements. For full documentation [click here]
+    </p>
+
+    <h3>
+      Web API
+    </h3>
+    <p>
+      Vehicle services are exposed outside of the Head Unit via REST API. Apps can be built on external devices to control the vehicle and subscribe to data and events. Additionally, External apps also communicate with the Head Unit apps.
     </p>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dicta dolorem eaque eius explicabo facere fuga laborum officia, perspiciatis quia ratione, repellat saepe totam voluptas? Esse ipsam placeat temporibus.
+      Example of this integration may be an external “engine start” app, or pushing an address to the Head Unit navigation app. [need more copy here]
     </p>
   </home-page-section>
 </div>
-
-<hr>
-
-<a ng-attr-ui-sref="web-apps-api.api-documentation.know-car">Go to old portal</a>

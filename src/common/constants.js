@@ -141,6 +141,79 @@ angular.module('hackApp')
     }
   ])
 
+  .constant('homeSectionsSideBarLinks', {
+    'gettingStarted': [
+      {
+        isStateRoute: true,
+        state: 'setup',
+        label: 'Developer Environment Setup Guide'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download UI Design Assets'
+      }
+    ],
+    'headUnitSimulator': [
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download Head Unit Simulator'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Head Unit Simulator Settings'
+      }
+    ],
+    'sampleApps': [
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download Sample Apps'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Hello World App'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Navigation App'
+      }
+    ],
+    'uiApi': [
+      {
+        isStateRoute: true,
+        state: 'vehicle-ui-api',
+        label: 'Preview UI API'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download App Framework'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download UI Design Assets'
+      }
+    ],
+    'vehicleApi': [
+      {
+        isStateRoute: true,
+        state: 'vehicle-apps-api',
+        label: 'Vehicle API'
+      },
+      {
+        isStateRoute: true,
+        state: 'web-apps-api',
+        label: 'Web API'
+      }
+    ]
+  })
+
   .constant('sideBarLinks', [
     {
       isStateRoute: true,
@@ -165,50 +238,6 @@ angular.module('hackApp')
       url: '/sample-apps',
       templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
       controller: 'SampleAppsCtrl'
-    }
-  ])
-
-  .constant('homeGettingStartedSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeSampleAppsSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeUiKitSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeWebAppsApiSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
     }
   ])
 

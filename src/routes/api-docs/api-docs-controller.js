@@ -1,20 +1,17 @@
 angular.module('apiDocsController', [])
 
-  .controller('ApiDocsCtrl', function ($scope, $stateParams, dataCollections) {
+  .controller('ApiDocsCtrl', function ($scope, $state, $stateParams, MarkdownData) {
     $scope.apiDocsState = {};
-    $scope.apiDocsState.dataCollections = dataCollections;
-    $scope.apiDocsState.selectedCollection =
-      dataCollections[($stateParams.collectionId ? $stateParams.collectionId : 0)];
+    $scope.apiDocsState.selectedCollection = MarkdownData.getCollection($state.current.name);
     $scope.apiDocsState.selectedSection =
-      $scope.apiDocsState.selectedCollection[($stateParams.sectionId ? $stateParams.sectionId : 0)];
+      $scope.apiDocsState.selectedCollection.sections[($stateParams.sectionId ? $stateParams.sectionId : 0)];
 
     $scope.handleSideBarLinkClick = handleSideBarLinkClick;
 
     // ---  --- //
 
-    function handleSideBarLinkClick(collection, section) {
-      console.log('API docs side bar section link clicked', collection.label, section.title);
-      $scope.apiDocsState.selectedCollection = collection;
+    function handleSideBarLinkClick(section) {
+      console.log('API docs side bar section link clicked', section.title);
       $scope.apiDocsState.selectedSection = section;
     }
   });

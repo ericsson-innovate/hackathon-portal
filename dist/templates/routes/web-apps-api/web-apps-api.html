@@ -1,8 +1,7 @@
 <div id="banner"
-     animations="webAppsApiState.animations"
-     web-apps-api-state="webAppsApiState"></div>
+     animations></div>
 
-<div class="content-area">
+<div class="content-column content-block">
   <ul class="side-menu">
     <li ng-repeat="item in webAppsApiState.sideBarLinks"
         ng-class="{selected: webAppsApiState.sideBarSelectedLink === item.ref && item.ref !== 'web-apps-api.api-documentation'}">
@@ -28,11 +27,9 @@
           {{category.name}}
         </li>
       </ul>
-
-      <hr class="divider">
     </li>
   </ul>
 
   <div ui-view
-       class="{{routeState.name + '-route'}} inner-content-area"></div>
+       class="{{routeState.name + '-route'}} inner-content-column"></div>
 </div>

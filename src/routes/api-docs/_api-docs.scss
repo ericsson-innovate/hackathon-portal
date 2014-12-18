@@ -1,49 +1,44 @@
-$side-bar-width: 290px;
+#short-banner {
+  position: relative;
+  width: 100%;
+  height: $top-header-height;
+  line-height: $top-header-height;
+  vertical-align: middle;
+  z-index: 4;
+  color: #ffffff;
+  background-color: #040404;
 
-#route-view {
-  .content-block {
-    display: flex;
+  .content-column {
+    min-height: 0;
+  }
 
-    .side-bar {
-      flex: 0 0 $side-bar-width;
-      padding: 0 30px;
-      background-color: $api-docs-side-bar-background-color;
+  #title-part-1, #title-part-2 {
+    font-size: $banner-header-font-size;
+    text-transform: uppercase;
+  }
 
-      .side-bar-collection {
-        margin: 40px 0;
+  #title-part-1 {
+    color: $item-active-color;
+  }
 
-        h2 {
-          font-size: 20px;
-        }
+  #title-part-2 {
+  }
 
-        ul {
-          @extend .non-bulleted-list;
-          margin-top: 24px;
-        }
+  #logos {
+    position: relative;
+    float: right;
+  }
 
-        li {
-          margin: 12px 0;
-          font-size: 16px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-          cursor: pointer;
-        }
+  #logos>a, #logos>a>img {
+    vertical-align: middle;
+  }
 
-        li.selected {
+  #logos>a {
+    margin-left: $logo-gap;
+  }
 
-        }
-      }
-
-      .side-bar-collection.selected {
-        h2 {
-
-        }
-      }
-    }
-
-    markdown-block {
-
-    }
+  #ericsson-logo {
+    position: relative;
+    top: -1px;
   }
 }

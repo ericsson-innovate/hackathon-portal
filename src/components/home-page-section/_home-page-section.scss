@@ -1,13 +1,32 @@
+$side-bar-width: 280px;
+
 home-page-section {
+  @extend .full-width-bar;
+
   display: block;
 
   padding: 40px 0;
 
-  p {
+  line-height: 1.5em;
+
+  p,
+  h3,
+  ol,
+  ul {
     margin: 20px 0;
   }
 
+  ol, ul {
+    padding-left: 40px;
+  }
+
+  h3 {
+    font-weight: bold;
+  }
+
   > hr {
+    border: 0 solid $home-page-secondary-background-color;
+    border-bottom-width: 3px;
     margin-bottom: 24px;
   }
 
@@ -17,19 +36,51 @@ home-page-section {
     > .home-section-side-bar-links {
       @extend .non-bulleted-list;
 
-      flex: 0 0 220px;
+      flex: 0 0 $side-bar-width;
 
-      > li {
-        padding-bottom: 8px;
-        border: 0 solid $home-page-alternate-background-color;
+      > li > a {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        height: 60px;
+        border: 0 solid $home-page-secondary-background-color;
         border-bottom-width: $markdown-list-item-border-width;
 
+        text-transform: capitalize;
         cursor: pointer;
+        transition: border-color 0.2s;
+
+        &,
+        &:hover,
+        &:active {
+          color: black;
+        }
+
+        &:hover {
+          border-color: $tab-active-border-color;
+        }
+
+        &:active {
+          border-color: $api-docs-link-active-color;
+        }
       }
     }
 
     > .content {
       margin-right: 20px;
+    }
+  }
+}
+
+home-page-section:nth-child(even) {
+  > hr {
+    border-color: $home-page-primary-background-color;
+  }
+
+  .home-section-side-bar-links {
+    > li > a {
+      border-color: $home-page-primary-background-color;
     }
   }
 }

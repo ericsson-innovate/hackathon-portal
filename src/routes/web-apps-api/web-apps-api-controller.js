@@ -1,10 +1,9 @@
 angular.module('webAppsApiController', [])
 
-  .controller('WebAppsApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories, animations) {
+  .controller('WebAppsApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories) {
     $scope.webAppsApiState = {};
     $scope.webAppsApiState.sideBarLinks = sideBarLinks;
     $scope.webAppsApiState.categories = categories;
-    $scope.webAppsApiState.animations = animations;
     $scope.webAppsApiState.selectedApiCategory = $rootScope.selectedApiCategory;
     $scope.webAppsApiState.selectedAnimation = null;
     $scope.webAppsApiState.sideBarSelectedLink = null;
