@@ -2045,6 +2045,20 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
+});
+
+'use strict';
+
 angular.module('sampleAppsController', [])
 
 /**
@@ -2057,18 +2071,4 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
-});
-
-'use strict';
-
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
 });
