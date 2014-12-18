@@ -1,5 +1,5 @@
-//$root-path: '/hackathon-portal';
-$root-path: '';
+$root-path: '/hackathon-portal';
+//$root-path: '';
 
 $code-font-stack: Consolas, Monaco, 'Andale Mono', monospace;
 
@@ -279,6 +279,10 @@ h1 {
   @extend .non-bulleted-list;
   flex: 0 0 $side-menu-width;
   margin: 0 $side-menu-right-margin 0 0;
+}
+
+markdown-block {
+  margin-left: 20px;
 }
 
 .side-menu li > a {

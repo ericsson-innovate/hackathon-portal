@@ -165,12 +165,12 @@ table {
 
 @font-face {
   font-family: hack-font;
-  src: url('/dist/fonts/hack-font.otf');
+  src: url('/hackathon-portal/dist/fonts/hack-font.otf');
   font-weight: normal; }
 
 @font-face {
   font-family: hack-font;
-  src: url('/dist/fonts/hack-font-bold.otf');
+  src: url('/hackathon-portal/dist/fonts/hack-font-bold.otf');
   font-weight: bold; }
 
 div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
@@ -349,6 +349,9 @@ h1 {
       -ms-flex: 0 0 220px;
           flex: 0 0 220px;
   margin: 0 20px 0 0; }
+
+markdown-block {
+  margin-left: 20px; }
 
 .side-menu li > a {
   display: -webkit-box;
@@ -810,44 +813,40 @@ home-page-section:nth-child(even) .home-section-side-bar-links > li > a {
   border-color: white; }
 
 markdown-block {
-  display: block; }
-
-markdown-block ul, markdown-block ol {
-  padding-left: 40px; }
-
-markdown-block dt {
   display: block;
-  float: left;
-  clear: left; }
-
-markdown-block dd {
-  display: span;
-  margin-left: 240px;
-  margin-bottom: 10px; }
-
-markdown-block th {
-  width: 80px;
-  padding-bottom: 10px;
-  text-align: left; }
-
-markdown-block th:first-child {
-  width: 160px; }
-
-markdown-block th:last-child {
-  width: 380px; }
-
-markdown-block td {
-  padding-bottom: 6px;
-  vertical-align: top; }
-
-markdown-block h3 {
-  margin-top: 34px;
-  margin-bottom: 14px;
-  font-weight: bold;
-  text-transform: none; }
-
-markdown-block h4 {
-  margin-bottom: 10px; }
+  line-height: 1.5em; }
+  markdown-block p, markdown-block h3, markdown-block h4, markdown-block h5, markdown-block ol, markdown-block ul {
+    margin: 20px 0; }
+  markdown-block ul, markdown-block ol {
+    padding-left: 40px; }
+  markdown-block h3, markdown-block h4, markdown-block h5 {
+    font-weight: bold;
+    text-transform: none; }
+  markdown-block h3 {
+    font-size: 18px; }
+  markdown-block h4 {
+    font-size: 16px; }
+  markdown-block h5 {
+    font-size: 16px; }
+  markdown-block dt {
+    display: block;
+    float: left;
+    clear: left; }
+  markdown-block dd {
+    display: inline;
+    margin-left: 240px;
+    margin-bottom: 10px; }
+  markdown-block th {
+    width: 80px;
+    padding-bottom: 10px;
+    text-align: left; }
+  markdown-block th:first-child {
+    width: 160px; }
+  markdown-block th:last-child {
+    width: 380px; }
+  markdown-block td {
+    padding-bottom: 6px;
+    vertical-align: top; }
 
 short-header {
   position: relative;
@@ -877,7 +876,7 @@ short-header {
 
 @font-face {
   font-family: good-news-sans-reg-ext;
-  src: url('/dist/fonts/good-news-sans-reg-ext.otf');
+  src: url('/hackathon-portal/dist/fonts/good-news-sans-reg-ext.otf');
   font-weight: normal; }
 
 tall-header {

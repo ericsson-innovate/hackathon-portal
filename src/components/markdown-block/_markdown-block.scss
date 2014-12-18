@@ -2,54 +2,71 @@ $markdown-block-body-content-margin-top: 14px;
 
 markdown-block {
   display: block;
-}
 
-markdown-block ul,
-markdown-block ol {
-  padding-left: 40px;
-}
+  line-height: 1.5em;
 
-markdown-block dt {
-  display: block;
-  float: left;
-  clear: left;
-}
+  p,
+  h3,
+  h4,
+  h5,
+  ol,
+  ul {
+    margin: 20px 0;
+  }
 
-markdown-block dd {
-  display: span;
-  margin-left: 240px;
-  margin-bottom: 10px;
-}
+  ul,
+  ol {
+    padding-left: 40px;
+  }
 
-markdown-block th {
-  //  width: 160px;
-  width: 80px;
-  padding-bottom: 10px;
-  text-align: left;
-}
+  h3,
+  h4,
+  h5 {
+    font-weight: bold;
+    text-transform: none;
+  }
 
-markdown-block th:first-child {
-  //  width: 220px;
-  width: 160px;
-}
+  h3 {
+    font-size: 18px;
+  }
+  h4 {
+    font-size: 16px;
+  }
+  h5 {
+    font-size: 16px;
+  }
 
-markdown-block th:last-child {
-  //  width: 220px;
-  width: 380px;
-}
+  dt {
+    display: block;
+    float: left;
+    clear: left;
+  }
 
-markdown-block td {
-  padding-bottom: 6px;
-  vertical-align: top;
-}
+  dd {
+    display: inline;
+    margin-left: 240px;
+    margin-bottom: 10px;
+  }
 
-markdown-block h3 {
-  margin-top: 34px;
-  margin-bottom: 14px;
-  font-weight: bold;
-  text-transform: none;
-}
+  th {
+    //  width: 160px;
+    width: 80px;
+    padding-bottom: 10px;
+    text-align: left;
+  }
 
-markdown-block h4 {
-  margin-bottom: 10px;
+  th:first-child {
+    //  width: 220px;
+    width: 160px;
+  }
+
+  th:last-child {
+    //  width: 220px;
+    width: 380px;
+  }
+
+  td {
+    padding-bottom: 6px;
+    vertical-align: top;
+  }
 }

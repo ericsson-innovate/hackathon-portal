@@ -169,6 +169,7 @@ Vehicle properties that are not supported by a given VIC will not be returned in
 **Description:** The get method returns vehicle information object.
 
 **Parameters:**
+
 - {function} resolve - Function called with vehicle information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving vehicle information.
 - {object} options Optional - "options" object corresponds to a Zone (See Zone data structure below) or any other {attribute : value} that will be used as a filter for returned result.
@@ -249,6 +250,7 @@ function getVehicleInfo(){
 **Description:** The set method allows setting some vehicle parameters like climate control (HVAC).
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options - Optional "options" object corresponds to a Zone (See Zone data structure above) or any other attribute value that will be used as a filter to limite update scope.
 - {function} resolve - Function called if the operation is successful. 
@@ -304,6 +306,7 @@ for(var i in zones)
 **Description:** The delete method allows delete previous settings.
 
 **Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -319,10 +322,12 @@ for(var i in zones)
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with vehicle information data object. See data object format below.
 - {object} options Optional - "options" object corresponds to a Zone or any other attribute value that will be used as a filter to limite subscription scope.
 
 **Returns:** {Integer} handle
+
 Subscribe returns handle to subscription or 0 if error. 
 
 ####Example: subscribe to vehicle speed
@@ -353,6 +358,7 @@ function subscribe(){
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle - "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -371,9 +377,11 @@ function unsubscribe(){
 When available method returns not_supported_policy, application can subscribe to policy manager to get notifications when resource state changes. See policy manager section for more details.
 
 **Parameters:**
+
 - None.
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
@@ -554,6 +562,7 @@ Below properties is a subset of possible attributes that a navigation system may
 **Description:** The get method returns navigation information object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with navigation information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving navigation information.
@@ -596,6 +605,7 @@ function getNavigationInfo(){
 **Description:** The set method allows setting some navigation parameters like destination.
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -694,6 +704,7 @@ function setNavigationInfo(){
 **Description:** The delete method allows delete previous settings.
 
 **Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -741,6 +752,7 @@ function setNavigationInfo(){
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with navigation information data object. See data object format below.
 - {object} options Optional - Options object allows specifying filters.
 
@@ -764,6 +776,7 @@ handle=drive.navigation.destination.subscribe(getDestinationInfo);
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle - "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -783,9 +796,11 @@ When available method returns not_supported_policy, application can subscribe to
 See policy manager section for more details.
 
 **Parameters:**
+
 - None
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
@@ -928,6 +943,7 @@ Below properties is a subset of possible attributes that identity manager suppor
 **Description:** The get method returns identity information object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with identity information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving identity information.
@@ -970,6 +986,7 @@ function getIdentityInfo(){
 **Description:** The set method allows setting some identity parameters like user preferences.
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -1000,6 +1017,7 @@ function login(){
 **Description:** The delete method allows delete previous settings.
 
 **Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -1015,6 +1033,7 @@ function login(){
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with identity information data object. See data object format below.
 - {object} options Optional - Options object allows specifying filters.
 
@@ -1038,6 +1057,7 @@ handle=drive.identity.session.loggedIn.subscribe(userLoggedIn);
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle -"handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -1056,9 +1076,11 @@ function unsubscribe(){
 See policy manager section for more details.
 
 **Parameters:**
+
 - None
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 -"readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit
@@ -1226,6 +1248,7 @@ Application properties shall start with application name.
 **Description:** The get method returns system information object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters on returned data.
 - {function} resolve - Function called with system/application information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving system/application information.
@@ -1306,6 +1329,7 @@ userSettings.destination.get(user).then(getDestPrefs,logError);
 **Description:** The set method allows set system/application configuration (settings).
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values).
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -1370,6 +1394,7 @@ function setVehicleSpeedInfo(){
 **Description:** The delete method allows delete previous settings.
 
 **Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -1400,6 +1425,7 @@ function deleteUserSettings(){
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} callBack - Function called on value change with settings data object. See data object format below.
 
@@ -1436,6 +1462,7 @@ function subscribe(){
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle - "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -1454,9 +1481,11 @@ function unsubscribe(){
 When available method returns not_supported_policy, application can subscribe to policy manager to get notifications when resource state changes. See policy manager section for more details.
 
 **Parameters:**
+
 - None.
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
@@ -1630,6 +1659,7 @@ Below properties is a subset of possible attributes that a notification service 
 **Description:** The get method returns navigation information object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with notification information data object if the operation is successful. 
 - {function} reject Optional - Function called in case of error retrieving navigation information.
@@ -1666,6 +1696,7 @@ interface CommonDataType {
 **Description:** The set method allows setting some notification parameters like read flag.
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -1694,6 +1725,7 @@ drive.notification.messages.set({"read":true}).then(resolve,reject);
 **Description:** The delete method allows delete previous settings.
 
 **Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -1724,10 +1756,12 @@ function deleteSMSMessages(){
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with notification information data object. See data object format below.
 - {object} options Optional - Options object allows specifying filters.
 
 **Returns:** {Integer} handle
+
 Subscribe returns handle to subscription or 0 if error. 
 
 ####Example: subscribe to incoming sms
@@ -1747,6 +1781,7 @@ handle=drive.notification.messages.subscribe(showSMS,{"type":"sms"});
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle = "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -1765,9 +1800,11 @@ function unsubscribe(){
 When available method returns not_supported_policy, application can subscribe to policy manager to get notifications when resource state changes. See policy manager section for more details.
 
 **Parameters:**
+
 - None.
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
@@ -1851,6 +1888,7 @@ Below properties is a subset of possible attributes that a Media service may sup
 **Description:** The get method returns media information object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with media information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving media information.
@@ -1878,6 +1916,7 @@ function getCurrentMedia(){
 **Description:** The set method allows setting some media parameters like audio/video source URI.
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -1944,17 +1983,22 @@ function reject(error){
 ```
 
 ###Delete Media settings
+
 **Usage:** `drive.media.delete(settings,options).then(resolve, reject)`
 
 **Description:** The delete method allows delete previous settings.
 
 **Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
 - {function} reject Optional - Function called in case of error setting media information.
+
 **Returns:** Promise
+
 ####Example:
+
 ```javascript
 function resolve(){
 ///success
@@ -1975,13 +2019,16 @@ Subscribe to media information
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with media information data object. See data object format below.
 - {object} options Optional - Options object allows specifying filters.
 
 **Returns:** {Integer} handle
+
 Subscribe returns handle to subscription or 0 if error. 
 
 ####Example: subscribe to destination
+
 ```javascript
 function whatsPlaying(currentMedia){
   console.log(currentMedia);
@@ -1998,11 +2045,13 @@ Unsubscribe from media information
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle - "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
 
 ####Example:
+
 ```javascript
 function unsubscribe(){
      drive.media.currentMedia.unsubscribe(handle);
@@ -2010,6 +2059,7 @@ function unsubscribe(){
 ```
 
 ###Access/Availability check
+
 **Usage:** `drive.media.available();`
 
 **Description:** This method allows to check whether a given attribute or object is supported and accessible. 
@@ -2017,9 +2067,11 @@ When available method returns not_supported_policy, application can subscribe to
 See policy manager section for more details.
 
 **Parameters:**
+
 - None
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
@@ -2028,6 +2080,7 @@ See policy manager section for more details.
 - "not_supported_policy": resource cannot be accessed at this time because of policy constraints. Application can subscribe to policy events to get notified when state of resource changes (allowed, denied or restricted).
 
 ####Example
+
 ```javascript
 function isAvailable(){
     return drive.media.playlist.available();
@@ -2035,6 +2088,7 @@ function isAvailable(){
 ```
 
 ## SMS
+
 This Javascript SDK allows interacting with SMS/MMS Messaging.
 The following interface represents a base interface to all SMS/MMS properties:
 ```javascript
@@ -2150,6 +2204,7 @@ Below properties is a subset of possible attributes that SMS/MMS may support. Mo
 **Description:** The get method returns SMS information object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with sms information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving SMS information.
@@ -2177,6 +2232,7 @@ function getInbox(){
 **Description:** The set method allows interact with SMS/MMS messaging service for instance send SMS message.
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -2204,7 +2260,8 @@ function sendSMS(){
 
 **Description:** The delete method allows delete SMS messages.
 
-**Parameters:** 
+**Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -2233,10 +2290,12 @@ function deleteDrafts(){
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with SMS data object. See data object format below.
 - {object} options Optional - Options object allows specifying filters.
 
 **Returns:** - {Integer} handle
+
 Subscribe returns handle to subscription or 0 if error. 
 
 ####Example: receive SMS
@@ -2256,6 +2315,7 @@ Unsubscribe from SMS
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle - "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -2275,9 +2335,11 @@ When available method returns not_supported_policy, application can subscribe to
 See policy manager section for more details.
 
 **Parameters:**
+
 - None.
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
@@ -2627,6 +2689,7 @@ Below properties is a subset of possible attributes that Search service may supp
 **Description:** The get method returns search results object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with contact information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving search result information.
@@ -2654,6 +2717,7 @@ function getResults(){
 **Description:** The set method allows interact with search service for instance get places.
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -2732,6 +2796,7 @@ function getResults(results){
 **Description:** The delete method allows delete search requests/results.
 
 **Parameters:**
+
 - {object} settings - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -2760,10 +2825,12 @@ function deleteContcats(){
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with search results/request object. See data object format below.
 - {object} options Optional - Options object allows specifying filters.
 
 **Returns:** {Integer} handle
+
 Subscribe returns handle to subscription or 0 if error. 
 
 ####Example: subscribe to running apps
@@ -2783,6 +2850,7 @@ handle=drive.search.results.subscribe(getResults);
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 - {object} handle - "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -2801,9 +2869,11 @@ function unsubscribe(){
 When available method returns not_supported_policy, application can subscribe to policy manager to get notifications when resource state changes. See policy manager section for more details.
 
 **Parameters:**
+
 - None
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
@@ -2919,6 +2989,7 @@ Below properties is a subset of possible attributes that site automation may sup
 **Description:** The get method returns site automation information object.
 
 **Parameters:**
+
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called with site automation information data object if the operation is successful. See data object format below.
 - {function} reject Optional - Function called in case of error retrieving site automation information.
@@ -2946,6 +3017,7 @@ function getResourceStatus(){
 **Description:** The set method allows setting some site automation parameters.
 
 **Parameters:**
+
 - {object} settings - Settings object value (attributes values) 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -2974,6 +3046,7 @@ function sendRequest(){
 **Description:** The delete method allows delete previous settings.
 
 **Parameters:**
+
 - {object} setting - Settings attribute names 
 - {object} options Optional - Options object allows specifying filters.
 - {function} resolve - Function called if the operation is successful. 
@@ -3002,10 +3075,12 @@ function deleteResults(){
 **Description:** The subscribe method allows registering for value change events. Specified callback function will be called when that event occurs.
 
 **Parameters:**
+
 - {function} callBack - Function called on value change with site automation information data object. See data object format below.
 - {object} options Optional - Options object allows specifying filters.
 
 **Returns:** {Integer} handle
+
 Subscribe returns handle to subscription or 0 if error. 
 
 ####Example: subscribe to site automation result
@@ -3025,6 +3100,7 @@ function subscribe(){
 **Description:** The unsubscribe method allows application to stop data notifications.
 
 **Parameters:**
+
 {object} handle - "handle" corresponds to subscription handle object returned by subscribe method. 
 
 **Returns:** void
@@ -3043,9 +3119,11 @@ function unsubscribe(){
 When available method returns not_supported_policy, application can subscribe to policy manager to get notifications when resource state changes. See policy manager section for more details.
 
 **Parameters:**
+
 - None.
 
 **Returns:** String
+
 - "available": resource is available (read/write).
 - "readonly": resource is available in read only mode.
 - "not_supported": resource is not supported by current vehicle or head unit.
