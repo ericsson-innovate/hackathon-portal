@@ -2,7 +2,7 @@ angular.module('shortHeaderDirective', [])
 
 .constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
 
-.directive('shortHeader', function ($rootScope, $interval, animations, shortHeaderTemplatePath) {
+.directive('shortHeader', function (shortHeaderTemplatePath) {
   return {
     restrict: 'E',
 

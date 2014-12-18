@@ -92,6 +92,8 @@ body {
   padding-bottom: 80px;
   color: $body-color;
   background-color: $body-background-color;
+
+  transition: scrollTop 0.3s;
 }
 
 h1, h2, h3, h4 {
@@ -269,17 +271,13 @@ h1 {
 }
 
 .content-block {
-  display: flex;
+  margin-top: $short-header-height;
 }
 
 .side-menu {
   @extend .non-bulleted-list;
-  flex: 0 0 $side-menu-width;
-  margin: 0 $side-menu-right-margin 0 0;
-}
-
-markdown-block {
-  margin-left: 20px;
+  position: fixed;
+  width: $side-menu-width;
 }
 
 .side-menu li > a {
@@ -337,8 +335,9 @@ markdown-block {
   color: $item-active-color;
 }
 
-.content-block > markdown-block {
+.content-block > .sections {
   margin-top: 30px;
+  padding-left: $side-menu-width + $side-menu-right-margin;
 }
 
 hr.divider {

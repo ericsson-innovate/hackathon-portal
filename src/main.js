@@ -29,6 +29,7 @@ angular.module('hackApp', [
   'unescapeJsonStringFilter',
 
   'apiListItemDirective',
+  'apiSectionBlockDirective',
   'apiSpecificationCardDirective',
   'apiExampleCardDirective',
   'apiTryItCardDirective',

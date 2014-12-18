@@ -183,7 +183,9 @@ body {
   font-size: 14px;
   padding-bottom: 80px;
   color: #333333;
-  background-color: white; }
+  background-color: white;
+  -webkit-transition: scrollTop 0.3s;
+          transition: scrollTop 0.3s; }
 
 h1, h2, h3, h4 {
   text-transform: uppercase;
@@ -338,20 +340,11 @@ h1 {
   width: calc(25% - 15px); }
 
 .content-block {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex; }
+  margin-top: 70px; }
 
 .side-menu {
-  -webkit-box-flex: 0;
-  -webkit-flex: 0 0 220px;
-      -ms-flex: 0 0 220px;
-          flex: 0 0 220px;
-  margin: 0 20px 0 0; }
-
-markdown-block {
-  margin-left: 20px; }
+  position: fixed;
+  width: 220px; }
 
 .side-menu li > a {
   display: -webkit-box;
@@ -408,8 +401,9 @@ markdown-block {
 .api-documentation-categories > li.selected {
   color: #0099ff; }
 
-.content-block > markdown-block {
-  margin-top: 30px; }
+.content-block > .sections {
+  margin-top: 30px;
+  padding-left: 240px; }
 
 hr.divider {
   position: relative;
@@ -534,6 +528,12 @@ li[api-list-item].selected .api-list-item-body {
   height: 30px;
   border-bottom-width: 10px;
   margin-top: 10px; }
+
+api-section-block {
+  display: block;
+  margin-left: 20px; }
+  api-section-block > h2 {
+    margin: 20px 0; }
 
 api-specification-card {
   display: block; }
@@ -815,11 +815,11 @@ home-page-section:nth-child(even) .home-section-side-bar-links > li > a {
 markdown-block {
   display: block;
   line-height: 1.5em; }
-  markdown-block p, markdown-block h3, markdown-block h4, markdown-block h5, markdown-block ol, markdown-block ul {
+  markdown-block p, markdown-block h1, markdown-block h2, markdown-block h3, markdown-block h4, markdown-block h5, markdown-block ol, markdown-block ul {
     margin: 20px 0; }
   markdown-block ul, markdown-block ol {
     padding-left: 40px; }
-  markdown-block h3, markdown-block h4, markdown-block h5 {
+  markdown-block h1, markdown-block h2, markdown-block h3, markdown-block h4, markdown-block h5 {
     font-weight: bold;
     text-transform: none; }
   markdown-block h3 {
@@ -849,7 +849,8 @@ markdown-block {
     vertical-align: top; }
 
 short-header {
-  position: relative;
+  position: fixed;
+  width: 100%;
   height: 70px;
   line-height: 70px;
   vertical-align: middle;

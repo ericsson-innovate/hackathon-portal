@@ -29,6 +29,7 @@ angular.module('hackApp', [
   'unescapeJsonStringFilter',
 
   'apiListItemDirective',
+  'apiSectionBlockDirective',
   'apiSpecificationCardDirective',
   'apiExampleCardDirective',
   'apiTryItCardDirective',
@@ -1465,6 +1466,26 @@ angular.module('apiListItemDirective', [])
   };
 });
 
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1802,7 +1823,7 @@ angular.module('shortHeaderDirective', [])
 
 .constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
 
-.directive('shortHeader', function ($rootScope, $interval, animations, shortHeaderTemplatePath) {
+.directive('shortHeader', function (shortHeaderTemplatePath) {
   return {
     restrict: 'E',
 
@@ -1932,11 +1953,13 @@ angular.module('tallHeaderDirective', [])
 
 angular.module('apiDocsController', [])
 
-  .controller('ApiDocsCtrl', function ($scope, $state, $stateParams, MarkdownData) {
+  .controller('ApiDocsCtrl', function ($scope, $state, $stateParams, $location, $anchorScroll, MarkdownData) {
     $scope.apiDocsState = {};
     $scope.apiDocsState.selectedCollection = MarkdownData.getCollection($state.current.name);
     $scope.apiDocsState.selectedSection =
       $scope.apiDocsState.selectedCollection.sections[($stateParams.sectionId ? $stateParams.sectionId : 0)];
+
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
 
     $scope.handleSideBarLinkClick = handleSideBarLinkClick;
 
@@ -1945,6 +1968,8 @@ angular.module('apiDocsController', [])
     function handleSideBarLinkClick(section) {
       console.log('API docs side bar section link clicked', section.title);
       $scope.apiDocsState.selectedSection = section;
+      $location.hash(section.id);
+      //$anchorScroll();
     }
   });
 
