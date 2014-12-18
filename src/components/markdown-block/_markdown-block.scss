@@ -4,12 +4,9 @@ markdown-block {
   display: block;
 }
 
-markdown-block>div {
-  margin-top: 16px;
-}
-
-markdown-block td {
-  white-space: pre-wrap;
+markdown-block ul,
+markdown-block ol {
+  padding-left: 40px;
 }
 
 markdown-block dt {

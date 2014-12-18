@@ -1,19 +1,4 @@
-<div id="short-banner">
-  <div class="content-column">
-    <div id="logos">
-      <a id="att-logo" href="http://www.att.com/">
-        <img ng-src="{{rootPath}}/dist/images/att-logo.jpg"
-             alt="AT&T Logo">
-      </a>
-      <a id="ericsson-logo" href="http://www.ericsson.com/">
-        <img ng-src="{{rootPath}}/dist/images/ericsson-logo.jpg"
-             alt="Ericsson Logo">
-      </a>
-    </div>
-    <span id="title-part-1">Connected Car</span>
-    <span id="title-part-2">Hackathon</span>
-  </div>
-</div>
+<short-header></short-header>
 
 <div class="content-column content-block">
 
@@ -32,9 +17,7 @@
   <markdown-block converted-markdown="{{apiDocsState.selectedSection.convertedMarkdown}}"></markdown-block>
 </div>
 
-<hr>
-
-<a style="display: block; text-align: center; cursor: pointer;"
+<a style="display: block; text-align: center; cursor: pointer; margin-top: 80px;"
    ng-attr-ui-sref="home">
   Go to landing page
 </a>

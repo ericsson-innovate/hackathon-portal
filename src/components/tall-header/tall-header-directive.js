@@ -1,24 +1,15 @@
-'use strict';
+angular.module('tallHeaderDirective', [])
 
-angular.module('animationsDirective', [])
+.constant('tallHeaderTemplatePath', hack.rootPath + '/dist/templates/components/tall-header/tall-header.html')
 
-.constant('animationsTemplatePath', hack.rootPath + '/dist/templates/components/animations/animations.html')
-
-/**
- * @ngdoc directive
- * @name animations
- * @description
- *
- * A panel for managing animations.
- */
-.directive('animations', function ($rootScope, $interval, animations, animationsTemplatePath) {
+.directive('tallHeader', function ($rootScope, $interval, animations, tallHeaderTemplatePath) {
   return {
-    restrict: 'A',
+    restrict: 'E',
 
     scope: {
     },
 
-    templateUrl: animationsTemplatePath,
+    templateUrl: tallHeaderTemplatePath,
 
     link: function (scope, element, attrs) {
       scope.hack = hack;

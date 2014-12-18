@@ -101,17 +101,21 @@ angular.module('hackApp')
     },
     {
       ref: 'web-apps-api',
+      //url: '/web-apps-api/:sectionId/:categoryId/:callId',
       url: '/web-apps-api',
-      isAbstract: true,
+      isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/web-apps-api.html',
       controller: 'WebAppsApiCtrl',
       defaultParams: {
+        //sectionId: 'api-documentation',
+        //categoryId: 'know-car',
+        //callId: null
         // TODO: add the new structure for route IDs to the old routing logic
       }
     },
     {
       ref: 'vehicle-apps-api',
-      url: '/vehicle-apps-api/{sectionId}',
+      url: '/vehicle-apps-api/:sectionId',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
@@ -121,7 +125,7 @@ angular.module('hackApp')
     },
     {
       ref: 'vehicle-ui-api',
-      url: '/vehicle-ui-api/{sectionId}',
+      url: '/vehicle-ui-api/:sectionId',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
@@ -131,7 +135,7 @@ angular.module('hackApp')
     },
     {
       ref: 'setup',
-      url: '/setup/{sectionId}',
+      url: '/setup/:sectionId',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
@@ -207,8 +211,8 @@ angular.module('hackApp')
         label: 'Vehicle API'
       },
       {
-        isStateRoute: true,
-        state: 'web-apps-api',
+        isStateRoute: false,
+        url: hack.rootPath + '/#/web-apps-api/api-documentation/know-car',
         label: 'Web API'
       }
     ]

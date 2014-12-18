@@ -4,6 +4,13 @@
   font-weight: normal;
 }
 
+tall-header {
+	position: relative;
+	height: $tall-header-height;
+	color: #ffffff;
+	background-color: #040404;
+}
+
 #top-bar {
 	position: absolute;
 	top: 0px;

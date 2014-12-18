@@ -8,7 +8,7 @@ angular.module('hackApp')
 
   .config(function ($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideBarLinks, categories) {
     // Re-route invalid routes back to home
-    $urlRouterProvider.otherwise(topLevelRoutes[1].url + sideBarLinks[1].url);// TODO: change this to re-route to topLevelRoutes[0].url
+    $urlRouterProvider.otherwise(topLevelRoutes[0].url);//topLevelRoutes[1].url + sideBarLinks[1].url
 
     var apiLink;
 

@@ -1,5 +1,5 @@
-$root-path: '/hackathon-portal';
-//$root-path: '';
+//$root-path: '/hackathon-portal';
+$root-path: '';
 
 $code-font-stack: Consolas, Monaco, 'Andale Mono', monospace;
 
@@ -49,8 +49,8 @@ $category-tab-border-width: 10px;
 
 $divider-border-width: 1px;
 
-$banner-height: 600px;
-$top-header-height: 70px;
+$tall-header-height: 600px;
+$short-header-height: 70px;
 $top-header-divider-border-width: 1px;
 $logo-gap: 36px;
 
@@ -160,6 +160,9 @@ button[disabled] {
 }
 
 #route-view {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .tabs {
@@ -207,20 +210,12 @@ h1 {
   margin-bottom: 16px;
 }
 
-#banner {
-  position: relative;
-  width: 100%;
-  height: $banner-height;
-  color: #ffffff;
-  background-color: #040404;
-}
-
 #car-image-panel {
   position: absolute;
   top: 0; left: -100%; right: -100%;
   margin: auto;
   width: 1400px;
-  height: $banner-height;
+  height: $tall-header-height;
   overflow: hidden;
 //  background: transparent url($root-path + '/dist/images/car-1.png') no-repeat center top;
   z-index: 2;

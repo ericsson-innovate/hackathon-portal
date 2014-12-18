@@ -22,8 +22,6 @@ angular.module('hackApp', [
 
   'hackController',
 
-  'animationsDirective',
-
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
@@ -40,6 +38,8 @@ angular.module('hackApp', [
   'headerDirective',
   'homePageSectionDirective',
   'markdownBlockDirective',
+  'shortHeaderDirective',
+  'tallHeaderDirective',
 
   'apiService',
   'examplesService',
