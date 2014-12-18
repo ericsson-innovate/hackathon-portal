@@ -1,5 +1,5 @@
-$root-path: '/hackathon-portal';
-//$root-path: '';
+//$root-path: '/hackathon-portal';
+$root-path: '';
 
 $code-font-stack: Consolas, Monaco, 'Andale Mono', monospace;
 
@@ -58,6 +58,8 @@ $code-padding: 16px;
 $input-padding: 6px;
 $button-height: 35px;
 
+$content-column-width: 940px;
+
 // ---  --- //
 
 @mixin code-font() {
@@ -90,7 +92,7 @@ body {
   width: 100%;
   font-family: hack-font, sans-serif;
   font-size: $body-font-size;
-  padding-bottom: 20px;
+  padding-bottom: 80px;
   color: $body-color;
   background-color: $body-background-color;
 }
@@ -196,16 +198,6 @@ button[disabled] {
   margin-left: 0;
 }
 
-hr.divider {
-  position: relative;
-  border: 0 solid $card-inactive-color;
-  border-bottom-width: $divider-border-width;
-}
-
-li:last-child>hr.divider {
-  display: none;
-}
-
 // ---  --- //
 
 $side-menu-width: 220px;
@@ -221,51 +213,6 @@ h1 {
   height: $banner-height;
   color: #ffffff;
   background-color: #040404;
-}
-
-#top-header {
-  position: relative;
-  height: $top-header-height;
-  line-height: $top-header-height;
-  vertical-align: middle;
-  z-index: 4;
-}
-
-#header-divider {
-  position: relative;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #777777 20%, #777777 80%, transparent);
-  z-index: 1;
-}
-
-#title-part-1, #title-part-2 {
-  font-size: $banner-header-font-size;
-  text-transform: uppercase;
-}
-
-#title-part-1 {
-  color: $item-active-color;
-}
-
-#title-part-2 {
-}
-
-#logos {
-  position: relative;
-  float: right;
-}
-
-#logos>a, #logos>a>img {
-  vertical-align: middle;
-}
-
-#logos>a {
-  margin-left: $logo-gap;
-}
-
-#ericsson-logo {
-  position: relative;
-  top: -1px;
 }
 
 #car-image-panel {
@@ -296,15 +243,15 @@ h1 {
   z-index: 3;
 }
 
-.content-area {
+.content-column {
   position: relative;
-  width: 940px;
+  width: $content-column-width;
   margin: 0 auto;
   height: 100%;
   min-height: 500px;
 }
 
-.inner-content-area {
+.inner-content-column {
   position: relative;
   float: right;
   clear: right;
@@ -312,74 +259,96 @@ h1 {
   height: 100%;
 }
 
-.inner-content-area>h1 {
+.inner-content-column>h1 {
   margin: 30px 0;
   text-align: left;
 }
 
-.content-area>.tabs {
+.content-column>.tabs {
   position: absolute;
   bottom: 34px;
 }
 
-.content-area>.tabs>.tab {
+.content-column>.tabs>.tab {
   width: calc(25% - 15px);
 }
 
 .home-route api-list {
 }
 
+.content-block {
+  display: flex;
+}
+
 .side-menu {
   @extend .non-bulleted-list;
-  float: left;
-  width: $side-menu-width;
+  flex: 0 0 $side-menu-width;
   margin: 0 $side-menu-right-margin 0 0;
 }
 
-.side-menu>li>a,
-.side-menu>li>div {
-  display: block;
+.side-menu li > a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   height: $side-menu-item-height;
-  line-height: $side-menu-item-height;
   font-size: $side-menu-font-size;
-  vertical-align: middle;
-  text-align: left;
+  border: 0 solid #bfbfbf;
+  border-bottom-width: 1px;
   text-transform: uppercase;
   cursor: pointer;
 }
 
-.side-menu>li>div {
-  cursor: default;
+.side-menu li:last-child > a {
+  border-bottom-width: 0;
+}
+
+.side-menu > li > div {
+  margin-top: 30px;
+  font-size: $side-menu-font-size;
+  text-transform: uppercase;
 }
 
 .api-documentation-categories {
   @extend .non-bulleted-list;
-  padding-left: 18px;
+  width: calc(100% - 18px);
+  padding: 30px 0 30px 18px;
+  border: 0 solid #bfbfbf;
+  border-bottom-width: 1px;
 }
 
-.api-documentation-categories>li {
+.api-documentation-categories > li {
   text-indent: -5px;
   margin: 20px 0;
-  text-transform: uppercase;
+  font-size: $side-menu-font-size;
   cursor: pointer;
 }
 
-.api-documentation-categories>li:before {
+.api-documentation-categories > li:before {
   content: '\2014';
   position: relative;
   left: -5px;
 }
 
-.api-documentation-categories>li:first-child {
+.api-documentation-categories > li:first-child {
   margin-top: 0px;
 }
 
-.api-documentation-categories>li:last-child {
-  margin-bottom: 30px;
+.api-documentation-categories > li:last-child {
+  margin-bottom: 0px;
 }
 
-.api-documentation-categories>li.selected {
+.api-documentation-categories > li.selected {
   color: $item-active-color;
+}
+
+.content-block > markdown-block {
+  margin-top: 30px;
+}
+
+hr.divider {
+  position: relative;
+  border: 0 solid #bfbfbf;
+  border-bottom-width: 1px;
 }
 
 a,
@@ -401,20 +370,16 @@ a:visited {
   color: $item-active-color;
 }
 
-.side-menu>li>hr.divider {
-  top: 0;
-  margin: 0;
-}
-
 // --- Styles for the new portal landing page --- //
 
-$home-page-alternate-background-color: rgb(239, 239, 239);
+$home-page-primary-background-color: white;
+$home-page-secondary-background-color: rgb(239, 239, 239);
 
 $markdown-list-item-border-width: $category-tab-border-width;
 
 .full-width-bar {
   position: relative;
-  max-width: 1100px;
+  max-width: $content-column-width;
   margin-left: auto;
   margin-right: auto;
 }
@@ -434,4 +399,23 @@ $markdown-list-item-border-width: $category-tab-border-width;
 
 .full-width-bar:after {
   left: 100%;
+}
+
+// --- Styles for the new API documentation page --- //
+
+$api-docs-side-bar-background-color: rgb(241, 241, 241);
+$header-background-color: rgb(5, 112, 180);
+$header-secondary-background-color: rgb(128, 205, 254);
+$api-docs-link-normal-color: rgb(66, 132, 196);
+$api-docs-link-hover-color: rgb(128, 205, 254);
+$api-docs-link-active-color: rgb(171, 57, 52);
+
+a {
+  color: $api-docs-link-normal-color
+}
+a:hover {
+  color: $api-docs-link-hover-color
+}
+a:active {
+  color: $api-docs-link-active-color;
 }

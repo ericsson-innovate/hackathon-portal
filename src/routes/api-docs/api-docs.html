@@ -1,0 +1,40 @@
+<div id="short-banner">
+  <div class="content-column">
+    <div id="logos">
+      <a id="att-logo" href="http://www.att.com/">
+        <img ng-src="{{rootPath}}/dist/images/att-logo.jpg"
+             alt="AT&T Logo">
+      </a>
+      <a id="ericsson-logo" href="http://www.ericsson.com/">
+        <img ng-src="{{rootPath}}/dist/images/ericsson-logo.jpg"
+             alt="Ericsson Logo">
+      </a>
+    </div>
+    <span id="title-part-1">Connected Car</span>
+    <span id="title-part-2">Hackathon</span>
+  </div>
+</div>
+
+<div class="content-column content-block">
+
+  <ul class="side-menu">
+
+    <li ng-repeat="section in apiDocsState.selectedCollection.sections"
+        ng-class="{selected: apiDocsState.selectedSection === section}"
+        ng-click="handleSideBarLinkClick(section)">
+
+      <a ng-attr-ui-sref="section.id">
+        {{section.title}}
+      </a>
+    </li>
+  </ul>
+
+  <markdown-block converted-markdown="{{apiDocsState.selectedSection.convertedMarkdown}}"></markdown-block>
+</div>
+
+<hr>
+
+<a style="display: block; text-align: center; cursor: pointer;"
+   ng-attr-ui-sref="home">
+  Go to landing page
+</a>

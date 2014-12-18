@@ -1,6 +1,6 @@
-#AT&T Drive Vehicle API
+# AT&T Drive Vehicle API
 
-##Interfaces
+## Interfaces
 - [Vehicle Information](#vehicle-information)
 - [Navigation](#navigation)
 - [Identity](#identity)

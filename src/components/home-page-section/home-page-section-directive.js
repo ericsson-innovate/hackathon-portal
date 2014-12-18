@@ -12,15 +12,6 @@ angular.module('homePageSectionDirective', [])
     },
     templateUrl: homePageSectionTemplatePath,
     link: function (scope, element, attrs) {
-      scope.handleSideBarLinkClick = handleSideBarLinkClick;
-
-      // ---  --- //
-
-      function handleSideBarLinkClick(link) {
-        console.log('Home page section side bar link clicked', scope.title, link.label);
-
-        // TODO:
-      }
     }
   };
 });

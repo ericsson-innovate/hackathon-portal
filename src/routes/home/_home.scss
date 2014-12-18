@@ -2,21 +2,21 @@
 
   overflow-x: hidden;
 
-  header {
-    height: 600px;
-  }
-
-  header,
-  header:before,
-  header:after {
+  #banner,
+  #banner:before,
+  #banner:after {
     background-color: black;
   }
 
   .sections {
+    home-page-section {
+      background-color: $home-page-primary-background-color;
+    }
+
     home-page-section:nth-child(even),
     home-page-section:nth-child(even):before,
     home-page-section:nth-child(even):after {
-      background-color: $home-page-alternate-background-color;
+      background-color: $home-page-secondary-background-color;
     }
   }
 }

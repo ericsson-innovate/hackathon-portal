@@ -1,0 +1,44 @@
+#short-banner {
+  position: relative;
+  width: 100%;
+  height: $top-header-height;
+  line-height: $top-header-height;
+  vertical-align: middle;
+  z-index: 4;
+  color: #ffffff;
+  background-color: #040404;
+
+  .content-column {
+    min-height: 0;
+  }
+
+  #title-part-1, #title-part-2 {
+    font-size: $banner-header-font-size;
+    text-transform: uppercase;
+  }
+
+  #title-part-1 {
+    color: $item-active-color;
+  }
+
+  #title-part-2 {
+  }
+
+  #logos {
+    position: relative;
+    float: right;
+  }
+
+  #logos>a, #logos>a>img {
+    vertical-align: middle;
+  }
+
+  #logos>a {
+    margin-left: $logo-gap;
+  }
+
+  #ericsson-logo {
+    position: relative;
+    top: -1px;
+  }
+}

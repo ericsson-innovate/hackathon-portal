@@ -27,6 +27,7 @@ angular.module('hackApp', [
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
+  'sectionTitleToStateIdFilter',
   'unescapeJsonStringFilter',
 
   'apiListItemDirective',
@@ -36,6 +37,7 @@ angular.module('hackApp', [
   'apiListDirective',
   'dynamicMarkdownListDirective',
   'dynamicMarkdownListItemDirective',
+  'headerDirective',
   'homePageSectionDirective',
   'markdownBlockDirective',
 
@@ -45,8 +47,10 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
+  'webAppsApiController',
   'homeController',
-  'driveApiController',
+  'apiDocsController',
+
   'apiDocumentationController',
   'gettingStartedController',
   'sampleAppsController'
@@ -122,8 +126,40 @@ angular.module('hackApp')
 
   .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
-  .constant('uiKitDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md')
-  .constant('setupDocUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/Setup.md')
+  .constant('dataLoadedEvent', 'dataLoadedEvent')
+
+  // TODO: add support for the old JSON data format
+  // TODO: change one of these API doc URLs
+  .constant('dataCollections', [
+    {
+      id: 'vehicle-apps-api',
+      label: 'Vehicle Apps API',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md',
+      type: 'markdown-api',
+      sections: []
+    },
+    {
+      id: 'vehicle-ui-api',
+      label: 'Vehicle UI API',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/VehicleAPI.md',
+      type: 'markdown-api',
+      sections: []
+    },
+    {
+      id: 'web-apps-api',
+      label: 'Web Apps API',
+      url: hack.rootPath + '/dist/data/specifications.json',
+      type: 'json-api',
+      sections: []
+    },
+    {
+      id: 'setup',
+      label: 'Setup',
+      url: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/hackathon-portal/gh-pages/data/Setup.md',
+      type: 'markdown-setup',
+      sections: []
+    }
+  ])
 
   .constant('sampleAppData', [
     {
@@ -166,85 +202,149 @@ angular.module('hackApp')
       url: '/home',
       isAbstract: false,
       templateUrl: hack.rootPath + '/dist/templates/routes/home/home.html',
-      controller: 'HomeCtrl'
+      controller: 'HomeCtrl',
+      defaultParams: {
+      }
     },
     {
-      ref: 'drive-api',
-      url: '/drive-api',
+      ref: 'web-apps-api',
+      url: '/web-apps-api',
       isAbstract: true,
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/drive-api.html',
-      controller: 'DriveApiCtrl'
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/web-apps-api.html',
+      controller: 'WebAppsApiCtrl',
+      defaultParams: {
+        // TODO: add the new structure for route IDs to the old routing logic
+      }
+    },
+    {
+      ref: 'vehicle-apps-api',
+      url: '/vehicle-apps-api/{sectionId}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'context-initialization'
+      }
+    },
+    {
+      ref: 'vehicle-ui-api',
+      url: '/vehicle-ui-api/{sectionId}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'context-initialization'
+      }
+    },
+    {
+      ref: 'setup',
+      url: '/setup/{sectionId}',
+      isAbstract: false,
+      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      controller: 'ApiDocsCtrl',
+      defaultParams: {
+        sectionId: 'introduction'
+      }
     }
   ])
+
+  .constant('homeSectionsSideBarLinks', {
+    'gettingStarted': [
+      {
+        isStateRoute: true,
+        state: 'setup',
+        label: 'Developer Environment Setup Guide'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download UI Design Assets'
+      }
+    ],
+    'headUnitSimulator': [
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download Head Unit Simulator'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Head Unit Simulator Settings'
+      }
+    ],
+    'sampleApps': [
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download Sample Apps'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Hello World App'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Navigation App'
+      }
+    ],
+    'uiApi': [
+      {
+        isStateRoute: true,
+        state: 'vehicle-ui-api',
+        label: 'Preview UI API'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download App Framework'
+      },
+      {
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        label: 'Download UI Design Assets'
+      }
+    ],
+    'vehicleApi': [
+      {
+        isStateRoute: true,
+        state: 'vehicle-apps-api',
+        label: 'Vehicle API'
+      },
+      {
+        isStateRoute: true,
+        state: 'web-apps-api',
+        label: 'Web API'
+      }
+    ]
+  })
 
   .constant('sideBarLinks', [
     {
       isStateRoute: true,
-      ref: 'drive-api.getting-started',
+      ref: 'web-apps-api.getting-started',
       label: 'Getting Started',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     },
     {
       isStateRoute: true,
-      ref: 'drive-api.api-documentation',
+      ref: 'web-apps-api.api-documentation',
       label: 'API Documentation',
       url: '/api-documentation',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/api-documentation/api-documentation.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
       controller: 'ApiDocumentationCtrl'
     },
     {
       isStateRoute: true,
-      ref: 'drive-api.sample-apps',
+      ref: 'web-apps-api.sample-apps',
       label: 'Sample Apps',
       url: '/sample-apps',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/sample-apps/sample-apps.html',
+      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
       controller: 'SampleAppsCtrl'
-    }
-  ])
-
-  .constant('homeGettingStartedSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'drive-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeSampleAppsSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'drive-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeUiKitSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'drive-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    }
-  ])
-
-  .constant('homeDriveApiSectionSideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'drive-api.getting-started',
-      label: 'Side Bar Link',
-      url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/drive-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
     }
   ])
 
@@ -316,7 +416,7 @@ angular.module('hackApp')
     {
       id: 'know-driver',
       name: 'Know the Driver',
-      ref: 'drive-api.api-documentation.know-driver',
+      ref: 'web-apps-api.api-documentation.know-driver',
       specs: [
         '2.13.1-add-a-subscriber',
         '2.13.2-add-a-subscriber-and-vehicle',
@@ -356,7 +456,7 @@ angular.module('hackApp')
     {
       id: 'know-car',
       name: 'Know the Car',
-      ref: 'drive-api.api-documentation.know-car',
+      ref: 'web-apps-api.api-documentation.know-car',
       specs: [
         '2.6.10-check-request-status',
         '2.6.11-view-diagnostic-data',
@@ -373,7 +473,7 @@ angular.module('hackApp')
     {
       id: 'control-car',
       name: 'Control the Car',
-      ref: 'drive-api.api-documentation.control-car',
+      ref: 'web-apps-api.api-documentation.control-car',
       specs: [
         '2.6.1-sign-up',
         '2.6.2-validate-otp',
@@ -476,117 +576,134 @@ angular.module('orderApiCallsFilter', [])
 
 angular.module('hackApp')
 
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideBarLinks, categories) {
-  // Re-route invalid routes back to home
-  $urlRouterProvider.otherwise(topLevelRoutes[1].url + sideBarLinks[1].url);// TODO: change this to re-route to topLevelRoutes[0].url
+  .config(function ($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideBarLinks, categories) {
+    // Re-route invalid routes back to home
+    $urlRouterProvider.otherwise(topLevelRoutes[1].url + sideBarLinks[1].url);// TODO: change this to re-route to topLevelRoutes[0].url
 
-  var apiLink;
+    var apiLink;
 
-  topLevelRoutes.forEach(function (route) {
-    $stateProvider
-        .state(route.ref, {
+    topLevelRoutes.forEach(function (route) {
+      $stateProvider
+        .state({
+          name: route.ref,
           url: route.url,
           abstract: route.isAbstract,
           templateUrl: route.templateUrl,
-          controller: route.controller
+          controller: route.controller,
+          resolve: {
+            'collections': function (MarkdownData) {
+              return MarkdownData.fetchDocumentation();
+            }
+          },
+          params: route.defaultParams
         });
-  });
+    });
 
-  sideBarLinks.forEach(function (link) {
-    if (link.isStateRoute) {
-      // Use UI-Router to allow for both URL and state-based routing
-      $stateProvider
-          .state(link.ref, {
+    sideBarLinks.forEach(function (link) {
+      if (link.isStateRoute) {
+        // Use UI-Router to allow for both URL and state-based routing
+        $stateProvider
+          .state({
+            name: link.ref,
             url: link.url,
             templateUrl: link.templateUrl,
             controller: link.controller
           });
-    }
-
-    if ("drive-api.api-documentation" == link.ref)
-        apiLink = link;
-  });
-
-  if (apiLink) {
-    categories.forEach(function (category) {
-      var routeName = apiLink.ref + '.' + category.id;
-      var routeURL = '/' + category.id;
-
-      $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-
-      category['specs'].forEach(function (api) {
-        var apiName = api.replace(/\./g, '_');
-        var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
-        var routeURL = '/' + apiName;
-
-        $stateProvider.state(routeName, { url: routeURL, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-
-        // TODO: implement these deeper nestings
-        // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-        // $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
-      });
-    });
-  }
-})
-
-.run(function ($rootScope, $log) {
-  $rootScope.routeState = {};
-
-  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    var isApiDoc;
-
-    $log.debug('$stateChangeStart', toState.name);
-
-    // If we are coming from another page, then do not continue with the carousel auto-transition
-    if ($rootScope.routeState.name) {
-        $rootScope.carouselHasRunOnce = true;
-    }
-
-    // Allows us to use a different CSS class for the top-level view element for each route
-    $rootScope.routeState = toState;
-
-    isApiDoc = toState.name.indexOf('drive-api.api-documentation') === 0;
-
-    if (isApiDoc) {
-      var entities = toState.name.split('.');
-
-      if (entities.length > 1) {
-        // TODO: get rid of these, if they are unneeded
-        $rootScope.selectedApiCategory = entities[2];
-        $rootScope.selectedApi = entities[3];
-        $rootScope.selectedApiTab = entities[4];
-        $rootScope.selectedApiExample = entities[5];
-      } else {
-        if ($rootScope.selectedApiCategory == null) {
-          $rootScope.selectedApiCategory = $rootScope.defaultCategory;
-        }
       }
-    } else {
-      $rootScope.selectedApiCategory = null;
+
+      if ('web-apps-api.api-documentation' === link.ref) {
+        apiLink = link;
+      }
+    });
+
+    if (apiLink) {
+      categories.forEach(function (category) {
+        var routeName = apiLink.ref + '.' + category.id;
+        var routeUrl = '/' + category.id;
+
+        $stateProvider.state({ name: routeName, url: routeUrl, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+
+        category['specs'].forEach(function (api) {
+          var apiName = api.replace(/\./g, '_');
+          var routeName = apiLink.ref + '.' + category.id + '.' + apiName;
+          var routeUrl = '/' + apiName;
+
+          $stateProvider.state({ name: routeName, url: routeUrl, templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+
+          // TODO: implement these deeper nestings
+          // $stateProvider.state(routeName + '.specification',    { url: '/specification',  templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example',          { url: '/example',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example.android',  { url: '/android',        templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example.ios',      { url: '/ios',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.example.web',      { url: '/web',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+          // $stateProvider.state(routeName + '.try',              { url: '/try',            templateUrl: apiLink.templateUrl, controller: apiLink.controller });
+        });
+      });
     }
-  });
+  })
 
-  $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-    $log.debug('$stateNotFound', unfoundState.name);
-  });
+  .run(function ($rootScope, $log) {
+    $rootScope.routeState = {};
 
-  $rootScope.$on('$stateChangeSuccess',
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+      var isApiDoc;
+
+      $log.debug('$stateChangeStart', toState.name);
+
+      // If we are coming from another page, then do not continue with the carousel auto-transition
+      if ($rootScope.routeState.name) {
+        $rootScope.carouselHasRunOnce = true;
+      }
+
+      // Allows us to use a different CSS class for the top-level view element for each route
+      $rootScope.routeState = toState;
+
+      isApiDoc = toState.name.indexOf('web-apps-api.api-documentation') === 0;
+
+      if (isApiDoc) {
+        var entities = toState.name.split('.');
+
+        if (entities.length > 1) {
+          // TODO: get rid of these, if they are unneeded
+          $rootScope.selectedApiCategory = entities[2];
+          $rootScope.selectedApi = entities[3];
+          $rootScope.selectedApiTab = entities[4];
+          $rootScope.selectedApiExample = entities[5];
+        } else {
+          if ($rootScope.selectedApiCategory == null) {
+            $rootScope.selectedApiCategory = $rootScope.defaultCategory;
+          }
+        }
+      } else {
+        $rootScope.selectedApiCategory = null;
+      }
+    });
+
+    $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+      $log.debug('$stateNotFound', unfoundState.name);
+    });
+
+    $rootScope.$on('$stateChangeSuccess',
       function (event, toState, toParams, fromState, fromParams) {
-    $log.debug('$stateChangeSuccess', toState.name);
-  });
+        $log.debug('$stateChangeSuccess', toState.name);
+      });
 
-  $rootScope.$on('$stateChangeError',
+    $rootScope.$on('$stateChangeError',
       function (event, toState, toParams, fromState, fromParams, error) {
-    $log.debug('$stateChangeError', toState.name, error);
+        $log.debug('$stateChangeError', toState.name, error);
+      });
+
+    $rootScope.$on('$viewContentLoaded', function (event) {
+      console.log('$viewContentLoaded');
+    });
   });
 
-  $rootScope.$on('$viewContentLoaded', function (event) {
-    console.log('$viewContentLoaded');
-  });
+angular.module('sectionTitleToStateIdFilter', [])
+
+.filter('sectionTitleToStateId', function () {
+  return function (input) {
+    return input.toLowerCase().replace(' ', '-').replace(/\W/, '');
+  }
 });
 
 'use strict';
@@ -905,27 +1022,28 @@ angular.module('examplesService', [])
   return HackExamples;
 });
 
-/**
- * @typedef {Object} Section
- * @property {Number} index
- * @property {String} title
- * @property {String} convertedMarkdown
- */
-
 angular.module('markdownDataService', [])
 
-  .factory('MarkdownData', function ($q, $http) {
+  .factory('MarkdownData', function ($q, $http, $filter, $rootScope, dataCollections, dataLoadedEvent) {
+    /**
+     * @typedef {Object} Section
+     * @property {Number} index
+     * @property {String} id
+     * @property {String} title
+     * @property {String} convertedMarkdown
+     */
+
     var sectionHeaderRegex = /<h2(?:.*?)>\s*(.*?)\s*<\/h2>/gi;
 
     var startAndEndQuotRegex = /(?:^"|"$)/g;
 
+    var dataPromise = null;
+
     var converter = new Showdown.converter({extensions: ['table']});
 
-    var sections = {};
-
     var MarkdownData = {
-      fetchDocumentation: fetchDocumentation,
-      getSections: getSections
+      fetchDocumentation: fetchAllDocumentation,
+      getCollection: getCollection
     };
 
     return MarkdownData;
@@ -935,15 +1053,49 @@ angular.module('markdownDataService', [])
     /**
      * @returns {Promise}
      */
-    function fetchDocumentation(url) {
-      return $http.get(url)
-        .then(function (response) {
-          sections[url] = parseDocumentationIntoSections(response.data);
+    function fetchAllDocumentation() {
+      if (dataPromise) {
+        return dataPromise;
+      } else {
+        var promises = dataCollections.map(function (collection) {
+          return $http.get(collection.url)
+            .then(function (response) {
+              switch (collection.type) {
+                case 'markdown-api':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                case 'json-api':
+                  // TODO: integrate this into the old JSON parsing logic?
+                  break;
+                case 'markdown-setup':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                default:
+                  throw new Error('Invalid data collection type: ' + collection.type);
+              }
+            });
         });
+
+        dataPromise = $q.all(promises)
+          .then(function () {
+            $rootScope.$broadcast(dataLoadedEvent, dataCollections);
+            return dataCollections;
+          });
+
+        return dataPromise;
+      }
     }
 
-    function getSections(url) {
-      return sections[url];
+    function getCollection(id) {
+      var i, count;
+
+      for (i = 0, count = dataCollections.length; i < count; i += 1) {
+        if (dataCollections[i].id === id) {
+          return dataCollections[i];
+        }
+      }
+
+      return null;
     }
 
     /**
@@ -1011,8 +1163,11 @@ angular.module('markdownDataService', [])
       // ---  --- //
 
       function addSection(title, convertedMarkdown) {
+        var id = $filter('sectionTitleToStateId')(title);
+
         sections[index] = {
           index: index,
+          id: id,
           title: title,
           convertedMarkdown: convertedMarkdown
         };
@@ -1179,26 +1334,25 @@ angular.module('animationsDirective', [])
  *
  * A panel for managing animations.
  */
-.directive('animations', function ($rootScope, $interval, animationsTemplatePath) {
+.directive('animations', function ($rootScope, $interval, animations, animationsTemplatePath) {
   return {
     restrict: 'A',
 
     scope: {
-      driveApiState: '=',
-      animations: '='
     },
 
     templateUrl: animationsTemplatePath,
 
     link: function (scope, element, attrs) {
       scope.hack = hack;
+      scope.animations = animations;
       scope.selectedLabel = null;
       scope.timeline = null;
       
       var carouselInterval, isFirstViewContentLoadedEvent;
 
       // Add an event handler to the parent scope
-      scope.driveApiState.handleAnimationTabClick = handleAnimationTabClick;
+      scope.handleAnimationTabClick = handleAnimationTabClick;
 
       carouselInterval = null;
       isFirstViewContentLoadedEvent = true;
@@ -1420,7 +1574,7 @@ angular.module('apiListItemDirective', [])
                 scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
                     null : scope.apiItem.specification.id;
 
-        var targetRef = 'drive-api.api-documentation.' + $rootScope.selectedApiCategory;
+        var targetRef = 'web-apps-api.api-documentation.' + $rootScope.selectedApiCategory;
 
         if (scope.apiListState.selectedItemId != null)
           targetRef = targetRef + '.' + scope.apiItem.ref;
@@ -1656,7 +1810,7 @@ angular.module('dynamicMarkdownListDirective', [])
   return {
     restrict: 'E',
     scope: {
-      url: '@'
+      id: '@'
     },
     templateUrl: dynamicMarkdownListTemplatePath,
     link: function (scope, element, attrs) {
@@ -1673,9 +1827,25 @@ angular.module('dynamicMarkdownListDirective', [])
       // ---  --- //
 
       function onMarkdownUpdate() {
-        scope.markdownListState.sections = MarkdownData.getSections(scope.url);
+        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
         scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
       }
+    }
+  };
+});
+
+angular.module('headerDirective', [])
+
+.constant('headerTemplatePath', hack.rootPath + '/dist/templates/components/header/header.html')
+
+.directive('hackHeader', function (headerTemplatePath) {
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+    },
+    templateUrl: headerTemplatePath,
+    link: function (scope, element, attrs) {
     }
   };
 });
@@ -1694,15 +1864,6 @@ angular.module('homePageSectionDirective', [])
     },
     templateUrl: homePageSectionTemplatePath,
     link: function (scope, element, attrs) {
-      scope.handleSideBarLinkClick = handleSideBarLinkClick;
-
-      // ---  --- //
-
-      function handleSideBarLinkClick(link) {
-        console.log('Home page section side bar link clicked', scope.title, link.label);
-
-        // TODO:
-      }
     }
   };
 });
@@ -1757,28 +1918,52 @@ angular.module('markdownBlockDirective', [])
       };
     });
 
-angular.module('driveApiController', [])
+angular.module('apiDocsController', [])
 
-  .controller('DriveApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories, animations) {
-    $scope.driveApiState = {};
-    $scope.driveApiState.sideBarLinks = sideBarLinks;
-    $scope.driveApiState.categories = categories;
-    $scope.driveApiState.animations = animations;
-    $scope.driveApiState.selectedApiCategory = $rootScope.selectedApiCategory;
-    $scope.driveApiState.selectedAnimation = null;
-    $scope.driveApiState.sideBarSelectedLink = null;
+  .controller('ApiDocsCtrl', function ($scope, $state, $stateParams, MarkdownData) {
+    $scope.apiDocsState = {};
+    $scope.apiDocsState.selectedCollection = MarkdownData.getCollection($state.current.name);
+    $scope.apiDocsState.selectedSection =
+      $scope.apiDocsState.selectedCollection.sections[($stateParams.sectionId ? $stateParams.sectionId : 0)];
+
+    $scope.handleSideBarLinkClick = handleSideBarLinkClick;
+
+    // ---  --- //
+
+    function handleSideBarLinkClick(section) {
+      console.log('API docs side bar section link clicked', section.title);
+      $scope.apiDocsState.selectedSection = section;
+    }
+  });
+
+angular.module('homeController', [])
+
+  .controller('HomeCtrl', function ($scope, homeSectionsSideBarLinks) {
+    $scope.homeState = {};
+    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
+  });
+
+angular.module('webAppsApiController', [])
+
+  .controller('WebAppsApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories) {
+    $scope.webAppsApiState = {};
+    $scope.webAppsApiState.sideBarLinks = sideBarLinks;
+    $scope.webAppsApiState.categories = categories;
+    $scope.webAppsApiState.selectedApiCategory = $rootScope.selectedApiCategory;
+    $scope.webAppsApiState.selectedAnimation = null;
+    $scope.webAppsApiState.sideBarSelectedLink = null;
 
     $scope.myState = $state;
 
     $rootScope.$on('$stateChangeSuccess', handleStateChangeSuccess);
 
-    $scope.driveApiState.handleSideBarClick = handleSideBarClick;
-    $scope.driveApiState.handleCategoryTabClick = handleCategoryTabClick;
+    $scope.webAppsApiState.handleSideBarClick = handleSideBarClick;
+    $scope.webAppsApiState.handleCategoryTabClick = handleCategoryTabClick;
 
     // ---  --- //
 
     function handleStateChangeSuccess(event, toState, toParams, fromState, fromParams) {
-      if (toState.name === 'drive-api.api-documentation') {
+      if (toState.name === 'web-apps-api.api-documentation') {
         $state.go($rootScope.defaultCategory.ref);
         return;
       }
@@ -1789,12 +1974,12 @@ angular.module('driveApiController', [])
         var link = sideBarLinks[i];
 
         if (toState.name.indexOf(link.ref) == 0) {
-          $scope.driveApiState.sideBarSelectedLink = link.ref;
+          $scope.webAppsApiState.sideBarSelectedLink = link.ref;
           break;
         }
       }
 
-      $scope.driveApiState.selectedApiCategory = $rootScope.selectedApiCategory;
+      $scope.webAppsApiState.selectedApiCategory = $rootScope.selectedApiCategory;
     }
 
     function handleSideBarClick(link) {
@@ -1802,7 +1987,7 @@ angular.module('driveApiController', [])
 
       var targetState = link.ref;
 
-      if (link.ref === 'drive-api.api-documentation')
+      if (link.ref === 'web-apps-api.api-documentation')
         targetState = $rootScope.defaultCategory.ref;
 
       $state.go(targetState);
@@ -1814,22 +1999,8 @@ angular.module('driveApiController', [])
       $rootScope.selectedApiCategory = category.id;
 
       // Transition to the API documentation route/state
-      $state.go('drive-api.api-documentation.' + category.id);
+      $state.go('web-apps-api.api-documentation.' + category.id);
     }
-  });
-
-angular.module('homeController', [])
-
-  .controller('HomeCtrl', function ($scope, uiKitDocUrl, setupDocUrl, homeGettingStartedSectionSideBarLinks,
-                                    homeSampleAppsSectionSideBarLinks, homeUiKitSectionSideBarLinks,
-                                    homeDriveApiSectionSideBarLinks) {
-    $scope.homeState = {};
-    $scope.homeState.uiKitDocUrl = uiKitDocUrl;
-    $scope.homeState.setupDocUrl = setupDocUrl;
-    $scope.homeState.homeGettingStartedSectionSideBarLinks = homeGettingStartedSectionSideBarLinks;
-    $scope.homeState.homeSampleAppsSectionSideBarLinks = homeSampleAppsSectionSideBarLinks;
-    $scope.homeState.homeUiKitSectionSideBarLinks = homeUiKitSectionSideBarLinks;
-    $scope.homeState.homeDriveApiSectionSideBarLinks = homeDriveApiSectionSideBarLinks;
   });
 
 angular.module('dynamicMarkdownListItemDirective', [])
@@ -1874,20 +2045,6 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
-
-'use strict';
-
 angular.module('sampleAppsController', [])
 
 /**
@@ -1900,4 +2057,18 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });

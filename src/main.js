@@ -27,6 +27,7 @@ angular.module('hackApp', [
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
+  'sectionTitleToStateIdFilter',
   'unescapeJsonStringFilter',
 
   'apiListItemDirective',
@@ -36,6 +37,7 @@ angular.module('hackApp', [
   'apiListDirective',
   'dynamicMarkdownListDirective',
   'dynamicMarkdownListItemDirective',
+  'headerDirective',
   'homePageSectionDirective',
   'markdownBlockDirective',
 
@@ -45,8 +47,10 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
+  'webAppsApiController',
   'homeController',
-  'driveApiController',
+  'apiDocsController',
+
   'apiDocumentationController',
   'gettingStartedController',
   'sampleAppsController'

@@ -4,8 +4,12 @@ api-list {
   margin-top: 20px;
 }
 
-api-list>ul {
+api-list > ul {
   @extend .non-bulleted-list;
+
+  > li {
+    padding-bottom: 10px;
+  }
 }
 
 /* Clearfix */

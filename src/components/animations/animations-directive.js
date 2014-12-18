@@ -11,26 +11,25 @@ angular.module('animationsDirective', [])
  *
  * A panel for managing animations.
  */
-.directive('animations', function ($rootScope, $interval, animationsTemplatePath) {
+.directive('animations', function ($rootScope, $interval, animations, animationsTemplatePath) {
   return {
     restrict: 'A',
 
     scope: {
-      driveApiState: '=',
-      animations: '='
     },
 
     templateUrl: animationsTemplatePath,
 
     link: function (scope, element, attrs) {
       scope.hack = hack;
+      scope.animations = animations;
       scope.selectedLabel = null;
       scope.timeline = null;
       
       var carouselInterval, isFirstViewContentLoadedEvent;
 
       // Add an event handler to the parent scope
-      scope.driveApiState.handleAnimationTabClick = handleAnimationTabClick;
+      scope.handleAnimationTabClick = handleAnimationTabClick;
 
       carouselInterval = null;
       isFirstViewContentLoadedEvent = true;
