@@ -60,6 +60,8 @@ angular.module('hackApp', [
   $rootScope.defaultCategory = categories[2];
   $rootScope.carouselHasRunOnce = false;
 
+  $rootScope.hack = hack;
+
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
 //      .then(loadSampleAppReadmeFiles);
