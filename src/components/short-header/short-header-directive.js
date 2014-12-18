@@ -12,7 +12,6 @@ angular.module('shortHeaderDirective', [])
     templateUrl: shortHeaderTemplatePath,
 
     link: function (scope, element, attrs) {
-      scope.hack = hack;
     }
   };
 });

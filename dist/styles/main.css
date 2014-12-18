@@ -165,12 +165,12 @@ table {
 
 @font-face {
   font-family: hack-font;
-  src: url('dist/fonts/hack-font.otf');
+  src: url('/dist/fonts/hack-font.otf');
   font-weight: normal; }
 
 @font-face {
   font-family: hack-font;
-  src: url('dist/fonts/hack-font-bold.otf');
+  src: url('/dist/fonts/hack-font-bold.otf');
   font-weight: bold; }
 
 div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {

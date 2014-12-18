@@ -1401,36 +1401,6 @@ angular.module('apiListDirective', [])
 
 'use strict';
 
-angular.module('apiSpecificationCardDirective', [])
-
-.constant('apiSpecificationCardTemplatePath', document.baseURI + '/dist/templates/components/api-specification-card/api-specification-card.html')
-
-/**
- * @ngdoc directive
- * @name apiSpecificationCard
- * @requires apiSpecificationCardTemplatePath
- * @param {Object} apiItem
- * @description
- *
- * A panel used for displaying the specification for a single API call.
- */
-.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiSpecificationCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.isArray = function (input) {
-        return input instanceof Array;
-      };
-    }
-  };
-});
-
-'use strict';
-
 angular.module('apiListItemDirective', [])
 
 .constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
@@ -1490,6 +1460,36 @@ angular.module('apiListItemDirective', [])
           targetRef = targetRef + '.' + scope.apiItem.ref;
         
         $state.go(targetRef);
+      };
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiSpecificationCardDirective', [])
+
+.constant('apiSpecificationCardTemplatePath', document.baseURI + '/dist/templates/components/api-specification-card/api-specification-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiSpecificationCard
+ * @requires apiSpecificationCardTemplatePath
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel used for displaying the specification for a single API call.
+ */
+.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiSpecificationCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.isArray = function (input) {
+        return input instanceof Array;
       };
     }
   };
@@ -1812,7 +1812,6 @@ angular.module('shortHeaderDirective', [])
     templateUrl: shortHeaderTemplatePath,
 
     link: function (scope, element, attrs) {
-      scope.hack = hack;
     }
   };
 });
@@ -1831,7 +1830,6 @@ angular.module('tallHeaderDirective', [])
     templateUrl: tallHeaderTemplatePath,
 
     link: function (scope, element, attrs) {
-      scope.hack = hack;
       scope.animations = animations;
       scope.selectedLabel = null;
       scope.timeline = null;
@@ -2059,6 +2057,20 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
+});
+
+'use strict';
+
 angular.module('sampleAppsController', [])
 
 /**
@@ -2071,18 +2083,4 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
-});
-
-'use strict';
-
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
 });

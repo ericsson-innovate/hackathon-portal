@@ -12,7 +12,6 @@ angular.module('tallHeaderDirective', [])
     templateUrl: tallHeaderTemplatePath,
 
     link: function (scope, element, attrs) {
-      scope.hack = hack;
       scope.animations = animations;
       scope.selectedLabel = null;
       scope.timeline = null;
