@@ -212,7 +212,7 @@ angular.module('hackApp')
       },
       {
         isStateRoute: false,
-        url: document.baseURI + '/#/web-apps-api/api-documentation/know-car',
+        url: document.baseURI + '/#/web-apps-api/getting-started',
         label: 'Web API'
       }
     ]

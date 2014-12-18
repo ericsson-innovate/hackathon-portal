@@ -89,7 +89,6 @@ body {
   width: 100%;
   font-family: hack-font, sans-serif;
   font-size: $body-font-size;
-  padding-bottom: 80px;
   color: $body-color;
   background-color: $body-background-color;
 
@@ -248,12 +247,11 @@ h1 {
 .inner-content-column {
   position: relative;
   float: right;
-  clear: right;
-  width: calc(100% - #{$side-menu-width + $side-menu-right-margin});
-  height: 100%;
+  width: calc(100% - #{$side-menu-width + $side-menu-right-margin + 20px});
+  margin-top: 30px;
 }
 
-.inner-content-column>h1 {
+.inner-content-column > h1 {
   margin: 30px 0;
   text-align: left;
 }
@@ -335,11 +333,6 @@ h1 {
   color: $item-active-color;
 }
 
-.content-block > .sections {
-  margin-top: 30px;
-  padding-left: $side-menu-width + $side-menu-right-margin;
-}
-
 hr.divider {
   position: relative;
   border: 0 solid #bfbfbf;
@@ -363,6 +356,11 @@ a:visited {
 
 .side-menu>li.selected>a {
   color: $item-active-color;
+}
+
+footer {
+  margin: 60px 0;
+  text-align: center;
 }
 
 // --- Styles for the new portal landing page --- //

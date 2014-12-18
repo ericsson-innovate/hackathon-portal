@@ -320,7 +320,7 @@ angular.module('hackApp')
       },
       {
         isStateRoute: false,
-        url: document.baseURI + '/#/web-apps-api/api-documentation/know-car',
+        url: document.baseURI + '/#/web-apps-api/getting-started',
         label: 'Web API'
       }
     ]
@@ -1516,6 +1516,38 @@ angular.module('apiSpecificationCardDirective', [])
   };
 });
 
+angular.module('dynamicMarkdownListDirective', [])
+
+.constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
+
+.directive('dynamicMarkdownList', function (MarkdownData, dynamicMarkdownListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      id: '@'
+    },
+    templateUrl: dynamicMarkdownListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.markdownListState = {};
+      scope.markdownListState.sections = [];
+      scope.markdownListState.selectedSection = null;
+
+      MarkdownData.fetchDocumentation(scope.url)
+        .then(onMarkdownUpdate)
+        .catch(function (error) {
+          console.error(error);
+        });
+
+      // ---  --- //
+
+      function onMarkdownUpdate() {
+        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
+        scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
+      }
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiTryItCardDirective', [])
@@ -1703,34 +1735,20 @@ angular.module('apiTryItCardDirective', [])
   };
 });
 
-angular.module('dynamicMarkdownListDirective', [])
+angular.module('homePageSectionDirective', [])
 
-.constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
 
-.directive('dynamicMarkdownList', function (MarkdownData, dynamicMarkdownListTemplatePath) {
+.directive('homePageSection', function (homePageSectionTemplatePath) {
   return {
     restrict: 'E',
+    transclude: true,
     scope: {
-      id: '@'
+      title: '@',
+      sideBarLinks: '='
     },
-    templateUrl: dynamicMarkdownListTemplatePath,
+    templateUrl: homePageSectionTemplatePath,
     link: function (scope, element, attrs) {
-      scope.markdownListState = {};
-      scope.markdownListState.sections = [];
-      scope.markdownListState.selectedSection = null;
-
-      MarkdownData.fetchDocumentation(scope.url)
-        .then(onMarkdownUpdate)
-        .catch(function (error) {
-          console.error(error);
-        });
-
-      // ---  --- //
-
-      function onMarkdownUpdate() {
-        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
-        scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
-      }
     }
   };
 });
@@ -1746,24 +1764,6 @@ angular.module('headerDirective', [])
     scope: {
     },
     templateUrl: headerTemplatePath,
-    link: function (scope, element, attrs) {
-    }
-  };
-});
-
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      title: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
     link: function (scope, element, attrs) {
     }
   };
@@ -1967,9 +1967,14 @@ angular.module('apiDocsController', [])
 
     function handleSideBarLinkClick(section) {
       console.log('API docs side bar section link clicked', section.title);
+
       $scope.apiDocsState.selectedSection = section;
-      $location.hash(section.id);
-      //$anchorScroll();
+
+      if ($location.hash() !== section.id) {
+        $location.hash(section.id);
+      } else {
+        $anchorScroll();
+      }
     }
   });
 
@@ -2068,20 +2073,6 @@ angular.module('dynamicMarkdownListItemDirective', [])
 
 'use strict';
 
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-.controller('ApiDocumentationCtrl', function () {
-});
-
-'use strict';
-
 angular.module('gettingStartedController', [])
 
 /**
@@ -2092,6 +2083,20 @@ angular.module('gettingStartedController', [])
  * Controller for the Getting Started page.
  */
 .controller('GettingStartedCtrl', function () {
+});
+
+'use strict';
+
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+.controller('ApiDocumentationCtrl', function () {
 });
 
 'use strict';

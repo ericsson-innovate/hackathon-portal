@@ -23,7 +23,11 @@
 
   <div ui-view
      id="route-view"
-     class="{{routeState.name + '-route'}}"></div>
+     class="{{routeState.name.replace('.', '-') + '-route'}}"></div>
+
+  <footer>
+    © 2014 Ericsson
+  </footer>
 
   <!-- ======== Scripts ======== -->
 

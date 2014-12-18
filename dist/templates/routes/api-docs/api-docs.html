@@ -14,7 +14,11 @@
     </li>
   </ul>
 
-  <div class="sections">
+  <div class="inner-content-column">
+    <h1>
+      {{apiDocsState.selectedCollection.label}}
+    </h1>
+
     <api-section-block ng-repeat="section in apiDocsState.selectedCollection.sections"
                        section="section"></api-section-block>
   </div>

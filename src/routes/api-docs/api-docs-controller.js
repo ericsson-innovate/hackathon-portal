@@ -14,8 +14,13 @@ angular.module('apiDocsController', [])
 
     function handleSideBarLinkClick(section) {
       console.log('API docs side bar section link clicked', section.title);
+
       $scope.apiDocsState.selectedSection = section;
-      $location.hash(section.id);
-      //$anchorScroll();
+
+      if ($location.hash() !== section.id) {
+        $location.hash(section.id);
+      } else {
+        $anchorScroll();
+      }
     }
   });
