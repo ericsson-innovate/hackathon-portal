@@ -360,8 +360,8 @@ h1 {
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  height: 84px;
-  font-size: 16px;
+  height: 50px;
+  font-size: 14px;
   border: 0 solid #bfbfbf;
   border-bottom-width: 1px;
   text-transform: uppercase;
@@ -372,7 +372,7 @@ h1 {
 
 .side-menu > li > div {
   margin-top: 30px;
-  font-size: 16px;
+  font-size: 14px;
   text-transform: uppercase; }
 
 .api-documentation-categories {
@@ -384,7 +384,7 @@ h1 {
 .api-documentation-categories > li {
   text-indent: -5px;
   margin: 20px 0;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer; }
 
 .api-documentation-categories > li:before {
@@ -859,11 +859,13 @@ short-header {
   background-color: #040404; }
   short-header .content-column {
     min-height: 0; }
-  short-header #title-part-1, short-header #title-part-2 {
-    font-size: 20px;
-    text-transform: uppercase; }
-  short-header #title-part-1 {
-    color: #0099ff; }
+  short-header #att-drive-home-link {
+    display: block;
+    float: left;
+    height: 100%; }
+    short-header #att-drive-home-link img {
+      vertical-align: middle;
+      height: 30px; }
   short-header #logos {
     position: relative;
     float: right; }

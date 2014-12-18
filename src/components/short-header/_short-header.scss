@@ -12,16 +12,15 @@ short-header {
     min-height: 0;
   }
 
-  #title-part-1, #title-part-2 {
-    font-size: $banner-header-font-size;
-    text-transform: uppercase;
-  }
+  #att-drive-home-link {
+    display: block;
+    float: left;
+    height: 100%;
 
-  #title-part-1 {
-    color: $item-active-color;
-  }
-
-  #title-part-2 {
+    img {
+      vertical-align: middle;
+      height: 30px;
+    }
   }
 
   #logos {

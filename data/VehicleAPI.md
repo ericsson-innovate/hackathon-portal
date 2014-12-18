@@ -1,16 +1,3 @@
-# AT&T Drive Vehicle API
-
-## Interfaces
-- [Vehicle Information](#vehicle-information)
-- [Navigation](#navigation)
-- [Identity](#identity)
-- [Application and System Settings](#application-and-system-settings)
-- [Notifications ](#notifications )
-- [Media](#media)
-- [SMS](#sms)
-- [Search service](#search-service)
-- [Site Automation (Digital Life](#site-automation)
-
 ## Context initialization
 Application must call the init function to setup the context of a given SDK before usage.
 The callback function will be called by DEC to notify the application of any changes made to its data store space made by external applications or components.
