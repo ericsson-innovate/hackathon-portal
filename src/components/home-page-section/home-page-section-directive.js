@@ -1,6 +1,6 @@
 angular.module('homePageSectionDirective', [])
 
-.constant('homePageSectionTemplatePath', hack.rootPath + '/dist/templates/components/home-page-section/home-page-section.html')
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
 
 .directive('homePageSection', function (homePageSectionTemplatePath) {
   return {

@@ -4,9 +4,6 @@
 
 var projectName = 'hackathon-portal',
 
-    rootPath = '/hackathon-portal',
-    //rootPath = '',
-
     testsSrc = 'src/**/*_test.js',
     dataWebExamplesTestsSrc = 'data/examples/web/**/*_test.js',
 
@@ -79,7 +76,6 @@ gulp.task('ejs', function () {
   return gulp.src(ejsSrc)
       .pipe(plugins.plumber())
       .pipe(plugins.ejs({
-        rootPath: rootPath
       }))
       .pipe(gulp.dest(ejsDist));
 });

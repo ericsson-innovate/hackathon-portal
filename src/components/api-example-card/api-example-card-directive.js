@@ -2,7 +2,7 @@
 
 angular.module('apiExampleCardDirective', [])
 
-.constant('apiExampleCardTemplatePath', hack.rootPath + '/dist/templates/components/api-example-card/api-example-card.html')
+.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
 
 /**
  * @ngdoc directive

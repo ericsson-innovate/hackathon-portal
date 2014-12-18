@@ -1,6 +1,6 @@
 angular.module('headerDirective', [])
 
-.constant('headerTemplatePath', hack.rootPath + '/dist/templates/components/header/header.html')
+.constant('headerTemplatePath', document.baseURI + '/dist/templates/components/header/header.html')
 
 .directive('hackHeader', function (headerTemplatePath) {
   return {

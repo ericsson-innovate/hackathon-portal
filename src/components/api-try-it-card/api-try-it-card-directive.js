@@ -2,7 +2,7 @@
 
 angular.module('apiTryItCardDirective', [])
 
-.constant('apiTryItCardTemplatePath', hack.rootPath + '/dist/templates/components/api-try-it-card/api-try-it-card.html')
+.constant('apiTryItCardTemplatePath', document.baseURI + '/dist/templates/components/api-try-it-card/api-try-it-card.html')
 
 /**
  * @ngdoc directive

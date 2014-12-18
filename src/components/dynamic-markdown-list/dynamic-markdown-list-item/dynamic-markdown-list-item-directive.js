@@ -1,6 +1,6 @@
 angular.module('dynamicMarkdownListItemDirective', [])
 
-.constant('dynamicMarkdownListItemTemplatePath', hack.rootPath + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item.html')
+.constant('dynamicMarkdownListItemTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item.html')
 
 .directive('dynamicMarkdownListItem', function (MarkdownData, dynamicMarkdownListItemTemplatePath) {
   return {

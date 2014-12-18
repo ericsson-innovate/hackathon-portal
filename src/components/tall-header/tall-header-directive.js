@@ -1,6 +1,6 @@
 angular.module('tallHeaderDirective', [])
 
-.constant('tallHeaderTemplatePath', hack.rootPath + '/dist/templates/components/tall-header/tall-header.html')
+.constant('tallHeaderTemplatePath', document.baseURI + '/dist/templates/components/tall-header/tall-header.html')
 
 .directive('tallHeader', function ($rootScope, $interval, animations, tallHeaderTemplatePath) {
   return {

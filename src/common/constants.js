@@ -9,13 +9,13 @@ angular.module('hackApp')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
 //.constant('emulatorDomain', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
-  .constant('specificationUrl', hack.rootPath + '/dist/data/specifications.json')
-  .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
-  .constant('dataPath', hack.rootPath + '/data')
+  .constant('specificationUrl', document.baseURI + '/dist/data/specifications.json')
+  .constant('emptyImagePath', document.baseURI + '/dist/images/empty.gif')
+  .constant('dataPath', document.baseURI + '/data')
 
   .constant('androidExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master')
   .constant('iosExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master')
-  .constant('webExampleUrl', hack.rootPath)
+  .constant('webExampleUrl', document.baseURI)
 
   .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
@@ -41,7 +41,7 @@ angular.module('hackApp')
     {
       id: 'web-apps-api',
       label: 'Web Apps API',
-      url: hack.rootPath + '/dist/data/specifications.json',
+      url: document.baseURI + '/dist/data/specifications.json',
       type: 'json-api',
       sections: []
     },
@@ -58,7 +58,7 @@ angular.module('hackApp')
     {
       platform: 'android',
       humanReadablePlatform: 'Android',
-      iconUrl: hack.rootPath + '/dist/images/android-icon.png',
+      iconUrl: document.baseURI + '/dist/images/android-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-android',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master/README.md',
       readmeText: 'Loading README...'
@@ -66,7 +66,7 @@ angular.module('hackApp')
     {
       platform: 'ios',
       humanReadablePlatform: 'iOS',
-      iconUrl: hack.rootPath + '/dist/images/ios-icon.png',
+      iconUrl: document.baseURI + '/dist/images/ios-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-ios',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master/README.md',
       readmeText: 'Loading README...'
@@ -74,7 +74,7 @@ angular.module('hackApp')
     {
       platform: 'web',
       humanReadablePlatform: 'Web',
-      iconUrl: hack.rootPath + '/dist/images/web-icon.png',
+      iconUrl: document.baseURI + '/dist/images/web-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-javascript/master/README.md',
       readmeText: 'Loading README...'
@@ -82,7 +82,7 @@ angular.module('hackApp')
     {
       platform: 'angularjs',
       humanReadablePlatform: 'AT&T Drive UI Kit',
-      iconUrl: hack.rootPath + '/dist/images/angularjs-icon.png',
+      iconUrl: document.baseURI + '/dist/images/angularjs-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
       readmeUrl: 'https://raw.githubusercontent.com/ericsson-innovate/ATT-Drive-UI-Framework/master/README.md',
       readmeText: 'Loading README...'
@@ -94,7 +94,7 @@ angular.module('hackApp')
       ref: 'home',
       url: '/home',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/home/home.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/home/home.html',
       controller: 'HomeCtrl',
       defaultParams: {
       }
@@ -104,7 +104,7 @@ angular.module('hackApp')
       //url: '/web-apps-api/:sectionId/:categoryId/:callId',
       url: '/web-apps-api',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/web-apps-api.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/web-apps-api.html',
       controller: 'WebAppsApiCtrl',
       defaultParams: {
         //sectionId: 'api-documentation',
@@ -117,7 +117,7 @@ angular.module('hackApp')
       ref: 'vehicle-apps-api',
       url: '/vehicle-apps-api/:sectionId',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
       defaultParams: {
         sectionId: 'context-initialization'
@@ -127,7 +127,7 @@ angular.module('hackApp')
       ref: 'vehicle-ui-api',
       url: '/vehicle-ui-api/:sectionId',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
       defaultParams: {
         sectionId: 'context-initialization'
@@ -137,7 +137,7 @@ angular.module('hackApp')
       ref: 'setup',
       url: '/setup/:sectionId',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
       defaultParams: {
         sectionId: 'introduction'
@@ -212,7 +212,7 @@ angular.module('hackApp')
       },
       {
         isStateRoute: false,
-        url: hack.rootPath + '/#/web-apps-api/api-documentation/know-car',
+        url: document.baseURI + '/#/web-apps-api/api-documentation/know-car',
         label: 'Web API'
       }
     ]
@@ -224,7 +224,7 @@ angular.module('hackApp')
       ref: 'web-apps-api.getting-started',
       label: 'Getting Started',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     },
     {
@@ -232,7 +232,7 @@ angular.module('hackApp')
       ref: 'web-apps-api.api-documentation',
       label: 'API Documentation',
       url: '/api-documentation',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
       controller: 'ApiDocumentationCtrl'
     },
     {
@@ -240,7 +240,7 @@ angular.module('hackApp')
       ref: 'web-apps-api.sample-apps',
       label: 'Sample Apps',
       url: '/sample-apps',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
       controller: 'SampleAppsCtrl'
     }
   ])

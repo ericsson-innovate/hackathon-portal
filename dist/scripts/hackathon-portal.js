@@ -116,13 +116,13 @@ angular.module('hackApp')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
 //.constant('emulatorDomain', 'http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com')
 
-  .constant('specificationUrl', hack.rootPath + '/dist/data/specifications.json')
-  .constant('emptyImagePath', hack.rootPath + '/dist/images/empty.gif')
-  .constant('dataPath', hack.rootPath + '/data')
+  .constant('specificationUrl', document.baseURI + '/dist/data/specifications.json')
+  .constant('emptyImagePath', document.baseURI + '/dist/images/empty.gif')
+  .constant('dataPath', document.baseURI + '/data')
 
   .constant('androidExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master')
   .constant('iosExampleUrl', 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master')
-  .constant('webExampleUrl', hack.rootPath)
+  .constant('webExampleUrl', document.baseURI)
 
   .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
@@ -148,7 +148,7 @@ angular.module('hackApp')
     {
       id: 'web-apps-api',
       label: 'Web Apps API',
-      url: hack.rootPath + '/dist/data/specifications.json',
+      url: document.baseURI + '/dist/data/specifications.json',
       type: 'json-api',
       sections: []
     },
@@ -165,7 +165,7 @@ angular.module('hackApp')
     {
       platform: 'android',
       humanReadablePlatform: 'Android',
-      iconUrl: hack.rootPath + '/dist/images/android-icon.png',
+      iconUrl: document.baseURI + '/dist/images/android-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-android',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-android/master/README.md',
       readmeText: 'Loading README...'
@@ -173,7 +173,7 @@ angular.module('hackApp')
     {
       platform: 'ios',
       humanReadablePlatform: 'iOS',
-      iconUrl: hack.rootPath + '/dist/images/ios-icon.png',
+      iconUrl: document.baseURI + '/dist/images/ios-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-ios',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-ios/master/README.md',
       readmeText: 'Loading README...'
@@ -181,7 +181,7 @@ angular.module('hackApp')
     {
       platform: 'web',
       humanReadablePlatform: 'Web',
-      iconUrl: hack.rootPath + '/dist/images/web-icon.png',
+      iconUrl: document.baseURI + '/dist/images/web-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-javascript/master/README.md',
       readmeText: 'Loading README...'
@@ -189,7 +189,7 @@ angular.module('hackApp')
     {
       platform: 'angularjs',
       humanReadablePlatform: 'AT&T Drive UI Kit',
-      iconUrl: hack.rootPath + '/dist/images/angularjs-icon.png',
+      iconUrl: document.baseURI + '/dist/images/angularjs-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
       readmeUrl: 'https://raw.githubusercontent.com/ericsson-innovate/ATT-Drive-UI-Framework/master/README.md',
       readmeText: 'Loading README...'
@@ -201,7 +201,7 @@ angular.module('hackApp')
       ref: 'home',
       url: '/home',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/home/home.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/home/home.html',
       controller: 'HomeCtrl',
       defaultParams: {
       }
@@ -211,7 +211,7 @@ angular.module('hackApp')
       //url: '/web-apps-api/:sectionId/:categoryId/:callId',
       url: '/web-apps-api',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/web-apps-api.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/web-apps-api.html',
       controller: 'WebAppsApiCtrl',
       defaultParams: {
         //sectionId: 'api-documentation',
@@ -224,7 +224,7 @@ angular.module('hackApp')
       ref: 'vehicle-apps-api',
       url: '/vehicle-apps-api/:sectionId',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
       defaultParams: {
         sectionId: 'context-initialization'
@@ -234,7 +234,7 @@ angular.module('hackApp')
       ref: 'vehicle-ui-api',
       url: '/vehicle-ui-api/:sectionId',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
       defaultParams: {
         sectionId: 'context-initialization'
@@ -244,7 +244,7 @@ angular.module('hackApp')
       ref: 'setup',
       url: '/setup/:sectionId',
       isAbstract: false,
-      templateUrl: hack.rootPath + '/dist/templates/routes/api-docs/api-docs.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
       defaultParams: {
         sectionId: 'introduction'
@@ -319,7 +319,7 @@ angular.module('hackApp')
       },
       {
         isStateRoute: false,
-        url: hack.rootPath + '/#/web-apps-api/api-documentation/know-car',
+        url: document.baseURI + '/#/web-apps-api/api-documentation/know-car',
         label: 'Web API'
       }
     ]
@@ -331,7 +331,7 @@ angular.module('hackApp')
       ref: 'web-apps-api.getting-started',
       label: 'Getting Started',
       url: '/getting-started',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl'
     },
     {
@@ -339,7 +339,7 @@ angular.module('hackApp')
       ref: 'web-apps-api.api-documentation',
       label: 'API Documentation',
       url: '/api-documentation',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
       controller: 'ApiDocumentationCtrl'
     },
     {
@@ -347,7 +347,7 @@ angular.module('hackApp')
       ref: 'web-apps-api.sample-apps',
       label: 'Sample Apps',
       url: '/sample-apps',
-      templateUrl: hack.rootPath + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
+      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
       controller: 'SampleAppsCtrl'
     }
   ])
@@ -540,8 +540,8 @@ angular.module('errorDescriptionFilter', [])
 
 angular.module('hackController', [])
 
-  .constant('car1Url', hack.rootPath + '/dist/images/car-1.png')
-  .constant('car2Url', hack.rootPath + '/dist/images/car-2.png')
+  .constant('car1Url', document.baseURI + '/dist/images/car-1.png')
+  .constant('car2Url', document.baseURI + '/dist/images/car-2.png')
 
   .controller('HackCtrl', function ($scope) {
     $scope.hackState = {};
@@ -1329,7 +1329,7 @@ angular.module('tryItService', [])
 
 angular.module('apiExampleCardDirective', [])
 
-.constant('apiExampleCardTemplatePath', hack.rootPath + '/dist/templates/components/api-example-card/api-example-card.html')
+.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
 
 /**
  * @ngdoc directive
@@ -1357,9 +1357,83 @@ angular.module('apiExampleCardDirective', [])
 
 'use strict';
 
+angular.module('apiListDirective', [])
+
+.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
+
+/**
+ * @ngdoc directive
+ * @name apiList
+ * @requires HackApi
+ * @requires apiListTemplatePath
+ * @description
+ *
+ * A footer list used for displaying a list of navigation links.
+ */
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      category: '='
+    },
+    templateUrl: apiListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
+
+      HackApi.getAllApiData()
+          .then(function (apiData) {
+            scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
+          });
+
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
+      });
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiSpecificationCardDirective', [])
+
+.constant('apiSpecificationCardTemplatePath', document.baseURI + '/dist/templates/components/api-specification-card/api-specification-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiSpecificationCard
+ * @requires apiSpecificationCardTemplatePath
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel used for displaying the specification for a single API call.
+ */
+.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiSpecificationCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.isArray = function (input) {
+        return input instanceof Array;
+      };
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListItemDirective', [])
 
-.constant('apiListItemTemplatePath', hack.rootPath + '/dist/templates/components/api-list-item/api-list-item.html')
+.constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
 
 /**
  * @ngdoc directive
@@ -1423,83 +1497,9 @@ angular.module('apiListItemDirective', [])
 
 'use strict';
 
-angular.module('apiListDirective', [])
-
-.constant('apiListTemplatePath', hack.rootPath + '/dist/templates/components/api-list/api-list.html')
-
-/**
- * @ngdoc directive
- * @name apiList
- * @requires HackApi
- * @requires apiListTemplatePath
- * @description
- *
- * A footer list used for displaying a list of navigation links.
- */
-.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      category: '='
-    },
-    templateUrl: apiListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiListState = {};
-      scope.apiListState.apiData = [];
-      scope.apiListState.selectedItemId = null;
-
-      HackApi.getAllApiData()
-          .then(function (apiData) {
-            scope.apiListState.apiData = apiData;
-
-            if ($rootScope.selectedApi != null) {
-              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
-              console.log(scope.apiListState.selectedItemId);
-            }
-          });
-
-      scope.$watch('category', function () {
-        scope.apiListState.selectedItemId = null;
-      });
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiSpecificationCardDirective', [])
-
-.constant('apiSpecificationCardTemplatePath', hack.rootPath + '/dist/templates/components/api-specification-card/api-specification-card.html')
-
-/**
- * @ngdoc directive
- * @name apiSpecificationCard
- * @requires apiSpecificationCardTemplatePath
- * @param {Object} apiItem
- * @description
- *
- * A panel used for displaying the specification for a single API call.
- */
-.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiSpecificationCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.isArray = function (input) {
-        return input instanceof Array;
-      };
-    }
-  };
-});
-
-'use strict';
-
 angular.module('apiTryItCardDirective', [])
 
-.constant('apiTryItCardTemplatePath', hack.rootPath + '/dist/templates/components/api-try-it-card/api-try-it-card.html')
+.constant('apiTryItCardTemplatePath', document.baseURI + '/dist/templates/components/api-try-it-card/api-try-it-card.html')
 
 /**
  * @ngdoc directive
@@ -1684,7 +1684,7 @@ angular.module('apiTryItCardDirective', [])
 
 angular.module('dynamicMarkdownListDirective', [])
 
-.constant('dynamicMarkdownListTemplatePath', hack.rootPath + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
+.constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
 
 .directive('dynamicMarkdownList', function (MarkdownData, dynamicMarkdownListTemplatePath) {
   return {
@@ -1716,7 +1716,7 @@ angular.module('dynamicMarkdownListDirective', [])
 
 angular.module('headerDirective', [])
 
-.constant('headerTemplatePath', hack.rootPath + '/dist/templates/components/header/header.html')
+.constant('headerTemplatePath', document.baseURI + '/dist/templates/components/header/header.html')
 
 .directive('hackHeader', function (headerTemplatePath) {
   return {
@@ -1732,7 +1732,7 @@ angular.module('headerDirective', [])
 
 angular.module('homePageSectionDirective', [])
 
-.constant('homePageSectionTemplatePath', hack.rootPath + '/dist/templates/components/home-page-section/home-page-section.html')
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
 
 .directive('homePageSection', function (homePageSectionTemplatePath) {
   return {
@@ -1800,7 +1800,7 @@ angular.module('markdownBlockDirective', [])
 
 angular.module('shortHeaderDirective', [])
 
-.constant('shortHeaderTemplatePath', hack.rootPath + '/dist/templates/components/short-header/short-header.html')
+.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
 
 .directive('shortHeader', function ($rootScope, $interval, animations, shortHeaderTemplatePath) {
   return {
@@ -1819,7 +1819,7 @@ angular.module('shortHeaderDirective', [])
 
 angular.module('tallHeaderDirective', [])
 
-.constant('tallHeaderTemplatePath', hack.rootPath + '/dist/templates/components/tall-header/tall-header.html')
+.constant('tallHeaderTemplatePath', document.baseURI + '/dist/templates/components/tall-header/tall-header.html')
 
 .directive('tallHeader', function ($rootScope, $interval, animations, tallHeaderTemplatePath) {
   return {
@@ -2019,7 +2019,7 @@ angular.module('webAppsApiController', [])
 
 angular.module('dynamicMarkdownListItemDirective', [])
 
-.constant('dynamicMarkdownListItemTemplatePath', hack.rootPath + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item.html')
+.constant('dynamicMarkdownListItemTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item.html')
 
 .directive('dynamicMarkdownListItem', function (MarkdownData, dynamicMarkdownListItemTemplatePath) {
   return {
@@ -2059,20 +2059,6 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
-
-'use strict';
-
 angular.module('sampleAppsController', [])
 
 /**
@@ -2085,4 +2071,18 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });
