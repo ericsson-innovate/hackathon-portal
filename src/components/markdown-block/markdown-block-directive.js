@@ -2,7 +2,6 @@ angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
       var codeBlockRegex = /<pre>\s*<code(?: class="(.*?)")?>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
-      var codeBlockReplacement = '<div hljs source="\'$2\'" class="language-($1)"></div>';
 
       return {
         restrict: 'E',
@@ -42,7 +41,21 @@ angular.module('markdownBlockDirective', [])
            * @returns {String}
            */
           function parseHtmlForSyntaxHighlighting(htmlText) {
-            return htmlText.replace(codeBlockRegex, codeBlockReplacement);
+            return htmlText.replace(codeBlockRegex, replacer);
+
+            // ---  --- //
+
+            function replacer(match, $1, $2) {
+              return '<div hljs source="\'' + htmlEncode($2) + '\'" class="language-' + $1 + '"></div>';
+            }
+
+            function htmlEncode(s) {
+              return s
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+            }
           }
         }
       };

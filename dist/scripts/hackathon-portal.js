@@ -1516,38 +1516,6 @@ angular.module('apiSpecificationCardDirective', [])
   };
 });
 
-angular.module('dynamicMarkdownListDirective', [])
-
-.constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
-
-.directive('dynamicMarkdownList', function (MarkdownData, dynamicMarkdownListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      id: '@'
-    },
-    templateUrl: dynamicMarkdownListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.markdownListState = {};
-      scope.markdownListState.sections = [];
-      scope.markdownListState.selectedSection = null;
-
-      MarkdownData.fetchDocumentation(scope.url)
-        .then(onMarkdownUpdate)
-        .catch(function (error) {
-          console.error(error);
-        });
-
-      // ---  --- //
-
-      function onMarkdownUpdate() {
-        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
-        scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
-      }
-    }
-  };
-});
-
 'use strict';
 
 angular.module('apiTryItCardDirective', [])
@@ -1735,20 +1703,34 @@ angular.module('apiTryItCardDirective', [])
   };
 });
 
-angular.module('homePageSectionDirective', [])
+angular.module('dynamicMarkdownListDirective', [])
 
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+.constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
 
-.directive('homePageSection', function (homePageSectionTemplatePath) {
+.directive('dynamicMarkdownList', function (MarkdownData, dynamicMarkdownListTemplatePath) {
   return {
     restrict: 'E',
-    transclude: true,
     scope: {
-      title: '@',
-      sideBarLinks: '='
+      id: '@'
     },
-    templateUrl: homePageSectionTemplatePath,
+    templateUrl: dynamicMarkdownListTemplatePath,
     link: function (scope, element, attrs) {
+      scope.markdownListState = {};
+      scope.markdownListState.sections = [];
+      scope.markdownListState.selectedSection = null;
+
+      MarkdownData.fetchDocumentation(scope.url)
+        .then(onMarkdownUpdate)
+        .catch(function (error) {
+          console.error(error);
+        });
+
+      // ---  --- //
+
+      function onMarkdownUpdate() {
+        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
+        scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
+      }
     }
   };
 });
@@ -1769,11 +1751,29 @@ angular.module('headerDirective', [])
   };
 });
 
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      title: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
       var codeBlockRegex = /<pre>\s*<code(?: class="(.*?)")?>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
-      var codeBlockReplacement = '<div hljs source="\'$2\'" class="language-($1)"></div>';
+      var codeBlockReplacement = '<div hljs source="$2" class="language-$1"></div>';
 
       return {
         restrict: 'E',
@@ -1813,7 +1813,47 @@ angular.module('markdownBlockDirective', [])
            * @returns {String}
            */
           function parseHtmlForSyntaxHighlighting(htmlText) {
-            return htmlText.replace(codeBlockRegex, codeBlockReplacement);
+            return htmlText.replace(codeBlockRegex, replacer);
+
+            // ---  --- //
+
+            function replacer(match, $1, $2) {
+              return '<div hljs source="\'' + htmlEncode($2) + '\'" class="language-' + $1 + '"></div>';
+            }
+
+            function htmlEncode(s) {
+              return s
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+            }
+
+            //var match1Index = codeBlockReplacement.indexOf('$1');
+            //var match2Index = codeBlockReplacement.indexOf('$2');
+            //
+            //var result;
+            //var lastIndex = 0;
+            //var parsedText = '';
+            //
+            //codeBlockRegex.lastIndex = 0;
+            //
+            //while ((result = codeBlockRegex.exec(htmlText)) !== null) {
+            //  // Copy the un-matched portion
+            //  parsedText += htmlText.substring(lastIndex, result.index);
+            //
+            //  // Parse the matched portion
+            //  parsedText += codeBlockReplacement
+            //    .replace(, result[1])
+            //    .replace('$2', result[2]);
+            //
+            //  lastIndex = codeBlockRegex.lastIndex;
+            //}
+            //
+            //// Copy the ending, un-matched portion
+            //parsedText += htmlText.substring(lastIndex);
+            //
+            //return parsedText;
           }
         }
       };
@@ -2073,20 +2113,6 @@ angular.module('dynamicMarkdownListItemDirective', [])
 
 'use strict';
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
-
-'use strict';
-
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2097,6 +2123,20 @@ angular.module('apiDocumentationController', [])
  * Controller for the API Documentation page.
  */
 .controller('ApiDocumentationCtrl', function () {
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });
 
 'use strict';
