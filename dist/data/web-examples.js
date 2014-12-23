@@ -1091,6 +1091,7 @@ AJAX({
 
 
 
+
 // ## START 2.6.2-validate-otp
 AJAX({
   "type": "POST",
@@ -1173,6 +1174,45 @@ AJAX({
 });
 // ## END 2.6.9-honk-and-blink
 
+
+// ## START 2.6.13-open-trunk
+AJAX({
+  "type": "POST",
+  "url": "/remoteservices/v1/vehicle/openTrunk/1TX123456789011223"
+});
+// ## END 2.6.13-open-trunk
+
+
+// ## START 2.6.14-honk
+AJAX({
+  "type": "POST",
+  "url": "/remoteservices/v1/vehicle/honk/1TX123456789011223"
+});
+// ## END 2.6.14-honk
+
+
+// ## START 2.6.15-blink
+AJAX({
+  "type": "POST",
+  "url": "/remoteservices/v1/vehicle/blink/1TX123456789011223"
+});
+// ## END 2.6.15-blink
+
+
+// ## START 2.6.16-car-alarm-on
+AJAX({
+  "type": "POST",
+  "url": "/remoteservices/v1/vehicle/carAlarmOn/1TX123456789011223"
+});
+// ## END 2.6.16-car-alarm-on
+
+
+// ## START 2.6.17-car-alarm-off
+AJAX({
+  "type": "POST",
+  "url": "/remoteservices/v1/vehicle/carAlarmOff/1TX123456789011223"
+});
+// ## END 2.6.17-car-alarm-off
 
 
 // ## START 2.7.1-get-message

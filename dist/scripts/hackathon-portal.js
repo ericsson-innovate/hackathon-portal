@@ -1338,6 +1338,36 @@ angular.module('tryItService', [])
 
 'use strict';
 
+angular.module('apiExampleCardDirective', [])
+
+.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiExampleCard
+ * @requires apiExampleCardTemplatePath
+ * @param {object} example
+ * @description
+ *
+ * A panel used for displaying platform-specific examples of a single API call.
+ */
+.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiExampleCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListDirective', [])
 
 .constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
@@ -1380,36 +1410,6 @@ angular.module('apiListDirective', [])
   };
 });
 
-'use strict';
-
-angular.module('apiExampleCardDirective', [])
-
-.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
-
-/**
- * @ngdoc directive
- * @name apiExampleCard
- * @requires apiExampleCardTemplatePath
- * @param {object} example
- * @description
- *
- * A panel used for displaying platform-specific examples of a single API call.
- */
-.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.handleTabClick = function (platform) {
-        scope.apiItem.HackExamples.currentPlatform = platform;
-      };
-    }
-  };
-});
-
 angular.module('apiSectionBlockDirective', [])
 
 .constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
@@ -1426,36 +1426,6 @@ angular.module('apiSectionBlockDirective', [])
 
     link: function (scope, element, attrs) {
       element.attr('id', scope.section.id);
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiSpecificationCardDirective', [])
-
-.constant('apiSpecificationCardTemplatePath', document.baseURI + '/dist/templates/components/api-specification-card/api-specification-card.html')
-
-/**
- * @ngdoc directive
- * @name apiSpecificationCard
- * @requires apiSpecificationCardTemplatePath
- * @param {Object} apiItem
- * @description
- *
- * A panel used for displaying the specification for a single API call.
- */
-.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiSpecificationCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.isArray = function (input) {
-        return input instanceof Array;
-      };
     }
   };
 });
@@ -1521,6 +1491,36 @@ angular.module('apiListItemDirective', [])
           targetRef = targetRef + '.' + scope.apiItem.ref;
         
         $state.go(targetRef);
+      };
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiSpecificationCardDirective', [])
+
+.constant('apiSpecificationCardTemplatePath', document.baseURI + '/dist/templates/components/api-specification-card/api-specification-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiSpecificationCard
+ * @requires apiSpecificationCardTemplatePath
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel used for displaying the specification for a single API call.
+ */
+.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiSpecificationCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.isArray = function (input) {
+        return input instanceof Array;
       };
     }
   };
@@ -1779,6 +1779,24 @@ angular.module('homePageSectionDirective', [])
   };
 });
 
+angular.module('shortHeaderDirective', [])
+
+.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
+
+.directive('shortHeader', function (shortHeaderTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+    },
+
+    templateUrl: shortHeaderTemplatePath,
+
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
@@ -1841,24 +1859,6 @@ angular.module('markdownBlockDirective', [])
         }
       };
     });
-
-angular.module('shortHeaderDirective', [])
-
-.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
-
-.directive('shortHeader', function (shortHeaderTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-    },
-
-    templateUrl: shortHeaderTemplatePath,
-
-    link: function (scope, element, attrs) {
-    }
-  };
-});
 
 angular.module('tallHeaderDirective', [])
 
@@ -2001,6 +2001,13 @@ angular.module('apiDocsController', [])
     }
   });
 
+angular.module('homeController', [])
+
+  .controller('HomeCtrl', function ($scope, homeSectionsSideBarLinks) {
+    $scope.homeState = {};
+    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
+  });
+
 angular.module('webAppsApiController', [])
 
   .controller('WebAppsApiCtrl', function ($scope, $rootScope, $state, $timeout, sideBarLinks, categories) {
@@ -2059,13 +2066,6 @@ angular.module('webAppsApiController', [])
       // Transition to the API documentation route/state
       $state.go('web-apps-api.api-documentation.' + category.id);
     }
-  });
-
-angular.module('homeController', [])
-
-  .controller('HomeCtrl', function ($scope, homeSectionsSideBarLinks) {
-    $scope.homeState = {};
-    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
   });
 
 angular.module('dynamicMarkdownListItemDirective', [])
