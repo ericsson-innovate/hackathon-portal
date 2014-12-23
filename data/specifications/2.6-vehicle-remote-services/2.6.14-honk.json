@@ -1,0 +1,79 @@
+{
+  "id": "2.6.14-honk",
+  "docNumber": "2.6.14",
+  "displayWeight": "349", // TODO: what is this?
+  "name": "Honk",
+  "description": "Client application can use this API to sound vehicle horn.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
+  "categories": ["control-car"],
+  "subCategories": [],
+  "resourceTable": {
+    "Route": "/remoteservices/v1/vehicle/honk/{vin}", // TODO: verify endpoint
+    "HTTP Verb": ["POST"],
+    "API Key": "Application-specific API Key. The key can be provided as part of application on-boarding to ASDP.",
+    "Authentication": "Basic Authentication: Base64(username:pin)"
+  },
+  "parameters": {
+    "route": {
+      "vin": "Represents the vehicle identification number"
+    },
+    "requestBody": [
+      {
+        "key": "latitude",
+        "type": "Double",
+        "required": false,
+        "description": "Latitude of device running remote services application."
+      },
+      {
+        "key": "longitude",
+        "type": "Double",
+        "required": false,
+        "description": "Longitude of device running remote services application."
+      },
+      {
+        "key": "accuracy",
+        "type": "Float",
+        "required": false,
+        "description": "Accuracy of GPS in meters."
+      }
+    ],
+    "responseBody": [
+      {
+        "key": "requestId",
+        "type": "Integer",
+        "required": true,
+        "description": "Request identifier to query request status"
+      },
+      {
+        "key": "requestTime",
+        "type": "String",
+        "required": false,
+        "description": "User may specify a username."
+      }
+    ]
+  },
+  "errors": [
+    400,
+    401,
+    403,
+    500
+  ],
+  "examples": [
+    {
+      "type": "request",
+      "verb": "POST",
+      "route": "/remoteservices/v1/vehicle/honk/1TX123456789011223"
+    },
+    {
+      "type": "response",
+      "body": {
+        "requestId": 14,
+        "requestTime": "2013-08-04T12:08:56.235-0700"
+      }
+    }
+  ],
+  "codeExamples": {
+    "android": "/app/src/com/idean/atthack/network/RequestHelper.java",
+    "ios": "/ASDP%20Sampler/Network/ASDPRequestManager.m",
+    "web": "/dist/data/web-examples.js"
+  }
+}

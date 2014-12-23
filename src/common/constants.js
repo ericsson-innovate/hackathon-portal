@@ -276,7 +276,12 @@ angular.module('hackApp')
       '2.6.9-honk-and-blink',
       '2.6.10-check-request-status',
       '2.6.11-view-diagnostic-data',
-      '2.6.12-get-vehicle-status'
+      '2.6.12-get-vehicle-status',
+      '2.6.13-open-trunk',
+      '2.6.14-honk',
+      '2.6.15-blink',
+      '2.6.16-car-alarm-on',
+      '2.6.17-car-alarm-off'
     ],
     '2.7-vehicle-telematics': [
       '2.7.1-get-message',
@@ -285,12 +290,12 @@ angular.module('hackApp')
       '2.7.4-ping-tcu',
       '2.7.5-tcu-notification-channel'
     ],
-    '2.12-commerce': [
-      '2.12.1-consume',
-      '2.12.9-get-products',
-      '2.12.11-get-user-purchases',
-      '2.12.15-purchase'
-    ],
+    // '2.12-commerce': [
+    //   '2.12.1-consume',
+    //   '2.12.9-get-products',
+    //   '2.12.11-get-user-purchases',
+    //   '2.12.15-purchase'
+    // ],
     '2.13-subscriber-management': [
       '2.13.1-add-a-subscriber',
       '2.13.2-add-a-subscriber-and-vehicle',
@@ -381,6 +386,11 @@ angular.module('hackApp')
         '2.6.7-engine-on',
         '2.6.8-engine-off',
         '2.6.9-honk-and-blink',
+        '2.6.13-open-trunk',
+        '2.6.14-honk',
+        '2.6.15-blink',
+        '2.6.16-car-alarm-on',
+        '2.6.17-car-alarm-off',
         '2.6.10-check-request-status',
         '2.7.1-get-message',
         '2.7.2-send-message',
