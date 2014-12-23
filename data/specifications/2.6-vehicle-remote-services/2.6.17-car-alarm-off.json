@@ -1,13 +1,12 @@
 {
   "id": "2.6.17-car-alarm-off",
   "docNumber": "2.6.17",
-  "displayWeight": "349", // TODO: what is this?
   "name": "Car Alarm Off",
   "description": "Client application can use this API to disable a sounding car alarm.\nSome markets may have vehicle proximity regulations that make device coordinates parameters mandatory.",
   "categories": ["control-car"],
   "subCategories": [],
   "resourceTable": {
-    "Route": "/remoteservices/v1/vehicle/carAlarmOff/{vin}", // TODO: verify endpoint
+    "Route": "/remoteservices/v1/vehicle/carAlarmOff/{vin}",
     "HTTP Verb": ["POST"],
     "API Key": "Application-specific API Key. The key can be provided as part of application on-boarding to ASDP.",
     "Authentication": "Basic Authentication: Base64(username:pin)"

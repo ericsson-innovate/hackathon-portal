@@ -384,7 +384,12 @@ angular.module('hackApp')
       '2.6.9-honk-and-blink',
       '2.6.10-check-request-status',
       '2.6.11-view-diagnostic-data',
-      '2.6.12-get-vehicle-status'
+      '2.6.12-get-vehicle-status',
+      '2.6.13-open-trunk',
+      '2.6.14-honk',
+      '2.6.15-blink',
+      '2.6.16-car-alarm-on',
+      '2.6.17-car-alarm-off'
     ],
     '2.7-vehicle-telematics': [
       '2.7.1-get-message',
@@ -393,12 +398,12 @@ angular.module('hackApp')
       '2.7.4-ping-tcu',
       '2.7.5-tcu-notification-channel'
     ],
-    '2.12-commerce': [
-      '2.12.1-consume',
-      '2.12.9-get-products',
-      '2.12.11-get-user-purchases',
-      '2.12.15-purchase'
-    ],
+    // '2.12-commerce': [
+    //   '2.12.1-consume',
+    //   '2.12.9-get-products',
+    //   '2.12.11-get-user-purchases',
+    //   '2.12.15-purchase'
+    // ],
     '2.13-subscriber-management': [
       '2.13.1-add-a-subscriber',
       '2.13.2-add-a-subscriber-and-vehicle',
@@ -428,34 +433,34 @@ angular.module('hackApp')
         '2.13.3-update-a-subscriber',
         '2.13.4-delete-a-subscriber',
         '2.13.5-view-a-subscriber',
-        '2.13.6-search-subscribers',
-        '2.12.1-consume',
-        '2.12.2-consume-by-ticket-id',
-        '2.12.3-check-valid-ticket',
-        '2.12.4-create-premium-offers',
-        '2.12.5-deactivate-one-time-purchase',
-        '2.12.6-deactivate-recurrent-purchase',
-        '2.12.7-full-purchase',
-        '2.12.8-get-prices',
-        '2.12.9-get-products',
-        '2.12.10-get-products-by-ids',
-        '2.12.11-get-user-purchases',
-        '2.12.12-get-user-tickets',
-        '2.12.13-get-tickets-by-purchase-id',
-        '2.12.14-get-tickets-by-ticket-id',
-        '2.12.15-purchase',
-        '2.12.16-purchase-by-premium-offer-id',
-        '2.12.17-purchase-by-product-id',
-        '2.12.18-refund',
-        '2.12.19-resume-recurrent-purchase',
-        '2.12.20-stop-purchase-renewal',
-        '2.12.21-extend-one-time-purchase',
-        '2.12.22-extend-recurrent-purchase',
-        '2.12.23-full-gift',
-        '2.12.24-gift',
-        '2.12.25-gift-by-product-id',
-        '2.12.26-gift-by-premium-offer-id',
-        '2.12.27-refill'
+        '2.13.6-search-subscribers'
+        // '2.12.1-consume',
+        // '2.12.2-consume-by-ticket-id',
+        // '2.12.3-check-valid-ticket',
+        // '2.12.4-create-premium-offers',
+        // '2.12.5-deactivate-one-time-purchase',
+        // '2.12.6-deactivate-recurrent-purchase',
+        // '2.12.7-full-purchase',
+        // '2.12.8-get-prices',
+        // '2.12.9-get-products',
+        // '2.12.10-get-products-by-ids',
+        // '2.12.11-get-user-purchases',
+        // '2.12.12-get-user-tickets',
+        // '2.12.13-get-tickets-by-purchase-id',
+        // '2.12.14-get-tickets-by-ticket-id',
+        // '2.12.15-purchase',
+        // '2.12.16-purchase-by-premium-offer-id',
+        // '2.12.17-purchase-by-product-id',
+        // '2.12.18-refund',
+        // '2.12.19-resume-recurrent-purchase',
+        // '2.12.20-stop-purchase-renewal',
+        // '2.12.21-extend-one-time-purchase',
+        // '2.12.22-extend-recurrent-purchase',
+        // '2.12.23-full-gift',
+        // '2.12.24-gift',
+        // '2.12.25-gift-by-product-id',
+        // '2.12.26-gift-by-premium-offer-id',
+        // '2.12.27-refill'
       ]
     },
     {
@@ -489,6 +494,11 @@ angular.module('hackApp')
         '2.6.7-engine-on',
         '2.6.8-engine-off',
         '2.6.9-honk-and-blink',
+        '2.6.13-open-trunk',
+        '2.6.14-honk',
+        '2.6.15-blink',
+        '2.6.16-car-alarm-on',
+        '2.6.17-car-alarm-off',
         '2.6.10-check-request-status',
         '2.7.1-get-message',
         '2.7.2-send-message',
@@ -1358,50 +1368,6 @@ angular.module('apiExampleCardDirective', [])
 
 'use strict';
 
-angular.module('apiListDirective', [])
-
-.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
-
-/**
- * @ngdoc directive
- * @name apiList
- * @requires HackApi
- * @requires apiListTemplatePath
- * @description
- *
- * A footer list used for displaying a list of navigation links.
- */
-.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      category: '='
-    },
-    templateUrl: apiListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiListState = {};
-      scope.apiListState.apiData = [];
-      scope.apiListState.selectedItemId = null;
-
-      HackApi.getAllApiData()
-          .then(function (apiData) {
-            scope.apiListState.apiData = apiData;
-
-            if ($rootScope.selectedApi != null) {
-              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
-              console.log(scope.apiListState.selectedItemId);
-            }
-          });
-
-      scope.$watch('category', function () {
-        scope.apiListState.selectedItemId = null;
-      });
-    }
-  };
-});
-
-'use strict';
-
 angular.module('apiListItemDirective', [])
 
 .constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
@@ -1482,6 +1448,50 @@ angular.module('apiSectionBlockDirective', [])
 
     link: function (scope, element, attrs) {
       element.attr('id', scope.section.id);
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiListDirective', [])
+
+.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
+
+/**
+ * @ngdoc directive
+ * @name apiList
+ * @requires HackApi
+ * @requires apiListTemplatePath
+ * @description
+ *
+ * A footer list used for displaying a list of navigation links.
+ */
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      category: '='
+    },
+    templateUrl: apiListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
+
+      HackApi.getAllApiData()
+          .then(function (apiData) {
+            scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
+          });
+
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
+      });
     }
   };
 });
@@ -1773,7 +1783,6 @@ angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
       var codeBlockRegex = /<pre>\s*<code(?: class="(.*?)")?>((?:.|\n)*?)<\/code>\s*<\/pre>/gi;
-      var codeBlockReplacement = '<div hljs source="$2" class="language-$1"></div>';
 
       return {
         restrict: 'E',
@@ -1828,32 +1837,6 @@ angular.module('markdownBlockDirective', [])
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;');
             }
-
-            //var match1Index = codeBlockReplacement.indexOf('$1');
-            //var match2Index = codeBlockReplacement.indexOf('$2');
-            //
-            //var result;
-            //var lastIndex = 0;
-            //var parsedText = '';
-            //
-            //codeBlockRegex.lastIndex = 0;
-            //
-            //while ((result = codeBlockRegex.exec(htmlText)) !== null) {
-            //  // Copy the un-matched portion
-            //  parsedText += htmlText.substring(lastIndex, result.index);
-            //
-            //  // Parse the matched portion
-            //  parsedText += codeBlockReplacement
-            //    .replace(, result[1])
-            //    .replace('$2', result[2]);
-            //
-            //  lastIndex = codeBlockRegex.lastIndex;
-            //}
-            //
-            //// Copy the ending, un-matched portion
-            //parsedText += htmlText.substring(lastIndex);
-            //
-            //return parsedText;
           }
         }
       };
