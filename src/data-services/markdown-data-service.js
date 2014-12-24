@@ -1,11 +1,11 @@
 angular.module('markdownDataService', [])
 
-  .factory('MarkdownData', function ($q, $http, $filter, $rootScope, dataCollections, dataLoadedEvent) {
+  .factory('MarkdownData', function ($q, $http, $filter, $rootScope, dataCollections, sideMenuGroups, dataLoadedEvent) {
     /**
      * @typedef {Object} Section
      * @property {Number} index
      * @property {String} id
-     * @property {String} title
+     * @property {String} label
      * @property {String} convertedMarkdown
      */
 
@@ -48,6 +48,17 @@ angular.module('markdownDataService', [])
                   break;
                 default:
                   throw new Error('Invalid data collection type: ' + collection.type);
+              }
+
+              // Add Markdown sections to the side menu for the Vehicle Apps API group
+              if (collection.id === 'vehicle-apps-api') {
+                collection.sections.forEach(function (section) {
+                  sideMenuGroups['vehicle-apps-api'].sections.push({
+                    isStateRoute: true,
+                    ref: 'api-docs.vehicle-apps-api({sectionId:\'' + section.id + '\'})',
+                    label: section.label
+                  });
+                });
               }
             });
         });
@@ -138,13 +149,13 @@ angular.module('markdownDataService', [])
 
       // ---  --- //
 
-      function addSection(title, convertedMarkdown) {
-        var id = $filter('sectionTitleToStateId')(title);
+      function addSection(label, convertedMarkdown) {
+        var id = $filter('sectionTitleToStateId')(label);
 
         sections[index] = {
           index: index,
           id: id,
-          title: title,
+          label: label,
           convertedMarkdown: convertedMarkdown
         };
 

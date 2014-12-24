@@ -16,7 +16,7 @@ angular.module('dynamicMarkdownListItemDirective', [])
       // ---  --- //
 
       function handleLabelClick() {
-        console.log('Dynamic Markdown list section label clicked', scope.title);
+        console.log('Dynamic Markdown list section label clicked', scope.label);
 
         scope.markdownListState.selectedSection = scope.section;
       }

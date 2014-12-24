@@ -2,24 +2,9 @@
 
 <div class="content-column content-block">
 
-  <ul class="side-menu">
+  <side-menu selected-item="apiDocsState.selectedItem"></side-menu>
 
-    <li ng-repeat="section in apiDocsState.selectedCollection.sections"
-        ng-class="{selected: apiDocsState.selectedSection === section}"
-        ng-click="handleSideBarLinkClick(section)">
-
-      <a ng-attr-ui-sref="section.id">
-        {{section.title}}
-      </a>
-    </li>
-  </ul>
-
-  <div class="inner-content-column">
-    <h1>
-      {{apiDocsState.selectedCollection.label}}
-    </h1>
-
-    <api-section-block ng-repeat="section in apiDocsState.selectedCollection.sections"
-                       section="section"></api-section-block>
+  <div class="inner-content-column"
+       ui-view>
   </div>
 </div>

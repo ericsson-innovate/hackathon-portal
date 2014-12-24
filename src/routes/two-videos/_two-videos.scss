@@ -1,0 +1,34 @@
+.two-videos-route {
+  > .content-column {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: $short-header-height;
+
+    .sub-column {
+      width: 45%;
+    }
+
+    h2 {
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    iframe {
+      margin: auto;
+    }
+
+    ul {
+      @extend .non-bulleted-list;
+      width: 130px;
+      margin: 40px auto;
+    }
+
+    li {
+      margin: 16px 0;
+    }
+
+    a {
+    }
+  }
+}

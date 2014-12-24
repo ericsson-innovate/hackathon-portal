@@ -161,6 +161,7 @@ button[disabled] {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  min-height: 400px;
 }
 
 .tabs {
@@ -272,34 +273,6 @@ h1 {
   margin-top: $short-header-height;
 }
 
-.side-menu {
-  @extend .non-bulleted-list;
-  position: fixed;
-  width: $side-menu-width;
-}
-
-.side-menu li > a {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: $side-menu-item-height;
-  font-size: $side-menu-font-size;
-  border: 0 solid #bfbfbf;
-  border-bottom-width: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.side-menu li:last-child > a {
-  border-bottom-width: 0;
-}
-
-.side-menu > li > div {
-  margin-top: 30px;
-  font-size: $side-menu-font-size;
-  text-transform: uppercase;
-}
-
 .api-documentation-categories {
   @extend .non-bulleted-list;
   width: calc(100% - 18px);
@@ -344,18 +317,8 @@ a:active,
 a:hover,
 a:visited {
   text-decoration: none;
-}
-
-.side-menu>li>a,
-.side-menu>li>a:active,
-.side-menu>li>a:hover,
-.side-menu>li>a:visited {
-  color: $item-inactive-color;
+  cursor: pointer;
   transition: color 0.25s;
-}
-
-.side-menu>li.selected>a {
-  color: $item-active-color;
 }
 
 footer {

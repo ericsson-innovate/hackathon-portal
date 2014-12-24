@@ -1,4 +1,4 @@
-.home-route {
+.head-unit-apps-route {
 
   overflow-x: hidden;
 
@@ -9,6 +9,8 @@
   }
 
   .sections {
+    margin-top: $short-header-height;
+
     home-page-section {
       background-color: $home-page-primary-background-color;
     }

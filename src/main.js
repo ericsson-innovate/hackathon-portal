@@ -22,11 +22,15 @@ angular.module('hackApp', [
 
   'hackController',
 
+  // Filters
+
   'categoryFilter',
   'errorDescriptionFilter',
   'orderApiCallsFilter',
   'sectionTitleToStateIdFilter',
   'unescapeJsonStringFilter',
+
+  // Components
 
   'apiListItemDirective',
   'apiSectionBlockDirective',
@@ -36,11 +40,13 @@ angular.module('hackApp', [
   'apiListDirective',
   'dynamicMarkdownListDirective',
   'dynamicMarkdownListItemDirective',
-  'headerDirective',
   'homePageSectionDirective',
   'markdownBlockDirective',
   'shortHeaderDirective',
+  'sideMenuDirective',
   'tallHeaderDirective',
+
+  // Data services
 
   'apiService',
   'examplesService',
@@ -48,19 +54,31 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
-  'webAppsApiController',
-  'homeController',
+  // Routes
+
   'apiDocsController',
+  'headUnitAppsController',
+  'twoVideosController',
+
+  'vehicleAppsApiController',
+
+  'carAppFrameworkController',
+  'sampleCarAppController',
+  'uiComponentsController',
 
   'apiDocumentationController',
   'gettingStartedController',
   'sampleAppsController'
 ])
 
-.run(function ($rootScope, $http, categories, sampleAppData, HackApi) {
-  $rootScope.defaultCategory = categories[2];
-  $rootScope.carouselHasRunOnce = false;
+  .config(function ($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'self',
+      '//www.youtube.com/embed/**'
+    ]);
+  })
 
+.run(function ($rootScope, $http, webAppsApiCategories, sampleAppData, HackApi) {
   // Pre-fetch all of the API data
   HackApi.fetchAllApiData();
 //      .then(loadSampleAppReadmeFiles);

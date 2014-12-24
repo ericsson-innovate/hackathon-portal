@@ -1,0 +1,22 @@
+<div class="side-menu-section"
+     ng-repeat="group in sideMenuGroups">
+  <h2>
+    {{group.label}}
+  </h2>
+
+  <ul>
+    <li ng-repeat="item in group.sections"
+        ng-class="{selected: selectedItem === item}"
+        ng-click="handleItemClick(item)">
+
+      <a ng-attr-ui-sref="{{item.ref}}"
+         ng-if="item.isStateRoute">
+        {{item.label}}
+      </a>
+      <a ng-href="{{item.url}}"
+         ng-if="!item.isStateRoute">
+        {{item.label}}
+      </a>
+    </li>
+  </ul>
+</div>

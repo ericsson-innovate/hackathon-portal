@@ -46,19 +46,19 @@ angular.module('apiListItemDirective', [])
       // };
 
       scope.handleHeaderClick = function (evt) {
-        // var rect = GetScreenCordinates(evt.target);
-        // window.scrollTo(0, rect.y);
 
         scope.apiListState.selectedItemId =
-                scope.apiListState.selectedItemId === scope.apiItem.specification.id ?
-                    null : scope.apiItem.specification.id;
+          scope.apiListState.selectedItemId === scope.apiItem.specification.id ? null : scope.apiItem.specification.id;
 
-        var targetRef = 'web-apps-api.api-documentation.' + $rootScope.selectedApiCategory;
+        // TODO: refactor this for the new routing scheme (use $location.hash(item.id);)
 
-        if (scope.apiListState.selectedItemId != null)
-          targetRef = targetRef + '.' + scope.apiItem.ref;
-        
-        $state.go(targetRef);
+
+        //var targetRef = 'web-apps-api.' + $rootScope.selectedApiCategory;
+        //
+        //if (scope.apiListState.selectedItemId != null)
+        //  targetRef = targetRef + '.' + scope.apiItem.ref;
+        //
+        //$state.go(targetRef);
       };
     }
   };

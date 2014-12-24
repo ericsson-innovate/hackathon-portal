@@ -20,6 +20,7 @@ angular.module('hackApp')
   .constant('luceneDefinitionUrl', 'http://lucene.apache.org/core/2_9_4/queryparsersyntax.html')
 
   .constant('dataLoadedEvent', 'dataLoadedEvent')
+  .constant('sideMenuItemClickEvent', 'sideMenuItemClickEvent')
 
   // TODO: add support for the old JSON data format
   // TODO: change one of these API doc URLs
@@ -91,59 +92,110 @@ angular.module('hackApp')
 
   .constant('topLevelRoutes', [
     {
-      ref: 'home',
-      url: '/home',
+      ref: 'two-videos',
+      url: '/two-videos',
       isAbstract: false,
-      templateUrl: document.baseURI + '/dist/templates/routes/home/home.html',
-      controller: 'HomeCtrl',
+      templateUrl: document.baseURI + '/dist/templates/routes/two-videos/two-videos.html',
+      controller: 'TwoVideosCtrl',
       defaultParams: {
       }
     },
     {
-      ref: 'web-apps-api',
-      //url: '/web-apps-api/:sectionId/:categoryId/:callId',
-      url: '/web-apps-api',
+      ref: 'head-unit-apps',
+      url: '/head-unit-apps',
       isAbstract: false,
-      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/web-apps-api.html',
-      controller: 'WebAppsApiCtrl',
+      templateUrl: document.baseURI + '/dist/templates/routes/head-unit-apps/head-unit-apps.html',
+      controller: 'HeadUnitAppsCtrl',
       defaultParams: {
-        //sectionId: 'api-documentation',
-        //categoryId: 'know-car',
-        //callId: null
-        // TODO: add the new structure for route IDs to the old routing logic
       }
     },
     {
-      ref: 'vehicle-apps-api',
-      url: '/vehicle-apps-api/:sectionId',
-      isAbstract: false,
+      ref: 'api-docs',
+      url: '/api-docs',
+      isAbstract: true,
       templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
       defaultParams: {
-        sectionId: 'context-initialization'
-      }
-    },
-    {
-      ref: 'vehicle-ui-api',
-      url: '/vehicle-ui-api/:sectionId',
-      isAbstract: false,
-      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
-      controller: 'ApiDocsCtrl',
-      defaultParams: {
-        sectionId: 'context-initialization'
-      }
-    },
-    {
-      ref: 'setup',
-      url: '/setup/:sectionId',
-      isAbstract: false,
-      templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
-      controller: 'ApiDocsCtrl',
-      defaultParams: {
-        sectionId: 'introduction'
       }
     }
   ])
+
+  .constant('sideMenuGroups', {
+    'vehicle-apps-api': {
+      label: 'Vehicle Apps API',
+      ref: 'api-docs.vehicle-apps-api',
+      url: '/vehicle-apps-api',
+      isAbstract: false,
+      templateUrl: document.baseURI + '/dist/templates/routes/vehicle-apps-api/vehicle-apps-api.html',
+      controller: 'VehicleAppsApiCtrl',
+      sections: [
+        // This is generated from Markdown data
+      ],
+      defaultParams: {
+        sectionId: 'context-initialization'
+      }
+    },
+    'vehicle-ui-api': {
+      label: 'Vehicle UI API',
+      ref: 'api-docs.vehicle-ui-api',
+      url: '/vehicle-ui-api',
+      isAbstract: true,
+      sections: [
+        {
+          isStateRoute: true,
+          ref: 'api-docs.vehicle-ui-api.car-app-framework',
+          label: 'Car App Framework',
+          url: '/car-app-framework',
+          templateUrl: document.baseURI + '/dist/templates/routes/vehicle-ui-api/car-app-framework/car-app-framework.html',
+          controller: 'CarAppFrameworkCtrl'
+        },
+        {
+          isStateRoute: true,
+          ref: 'api-docs.vehicle-ui-api.ui-components',
+          label: 'UI Components',
+          url: '/ui-components',
+          templateUrl: document.baseURI + '/dist/templates/routes/vehicle-ui-api/ui-components/ui-components.html',
+          controller: 'UiComponentsCtrl'
+        },
+        {
+          isStateRoute: true,
+          ref: 'api-docs.vehicle-ui-api.sample-car-app',
+          label: 'Sample Car App',
+          url: '/sample-car-app',
+          templateUrl: document.baseURI + '/dist/templates/routes/vehicle-ui-api/sample-car-app/sample-car-app.html',
+          controller: 'SampleCarAppCtrl'
+        }
+      ],
+      defaultParams: {
+      }
+    },
+    'web-apps-api': {
+      label: 'Web Apps API',
+      ref: 'api-docs.web-apps-api',
+      url: '/web-apps-api',
+      isAbstract: true,
+      sections: [
+        {
+          isStateRoute: true,
+          ref: 'api-docs.web-apps-api.getting-started',
+          label: 'Getting Started',
+          url: '/getting-started',
+          templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
+          controller: 'GettingStartedCtrl'
+        },
+        {
+          isStateRoute: true,
+          ref: 'api-docs.web-apps-api.sample-apps',
+          label: 'Sample Apps',
+          url: '/sample-apps',
+          templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
+          controller: 'SampleAppsCtrl'
+        }
+      ],
+      defaultParams: {
+      }
+    }
+  })
 
   .constant('homeSectionsSideBarLinks', {
     'gettingStarted': [
@@ -218,33 +270,6 @@ angular.module('hackApp')
     ]
   })
 
-  .constant('sideBarLinks', [
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.getting-started',
-      label: 'Getting Started',
-      url: '/getting-started',
-      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl'
-    },
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.api-documentation',
-      label: 'API Documentation',
-      url: '/api-documentation',
-      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
-      controller: 'ApiDocumentationCtrl'
-    },
-    {
-      isStateRoute: true,
-      ref: 'web-apps-api.sample-apps',
-      label: 'Sample Apps',
-      url: '/sample-apps',
-      templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/sample-apps/sample-apps.html',
-      controller: 'SampleAppsCtrl'
-    }
-  ])
-
   .constant('httpStatusCodes', {
     200: 'OK',
     201: 'Created',
@@ -314,11 +339,10 @@ angular.module('hackApp')
       '2.16.7-search-vehicles'
     ]
   })
-  .constant('categories', [
+  .constant('webAppsApiCategories', [
     {
       id: 'know-driver',
       name: 'Know the Driver',
-      ref: 'web-apps-api.api-documentation.know-driver',
       specs: [
         '2.13.1-add-a-subscriber',
         '2.13.2-add-a-subscriber-and-vehicle',
@@ -358,7 +382,6 @@ angular.module('hackApp')
     {
       id: 'know-car',
       name: 'Know the Car',
-      ref: 'web-apps-api.api-documentation.know-car',
       specs: [
         '2.6.10-check-request-status',
         '2.6.11-view-diagnostic-data',
@@ -375,7 +398,6 @@ angular.module('hackApp')
     {
       id: 'control-car',
       name: 'Control the Car',
-      ref: 'web-apps-api.api-documentation.control-car',
       specs: [
         '2.6.1-sign-up',
         '2.6.2-validate-otp',

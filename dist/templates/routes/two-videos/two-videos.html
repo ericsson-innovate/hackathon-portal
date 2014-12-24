@@ -1,0 +1,30 @@
+<short-header></short-header>
+
+<div class="content-column">
+
+  <div class="sub-column"
+       ng-repeat="subColumn in subColumns">
+    <h2>
+      {{subColumn.label}}
+    </h2>
+
+    <iframe width="400"
+            height="225"
+            ng-src="{{subColumn.videoSrc}}"
+            frameborder="0"
+            allowfullscreen></iframe>
+
+    <ul>
+      <li ng-repeat="link in subColumn.links">
+        <a ng-attr-ui-sref="{{link.ref}}"
+           ng-if="link.isStateRoute">
+          {{link.label}}
+        </a>
+        <a ng-href="{{link.ref}}"
+           ng-if="!link.isStateRoute">
+          {{link.label}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

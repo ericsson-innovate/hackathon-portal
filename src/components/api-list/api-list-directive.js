@@ -29,7 +29,7 @@ angular.module('apiListDirective', [])
           .then(function (apiData) {
             scope.apiListState.apiData = apiData;
 
-            if ($rootScope.selectedApi != null) {
+            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
               scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
               console.log(scope.apiListState.selectedItemId);
             }

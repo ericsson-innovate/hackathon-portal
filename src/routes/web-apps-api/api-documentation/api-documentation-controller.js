@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('apiDocumentationController', [])
 
 /**
@@ -9,5 +7,6 @@ angular.module('apiDocumentationController', [])
  *
  * Controller for the API Documentation page.
  */
-.controller('ApiDocumentationCtrl', function () {
-});
+  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
+      $scope.selectedApiCategory = $state.current.name.split('.').pop();
+  });

@@ -16,15 +16,15 @@ angular.module('apiService', [])
  * @requires $filter
  * @requires HackSpecifications
  * @requires HackExamples
- * @requires categories
+ * @requires webAppsApiCategories
  * @description
  *
  * This is the model for all of the hackathon's api.
  */
 .factory('HackApi', function ($q, $http, $log, $filter, HackSpecifications, HackExamples,
-                              categories) {
+                              webAppsApiCategories) {
   function filterByCategories() {
-    categories.forEach(function (category) {
+    webAppsApiCategories.forEach(function (category) {
       HackApi.apiDataByCategory[category.id] = $filter('category')(HackApi.apiData, category.id);
     });
   }

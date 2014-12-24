@@ -9,15 +9,21 @@
 @import '../components/api-list/api-list';
 @import '../components/dynamic-markdown-list/dynamic-markdown-list';
 @import '../components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item';
-@import '../components/header/header';
 @import '../components/home-page-section/home-page-section';
 @import '../components/markdown-block/markdown-block';
 @import '../components/short-header/short-header';
+@import '../components/side-menu/side-menu';
 @import '../components/tall-header/tall-header';
 
 @import '../routes/api-docs/api-docs';
-@import '../routes/web-apps-api/web-apps-api';
-@import '../routes/home/home';
+@import '../routes/head-unit-apps/head-unit-apps';
+@import '../routes/two-videos/two-videos';
+
+@import '../routes/vehicle-apps-api/vehicle-apps-api';
+
+@import '../routes/vehicle-ui-api/car-app-framework/car-app-framework';
+@import '../routes/vehicle-ui-api/sample-car-app/sample-car-app';
+@import '../routes/vehicle-ui-api/ui-components/ui-components';
 
 @import '../routes/web-apps-api/api-documentation/api-documentation';
 @import '../routes/web-apps-api/getting-started/getting-started';

@@ -7,7 +7,7 @@ angular.module('homePageSectionDirective', [])
     restrict: 'E',
     transclude: true,
     scope: {
-      title: '@',
+      label: '@',
       sideBarLinks: '='
     },
     templateUrl: homePageSectionTemplatePath,
