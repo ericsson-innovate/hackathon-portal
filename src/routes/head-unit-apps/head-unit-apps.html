@@ -1,6 +1,21 @@
 <short-header></short-header>
 
 <div class="sections">
+  <div class="bubbles">
+    <a ng-repeat-start="bubble in bubbles"
+       ng-attr-ui-sref="{{bubble.ref}}"
+       ng-if="bubble.isStateRoute">
+      <div class="bubble"></div>
+      <h3>{{bubble.label}}</h3>
+    </a>
+    <a ng-repeat-end
+       ng-href="{{bubble.ref}}"
+       ng-if="!bubble.isStateRoute">
+      <div class="bubble"></div>
+      <h3>{{bubble.label}}</h3>
+    </a>
+  </div>
+
   <home-page-section label="Introduction">
     <p>
       AT&T Drive connected vehicle cloud provides a way for automotive manufacturers to deliver cloud-based infotainment features to vehicles and provides tight integration between apps and services.

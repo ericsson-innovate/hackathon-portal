@@ -373,23 +373,23 @@ footer {
   margin: 60px 0;
   text-align: center; }
 
-.full-width-bar, home-page-section {
+.full-width-bar, home-page-section, .head-unit-apps-route .bubbles {
   position: relative;
   max-width: 940px;
   margin-left: auto;
   margin-right: auto; }
 
-.full-width-bar:before, home-page-section:before, .full-width-bar:after, home-page-section:after {
+.full-width-bar:before, home-page-section:before, .head-unit-apps-route .bubbles:before, .full-width-bar:after, home-page-section:after, .head-unit-apps-route .bubbles:after {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
   width: 999999px; }
 
-.full-width-bar:before, home-page-section:before {
+.full-width-bar:before, home-page-section:before, .head-unit-apps-route .bubbles:before {
   right: 100%; }
 
-.full-width-bar:after, home-page-section:after {
+.full-width-bar:after, home-page-section:after, .head-unit-apps-route .bubbles:after {
   left: 100%; }
 
 a {
@@ -899,10 +899,34 @@ tall-header {
     background-color: black; }
   .head-unit-apps-route .sections {
     margin-top: 70px; }
-    .head-unit-apps-route .sections home-page-section {
-      background-color: white; }
-    .head-unit-apps-route .sections home-page-section:nth-child(even), .head-unit-apps-route .sections home-page-section:nth-child(even):before, .head-unit-apps-route .sections home-page-section:nth-child(even):after {
-      background-color: #efefef; }
+  .head-unit-apps-route .bubbles {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    .head-unit-apps-route .bubbles > a {
+      display: block;
+      margin: 20px; }
+    .head-unit-apps-route .bubbles h3 {
+      margin: 20px 0;
+      font-size: 14px;
+      text-align: center; }
+  .head-unit-apps-route .bubble {
+    width: 156px;
+    height: 156px;
+    margin: auto;
+    border: 1px solid #111111;
+    border-radius: 50%;
+    background-color: #efefef; }
+  .head-unit-apps-route home-page-section {
+    background-color: white; }
+  .head-unit-apps-route home-page-section:nth-child(even), .head-unit-apps-route home-page-section:nth-child(even):before, .head-unit-apps-route home-page-section:nth-child(even):after {
+    background-color: #efefef; }
 
 .two-videos-route > .content-column {
   display: -webkit-flex;

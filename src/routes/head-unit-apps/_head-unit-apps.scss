@@ -10,15 +10,42 @@
 
   .sections {
     margin-top: $short-header-height;
+  }
 
-    home-page-section {
-      background-color: $home-page-primary-background-color;
+  .bubbles {
+    @extend .full-width-bar;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    > a {
+      display: block;
+      margin: 20px;
     }
 
-    home-page-section:nth-child(even),
-    home-page-section:nth-child(even):before,
-    home-page-section:nth-child(even):after {
-      background-color: $home-page-secondary-background-color;
+    h3 {
+      margin: 20px 0;
+      font-size: 14px;
+      text-align: center;
     }
+  }
+
+  .bubble {
+    width: 156px;
+    height: 156px;
+    margin: auto;
+    border: 1px solid #111111;
+    border-radius: 50%;
+    background-color: $home-page-secondary-background-color;
+  }
+
+  home-page-section {
+    background-color: $home-page-primary-background-color;
+  }
+
+  home-page-section:nth-child(even),
+  home-page-section:nth-child(even):before,
+  home-page-section:nth-child(even):after {
+    background-color: $home-page-secondary-background-color;
   }
 }
