@@ -1437,6 +1437,72 @@ angular.module('tryItService', [])
 
 'use strict';
 
+angular.module('apiListItemDirective', [])
+
+.constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
+
+/**
+ * @ngdoc directive
+ * @name apiListItem
+ * @requires HackExamples
+ * @requires HackApi
+ * @requires apiListItemTemplatePath
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel used for displaying the specification for a single API call.
+ */
+.directive('apiListItem', function ($rootScope, $state, HackExamples, HackApi, apiListItemTemplatePath) {
+  return {
+    restrict: 'A',
+    scope: {
+      apiItem: '=apiListItem',
+      apiListState: '='
+    },
+    templateUrl: apiListItemTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiItem.HackExamples = HackExamples;
+      scope.apiItem.HackApi = HackApi;
+
+      // TODO: implement scroll to selected API
+      // var GetScreenCordinates = function(obj) {
+      //   var p = {};
+      //   p.x = obj.offsetLeft;
+      //   p.y = obj.offsetTop;
+      //   while (obj.offsetParent) {
+      //     p.x = p.x + obj.offsetParent.offsetLeft;
+      //     p.y = p.y + obj.offsetParent.offsetTop;
+      //     if (obj == document.getElementsByTagName("body")[0]) {
+      //       break;
+      //     }
+      //     else {
+      //       obj = obj.offsetParent;
+      //     }
+      //   }
+      //   return p;
+      // };
+
+      scope.handleHeaderClick = function (evt) {
+
+        scope.apiListState.selectedItemId =
+          scope.apiListState.selectedItemId === scope.apiItem.specification.id ? null : scope.apiItem.specification.id;
+
+        // TODO: refactor this for the new routing scheme (use $location.hash(item.id);)
+
+
+        //var targetRef = 'web-apps-api.' + $rootScope.selectedApiCategory;
+        //
+        //if (scope.apiListState.selectedItemId != null)
+        //  targetRef = targetRef + '.' + scope.apiItem.ref;
+        //
+        //$state.go(targetRef);
+      };
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiExampleCardDirective', [])
 
 .constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
@@ -1509,68 +1575,22 @@ angular.module('apiListDirective', [])
   };
 });
 
-'use strict';
+angular.module('apiSectionBlockDirective', [])
 
-angular.module('apiListItemDirective', [])
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
 
-.constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
-
-/**
- * @ngdoc directive
- * @name apiListItem
- * @requires HackExamples
- * @requires HackApi
- * @requires apiListItemTemplatePath
- * @param {Object} apiItem
- * @description
- *
- * A panel used for displaying the specification for a single API call.
- */
-.directive('apiListItem', function ($rootScope, $state, HackExamples, HackApi, apiListItemTemplatePath) {
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
   return {
-    restrict: 'A',
+    restrict: 'E',
+
     scope: {
-      apiItem: '=apiListItem',
-      apiListState: '='
+      section: '='
     },
-    templateUrl: apiListItemTemplatePath,
+
+    templateUrl: apiSectionBlockTemplatePath,
+
     link: function (scope, element, attrs) {
-      scope.apiItem.HackExamples = HackExamples;
-      scope.apiItem.HackApi = HackApi;
-
-      // TODO: implement scroll to selected API
-      // var GetScreenCordinates = function(obj) {
-      //   var p = {};
-      //   p.x = obj.offsetLeft;
-      //   p.y = obj.offsetTop;
-      //   while (obj.offsetParent) {
-      //     p.x = p.x + obj.offsetParent.offsetLeft;
-      //     p.y = p.y + obj.offsetParent.offsetTop;
-      //     if (obj == document.getElementsByTagName("body")[0]) {
-      //       break;
-      //     }
-      //     else {
-      //       obj = obj.offsetParent;
-      //     }
-      //   }
-      //   return p;
-      // };
-
-      scope.handleHeaderClick = function (evt) {
-
-        scope.apiListState.selectedItemId =
-          scope.apiListState.selectedItemId === scope.apiItem.specification.id ? null : scope.apiItem.specification.id;
-
-        // TODO: refactor this for the new routing scheme (use $location.hash(item.id);)
-
-
-        //var targetRef = 'web-apps-api.' + $rootScope.selectedApiCategory;
-        //
-        //if (scope.apiListState.selectedItemId != null)
-        //  targetRef = targetRef + '.' + scope.apiItem.ref;
-        //
-        //$state.go(targetRef);
-      };
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -1600,213 +1620,6 @@ angular.module('apiSpecificationCardDirective', [])
     link: function (scope, element, attrs) {
       scope.isArray = function (input) {
         return input instanceof Array;
-      };
-    }
-  };
-});
-
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiTryItCardDirective', [])
-
-.constant('apiTryItCardTemplatePath', document.baseURI + '/dist/templates/components/api-try-it-card/api-try-it-card.html')
-
-/**
- * @ngdoc directive
- * @name apiTryItCard
- * @requires TryItData
- * @requires jsonFilter
- * @requires errorDescriptionFilter
- * @requires emulatorDomain
- * @requires apiTryItCardTemplatePath
- * @requires apiKey
- * @requires authString
- * @param {Object} apiItem
- * @description
- *
- * A panel that contains input areas that enable the user to try out making a single API call.
- */
-.directive('apiTryItCard', function (TryItData, jsonFilter, errorDescriptionFilter,
-                                     apiTryItCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiTryItCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiItem.tryIt = {};
-      scope.apiItem.tryIt.requestBody = '';
-      scope.apiItem.tryIt.response = {};
-
-      scope.apiItem.TryItData = TryItData;
-      scope.apiItem.tryIt.requestState = 'waiting-to-send';
-
-      scope.$watch('apiItem.TryItData.queryParams', updateUrl, true);
-      scope.$watch('apiItem.TryItData.routeParams', updateUrl, true);
-      scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
-      scope.$watch('apiItem.TryItData.username', TryItData.updateAuthString, true);
-      scope.$watch('apiItem.TryItData.password', TryItData.updateAuthString, true);
-      scope.$watch('apiItem.HackApi.currentCard', handleCardChange);
-
-      function updateUrl() {
-        var route, i, count, key, value, index;
-
-        route = scope.apiItem.specification.resourceTable['Route'];
-
-        // Handle any query string parameters
-        index = route.indexOf('?');
-        if (index >= 0) {
-          // Strip the query string from the specification route
-          route = route.substring(0, index + 1);
-
-          for (i = 0, count = scope.apiItem.specification.parameters.query.length;
-               i < count; i += 1) {
-            key = scope.apiItem.specification.parameters.query[i];
-            value = TryItData.queryParams[key];
-            route += key + '=' + (value || 'true') + '&';
-          }
-
-          route = route.substring(0, route.length - 1);
-        }
-
-        // Handle the route parameters
-        for (key in scope.apiItem.specification.parameters.route) {
-          value = TryItData.routeParams[key];
-          route = route.replace('{' + key + '}', value || '');
-        }
-
-        scope.apiItem.tryIt.url = TryItData.emulatorDomain + route;
-      }
-
-      function handleCardChange() {
-        if (scope.apiItem.HackApi.currentCard === 'try it') {
-          fillWithCommonData();
-        }
-      }
-
-      function fillWithCommonData() {
-        // Request body params
-        scope.apiItem.tryIt.requestBody = findRequestBody();
-
-        function findRequestBody() {
-          var requestBody = '';
-
-          scope.apiItem.specification.examples.forEach(function (example) {
-            if (example.type === 'request' && example.body) {
-              requestBody = jsonFilter(example.body);
-              requestBody = replaceVin(requestBody);
-            }
-          });
-
-          return requestBody;
-        }
-
-        function replaceVin(requestBody) {
-          if (TryItData.routeParams['vin']) {
-            return requestBody.replace('"vin": "~vin~"', '"vin": "' + TryItData.routeParams['vin'] +'"');
-          } else {
-            return requestBody;
-          }
-        }
-      }
-
-      scope.reset = function () {
-        TryItData.reset();
-        fillWithCommonData();
-      };
-
-      scope.handleSendRequestClick = function () {
-        var xhr, verb;
-
-        verb = scope.apiItem.specification.resourceTable['HTTP Verb'][0];
-
-        xhr = new XMLHttpRequest();
-
-        xhr.addEventListener('load', onLoad, false);
-        xhr.addEventListener('error', onError, false);
-        xhr.addEventListener('abort', onAbort, false);
-
-        console.log('Sending request to ' + scope.apiItem.tryIt.url);
-
-        xhr.open(verb, scope.apiItem.tryIt.url, true);
-        xhr.setRequestHeader('Authorization', TryItData.authString);
-        xhr.setRequestHeader('APIKey', TryItData.apiKey);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.send(scope.apiItem.tryIt.requestBody);
-
-        scope.apiItem.tryIt.requestState = 'waiting-for-response';
-        scope.apiItem.tryIt.response.error = false;
-        scope.apiItem.tryIt.response.status = 0;
-        scope.apiItem.tryIt.response.body = {};
-
-        function onLoad() {
-          console.log('Response status=' + xhr.status + ' (' + xhr.statusText + ')');
-          console.log('Response body=' + xhr.response);
-
-          scope.$apply(function () {
-            var customStatusText, responseBody;
-
-            customStatusText = errorDescriptionFilter(xhr.status);
-
-            scope.apiItem.tryIt.requestState = 'received-response';
-            scope.apiItem.tryIt.response.error =
-                parseInt(xhr.status / 100) !== 2 && customStatusText;
-            scope.apiItem.tryIt.response.status = xhr.status + ' (' + customStatusText + ')';
-
-            try {
-              responseBody = JSON.parse(xhr.response);
-              scope.apiItem.tryIt.response.body = responseBody;
-              scope.apiItem.tryIt.response.bodyParseError = null;
-            } catch (error) {
-              responseBody = xhr.response;
-              console.warn('Unable to parse response body as JSON: ' + responseBody);
-              scope.apiItem.tryIt.response.body = null;
-              scope.apiItem.tryIt.response.bodyParseError = responseBody;
-            }
-          });
-        }
-
-        function onError() {
-          var message = 'An error occurred while transferring the data';
-          console.error(message);
-
-          scope.$apply(function () {
-            scope.apiItem.tryIt.requestState = 'error-with-request';
-            scope.apiItem.tryIt.response.error = message;
-          });
-        }
-
-        function onAbort() {
-          var message = 'The transfer has been cancelled by the user';
-          console.error(message);
-
-          scope.$apply(function () {
-            scope.apiItem.tryIt.requestState = 'error-with-request';
-            scope.apiItem.tryIt.response.error = message;
-          });
-        }
       };
     }
   };
@@ -2095,6 +1908,193 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
   module.exports = timerModule;
 }
 
+'use strict';
+
+angular.module('apiTryItCardDirective', [])
+
+.constant('apiTryItCardTemplatePath', document.baseURI + '/dist/templates/components/api-try-it-card/api-try-it-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiTryItCard
+ * @requires TryItData
+ * @requires jsonFilter
+ * @requires errorDescriptionFilter
+ * @requires emulatorDomain
+ * @requires apiTryItCardTemplatePath
+ * @requires apiKey
+ * @requires authString
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel that contains input areas that enable the user to try out making a single API call.
+ */
+.directive('apiTryItCard', function (TryItData, jsonFilter, errorDescriptionFilter,
+                                     apiTryItCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiTryItCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiItem.tryIt = {};
+      scope.apiItem.tryIt.requestBody = '';
+      scope.apiItem.tryIt.response = {};
+
+      scope.apiItem.TryItData = TryItData;
+      scope.apiItem.tryIt.requestState = 'waiting-to-send';
+
+      scope.$watch('apiItem.TryItData.queryParams', updateUrl, true);
+      scope.$watch('apiItem.TryItData.routeParams', updateUrl, true);
+      scope.$watch('apiItem.TryItData.emulatorDomain', updateUrl, true);
+      scope.$watch('apiItem.TryItData.username', TryItData.updateAuthString, true);
+      scope.$watch('apiItem.TryItData.password', TryItData.updateAuthString, true);
+      scope.$watch('apiItem.HackApi.currentCard', handleCardChange);
+
+      function updateUrl() {
+        var route, i, count, key, value, index;
+
+        route = scope.apiItem.specification.resourceTable['Route'];
+
+        // Handle any query string parameters
+        index = route.indexOf('?');
+        if (index >= 0) {
+          // Strip the query string from the specification route
+          route = route.substring(0, index + 1);
+
+          for (i = 0, count = scope.apiItem.specification.parameters.query.length;
+               i < count; i += 1) {
+            key = scope.apiItem.specification.parameters.query[i];
+            value = TryItData.queryParams[key];
+            route += key + '=' + (value || 'true') + '&';
+          }
+
+          route = route.substring(0, route.length - 1);
+        }
+
+        // Handle the route parameters
+        for (key in scope.apiItem.specification.parameters.route) {
+          value = TryItData.routeParams[key];
+          route = route.replace('{' + key + '}', value || '');
+        }
+
+        scope.apiItem.tryIt.url = TryItData.emulatorDomain + route;
+      }
+
+      function handleCardChange() {
+        if (scope.apiItem.HackApi.currentCard === 'try it') {
+          fillWithCommonData();
+        }
+      }
+
+      function fillWithCommonData() {
+        // Request body params
+        scope.apiItem.tryIt.requestBody = findRequestBody();
+
+        function findRequestBody() {
+          var requestBody = '';
+
+          scope.apiItem.specification.examples.forEach(function (example) {
+            if (example.type === 'request' && example.body) {
+              requestBody = jsonFilter(example.body);
+              requestBody = replaceVin(requestBody);
+            }
+          });
+
+          return requestBody;
+        }
+
+        function replaceVin(requestBody) {
+          if (TryItData.routeParams['vin']) {
+            return requestBody.replace('"vin": "~vin~"', '"vin": "' + TryItData.routeParams['vin'] +'"');
+          } else {
+            return requestBody;
+          }
+        }
+      }
+
+      scope.reset = function () {
+        TryItData.reset();
+        fillWithCommonData();
+      };
+
+      scope.handleSendRequestClick = function () {
+        var xhr, verb;
+
+        verb = scope.apiItem.specification.resourceTable['HTTP Verb'][0];
+
+        xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('load', onLoad, false);
+        xhr.addEventListener('error', onError, false);
+        xhr.addEventListener('abort', onAbort, false);
+
+        console.log('Sending request to ' + scope.apiItem.tryIt.url);
+
+        xhr.open(verb, scope.apiItem.tryIt.url, true);
+        xhr.setRequestHeader('Authorization', TryItData.authString);
+        xhr.setRequestHeader('APIKey', TryItData.apiKey);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.send(scope.apiItem.tryIt.requestBody);
+
+        scope.apiItem.tryIt.requestState = 'waiting-for-response';
+        scope.apiItem.tryIt.response.error = false;
+        scope.apiItem.tryIt.response.status = 0;
+        scope.apiItem.tryIt.response.body = {};
+
+        function onLoad() {
+          console.log('Response status=' + xhr.status + ' (' + xhr.statusText + ')');
+          console.log('Response body=' + xhr.response);
+
+          scope.$apply(function () {
+            var customStatusText, responseBody;
+
+            customStatusText = errorDescriptionFilter(xhr.status);
+
+            scope.apiItem.tryIt.requestState = 'received-response';
+            scope.apiItem.tryIt.response.error =
+                parseInt(xhr.status / 100) !== 2 && customStatusText;
+            scope.apiItem.tryIt.response.status = xhr.status + ' (' + customStatusText + ')';
+
+            try {
+              responseBody = JSON.parse(xhr.response);
+              scope.apiItem.tryIt.response.body = responseBody;
+              scope.apiItem.tryIt.response.bodyParseError = null;
+            } catch (error) {
+              responseBody = xhr.response;
+              console.warn('Unable to parse response body as JSON: ' + responseBody);
+              scope.apiItem.tryIt.response.body = null;
+              scope.apiItem.tryIt.response.bodyParseError = responseBody;
+            }
+          });
+        }
+
+        function onError() {
+          var message = 'An error occurred while transferring the data';
+          console.error(message);
+
+          scope.$apply(function () {
+            scope.apiItem.tryIt.requestState = 'error-with-request';
+            scope.apiItem.tryIt.response.error = message;
+          });
+        }
+
+        function onAbort() {
+          var message = 'The transfer has been cancelled by the user';
+          console.error(message);
+
+          scope.$apply(function () {
+            scope.apiItem.tryIt.requestState = 'error-with-request';
+            scope.apiItem.tryIt.response.error = message;
+          });
+        }
+      };
+    }
+  };
+});
+
 angular.module('dynamicMarkdownListDirective', [])
 
 .constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
@@ -2370,6 +2370,13 @@ angular.module('tallHeaderDirective', [])
   };
 });
 
+angular.module('apiDocsController', [])
+
+  .controller('ApiDocsCtrl', function ($scope) {
+    $scope.apiDocsState = {};
+    $scope.apiDocsState.selectedItem = null;
+  });
+
 angular.module('countdownController', [])
 
 .controller('CountdownCtrl', [
@@ -2410,13 +2417,6 @@ angular.module('countdownController', [])
         $scope.end = (new Date(developerPreview.startDate)).getTime();
     }
 ]);
-angular.module('apiDocsController', [])
-
-  .controller('ApiDocsCtrl', function ($scope) {
-    $scope.apiDocsState = {};
-    $scope.apiDocsState.selectedItem = null;
-  });
-
 angular.module('headUnitAppsController', [])
 
   .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
@@ -2585,19 +2585,6 @@ angular.module('uiComponentsController', [])
   .controller('UiComponentsCtrl', function ($scope) {
   });
 
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
-      $scope.selectedApiCategory = $state.current.name.split('.').pop();
-  });
-
 'use strict';
 
 angular.module('gettingStartedController', [])
@@ -2611,6 +2598,19 @@ angular.module('gettingStartedController', [])
  */
 .controller('GettingStartedCtrl', function () {
 });
+
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
+      $scope.selectedApiCategory = $state.current.name.split('.').pop();
+  });
 
 'use strict';
 
