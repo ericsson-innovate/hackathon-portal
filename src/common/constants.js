@@ -219,7 +219,7 @@ angular.module('hackApp')
       {
         isStateRoute: true,
         state: 'setup',
-		url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
+        url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
         label: 'Developer Environment Setup Guide'
       },
       {
@@ -260,7 +260,7 @@ angular.module('hackApp')
     'uiApi': [
       {
         isStateRoute: true,
-        state: 'vehicle-ui-api',
+        state: 'api-docs.vehicle-ui-api',
         label: 'Preview UI API'
       },
       {
@@ -277,7 +277,7 @@ angular.module('hackApp')
     'vehicleApi': [
       {
         isStateRoute: true,
-        state: '/vehicle-apps-api',
+        state: 'api-docs.vehicle-apps-api',
         label: 'Vehicle API'
       },
       {

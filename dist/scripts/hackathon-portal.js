@@ -347,7 +347,7 @@ angular.module('hackApp')
       {
         isStateRoute: true,
         state: 'setup',
-		url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
+        url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
         label: 'Developer Environment Setup Guide'
       },
       {
@@ -388,7 +388,7 @@ angular.module('hackApp')
     'uiApi': [
       {
         isStateRoute: true,
-        state: 'vehicle-ui-api',
+        state: 'api-docs.vehicle-ui-api',
         label: 'Preview UI API'
       },
       {
@@ -405,7 +405,7 @@ angular.module('hackApp')
     'vehicleApi': [
       {
         isStateRoute: true,
-        state: '/vehicle-apps-api',
+        state: 'api-docs.vehicle-apps-api',
         label: 'Vehicle API'
       },
       {
@@ -1438,6 +1438,36 @@ angular.module('tryItService', [])
 
 'use strict';
 
+angular.module('apiExampleCardDirective', [])
+
+.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiExampleCard
+ * @requires apiExampleCardTemplatePath
+ * @param {object} example
+ * @description
+ *
+ * A panel used for displaying platform-specific examples of a single API call.
+ */
+.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiExampleCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListDirective', [])
 
 .constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
@@ -1476,36 +1506,6 @@ angular.module('apiListDirective', [])
       scope.$watch('category', function () {
         scope.apiListState.selectedItemId = null;
       });
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiExampleCardDirective', [])
-
-.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
-
-/**
- * @ngdoc directive
- * @name apiExampleCard
- * @requires apiExampleCardTemplatePath
- * @param {object} example
- * @description
- *
- * A panel used for displaying platform-specific examples of a single API call.
- */
-.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.handleTabClick = function (platform) {
-        scope.apiItem.HackExamples.currentPlatform = platform;
-      };
     }
   };
 });
@@ -1813,6 +1813,56 @@ angular.module('apiTryItCardDirective', [])
   };
 });
 
+angular.module('dynamicMarkdownListDirective', [])
+
+.constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
+
+.directive('dynamicMarkdownList', function (MarkdownData, dynamicMarkdownListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      id: '@'
+    },
+    templateUrl: dynamicMarkdownListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.markdownListState = {};
+      scope.markdownListState.sections = [];
+      scope.markdownListState.selectedSection = null;
+
+      MarkdownData.fetchDocumentation(scope.url)
+        .then(onMarkdownUpdate)
+        .catch(function (error) {
+          console.error(error);
+        });
+
+      // ---  --- //
+
+      function onMarkdownUpdate() {
+        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
+        scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
+      }
+    }
+  };
+});
+
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('countdownTimerDirective', [])
 
   .directive('countdownTimer', ['$compile', function ($compile) {
@@ -2095,56 +2145,6 @@ angular.module('countdownTimerDirective', [])
 if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports){
   module.exports = timerModule;
 }
-
-angular.module('dynamicMarkdownListDirective', [])
-
-.constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
-
-.directive('dynamicMarkdownList', function (MarkdownData, dynamicMarkdownListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      id: '@'
-    },
-    templateUrl: dynamicMarkdownListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.markdownListState = {};
-      scope.markdownListState.sections = [];
-      scope.markdownListState.selectedSection = null;
-
-      MarkdownData.fetchDocumentation(scope.url)
-        .then(onMarkdownUpdate)
-        .catch(function (error) {
-          console.error(error);
-        });
-
-      // ---  --- //
-
-      function onMarkdownUpdate() {
-        scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
-        scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
-      }
-    }
-  };
-});
-
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      label: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
-    link: function (scope, element, attrs) {
-    }
-  };
-});
 
 angular.module('markdownBlockDirective', [])
 
