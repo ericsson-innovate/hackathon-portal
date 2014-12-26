@@ -156,7 +156,12 @@ textarea {
 
 table {
   border-collapse: collapse;
-  border-spacing: 0; }
+  border-spacing: 0;
+  font-size: 90%;
+  padding: 5px; }
+
+tr:nth-child(even) {
+  background-color: #fafafa; }
 
 .non-bulleted-list, .tabs, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links, side-menu ul, .two-videos-route > .content-column ul {
   padding-left: 0;
@@ -215,7 +220,8 @@ body {
   font-size: 14px;
   color: #333333;
   background-color: white;
-  transition: scrollTop 0.3s; }
+  -webkit-transition: scrollTop 0.3s;
+          transition: scrollTop 0.3s; }
 
 h1, h2, h3, h4 {
   text-align: left;
@@ -269,12 +275,16 @@ button[disabled] {
   background-color: #f7f7f7; }
 
 #route-view {
+  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-align: stretch;
   -webkit-align-items: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
@@ -300,7 +310,8 @@ button[disabled] {
   text-transform: uppercase;
   text-align: left;
   overflow: hidden;
-  transition: border-color 0.25s; }
+  -webkit-transition: border-color 0.25s;
+          transition: border-color 0.25s; }
 
 .tab.selected {
   border-color: #067ab4; }
@@ -321,13 +332,15 @@ h1 {
   height: 600px;
   overflow: hidden;
   z-index: 2;
-  transition: background-image 1s; }
+  -webkit-transition: background-image 1s;
+          transition: background-image 1s; }
 
 .animiations-wrapper {
   position: absolute;
   width: 100%;
   height: 100%;
-  transition: opacity 0.4s; }
+  -webkit-transition: opacity 0.4s;
+          transition: opacity 0.4s; }
 
 .animations-wrapper.hidden {
   opacity: 0; }
@@ -392,7 +405,7 @@ h1 {
   margin-bottom: 0px; }
 
 .api-documentation-categories > li.selected {
-  color: #0099ff; }
+  color: #0574ac; }
 
 hr.divider {
   position: relative;
@@ -402,7 +415,8 @@ hr.divider {
 a, a:active, a:hover, a:visited {
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.25s; }
+  -webkit-transition: color 0.25s;
+          transition: color 0.25s; }
 
 footer {
   margin: 60px 0;
@@ -676,7 +690,8 @@ li[api-list-item] > hr.divider {
   vertical-align: middle;
   cursor: pointer;
   color: #bfbfbf;
-  transition: color 0.15s; }
+  -webkit-transition: color 0.15s;
+          transition: color 0.15s; }
 
 .api-list-item-header > div {
   line-height: 40px; }
@@ -688,7 +703,8 @@ li[api-list-item] > hr.divider {
   color: white;
   background-color: #bfe5ff;
   text-align: center;
-  transition: color 0.15s, background-color 0.15s; }
+  -webkit-transition: color 0.15s, background-color 0.15s;
+          transition: color 0.15s, background-color 0.15s; }
 
 .api-list-item-header > .route {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
@@ -706,7 +722,7 @@ li[api-list-item].selected .api-list-item-header, li[api-list-item].none-selecte
 
 li[api-list-item].selected .api-list-item-header > .verb, li[api-list-item].none-selected .api-list-item-header > .verb {
   color: white;
-  background-color: #0099ff; }
+  background-color: #0574ac; }
 
 .api-list-item-body {
   clear: both;
@@ -714,7 +730,8 @@ li[api-list-item].selected .api-list-item-header > .verb, li[api-list-item].none
   overflow-y: hidden;
   height: 0;
   text-align: left;
-  transition: height 0.3s; }
+  -webkit-transition: height 0.3s;
+          transition: height 0.3s; }
 
 li[api-list-item].selected .api-list-item-body {
   height: 900px; }
@@ -927,7 +944,7 @@ dynamic-markdown-list {
   dynamic-markdown-list [dynamic-markdown-list-item].selected > markdown-block {
     max-height: 700px; }
   dynamic-markdown-list [dynamic-markdown-list-item].selected > hr.separator {
-    border-color: #0099ff; }
+    border-color: #0574ac; }
 
 [dynamic-markdown-list-item] {
   display: block; }
@@ -937,7 +954,8 @@ dynamic-markdown-list {
     height: auto;
     max-height: 0px;
     overflow: auto;
-    transition: max-height 0.3s; }
+    -webkit-transition: max-height 0.3s;
+            transition: max-height 0.3s; }
   [dynamic-markdown-list-item] > hr.separator {
     border: 0 solid #fafafa;
     border-bottom-width: 10px; }
@@ -958,17 +976,22 @@ home-page-section {
     border-bottom-width: 3px;
     margin-bottom: 24px; }
   home-page-section > .section-body {
+    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
     home-page-section > .section-body > .home-section-side-bar-links {
+      -webkit-box-flex: 0;
       -webkit-flex: 0 0 280px;
           -ms-flex: 0 0 280px;
               flex: 0 0 280px; }
       home-page-section > .section-body > .home-section-side-bar-links > li > a {
+        display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
         -webkit-flex-direction: column;
             -ms-flex-direction: column;
                 flex-direction: column;
@@ -1179,12 +1202,16 @@ countdown-timer {
     /*     width: 940px;
     margin: 0 auto; */ }
   .head-unit-apps-route .bubbles {
+    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
+    -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between; }
@@ -1214,12 +1241,16 @@ countdown-timer {
     background-color: #fafafa; }
 
 .two-videos-route > .content-column {
+  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
+  -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -1250,12 +1281,16 @@ countdown-timer {
   bottom: 0;
   left: 0;
   right: 0;
+  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
