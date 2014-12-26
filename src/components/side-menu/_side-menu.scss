@@ -3,7 +3,7 @@ side-menu {
   width: $side-menu-width;
   overflow: auto;
   height: 700px;
-  height: 100vh;
+  height: calc(100vh - #{$short-header-height + 20px});
 
 
   .side-menu-section {

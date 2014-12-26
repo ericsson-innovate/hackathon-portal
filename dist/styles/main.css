@@ -1104,7 +1104,7 @@ side-menu {
   width: 220px;
   overflow: auto;
   height: 700px;
-  height: 100vh; }
+  height: calc(100vh - 90px); }
   side-menu h2 {
     margin-top: 30px;
     margin-bottom: 10px;
