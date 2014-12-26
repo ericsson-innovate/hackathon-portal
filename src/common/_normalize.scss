@@ -521,4 +521,10 @@ textarea {
 table {
     border-collapse: collapse;
     border-spacing: 0;
+	font-size: 90%;
+	padding: 5px;
+}
+
+tr:nth-child(even) {
+    background-color: #fafafa;
 }
