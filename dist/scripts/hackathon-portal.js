@@ -347,7 +347,7 @@ angular.module('hackApp')
       {
         isStateRoute: true,
         state: 'setup',
-		url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
+        url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
         label: 'Developer Environment Setup Guide'
       },
       {
@@ -405,7 +405,7 @@ angular.module('hackApp')
     'vehicleApi': [
       {
         isStateRoute: true,
-        state: '/vehicle-apps-api',
+        state: 'vehicle-apps-api',
         label: 'Vehicle API'
       },
       {
@@ -1468,50 +1468,6 @@ angular.module('apiExampleCardDirective', [])
 
 'use strict';
 
-angular.module('apiListDirective', [])
-
-.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
-
-/**
- * @ngdoc directive
- * @name apiList
- * @requires HackApi
- * @requires apiListTemplatePath
- * @description
- *
- * A footer list used for displaying a list of navigation links.
- */
-.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      category: '='
-    },
-    templateUrl: apiListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiListState = {};
-      scope.apiListState.apiData = [];
-      scope.apiListState.selectedItemId = null;
-
-      HackApi.getAllApiData()
-          .then(function (apiData) {
-            scope.apiListState.apiData = apiData;
-
-            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
-              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
-              console.log(scope.apiListState.selectedItemId);
-            }
-          });
-
-      scope.$watch('category', function () {
-        scope.apiListState.selectedItemId = null;
-      });
-    }
-  };
-});
-
-'use strict';
-
 angular.module('apiListItemDirective', [])
 
 .constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
@@ -1576,22 +1532,46 @@ angular.module('apiListItemDirective', [])
   };
 });
 
-angular.module('apiSectionBlockDirective', [])
+'use strict';
 
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+angular.module('apiListDirective', [])
 
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
+
+/**
+ * @ngdoc directive
+ * @name apiList
+ * @requires HackApi
+ * @requires apiListTemplatePath
+ * @description
+ *
+ * A footer list used for displaying a list of navigation links.
+ */
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
   return {
     restrict: 'E',
-
     scope: {
-      section: '='
+      category: '='
     },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
+    templateUrl: apiListTemplatePath,
     link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
+
+      HackApi.getAllApiData()
+          .then(function (apiData) {
+            scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
+          });
+
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
+      });
     }
   };
 });
@@ -1622,6 +1602,26 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
+    }
+  };
+});
+
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2461,6 +2461,29 @@ angular.module('headUnitAppsController', [])
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
   });
 
+angular.module('vehicleAppsApiController', [])
+
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
+                                              MarkdownData, sideMenuItemClickEvent) {
+    $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
+
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
+
+    $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
+
+    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
+
+    // ---  --- //
+
+    function handleSideBarLinkClick(event, item) {
+      if ($location.hash() !== item.id) {
+        $location.hash(item.id);
+      } else {
+        $anchorScroll();
+      }
+    }
+  });
+
 angular.module('twoVideosController', [])
 
   .controller('TwoVideosCtrl', function ($scope, $sce) {
@@ -2522,29 +2545,6 @@ angular.module('twoVideosController', [])
     ];
   });
 
-angular.module('vehicleAppsApiController', [])
-
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
-                                              MarkdownData, sideMenuItemClickEvent) {
-    $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
-
-    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
-
-    $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
-
-    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
-
-    // ---  --- //
-
-    function handleSideBarLinkClick(event, item) {
-      if ($location.hash() !== item.id) {
-        $location.hash(item.id);
-      } else {
-        $anchorScroll();
-      }
-    }
-  });
-
 angular.module('dynamicMarkdownListItemDirective', [])
 
 .constant('dynamicMarkdownListItemTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item.html')
@@ -2586,19 +2586,6 @@ angular.module('uiComponentsController', [])
   .controller('UiComponentsCtrl', function ($scope) {
   });
 
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
-      $scope.selectedApiCategory = $state.current.name.split('.').pop();
-  });
-
 'use strict';
 
 angular.module('gettingStartedController', [])
@@ -2612,6 +2599,19 @@ angular.module('gettingStartedController', [])
  */
 .controller('GettingStartedCtrl', function () {
 });
+
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
+      $scope.selectedApiCategory = $state.current.name.split('.').pop();
+  });
 
 'use strict';
 
