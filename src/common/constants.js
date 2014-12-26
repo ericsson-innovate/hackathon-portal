@@ -90,9 +90,9 @@ angular.module('hackApp')
     },
     {
       platform: 'angularjs',
-      humanReadablePlatform: 'AT&T Drive Head Unit App',
+      humanReadablePlatform: 'AT&T Drive Head Unit App Samples',
       iconUrl: document.baseURI + '/dist/images/angularjs-icon.png',
-      repoUrl: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
+      repoUrl: 'https://github.com/ericsson-innovate/sample-app',
       readmeUrl: 'https://github.com/ericsson-innovate/sample-app',
       readmeText: 'Loading README...'
     }
@@ -277,7 +277,7 @@ angular.module('hackApp')
     'vehicleApi': [
       {
         isStateRoute: true,
-        state: 'vehicle-apps-api',
+        state: '/vehicle-apps-api',
         label: 'Vehicle API'
       },
       {

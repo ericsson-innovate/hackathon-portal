@@ -218,9 +218,9 @@ angular.module('hackApp')
     },
     {
       platform: 'angularjs',
-      humanReadablePlatform: 'AT&T Drive Head Unit App',
+      humanReadablePlatform: 'AT&T Drive Head Unit App Samples',
       iconUrl: document.baseURI + '/dist/images/angularjs-icon.png',
-      repoUrl: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
+      repoUrl: 'https://github.com/ericsson-innovate/sample-app',
       readmeUrl: 'https://github.com/ericsson-innovate/sample-app',
       readmeText: 'Loading README...'
     }
@@ -405,7 +405,7 @@ angular.module('hackApp')
     'vehicleApi': [
       {
         isStateRoute: true,
-        state: 'vehicle-apps-api',
+        state: '/vehicle-apps-api',
         label: 'Vehicle API'
       },
       {
@@ -2128,6 +2128,24 @@ angular.module('dynamicMarkdownListDirective', [])
   };
 });
 
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
@@ -2190,24 +2208,6 @@ angular.module('markdownBlockDirective', [])
         }
       };
     });
-
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      label: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
-    link: function (scope, element, attrs) {
-    }
-  };
-});
 
 angular.module('shortHeaderDirective', [])
 
@@ -2577,11 +2577,6 @@ angular.module('sampleCarAppController', [])
   .controller('SampleCarAppCtrl', function ($scope) {
   });
 
-angular.module('uiComponentsController', [])
-
-  .controller('UiComponentsCtrl', function ($scope) {
-  });
-
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2595,19 +2590,10 @@ angular.module('apiDocumentationController', [])
       $scope.selectedApiCategory = $state.current.name.split('.').pop();
   });
 
-'use strict';
+angular.module('uiComponentsController', [])
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
+  .controller('UiComponentsCtrl', function ($scope) {
+  });
 
 'use strict';
 
@@ -2623,4 +2609,18 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });
