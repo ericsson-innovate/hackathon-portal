@@ -1,6 +1,6 @@
 angular.module('headUnitAppsController', [])
 
-  .controller('HeadUnitAppsCtrl', function ($scope, homeSectionsSideBarLinks) {
+  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, homeSectionsSideBarLinks) {
     $scope.homeState = {};
     $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
     $scope.bubbles = [
@@ -35,4 +35,6 @@ angular.module('headUnitAppsController', [])
         imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
       }
     ];
+
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
   });
