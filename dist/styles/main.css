@@ -156,7 +156,12 @@ textarea {
 
 table {
   border-collapse: collapse;
-  border-spacing: 0; }
+  border-spacing: 0;
+  font-size: 90%;
+  padding: 5px; }
+
+tr:nth-child(even) {
+  background-color: #fafafa; }
 
 .non-bulleted-list, .tabs, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links, side-menu ul, .two-videos-route > .content-column ul {
   padding-left: 0;
@@ -392,7 +397,7 @@ h1 {
   margin-bottom: 0px; }
 
 .api-documentation-categories > li.selected {
-  color: #0099ff; }
+  color: #0574ac; }
 
 hr.divider {
   position: relative;
@@ -706,7 +711,7 @@ li[api-list-item].selected .api-list-item-header, li[api-list-item].none-selecte
 
 li[api-list-item].selected .api-list-item-header > .verb, li[api-list-item].none-selected .api-list-item-header > .verb {
   color: white;
-  background-color: #0099ff; }
+  background-color: #0574ac; }
 
 .api-list-item-body {
   clear: both;
@@ -927,7 +932,7 @@ dynamic-markdown-list {
   dynamic-markdown-list [dynamic-markdown-list-item].selected > markdown-block {
     max-height: 700px; }
   dynamic-markdown-list [dynamic-markdown-list-item].selected > hr.separator {
-    border-color: #0099ff; }
+    border-color: #0574ac; }
 
 [dynamic-markdown-list-item] {
   display: block; }
