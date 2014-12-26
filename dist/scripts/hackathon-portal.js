@@ -210,7 +210,7 @@ angular.module('hackApp')
     },
     {
       platform: 'web',
-      humanReadablePlatform: 'Web',
+      humanReadablePlatform: 'Web App',
       iconUrl: document.baseURI + '/dist/images/web-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-javascript/master/README.md',
@@ -218,10 +218,10 @@ angular.module('hackApp')
     },
     {
       platform: 'angularjs',
-      humanReadablePlatform: 'AT&T Drive UI Kit',
+      humanReadablePlatform: 'AT&T Drive Head Unit App',
       iconUrl: document.baseURI + '/dist/images/angularjs-icon.png',
       repoUrl: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
-      readmeUrl: 'https://raw.githubusercontent.com/ericsson-innovate/ATT-Drive-UI-Framework/master/README.md',
+      readmeUrl: 'https://github.com/ericsson-innovate/sample-app',
       readmeText: 'Loading README...'
     }
   ])
@@ -347,11 +347,12 @@ angular.module('hackApp')
       {
         isStateRoute: true,
         state: 'setup',
+		url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
         label: 'Developer Environment Setup Guide'
       },
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',// TODO: set the actual link
         label: 'Download UI Design Assets'
       }
     ],
@@ -363,25 +364,25 @@ angular.module('hackApp')
       },
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
         label: 'Head Unit Simulator Settings'
       }
     ],
     'sampleApps': [
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://github.com/ericsson-innovate/sample-app',// TODO: set the actual link
         label: 'Download Sample Apps'
       },
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://ericsson-innovate.github.io/sample-app1',// TODO: set the actual link
         label: 'Hello World App'
       },
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
-        label: 'Navigation App'
+        url: 'https://ericsson-innovate.github.io/sample-app2',// TODO: set the actual link
+        label: 'Sample App'
       }
     ],
     'uiApi': [
@@ -392,12 +393,12 @@ angular.module('hackApp')
       },
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',// TODO: set the actual link
         label: 'Download App Framework'
       },
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',// TODO: set the actual link
         label: 'Download UI Design Assets'
       }
     ],
@@ -2127,24 +2128,6 @@ angular.module('dynamicMarkdownListDirective', [])
   };
 });
 
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      label: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
-    link: function (scope, element, attrs) {
-    }
-  };
-});
-
 angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
@@ -2207,6 +2190,24 @@ angular.module('markdownBlockDirective', [])
         }
       };
     });
+
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
 
 angular.module('shortHeaderDirective', [])
 
