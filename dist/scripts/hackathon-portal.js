@@ -1575,6 +1575,26 @@ angular.module('apiListItemDirective', [])
   };
 });
 
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1601,26 +1621,6 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
-    }
-  };
-});
-
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
     }
   };
 });
