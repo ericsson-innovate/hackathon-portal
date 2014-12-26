@@ -6,7 +6,7 @@ $button-active-background-color: rgb(0,0,0);
 $button-inactive-color: rgb(255,255,255);
 $button-inactive-background-color: rgb(102,102,102);
 
-$tab-active-border-color: rgb(0,153,255);
+$tab-active-border-color: #067ab4;
 $tab-inactive-border-color: rgb(51,51,51);
 
 $item-active-color: rgb(0,153,255);
@@ -32,14 +32,15 @@ $code-output-background-color: rgb(247,247,247);
 $body-font-size: 14px;
 $tab-font-size: 16px;
 $toggle-button-font-size: 14px;
-$side-menu-font-size: 14px;
+$side-menu-font-size: 16px;
+$side-menu-heading-size: 22px;
 $banner-header-font-size: 20px;
-$h1-font-size: 24px;
-$h2-font-size: 16px;
-$h3-font-size: 14px;
-$h4-font-size: 14px;
+$h1-font-size: 36px;
+$h2-font-size: 30px;
+$h3-font-size: 24px;
+$h4-font-size: 16px;
 
-$side-menu-item-height: 50px;
+$side-menu-item-height: 38px;
 
 $category-tab-height: 30px;
 $category-tab-border-width: 10px;
@@ -55,7 +56,7 @@ $code-padding: 16px;
 $input-padding: 6px;
 $button-height: 35px;
 
-$content-column-width: 940px;
+$content-column-width: 1000px;
 
 // ---  --- //
 
@@ -69,6 +70,7 @@ $content-column-width: 940px;
   width: 100%;
 }
 
+/*
 @font-face {
   font-family: hack-font;
   src: url('../../dist/fonts/hack-font.otf');
@@ -81,9 +83,65 @@ $content-column-width: 940px;
   font-weight: bold;
 }
 
+*/
+
+@font-face {
+    font-family: hack-font;
+    src: url('../../dist/fonts/omnesatt-regular-webfont.eot');
+    src: url('../../dist/fonts/omnesatt-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../dist/fonts/omnesatt-regular-webfont.woff') format('woff'),
+         url('../../dist/fonts/omnesatt-regular-webfont.ttf') format('truetype'),
+         url('../../dist/fonts/omnesatt-regular-webfont.svg#omnes_att_regularregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: hack-font;
+    src: url('../../dist/fonts/omnesatt-light-webfont.eot');
+    src: url('../../dist/fonts/omnesatt-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../dist/fonts/omnesatt-light-webfont.woff') format('woff'),
+         url('../../dist/fonts/omnesatt-light-webfont.ttf') format('truetype'),
+         url('../../dist/fonts/omnesatt-light-webfont.svg#omnes_attlight') format('svg');
+    font-weight: lighter;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: hack-font;
+    src: url('../../dist/fonts/omnesatt-lightitalic-webfont.eot');
+    src: url('../../dist/fonts/omnesatt-lightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../dist/fonts/omnesatt-lightitalic-webfont.woff') format('woff'),
+         url('../../dist/fonts/omnesatt-lightitalic-webfont.ttf') format('truetype'),
+         url('../../dist/fonts/omnesatt-lightitalic-webfont.svg#omnes_attlight_italic') format('svg');
+    font-weight: lighter;
+    font-style: italic;
+
+}
+
+
+
+@font-face {
+    font-family: hack-font;
+    src: url('../../dist/fonts/omnesatt-bold-webfont.eot');
+    src: url('../../dist/fonts/omnesatt-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../dist/fonts/omnesatt-bold-webfont.woff2') format('woff2'),
+         url('../../dist/fonts/omnesatt-bold-webfont.woff') format('woff'),
+         url('../../dist/fonts/omnesatt-bold-webfont.ttf') format('truetype'),
+         url('../../dist/fonts/omnesatt-bold-webfont.svg#omnes_attbold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+
+
 div, h1, h2, h3, h4, h5, ul, ol, dl, p, hr {
   margin: 0; padding: 0;
 }
+
 
 body {
   width: 100%;
@@ -96,9 +154,8 @@ body {
 }
 
 h1, h2, h3, h4 {
-  text-transform: uppercase;
   text-align: left;
-  font-weight: normal;
+  font-weight: lighter;
 }
 
 h1 {
@@ -216,7 +273,7 @@ h1 {
   width: 1400px;
   height: $tall-header-height;
   overflow: hidden;
-//  background: transparent url('dist/images/car-1.png') no-repeat center top;
+ //background: transparent url('dist/images/car-1.png') no-repeat center top;
   z-index: 2;
   transition: background-image 1s;
 }
@@ -224,7 +281,7 @@ h1 {
 .animiations-wrapper {
   position: absolute;
   width: 100%; height: 100%;
-  transition: opacity 0.7s;
+  transition: opacity 0.4s;
 }
 
 .animations-wrapper.hidden {
@@ -259,11 +316,15 @@ h1 {
 
 .content-column>.tabs {
   position: absolute;
-  bottom: 34px;
+  bottom: 0;
+  width: calc(100% + 420px);
+  margin-left: -210px;
+  margin-right: -210px;
 }
 
 .content-column>.tabs>.tab {
-  width: calc(25% - 15px);
+  width: calc(25%);
+  margin-left: 0;
 }
 
 .home-route api-list {
@@ -329,7 +390,7 @@ footer {
 // --- Styles for the new portal landing page --- //
 
 $home-page-primary-background-color: white;
-$home-page-secondary-background-color: rgb(239, 239, 239);
+$home-page-secondary-background-color: #fafafa;
 
 $markdown-list-item-border-width: $category-tab-border-width;
 
@@ -360,8 +421,8 @@ $markdown-list-item-border-width: $category-tab-border-width;
 // --- Styles for the new API documentation page --- //
 
 $api-docs-side-bar-background-color: rgb(241, 241, 241);
-$header-background-color: rgb(5, 112, 180);
-$header-secondary-background-color: rgb(128, 205, 254);
+$header-background-color: #0574ac;
+$header-secondary-background-color: #0574ac;
 $api-docs-link-normal-color: rgb(66, 132, 196);
 $api-docs-link-hover-color: rgb(128, 205, 254);
 $api-docs-link-active-color: rgb(171, 57, 52);
@@ -374,4 +435,365 @@ a:hover {
 }
 a:active {
   color: $api-docs-link-active-color;
+}
+
+
+/* AT&TDrive Buttons */
+
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+  outline: thin dotted #666;
+  outline-offset: -4px;
+}
+.btn:hover,
+.btn:focus {
+  color: #333333;
+  text-decoration: none;
+}
+.btn:active,
+.btn.active {
+  outline: 0;
+  background-image: none;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  opacity: 0.0065;
+  filter: alpha(opacity=0.65);
+  box-shadow: none;
+}
+.btn-default {
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  background-image: none;
+}
+.btn-default.disabled,
+.btn-default[disabled],
+fieldset[disabled] .btn-default,
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled:active,
+.btn-default[disabled]:active,
+fieldset[disabled] .btn-default:active,
+.btn-default.disabled.active,
+.btn-default[disabled].active,
+fieldset[disabled] .btn-default.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.btn-default .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.btn-primary {
+  color: #ffffff;
+  background-color: #0574ac;
+  border-color: #05699b;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #ffffff;
+  background-color: #045983;
+  border-color: #034160;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  background-image: none;
+}
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active {
+  background-color: #067ab4;
+  border-color: #05699b;
+}
+.btn-primary .badge {
+  color: #067ab4;
+  background-color: #ffffff;
+}
+.btn-success {
+  color: #ffffff;
+  background-color: #4ca90c;
+  border-color: #41910a;
+}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success {
+  color: #ffffff;
+  background-color: #377909;
+  border-color: #285806;
+}
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success {
+  background-image: none;
+}
+.btn-success.disabled,
+.btn-success[disabled],
+fieldset[disabled] .btn-success,
+.btn-success.disabled:hover,
+.btn-success[disabled]:hover,
+fieldset[disabled] .btn-success:hover,
+.btn-success.disabled:focus,
+.btn-success[disabled]:focus,
+fieldset[disabled] .btn-success:focus,
+.btn-success.disabled:active,
+.btn-success[disabled]:active,
+fieldset[disabled] .btn-success:active,
+.btn-success.disabled.active,
+.btn-success[disabled].active,
+fieldset[disabled] .btn-success.active {
+  background-color: #4ca90c;
+  border-color: #41910a;
+}
+.btn-success .badge {
+  color: #4ca90c;
+  background-color: #ffffff;
+}
+.btn-info {
+  color: #ffffff;
+  background-color: #e6f0f7;
+  border-color: #d3e4f1;
+}
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+  color: #ffffff;
+  background-color: #bfd9eb;
+  border-color: #a4c9e2;
+}
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+  background-image: none;
+}
+.btn-info.disabled,
+.btn-info[disabled],
+fieldset[disabled] .btn-info,
+.btn-info.disabled:hover,
+.btn-info[disabled]:hover,
+fieldset[disabled] .btn-info:hover,
+.btn-info.disabled:focus,
+.btn-info[disabled]:focus,
+fieldset[disabled] .btn-info:focus,
+.btn-info.disabled:active,
+.btn-info[disabled]:active,
+fieldset[disabled] .btn-info:active,
+.btn-info.disabled.active,
+.btn-info[disabled].active,
+fieldset[disabled] .btn-info.active {
+  background-color: #e6f0f7;
+  border-color: #d3e4f1;
+}
+.btn-info .badge {
+  color: #e6f0f7;
+  background-color: #ffffff;
+}
+.btn-warning {
+  color: #ffffff;
+  background-color: #ffc089;
+  border-color: #ffb26f;
+}
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active,
+.btn-warning.active,
+.open > .dropdown-toggle.btn-warning {
+  color: #ffffff;
+  background-color: #ffa456;
+  border-color: #ff9132;
+}
+.btn-warning:active,
+.btn-warning.active,
+.open > .dropdown-toggle.btn-warning {
+  background-image: none;
+}
+.btn-warning.disabled,
+.btn-warning[disabled],
+fieldset[disabled] .btn-warning,
+.btn-warning.disabled:hover,
+.btn-warning[disabled]:hover,
+fieldset[disabled] .btn-warning:hover,
+.btn-warning.disabled:focus,
+.btn-warning[disabled]:focus,
+fieldset[disabled] .btn-warning:focus,
+.btn-warning.disabled:active,
+.btn-warning[disabled]:active,
+fieldset[disabled] .btn-warning:active,
+.btn-warning.disabled.active,
+.btn-warning[disabled].active,
+fieldset[disabled] .btn-warning.active {
+  background-color: #ffc089;
+  border-color: #ffb26f;
+}
+.btn-warning .badge {
+  color: #ffc089;
+  background-color: #ffffff;
+}
+.btn-danger {
+  color: #ffffff;
+  background-color: #ffa292;
+  border-color: #ff8d79;
+}
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+  color: #ffffff;
+  background-color: #ff775f;
+  border-color: #ff583b;
+}
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+  background-image: none;
+}
+.btn-danger.disabled,
+.btn-danger[disabled],
+fieldset[disabled] .btn-danger,
+.btn-danger.disabled:hover,
+.btn-danger[disabled]:hover,
+fieldset[disabled] .btn-danger:hover,
+.btn-danger.disabled:focus,
+.btn-danger[disabled]:focus,
+fieldset[disabled] .btn-danger:focus,
+.btn-danger.disabled:active,
+.btn-danger[disabled]:active,
+fieldset[disabled] .btn-danger:active,
+.btn-danger.disabled.active,
+.btn-danger[disabled].active,
+fieldset[disabled] .btn-danger.active {
+  background-color: #ffa292;
+  border-color: #ff8d79;
+}
+.btn-danger .badge {
+  color: #ffa292;
+  background-color: #ffffff;
+}
+.btn-link {
+  color: #067ab4;
+  font-weight: normal;
+  cursor: pointer;
+  border-radius: 0;
+}
+.btn-link,
+.btn-link:active,
+.btn-link[disabled],
+fieldset[disabled] .btn-link {
+  background-color: transparent;
+  box-shadow: none;
+}
+.btn-link,
+.btn-link:hover,
+.btn-link:focus,
+.btn-link:active {
+  border-color: transparent;
+}
+.btn-link:hover,
+.btn-link:focus {
+  color: #04486a;
+  text-decoration: underline;
+  background-color: transparent;
+}
+.btn-link[disabled]:hover,
+fieldset[disabled] .btn-link:hover,
+.btn-link[disabled]:focus,
+fieldset[disabled] .btn-link:focus {
+  color: #777777;
+  text-decoration: none;
+}
+.btn-lg,
+.btn-group-lg > .btn {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+.btn-sm,
+.btn-group-sm > .btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-xs,
+.btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-block {
+  display: block;
+  width: 100%;
+}
+.btn-block + .btn-block {
+  margin-top: 5px;
 }

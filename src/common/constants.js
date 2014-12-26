@@ -1,6 +1,14 @@
 'use strict';
 
 angular.module('hackApp')
+  
+  .constant('showCountdownPage', false)
+
+  //Assuming that the hackaton starts at 1/3/2015 8AM PST (UTC -8)
+  .constant('developerPreview', {
+    startDate: '3 Jan 2015 08:00:00 -0800',
+    endDate: '6 Jan 2015 08:00:00 -0800'
+  })
 
   .constant('apiKey', 'api-key-1234')
   .constant('emulatorDomain', 'http://car1.hack.att.io:3000')
@@ -115,6 +123,15 @@ angular.module('hackApp')
       isAbstract: true,
       templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
+      defaultParams: {
+      }
+    },
+    {
+      ref: 'countdown',
+      url: '/countdown',
+      isAbstract: false,
+      templateUrl: document.baseURI + '/dist/templates/routes/countdown/countdown.html',
+      controller: 'CountdownCtrl',
       defaultParams: {
       }
     }

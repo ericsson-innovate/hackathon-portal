@@ -6,28 +6,33 @@ angular.module('headUnitAppsController', [])
     $scope.bubbles = [
       {
         label: 'Get Started',
-        ref: 'api-docs.vehicle-apps-api',
-        isStateRoute: true
+        ref: document.URL + '#getting-started',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
       },
       {
         label: 'Sample Apps',
-        ref: 'api-docs.web-apps-api.sample-apps',
-        isStateRoute: true
+        ref: document.URL + '#sample-apps',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
       },
       {
         label: 'Simulator',
-        ref: 'api-docs.vehicle-apps-api',
-        isStateRoute: true
+        ref: document.URL + '#simulator',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
       },
       {
         label: 'UI Kit',
-        ref: 'api-docs.vehicle-apps-api',
-        isStateRoute: true
+        ref: document.URL + '#ui-kit',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
       },
       {
         label: 'Drive API',
-        ref: 'api-docs.web-apps-api.getting-started',
-        isStateRoute: true
+        ref: document.URL + '#drive-api',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
       }
     ];
   });

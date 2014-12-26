@@ -5,11 +5,11 @@
   <div class="sub-column"
        ng-repeat="subColumn in subColumns">
     <h2>
-      {{subColumn.label}}
+      <a ng-attr-ui-sref="{{subColumn.headerLink}}">{{subColumn.label}}</a>
     </h2>
 
-    <iframe width="400"
-            height="225"
+    <iframe width="450"
+            height="254"
             ng-src="{{subColumn.videoSrc}}"
             frameborder="0"
             allowfullscreen></iframe>

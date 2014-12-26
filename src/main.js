@@ -45,6 +45,7 @@ angular.module('hackApp', [
   'shortHeaderDirective',
   'sideMenuDirective',
   'tallHeaderDirective',
+  'countdownTimerDirective',
 
   // Data services
 
@@ -59,6 +60,7 @@ angular.module('hackApp', [
   'apiDocsController',
   'headUnitAppsController',
   'twoVideosController',
+  'countdownController',
 
   'vehicleAppsApiController',
 

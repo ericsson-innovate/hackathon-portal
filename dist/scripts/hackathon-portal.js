@@ -45,6 +45,7 @@ angular.module('hackApp', [
   'shortHeaderDirective',
   'sideMenuDirective',
   'tallHeaderDirective',
+  'countdownTimerDirective',
 
   // Data services
 
@@ -59,6 +60,7 @@ angular.module('hackApp', [
   'apiDocsController',
   'headUnitAppsController',
   'twoVideosController',
+  'countdownController',
 
   'vehicleAppsApiController',
 
@@ -127,6 +129,14 @@ angular.module('categoryFilter', [])
 'use strict';
 
 angular.module('hackApp')
+  
+  .constant('showCountdownPage', false)
+
+  //Assuming that the hackaton starts at 1/3/2015 8AM PST (UTC -8)
+  .constant('developerPreview', {
+    startDate: '3 Jan 2015 08:00:00 -0800',
+    endDate: '6 Jan 2015 08:00:00 -0800'
+  })
 
   .constant('apiKey', 'api-key-1234')
   .constant('emulatorDomain', 'http://car1.hack.att.io:3000')
@@ -241,6 +251,15 @@ angular.module('hackApp')
       isAbstract: true,
       templateUrl: document.baseURI + '/dist/templates/routes/api-docs/api-docs.html',
       controller: 'ApiDocsCtrl',
+      defaultParams: {
+      }
+    },
+    {
+      ref: 'countdown',
+      url: '/countdown',
+      isAbstract: false,
+      templateUrl: document.baseURI + '/dist/templates/routes/countdown/countdown.html',
+      controller: 'CountdownCtrl',
       defaultParams: {
       }
     }
@@ -630,125 +649,155 @@ angular.module('orderApiCallsFilter', [])
 
 angular.module('hackApp')
 
-  .config(function ($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideMenuGroups, webAppsApiCategories) {
-    // Re-route invalid routes back to home
-    $urlRouterProvider.otherwise(topLevelRoutes[0].url);
+.config(function($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideMenuGroups, webAppsApiCategories, showCountdownPage, developerPreview) {
 
-    addWebAppsApiCategoriesToSideMenuGroups();
+    var isPreviewOpen = false;
+    var currentTime = (new Date()).getTime();
+    var startTime = (new Date(developerPreview.startDate)).getTime();
+    var endTime = (new Date(developerPreview.endDate)).getTime();
 
-    registerTopLevelRoutes();
-    registerApiDocsRoutes();
+    if(currentTime >= startTime  && currentTime <= endTime) isPreviewOpen = true;
+    
 
-    // ---  --- //
+    if (isPreviewOpen === true || showCountdownPage === false) {
+        // Re-route invalid routes back to home
+        $urlRouterProvider.otherwise(topLevelRoutes[0].url);
+
+        addWebAppsApiCategoriesToSideMenuGroups();
+
+        registerTopLevelRoutes();
+        registerApiDocsRoutes();
+    } 
+
+    else {
+        var route = topLevelRoutes[3];
+
+        $stateProvider
+            .state({
+                name: route.ref,
+                url: route.url,
+                abstract: route.isAbstract,
+                templateUrl: route.templateUrl,
+                controller: route.controller,
+                resolve: {
+                    'collections': function(MarkdownData) {
+                        return MarkdownData.fetchDocumentation();
+                    }
+                },
+                params: route.defaultParams
+            });
+
+          $urlRouterProvider.otherwise(route.url);
+    }
+
 
     function registerTopLevelRoutes() {
-      topLevelRoutes.forEach(function (route) {
-        $stateProvider
-          .state({
-            name: route.ref,
-            url: route.url,
-            abstract: route.isAbstract,
-            templateUrl: route.templateUrl,
-            controller: route.controller,
-            resolve: {
-              'collections': function (MarkdownData) {
-                return MarkdownData.fetchDocumentation();
-              }
-            },
-            params: route.defaultParams
-          });
-      });
+        topLevelRoutes.forEach(function(route) {
+            $stateProvider
+                .state({
+                    name: route.ref,
+                    url: route.url,
+                    abstract: route.isAbstract,
+                    templateUrl: route.templateUrl,
+                    controller: route.controller,
+                    resolve: {
+                        'collections': function(MarkdownData) {
+                            return MarkdownData.fetchDocumentation();
+                        }
+                    },
+                    params: route.defaultParams
+                });
+        });
     }
 
     function registerApiDocsRoutes() {
-      // The group parent routes
-      Object.keys(sideMenuGroups).forEach(function (groupId) {
-        var group = sideMenuGroups[groupId];
-        var stateConfig = {
-          name: group.ref,
-          url: group.url,
-          abstract: group.isAbstract,
-          params: group.defaultParams
-        };
+        // The group parent routes
+        Object.keys(sideMenuGroups).forEach(function(groupId) {
+            var group = sideMenuGroups[groupId];
+            var stateConfig = {
+                name: group.ref,
+                url: group.url,
+                abstract: group.isAbstract,
+                params: group.defaultParams
+            };
 
-        if (!group.isAbstract) {
-          stateConfig.templateUrl = group.templateUrl;
-          stateConfig.controller = group.controller;
-        } else {
-          stateConfig.template = '<ui-view/>';
-        }
+            if (!group.isAbstract) {
+                stateConfig.templateUrl = group.templateUrl;
+                stateConfig.controller = group.controller;
+            } else {
+                stateConfig.template = '<ui-view/>';
+            }
 
-        $stateProvider.state(stateConfig);
-      });
+            $stateProvider.state(stateConfig);
+        });
 
-      // Vehicle UI API group items
-      sideMenuGroups['vehicle-ui-api'].sections.forEach(function (item) {
-        console.debug('IN vehicle-ui-api: ', item);
-        $stateProvider
-          .state({
-            name: item.ref,
-            url: item.url,
-            templateUrl: item.templateUrl,
-            controller: item.controller
-          });
-      });
+        // Vehicle UI API group items
+        sideMenuGroups['vehicle-ui-api'].sections.forEach(function(item) {
+            console.debug('IN vehicle-ui-api: ', item);
+            $stateProvider
+                .state({
+                    name: item.ref,
+                    url: item.url,
+                    templateUrl: item.templateUrl,
+                    controller: item.controller
+                });
+        });
 
-      // Web Apps API group items
-      sideMenuGroups['web-apps-api'].sections.forEach(function (item) {
-        console.debug('IN web-apps-api: ', item);
-        $stateProvider
-          .state({
-            name: item.ref,
-            url: item.url,
-            templateUrl: item.templateUrl,
-            controller: item.controller
-          });
-      });
+        // Web Apps API group items
+        sideMenuGroups['web-apps-api'].sections.forEach(function(item) {
+            console.debug('IN web-apps-api: ', item);
+            $stateProvider
+                .state({
+                    name: item.ref,
+                    url: item.url,
+                    templateUrl: item.templateUrl,
+                    controller: item.controller
+                });
+        });
     }
 
     function addWebAppsApiCategoriesToSideMenuGroups() {
-      webAppsApiCategories.forEach(function (category) {
-        sideMenuGroups['web-apps-api'].sections.push({
-            isStateRoute: true,
-            ref: 'api-docs.web-apps-api.' + category.id,
-            label: category.name,
-            url: '/' + category.id,
-            templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
-            controller: 'ApiDocumentationCtrl'
-          });
-      });
+        webAppsApiCategories.forEach(function(category) {
+            sideMenuGroups['web-apps-api'].sections.push({
+                isStateRoute: true,
+                ref: 'api-docs.web-apps-api.' + category.id,
+                label: category.name,
+                url: '/' + category.id,
+                templateUrl: document.baseURI + '/dist/templates/routes/web-apps-api/api-documentation/api-documentation.html',
+                controller: 'ApiDocumentationCtrl'
+            });
+        });
     }
-  })
+})
 
-  .run(function ($rootScope, $log) {
+.run(function($rootScope, $log) {
     $rootScope.routeState = {};
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-      $log.debug('$stateChangeStart', toState.name);
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        $log.debug('$stateChangeStart', toState.name);
 
-      // Allows us to use a different CSS class for the top-level view element for each route
-      $rootScope.routeState = toState;
+        // Allows us to use a different CSS class for the top-level view element for each route
+        $rootScope.routeState = toState;
     });
 
-    $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-      $log.debug('$stateNotFound', unfoundState.name);
+    $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+        $log.debug('$stateNotFound', unfoundState.name);
     });
 
     $rootScope.$on('$stateChangeSuccess',
-      function (event, toState, toParams, fromState, fromParams) {
-        $log.debug('$stateChangeSuccess', toState.name);
-      });
+        function(event, toState, toParams, fromState, fromParams) {
+            $log.debug('$stateChangeSuccess', toState.name);
+        });
 
     $rootScope.$on('$stateChangeError',
-      function (event, toState, toParams, fromState, fromParams, error) {
-        $log.debug('$stateChangeError', toState.name, error);
-      });
+        function(event, toState, toParams, fromState, fromParams, error) {
+            $log.debug('$stateChangeError', toState.name, error);
+        });
 
-    $rootScope.$on('$viewContentLoaded', function (event) {
-      console.log('$viewContentLoaded');
+    $rootScope.$on('$viewContentLoaded', function(event) {
+        console.log('$viewContentLoaded');
     });
-  });
-
+});
 angular.module('sectionTitleToStateIdFilter', [])
 
 .filter('sectionTitleToStateId', function () {
@@ -1526,26 +1575,6 @@ angular.module('apiListItemDirective', [])
   };
 });
 
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
-    }
-  };
-});
-
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1572,6 +1601,26 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
+    }
+  };
+});
+
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -1762,6 +1811,289 @@ angular.module('apiTryItCardDirective', [])
     }
   };
 });
+
+angular.module('countdownTimerDirective', [])
+
+  .directive('countdownTimer', ['$compile', function ($compile) {
+    return  {
+      restrict: 'EA',
+      replace: false,
+      scope: {
+        interval: '=interval',
+        startTimeAttr: '=startTime',
+        endTimeAttr: '=endTime',
+        countdownattr: '=countdown',
+        finishCallback: '&finishCallback',
+        autoStart: '&autoStart',
+        maxTimeUnit: '='
+      },
+      controller: ['$scope', '$element', '$attrs', '$timeout', function ($scope, $element, $attrs, $timeout) {
+
+        // Checking for trim function since IE8 doesn't have it
+        // If not a function, create tirm with RegEx to mimic native trim
+        if (typeof String.prototype.trim !== 'function') {
+          String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, '');
+          };
+        }
+
+        //angular 1.2 doesn't support attributes ending in "-start", so we're
+        //supporting both "autostart" and "auto-start" as a solution for
+        //backward and forward compatibility.
+        $scope.autoStart = $attrs.autoStart || $attrs.autostart;
+
+        if ($element.html().trim().length === 0) {
+          $element.append($compile('<span>{{millis}}</span>')($scope));
+        } else {
+          $element.append($compile($element.contents())($scope));
+        }
+
+        $scope.startTime = null;
+        $scope.endTime = null;
+        $scope.timeoutId = null;
+        $scope.countdown = $scope.countdownattr && parseInt($scope.countdownattr, 10) >= 0 ? parseInt($scope.countdownattr, 10) : undefined;
+        $scope.isRunning = false;
+
+        $scope.$on('timer-start', function () {
+          $scope.start();
+        });
+
+        $scope.$on('timer-resume', function () {
+          $scope.resume();
+        });
+
+        $scope.$on('timer-stop', function () {
+          $scope.stop();
+        });
+
+        $scope.$on('timer-clear', function () {
+          $scope.clear();
+        });
+        
+        $scope.$on('timer-reset', function () {
+          $scope.reset();
+        });
+        
+        $scope.$on('timer-set-countdown', function (e, countdown) {
+          $scope.countdown = countdown;
+        });
+
+        function resetTimeout() {
+          if ($scope.timeoutId) {
+            clearTimeout($scope.timeoutId);
+          }
+        }
+
+        $scope.start = $element[0].start = function () {
+          $scope.startTime = $scope.startTimeAttr ? new Date($scope.startTimeAttr) : new Date();
+          $scope.endTime = $scope.endTimeAttr ? new Date($scope.endTimeAttr) : null;
+          if (!$scope.countdown) {
+            $scope.countdown = $scope.countdownattr && parseInt($scope.countdownattr, 10) > 0 ? parseInt($scope.countdownattr, 10) : undefined;
+          }
+          resetTimeout();
+          tick();
+          $scope.isRunning = true;
+        };
+
+        $scope.resume = $element[0].resume = function () {
+          resetTimeout();
+          if ($scope.countdownattr) {
+            $scope.countdown += 1;
+          }
+          $scope.startTime = new Date() - ($scope.stoppedTime - $scope.startTime);
+          tick();
+          $scope.isRunning = true;
+        };
+
+        $scope.stop = $scope.pause = $element[0].stop = $element[0].pause = function () {
+          var timeoutId = $scope.timeoutId;
+          $scope.clear();
+          $scope.$emit('timer-stopped', {timeoutId: timeoutId, millis: $scope.millis, seconds: $scope.seconds, minutes: $scope.minutes, hours: $scope.hours, days: $scope.days});
+        };
+
+        $scope.clear = $element[0].clear = function () {
+          // same as stop but without the event being triggered
+          $scope.stoppedTime = new Date();
+          resetTimeout();
+          $scope.timeoutId = null;
+          $scope.isRunning = false;
+        };
+
+        $scope.reset = $element[0].reset = function () {
+          $scope.startTime = $scope.startTimeAttr ? new Date($scope.startTimeAttr) : new Date();
+          $scope.endTime = $scope.endTimeAttr ? new Date($scope.endTimeAttr) : null;
+          $scope.countdown = $scope.countdownattr && parseInt($scope.countdownattr, 10) > 0 ? parseInt($scope.countdownattr, 10) : undefined;
+          resetTimeout();
+          tick();
+          $scope.isRunning = false;
+          $scope.clear();
+        };
+        
+        $element.bind('$destroy', function () {
+          resetTimeout();
+          $scope.isRunning = false;
+        });
+
+        function calculateTimeUnits() {
+          if ($attrs.startTime !== undefined){
+            $scope.millis = new Date() - new Date($scope.startTimeAttr);
+          }
+          // compute time values based on maxTimeUnit specification
+          if (!$scope.maxTimeUnit || $scope.maxTimeUnit === 'day') {
+            $scope.seconds = Math.floor(($scope.millis / 1000) % 60);
+            $scope.minutes = Math.floor((($scope.millis / (60000)) % 60));
+            $scope.hours = Math.floor((($scope.millis / (3600000)) % 24));
+            $scope.days = Math.floor((($scope.millis / (3600000)) / 24));
+            $scope.months = 0;
+            $scope.years = 0;
+          } else if ($scope.maxTimeUnit === 'second') {
+            $scope.seconds = Math.floor($scope.millis / 1000);
+            $scope.minutes = 0;
+            $scope.hours = 0;
+            $scope.days = 0;
+            $scope.months = 0;
+            $scope.years = 0;
+          } else if ($scope.maxTimeUnit === 'minute') {
+            $scope.seconds = Math.floor(($scope.millis / 1000) % 60);
+            $scope.minutes = Math.floor($scope.millis / 60000);
+            $scope.hours = 0;
+            $scope.days = 0;
+            $scope.months = 0;
+            $scope.years = 0;
+          } else if ($scope.maxTimeUnit === 'hour') {
+            $scope.seconds = Math.floor(($scope.millis / 1000) % 60);
+            $scope.minutes = Math.floor((($scope.millis / (60000)) % 60));
+            $scope.hours = Math.floor($scope.millis / 3600000);
+            $scope.days = 0;
+            $scope.months = 0;
+            $scope.years = 0;
+          } else if ($scope.maxTimeUnit === 'month') {
+            $scope.seconds = Math.floor(($scope.millis / 1000) % 60);
+            $scope.minutes = Math.floor((($scope.millis / (60000)) % 60));
+            $scope.hours = Math.floor((($scope.millis / (3600000)) % 24));
+            $scope.days = Math.floor((($scope.millis / (3600000)) / 24) % 30);
+            $scope.months = Math.floor((($scope.millis / (3600000)) / 24) / 30);
+            $scope.years = 0;
+          } else if ($scope.maxTimeUnit === 'year') {
+            $scope.seconds = Math.floor(($scope.millis / 1000) % 60);
+            $scope.minutes = Math.floor((($scope.millis / (60000)) % 60));
+            $scope.hours = Math.floor((($scope.millis / (3600000)) % 24));
+            $scope.days = Math.floor((($scope.millis / (3600000)) / 24) % 30);
+            $scope.months = Math.floor((($scope.millis / (3600000)) / 24 / 30) % 12);
+            $scope.years = Math.floor(($scope.millis / (3600000)) / 24 / 365);
+          }
+          // plural - singular unit decision (old syntax, for backwards compatibility and English only, could be deprecated!)
+          $scope.secondsS = ($scope.seconds === 1) ? '' : 's';
+          $scope.minutesS = ($scope.minutes === 1) ? '' : 's';
+          $scope.hoursS = ($scope.hours === 1) ? '' : 's';
+          $scope.daysS = ($scope.days === 1)? '' : 's';
+          $scope.monthsS = ($scope.months === 1)? '' : 's';
+          $scope.yearsS = ($scope.years === 1)? '' : 's';
+          // new plural-singular unit decision functions (for custom units and multilingual support)
+          $scope.secondUnit = function(singleSecond, pluralSecond){if($scope.seconds === 1){if(singleSecond){return singleSecond;} return 'second';} if(pluralSecond){return pluralSecond;} return 'seconds';};
+          $scope.minuteUnit = function(singleMinute, pluralMinute){if($scope.minutes === 1){if(singleMinute){return singleMinute;} return 'minute';} if(pluralMinute){return pluralMinute;} return 'minutes';};
+          $scope.hourUnit = function(singleHour, pluralHour){if($scope.hours === 1){if(singleHour){return singleHour;} return 'hour';} if(pluralHour){return pluralHour;} return 'hours';};
+          $scope.dayUnit = function(singleDay, pluralDay){if($scope.days === 1){if(singleDay){return singleDay;} return 'day';} if(pluralDay){return pluralDay;} return 'days';};
+          $scope.monthUnit = function(singleMonth, pluralMonth){if($scope.months === 1){if(singleMonth){return singleMonth;} return 'month';} if(pluralMonth){return pluralMonth;} return 'months';};
+          $scope.yearUnit = function(singleYear, pluralYear){if($scope.years === 1){if(singleYear){return singleYear;} return 'year';} if(pluralYear){return pluralYear;} return 'years';};
+          //add leading zero if number is smaller than 10
+          $scope.sseconds = $scope.seconds < 10 ? '0' + $scope.seconds : $scope.seconds;
+          $scope.mminutes = $scope.minutes < 10 ? '0' + $scope.minutes : $scope.minutes;
+          $scope.hhours = $scope.hours < 10 ? '0' + $scope.hours : $scope.hours;
+          $scope.ddays = $scope.days < 10 ? '0' + $scope.days : $scope.days;
+          $scope.mmonths = $scope.months < 10 ? '0' + $scope.months : $scope.months;
+          $scope.yyears = $scope.years < 10 ? '0' + $scope.years : $scope.years;
+
+        }
+
+        //determine initial values of time units and add AddSeconds functionality
+        if ($scope.countdownattr) {
+          $scope.millis = $scope.countdownattr * 1000;
+
+          $scope.addCDSeconds = $element[0].addCDSeconds = function (extraSeconds) {
+            $scope.countdown += extraSeconds;
+            $scope.$digest();
+            if (!$scope.isRunning) {
+              $scope.start();
+            }
+          };
+
+          $scope.$on('timer-add-cd-seconds', function (e, extraSeconds) {
+            $timeout(function () {
+              $scope.addCDSeconds(extraSeconds);
+            });
+          });
+
+          $scope.$on('timer-set-countdown-seconds', function (e, countdownSeconds) {
+            if (!$scope.isRunning) {
+              $scope.clear();
+            }
+
+            $scope.countdown = countdownSeconds;
+            $scope.millis = countdownSeconds * 1000;
+            calculateTimeUnits();
+          });
+        } else {
+          $scope.millis = 0;
+        }
+        calculateTimeUnits();
+
+        var tick = function () {
+
+          $scope.millis = new Date() - $scope.startTime;
+          var adjustment = $scope.millis % 1000;
+
+          if ($scope.endTimeAttr) {
+            $scope.millis = $scope.endTime - new Date();
+            adjustment = $scope.interval - $scope.millis % 1000;
+          }
+
+
+          if ($scope.countdownattr) {
+            $scope.millis = $scope.countdown * 1000;
+          }
+
+          if ($scope.millis < 0) {
+            $scope.stop();
+            $scope.millis = 0;
+            calculateTimeUnits();
+            if($scope.finishCallback) {
+              $scope.$eval($scope.finishCallback);
+            }
+            return;
+          }
+          calculateTimeUnits();
+
+          //We are not using $timeout for a reason. Please read here - https://github.com/siddii/angular-timer/pull/5
+          $scope.timeoutId = setTimeout(function () {
+            tick();
+            $scope.$digest();
+          }, $scope.interval - adjustment);
+
+          $scope.$emit('timer-tick', {timeoutId: $scope.timeoutId, millis: $scope.millis});
+
+          if ($scope.countdown > 0) {
+            $scope.countdown--;
+          }
+          else if ($scope.countdown <= 0) {
+            $scope.stop();
+            if($scope.finishCallback) {
+              $scope.$eval($scope.finishCallback);
+            }
+          }
+        };
+
+        if ($scope.autoStart === undefined || $scope.autoStart === true) {
+          $scope.start();
+        }
+      }]
+    };
+  }]);
+
+/* commonjs package manager support (eg componentjs) */
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports){
+  module.exports = timerModule;
+}
 
 angular.module('dynamicMarkdownListDirective', [])
 
@@ -1980,35 +2312,36 @@ angular.module('tallHeaderDirective', [])
             document.getElementById('car-question-set-4-question-3')
           ];
 
-          scope.timeline = new TimelineMax();
+          scope.timeline = new TimelineMax({repeat: 10000});
 
           scope.timeline.add("start");
 
           scope.timeline.add("set-1", "+=2");
-          scope.timeline.add(TweenMax.from(carScreen, 1.5, {alpha:0}), "+=2");
+          scope.timeline.add(TweenMax.from(carScreen, 0.25, {alpha:0}), "+=1");
           scope.timeline.add(TweenMax.staggerFrom(questionSet1, 1.75, {x:"60", alpha:0}, 0.3), "-=1.0");
           scope.timeline.add(TweenMax.staggerTo(questionSet1, 1, {x:"-60", alpha:0}, 0.3), "+=3");
-          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+          scope.timeline.add(TweenMax.to(carScreen, 0.05, {alpha:0}), "-=1");
 
           scope.timeline.add("set-2", "+=2");
-          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 0.05, {alpha:carScreenInitialAlpha}), "+=1");
           scope.timeline.add(TweenMax.staggerFrom(questionSet2, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
           scope.timeline.add(TweenMax.staggerTo(questionSet2, 1, {x:"-60", alpha:0}, 0.3), "+=3");
-          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+          scope.timeline.add(TweenMax.to(carScreen, 0.05, {alpha:0}), "-=1");
 
           scope.timeline.add("set-3", "+=2");
-          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 0.05, {alpha:carScreenInitialAlpha}), "+=1");
           scope.timeline.add(TweenMax.staggerFrom(questionSet3, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
           scope.timeline.add(TweenMax.staggerTo(questionSet3, 1, {x:"-60", alpha:0}, 0.3), "+=3");
-          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+          scope.timeline.add(TweenMax.to(carScreen, 0.05, {alpha:0}), "-=1");
 
           scope.timeline.add("set-4", "+=2");
-          scope.timeline.add(TweenMax.to(carScreen, 1.5, {alpha:carScreenInitialAlpha}), "+=2");
+          scope.timeline.add(TweenMax.to(carScreen, 0.05, {alpha:carScreenInitialAlpha}), "+=1");
           scope.timeline.add(TweenMax.staggerFrom(questionSet4, 1.75, {x:"60", alpha:0}, 0.3), "-=1");
           scope.timeline.add(TweenMax.staggerTo(questionSet4, 1, {x:"-60", alpha:0}, 0.3), "+=3");
-          scope.timeline.add(TweenMax.to(carScreen, 0.75, {alpha:0}), "-=1");
+          scope.timeline.add(TweenMax.to(carScreen, 0.05, {alpha:0}), "-=1");
 
           scope.timeline.add("end");
+
 
           carouselInterval = $interval(function() {
             var currentLabel = scope.timeline.currentLabel();
@@ -2016,7 +2349,7 @@ angular.module('tallHeaderDirective', [])
             if (scope.selectedLabel != currentLabel) {
                 scope.selectedLabel = currentLabel;
             }
-          }, 500);
+          }, 100);
 
           scope.$on('$destroy', function() {
             // Make sure that the interval is destroyed too
@@ -2042,6 +2375,85 @@ angular.module('apiDocsController', [])
   .controller('ApiDocsCtrl', function ($scope) {
     $scope.apiDocsState = {};
     $scope.apiDocsState.selectedItem = null;
+  });
+
+angular.module('countdownController', [])
+
+.controller('CountdownCtrl', [
+    '$scope',
+    'developerPreview',
+    '$state',
+    function($scope, developerPreview, $state) {
+
+
+	    var currentTime = (new Date()).getTime();
+	    var startTime = (new Date(developerPreview.startDate)).getTime();
+	    var endTime = (new Date(developerPreview.endDate)).getTime();
+
+	    $scope.preview = {
+	    	before: false,
+	    	during: false,
+	    	after: false
+	    };
+
+	    if(currentTime < startTime) $scope.preview.before = true;
+	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
+	    else if(currentTime > endTime) $scope.preview.after = true;
+
+
+
+    	$scope.countdownEnded = function(){
+    		console.log('redirect');
+	        $scope.$apply(function(){
+		    	$scope.preview.before = false;
+    			$scope.preview.during = true;
+        	});
+    	};
+
+    	$scope.goToPortal = function(){
+    		window.location.replace('/');
+    	};
+
+        $scope.end = (new Date(developerPreview.startDate)).getTime();
+    }
+]);
+angular.module('headUnitAppsController', [])
+
+  .controller('HeadUnitAppsCtrl', function ($scope, homeSectionsSideBarLinks) {
+    $scope.homeState = {};
+    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
+    $scope.bubbles = [
+      {
+        label: 'Get Started',
+        ref: document.URL + '#getting-started',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
+      },
+      {
+        label: 'Sample Apps',
+        ref: document.URL + '#sample-apps',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
+      },
+      {
+        label: 'Simulator',
+        ref: document.URL + '#simulator',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
+      },
+      {
+        label: 'UI Kit',
+        ref: document.URL + '#ui-kit',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
+      },
+      {
+        label: 'Drive API',
+        ref: document.URL + '#drive-api',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
+      }
+    ];
   });
 
 angular.module('twoVideosController', [])
@@ -2072,7 +2484,8 @@ angular.module('twoVideosController', [])
             ref: 'api-docs.vehicle-apps-api',
             isStateRoute: true
           }
-        ]
+        ],
+        headerLink: 'head-unit-apps'
       },
       {
         label: 'Build Out-of-Car Mobile or Web Apps',
@@ -2098,41 +2511,8 @@ angular.module('twoVideosController', [])
             ref: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
             isStateRoute: false
           }
-        ]
-      }
-    ];
-  });
-
-angular.module('headUnitAppsController', [])
-
-  .controller('HeadUnitAppsCtrl', function ($scope, homeSectionsSideBarLinks) {
-    $scope.homeState = {};
-    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
-    $scope.bubbles = [
-      {
-        label: 'Get Started',
-        ref: 'api-docs.vehicle-apps-api',
-        isStateRoute: true
-      },
-      {
-        label: 'Sample Apps',
-        ref: 'api-docs.web-apps-api.sample-apps',
-        isStateRoute: true
-      },
-      {
-        label: 'Simulator',
-        ref: 'api-docs.vehicle-apps-api',
-        isStateRoute: true
-      },
-      {
-        label: 'UI Kit',
-        ref: 'api-docs.vehicle-apps-api',
-        isStateRoute: true
-      },
-      {
-        label: 'Drive API',
-        ref: 'api-docs.web-apps-api.getting-started',
-        isStateRoute: true
+        ],
+        headerLink: 'api-docs.web-apps-api.getting-started'
       }
     ];
   });

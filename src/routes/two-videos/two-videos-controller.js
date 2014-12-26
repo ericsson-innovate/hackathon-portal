@@ -26,7 +26,8 @@ angular.module('twoVideosController', [])
             ref: 'api-docs.vehicle-apps-api',
             isStateRoute: true
           }
-        ]
+        ],
+        headerLink: 'head-unit-apps'
       },
       {
         label: 'Build Out-of-Car Mobile or Web Apps',
@@ -52,7 +53,8 @@ angular.module('twoVideosController', [])
             ref: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
             isStateRoute: false
           }
-        ]
+        ],
+        headerLink: 'api-docs.web-apps-api.getting-started'
       }
     ];
   });
