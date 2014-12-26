@@ -1437,6 +1437,36 @@ angular.module('tryItService', [])
 
 'use strict';
 
+angular.module('apiExampleCardDirective', [])
+
+.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiExampleCard
+ * @requires apiExampleCardTemplatePath
+ * @param {object} example
+ * @description
+ *
+ * A panel used for displaying platform-specific examples of a single API call.
+ */
+.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiExampleCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListDirective', [])
 
 .constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
@@ -1475,36 +1505,6 @@ angular.module('apiListDirective', [])
       scope.$watch('category', function () {
         scope.apiListState.selectedItemId = null;
       });
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiExampleCardDirective', [])
-
-.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
-
-/**
- * @ngdoc directive
- * @name apiExampleCard
- * @requires apiExampleCardTemplatePath
- * @param {object} example
- * @description
- *
- * A panel used for displaying platform-specific examples of a single API call.
- */
-.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.handleTabClick = function (platform) {
-        scope.apiItem.HackExamples.currentPlatform = platform;
-      };
     }
   };
 });
@@ -1575,26 +1575,6 @@ angular.module('apiListItemDirective', [])
   };
 });
 
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
-    }
-  };
-});
-
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1621,6 +1601,26 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
+    }
+  };
+});
+
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2226,6 +2226,35 @@ angular.module('shortHeaderDirective', [])
   };
 });
 
+angular.module('sideMenuDirective', [])
+
+.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
+
+.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      selectedItem: '='
+    },
+    templateUrl: sideMenuTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.sideMenuGroups = sideMenuGroups;
+
+      scope.handleItemClick = handleItemClick;
+
+      // ---  --- //
+
+      function handleItemClick(item) {
+        console.log('Side menu item clicked', item.label);
+
+        scope.selectedItem = item;
+
+        $rootScope.$broadcast(sideMenuItemClickEvent, item);
+      }
+    }
+  };
+});
+
 angular.module('tallHeaderDirective', [])
 
 .constant('tallHeaderTemplatePath', document.baseURI + '/dist/templates/components/tall-header/tall-header.html')
@@ -2341,42 +2370,6 @@ angular.module('tallHeaderDirective', [])
   };
 });
 
-angular.module('sideMenuDirective', [])
-
-.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
-
-.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      selectedItem: '='
-    },
-    templateUrl: sideMenuTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.sideMenuGroups = sideMenuGroups;
-
-      scope.handleItemClick = handleItemClick;
-
-      // ---  --- //
-
-      function handleItemClick(item) {
-        console.log('Side menu item clicked', item.label);
-
-        scope.selectedItem = item;
-
-        $rootScope.$broadcast(sideMenuItemClickEvent, item);
-      }
-    }
-  };
-});
-
-angular.module('apiDocsController', [])
-
-  .controller('ApiDocsCtrl', function ($scope) {
-    $scope.apiDocsState = {};
-    $scope.apiDocsState.selectedItem = null;
-  });
-
 angular.module('countdownController', [])
 
 .controller('CountdownCtrl', [
@@ -2417,39 +2410,48 @@ angular.module('countdownController', [])
         $scope.end = (new Date(developerPreview.startDate)).getTime();
     }
 ]);
+angular.module('apiDocsController', [])
+
+  .controller('ApiDocsCtrl', function ($scope) {
+    $scope.apiDocsState = {};
+    $scope.apiDocsState.selectedItem = null;
+  });
+
 angular.module('headUnitAppsController', [])
 
-  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, homeSectionsSideBarLinks) {
+  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
+    var routeUrl = document.baseURI + '#/head-unit-apps';
+
     $scope.homeState = {};
     $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
     $scope.bubbles = [
       {
         label: 'Get Started',
-        ref: document.URL + '#getting-started',
+        ref: routeUrl + '#getting-started',
         isStateRoute: false,
         imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
       },
       {
         label: 'Sample Apps',
-        ref: document.URL + '#sample-apps',
+        ref: routeUrl + '#sample-apps',
         isStateRoute: false,
         imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
       },
       {
         label: 'Simulator',
-        ref: document.URL + '#simulator',
+        ref: routeUrl + '#simulator',
         isStateRoute: false,
         imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
       },
       {
         label: 'UI Kit',
-        ref: document.URL + '#ui-kit',
+        ref: routeUrl + '#ui-kit',
         isStateRoute: false,
         imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
       },
       {
         label: 'Drive API',
-        ref: document.URL + '#drive-api',
+        ref: routeUrl + '#drive-api',
         isStateRoute: false,
         imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
       }
@@ -2573,14 +2575,14 @@ angular.module('carAppFrameworkController', [])
   .controller('CarAppFrameworkCtrl', function ($scope) {
   });
 
-angular.module('uiComponentsController', [])
-
-  .controller('UiComponentsCtrl', function ($scope) {
-  });
-
 angular.module('sampleCarAppController', [])
 
   .controller('SampleCarAppCtrl', function ($scope) {
+  });
+
+angular.module('uiComponentsController', [])
+
+  .controller('UiComponentsCtrl', function ($scope) {
   });
 
 angular.module('apiDocumentationController', [])
