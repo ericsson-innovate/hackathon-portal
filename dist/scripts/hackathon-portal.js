@@ -101,6 +101,600 @@ angular.module('hackApp', [
 
 'use strict';
 
+angular.module('apiService', [])
+
+// TODO: change the data services to instead:
+// - get the example data from files according to where they are defined in the specifications
+//   - I will need to manually cache the content of files that have already been fetched, so that I can pull other examples from them when there are multiple examples in one file
+//   - similarly, I will need to manually cache the example text that has been retrieved, so that I do not have to re-parse files
+
+/**
+ * @ngdoc service
+ * @name HackSpecifications
+ * @requires $q
+ * @requires $http
+ * @requires $log
+ * @requires $filter
+ * @requires HackSpecifications
+ * @requires HackExamples
+ * @requires webAppsApiCategories
+ * @description
+ *
+ * This is the model for all of the hackathon's api.
+ */
+.factory('HackApi', function ($q, $http, $log, $filter, HackSpecifications, HackExamples,
+                              webAppsApiCategories) {
+  function filterByCategories() {
+    webAppsApiCategories.forEach(function (category) {
+      HackApi.apiDataByCategory[category.id] = $filter('category')(HackApi.apiData, category.id);
+    });
+  }
+
+  var HackApi = {
+    /**
+     * @returns {Promise}
+     */
+    fetchAllApiData: function () {
+      return HackSpecifications.getAllSpecificationsData()
+          .then(HackExamples.getAllExamplesData)
+          .then(function () {
+            var apiKey, i;
+
+            i = 0;
+            for (apiKey in HackSpecifications.specificationsData) {
+              HackApi.apiData[i++] = {
+                key: apiKey,
+                specification: HackSpecifications.specificationsData[apiKey],
+                example: HackExamples.examplesData[apiKey],
+                ref: apiKey.replace(/\./g, "_")
+              };
+            }
+
+            filterByCategories();
+          });
+    },
+    /**
+     * @returns {Promise}
+     */
+    getAllApiData: function () {
+      var deferred = $q.defer();
+
+      if (HackApi.apiData.length > 0) {
+        deferred.resolve(HackApi.apiData);
+      } else {
+        HackApi.fetchAllApiData()
+            .then(function () {
+              deferred.resolve(HackApi.apiData);
+            });
+      }
+
+      return deferred.promise;
+    },
+    apiData: [],
+    apiDataByCategory: {},
+    currentCard: 'specification'
+  };
+
+  return HackApi;
+});
+
+'use strict';
+
+angular.module('examplesService', [])
+
+/**
+ * @ngdoc service
+ * @name HackExamples
+ * @requires $q
+ * @requires $http
+ * @requires $filter
+ * @requires HackSpecifications
+ * @requires dataPath
+ * @requires apiList
+ * @requires androidExampleUrl
+ * @requires iosExampleUrl
+ * @requires webExampleUrl
+ * @description
+ *
+ * This is the model for all of the hackathon's examples.
+ */
+.factory('HackExamples', function ($q, $http, $filter, HackSpecifications, dataPath, apiList,
+                                   androidExampleUrl, iosExampleUrl, webExampleUrl) {
+  var newline = '\n',
+      startRegex = /^\s*\/\/ ## START /g,
+      endRegex = /^\s*\/\/ ## END /g,
+      eitherRegex = /^\s*\/\/ ## /,
+      commonSnippetId = 'COMMON',
+      filePromises = {},
+      HackExamples;
+
+  function extractText(exampleCompleteText, specificationId) {
+    var lines, startLineIndex, endLineIndex;
+
+    lines = exampleCompleteText.split(newline);
+
+    // Extract the example from the text
+    startLineIndex = findFlag(startRegex, specificationId, lines, 0) + 1;
+    endLineIndex = findFlag(endRegex, specificationId, lines, startLineIndex);
+
+    // Ensure the start and end flags are present
+    if (startLineIndex >= 0 && endLineIndex >= 0) {
+      endLineIndex = removeAnyNestedFlags(lines, startLineIndex, endLineIndex);
+
+      return lines.slice(startLineIndex, endLineIndex).join(newline);
+    } else {
+      return null;
+    }
+
+    function findFlag(regex, specificationId, lines, startLineIndex) {
+      var i, count;
+
+      for (i = startLineIndex, count = lines.length; i < count; i += 1) {
+        if (regex.exec(lines[i]) &&
+            lines[i].indexOf(specificationId, regex.lastIndex) === regex.lastIndex) {
+          regex.lastIndex = 0;
+          return i;
+        }
+        regex.lastIndex = 0;
+      }
+
+      return -1;
+    }
+
+    function removeAnyNestedFlags(lines, startLineIndex, endLineIndex) {
+      var i;
+
+      for (i = startLineIndex; i < endLineIndex; i += 1) {
+        if (eitherRegex.test(lines[i])) {
+          lines.splice(i, 1);
+          endLineIndex--;
+          i--;
+        }
+      }
+
+      return endLineIndex;
+    }
+  }
+
+  function extractExampleText(exampleData, apiName, platform) {
+    var snippetText = extractText(exampleData.file.allText, apiName);
+
+    if (!snippetText) {
+      console.warn('Example not found in file: platform=' + platform + ', apiName=' + apiName);
+      snippetText =  '// Example forthcoming';
+    } else {
+      snippetText += exampleData.file.commonText;
+    }
+
+    exampleData.text = snippetText;
+  }
+
+  HackExamples = {
+    /**
+     * @param {string} groupDirectoryName
+     * @param {string} apiName
+     * @param {'all'|'web'|'ios'|'android'} platform
+     * @returns {Promise}
+     */
+    fetchExampleData: function (groupDirectoryName, apiName, platform) {
+      var url, promises;
+
+      if (platform === 'all') {
+        promises = [];
+
+        ['web', 'ios', 'android'].forEach(function (platform) {
+          promises.push(HackExamples.fetchExampleData(groupDirectoryName, apiName, platform));
+        });
+
+        return $q.all(promises);
+      } else {
+        // Determine the complete URL for this example
+        url = platform === 'android' ? androidExampleUrl : platform === 'ios' ? iosExampleUrl :
+            webExampleUrl;
+        url += HackSpecifications.specificationsData[apiName].codeExamples[platform];
+
+        // Make sure the example object exists
+        HackExamples.examplesData[apiName] = HackExamples.examplesData[apiName] ?
+            HackExamples.examplesData[apiName] : {};
+
+        HackExamples.examplesData[apiName][platform] = {
+          file: {
+            allText: '',
+            commonText: ''
+          },
+          text: ''
+        };
+
+        // Check whether we have already made a request for this example's file
+        if (!filePromises[url]) {
+          // Make the request for this example's file
+          filePromises[url] = $http.get(url)
+              .then(function (response) {
+                var file = {};
+
+                file.allText = $filter('unescapeJsonString')(response.data);
+
+                file.commonText = extractText(file.allText, commonSnippetId, platform);
+                file.commonText = file.commonText ? newline + newline + file.commonText : '';
+
+                return file;
+              })
+              .catch(function (error) {
+                var message = 'Problem retrieving example data';
+
+                console.error(message, error);
+
+                return {
+                  allText: message,
+                  commonText: ''
+                };
+              });
+        }
+
+        // Return the promise for this example data
+        return filePromises[url]
+            .then(function (file) {
+              // Extract this example's text from the file
+              HackExamples.examplesData[apiName][platform].file = file;
+              extractExampleText(HackExamples.examplesData[apiName][platform], apiName, platform);
+              return HackExamples.examplesData[apiName][platform];
+            });
+      }
+    },
+    /**
+     * @returns {Promise}
+     */
+    fetchAllExamplesData: function () {
+      var apiSectionKey, promises = [];
+
+      for (apiSectionKey in apiList) {
+        apiList[apiSectionKey].forEach(function (apiName) {
+          promises.push(HackExamples.fetchExampleData(apiSectionKey, apiName, 'all'));
+        });
+      }
+
+      return $q.all(promises)
+          .then(function () {
+            HackExamples.allDataHasBeenFetched = true;
+          });
+    },
+    /**
+     * @returns {Promise}
+     */
+    getAllExamplesData: function () {
+      var deferred = $q.defer();
+
+      if (HackExamples.allDataHasBeenFetched) {
+        deferred.resolve(HackExamples.examplesData);
+      } else {
+        HackExamples.fetchAllExamplesData()
+            .then(function () {
+              deferred.resolve(HackExamples.examplesData);
+            });
+      }
+
+      return deferred.promise;
+    },
+    allDataHasBeenFetched: false,
+    examplesData: {},
+    currentPlatform: 'web'
+  };
+
+  return HackExamples;
+});
+
+angular.module('markdownDataService', [])
+
+  .factory('MarkdownData', function ($q, $http, $filter, $rootScope, dataCollections, sideMenuGroups, dataLoadedEvent) {
+    /**
+     * @typedef {Object} Section
+     * @property {Number} index
+     * @property {String} id
+     * @property {String} label
+     * @property {String} convertedMarkdown
+     */
+
+    var sectionHeaderRegex = /<h2(?:.*?)>\s*(.*?)\s*<\/h2>/gi;
+
+    var startAndEndQuotRegex = /(?:^"|"$)/g;
+
+    var dataPromise = null;
+
+    var converter = new Showdown.converter({extensions: ['table']});
+
+    var MarkdownData = {
+      fetchDocumentation: fetchAllDocumentation,
+      getCollection: getCollection
+    };
+
+    return MarkdownData;
+
+    // ---  --- //
+
+    /**
+     * @returns {Promise}
+     */
+    function fetchAllDocumentation() {
+      if (dataPromise) {
+        return dataPromise;
+      } else {
+        var promises = dataCollections.map(function (collection) {
+          return $http.get(collection.url)
+            .then(function (response) {
+              switch (collection.type) {
+                case 'markdown-api':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                case 'json-api':
+                  // TODO: integrate this into the old JSON parsing logic?
+                  break;
+                case 'markdown-setup':
+                  collection.sections = parseDocumentationIntoSections(response.data);
+                  break;
+                default:
+                  throw new Error('Invalid data collection type: ' + collection.type);
+              }
+
+              // Add Markdown sections to the side menu for the Vehicle Apps API group
+              if (collection.id === 'vehicle-apps-api') {
+                collection.sections.forEach(function (section) {
+                  sideMenuGroups['vehicle-apps-api'].sections.push({
+                    isStateRoute: true,
+                    ref: 'api-docs.vehicle-apps-api({sectionId:\'' + section.id + '\'})',
+                    label: section.label
+                  });
+                });
+              }
+            });
+        });
+
+        dataPromise = $q.all(promises)
+          .then(function () {
+            $rootScope.$broadcast(dataLoadedEvent, dataCollections);
+            return dataCollections;
+          });
+
+        return dataPromise;
+      }
+    }
+
+    function getCollection(id) {
+      var i, count;
+
+      for (i = 0, count = dataCollections.length; i < count; i += 1) {
+        if (dataCollections[i].id === id) {
+          return dataCollections[i];
+        }
+      }
+
+      return null;
+    }
+
+    /**
+     * @param {String} documentationText
+     * @returns {Array.<Section>}
+     */
+    function parseDocumentationIntoSections(documentationText) {
+      documentationText = documentationText.replace(startAndEndQuotRegex, '');
+      documentationText = documentationText.replace(/\\n/g, '\n');// TODO: unescape other possible characters
+      var convertedMarkdown = parseMarkdown(documentationText);
+      return extractSections(convertedMarkdown);
+    }
+
+    /**
+     * @param {String} rawMarkdown
+     * @returns {String}
+     */
+    function parseMarkdown(rawMarkdown) {
+      return converter.makeHtml(rawMarkdown);
+    }
+
+    /**
+     * @param {String} convertedMarkdown
+     * @returns {Array.<Section>}
+     */
+    function extractSections(convertedMarkdown) {
+      var sections = [];
+      var index = 0;
+      var previousContentIndex = 0;
+
+      var result;
+
+      sectionHeaderRegex.lastIndex = 0;
+
+      // Add a section for the content before the first header
+      addSection('Introduction', null);
+
+      result = sectionHeaderRegex.exec(convertedMarkdown);
+
+      // Iterate over the h1 elements within the overall converted markdown text
+      while (result !== null) {
+        // Set the markdown content of the previous section (now that we know where that section ends)
+        sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex, result.index);
+
+        // Add a new section for the header we just found
+        addSection(result[1], null);
+
+        // Save the starting index of the content for this new section
+        previousContentIndex = result.index + result[0].length;
+
+        result = sectionHeaderRegex.exec(convertedMarkdown);
+      }
+
+      // Set the markdown content of the previous section (now that we know where that section ends)
+      sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex);
+
+      // If there was no content before the first header, then we should remove the preliminary section we created
+      // earlier
+      if (!sections[0].convertedMarkdown) {
+        sections.shift();
+      }
+
+      return sections;
+
+      // ---  --- //
+
+      function addSection(label, convertedMarkdown) {
+        var id = $filter('sectionTitleToStateId')(label);
+
+        sections[index] = {
+          index: index,
+          id: id,
+          label: label,
+          convertedMarkdown: convertedMarkdown
+        };
+
+        index++;
+      }
+    }
+  });
+
+'use strict';
+
+angular.module('specificationsService', [])
+
+/**
+ * @ngdoc service
+ * @name HackSpecifications
+ * @requires $q
+ * @requires $http
+ * @requires $log
+ * @requires dataPath
+ * @requires specificationUrl
+ * @description
+ *
+ * This is the model for all of the hackathon's specifications.
+ */
+.factory('HackSpecifications', function ($q, $http, $log, dataPath, specificationUrl) {
+  var HackSpecifications = {
+    /**
+     * @returns {Promise}
+     */
+    fetchAllSpecificationsData: function () {
+      return $http.get(specificationUrl)
+          .then(function (response) {
+            var i, count;
+
+            for (i = 0, count = response.data.length; i < count; i += 1) {
+              HackSpecifications.specificationsData[response.data[i].id] = response.data[i];
+            }
+
+            HackSpecifications.allDataHasBeenFetched = true;
+          });
+    },
+    /**
+     * @returns {Promise}
+     */
+    getAllSpecificationsData: function () {
+      var deferred = $q.defer();
+
+      if (HackSpecifications.allDataHasBeenFetched) {
+        deferred.resolve(HackSpecifications.specificationsData);
+      } else {
+        HackSpecifications.fetchAllSpecificationsData()
+            .then(function () {
+              deferred.resolve(HackSpecifications.specificationsData);
+            });
+      }
+
+      return deferred.promise;
+    },
+    allDataHasBeenFetched: false,
+    specificationsData: {}
+  };
+
+  return HackSpecifications;
+});
+
+'use strict';
+
+angular.module('tryItService', [])
+
+.constant('routeParams', [
+  'vin',
+  'requestId',
+  'messageId',
+  'id',
+  'userURI',
+  'senderURI'
+])
+.constant('queryParams', [
+  'longpoll'
+])
+
+/**
+ * @ngdoc service
+ * @name TryItData
+ * @requires emulatorDomain
+ * @requires routeParams
+ * @requires queryParams
+ * @description
+ *
+ * This model stores the current "try it"/emulator values.
+ */
+.factory('TryItData', function (emulatorDomain, apiKey, username, password, routeParams, queryParams) {
+  var TryItData, originalValues, i, count, key, value;
+
+  function generateRandomId() {
+    return '' + parseInt(Math.random() * 10000000000);
+  }
+
+  function generateRandomBoolean() {
+    return '' + (Math.random() < 0.5);
+  }
+
+  function reset() {
+    for (i = 0, count = routeParams.length; i < count; i += 1) {
+      TryItData.routeParams[routeParams[i]] = originalValues.routeParams[routeParams[i]];
+    }
+
+    for (i = 0, count = queryParams.length; i < count; i += 1) {
+      TryItData.queryParams[queryParams[i]] = originalValues.queryParams[queryParams[i]];
+    }
+
+    TryItData.emulatorDomain = originalValues.emulatorDomain;
+  }
+
+  function updateAuthString() {
+//  TryItData.authString = 'Basic cHJvdmlkZXI6MTIzNA==';
+    TryItData.authString = 'Basic ' + btoa(TryItData.username + ':' + TryItData.password);
+  }
+
+  originalValues = {
+    emulatorDomain: emulatorDomain,
+    apiKey: apiKey,
+    username: username,
+    password: password,
+    routeParams: {},
+    queryParams: {}
+  };
+
+  TryItData = {
+    emulatorDomain: originalValues.emulatorDomain,
+    apiKey: originalValues.apiKey,
+    username: originalValues.username,
+    password: originalValues.password,
+    routeParams: {},
+    queryParams: {},
+    reset: reset,
+    updateAuthString: updateAuthString
+  };
+
+  for (i = 0, count = routeParams.length; i < count; i += 1) {
+    originalValues.routeParams[routeParams[i]] = generateRandomId();
+  }
+
+  for (i = 0, count = queryParams.length; i < count; i += 1) {
+    originalValues.queryParams[queryParams[i]] = generateRandomBoolean();
+  }
+
+  reset();
+
+  return TryItData;
+});
+
+'use strict';
+
 angular.module('categoryFilter', [])
 
 /**
@@ -843,600 +1437,6 @@ angular.module('unescapeJsonStringFilter', [])
 
 'use strict';
 
-angular.module('apiService', [])
-
-// TODO: change the data services to instead:
-// - get the example data from files according to where they are defined in the specifications
-//   - I will need to manually cache the content of files that have already been fetched, so that I can pull other examples from them when there are multiple examples in one file
-//   - similarly, I will need to manually cache the example text that has been retrieved, so that I do not have to re-parse files
-
-/**
- * @ngdoc service
- * @name HackSpecifications
- * @requires $q
- * @requires $http
- * @requires $log
- * @requires $filter
- * @requires HackSpecifications
- * @requires HackExamples
- * @requires webAppsApiCategories
- * @description
- *
- * This is the model for all of the hackathon's api.
- */
-.factory('HackApi', function ($q, $http, $log, $filter, HackSpecifications, HackExamples,
-                              webAppsApiCategories) {
-  function filterByCategories() {
-    webAppsApiCategories.forEach(function (category) {
-      HackApi.apiDataByCategory[category.id] = $filter('category')(HackApi.apiData, category.id);
-    });
-  }
-
-  var HackApi = {
-    /**
-     * @returns {Promise}
-     */
-    fetchAllApiData: function () {
-      return HackSpecifications.getAllSpecificationsData()
-          .then(HackExamples.getAllExamplesData)
-          .then(function () {
-            var apiKey, i;
-
-            i = 0;
-            for (apiKey in HackSpecifications.specificationsData) {
-              HackApi.apiData[i++] = {
-                key: apiKey,
-                specification: HackSpecifications.specificationsData[apiKey],
-                example: HackExamples.examplesData[apiKey],
-                ref: apiKey.replace(/\./g, "_")
-              };
-            }
-
-            filterByCategories();
-          });
-    },
-    /**
-     * @returns {Promise}
-     */
-    getAllApiData: function () {
-      var deferred = $q.defer();
-
-      if (HackApi.apiData.length > 0) {
-        deferred.resolve(HackApi.apiData);
-      } else {
-        HackApi.fetchAllApiData()
-            .then(function () {
-              deferred.resolve(HackApi.apiData);
-            });
-      }
-
-      return deferred.promise;
-    },
-    apiData: [],
-    apiDataByCategory: {},
-    currentCard: 'specification'
-  };
-
-  return HackApi;
-});
-
-'use strict';
-
-angular.module('examplesService', [])
-
-/**
- * @ngdoc service
- * @name HackExamples
- * @requires $q
- * @requires $http
- * @requires $filter
- * @requires HackSpecifications
- * @requires dataPath
- * @requires apiList
- * @requires androidExampleUrl
- * @requires iosExampleUrl
- * @requires webExampleUrl
- * @description
- *
- * This is the model for all of the hackathon's examples.
- */
-.factory('HackExamples', function ($q, $http, $filter, HackSpecifications, dataPath, apiList,
-                                   androidExampleUrl, iosExampleUrl, webExampleUrl) {
-  var newline = '\n',
-      startRegex = /^\s*\/\/ ## START /g,
-      endRegex = /^\s*\/\/ ## END /g,
-      eitherRegex = /^\s*\/\/ ## /,
-      commonSnippetId = 'COMMON',
-      filePromises = {},
-      HackExamples;
-
-  function extractText(exampleCompleteText, specificationId) {
-    var lines, startLineIndex, endLineIndex;
-
-    lines = exampleCompleteText.split(newline);
-
-    // Extract the example from the text
-    startLineIndex = findFlag(startRegex, specificationId, lines, 0) + 1;
-    endLineIndex = findFlag(endRegex, specificationId, lines, startLineIndex);
-
-    // Ensure the start and end flags are present
-    if (startLineIndex >= 0 && endLineIndex >= 0) {
-      endLineIndex = removeAnyNestedFlags(lines, startLineIndex, endLineIndex);
-
-      return lines.slice(startLineIndex, endLineIndex).join(newline);
-    } else {
-      return null;
-    }
-
-    function findFlag(regex, specificationId, lines, startLineIndex) {
-      var i, count;
-
-      for (i = startLineIndex, count = lines.length; i < count; i += 1) {
-        if (regex.exec(lines[i]) &&
-            lines[i].indexOf(specificationId, regex.lastIndex) === regex.lastIndex) {
-          regex.lastIndex = 0;
-          return i;
-        }
-        regex.lastIndex = 0;
-      }
-
-      return -1;
-    }
-
-    function removeAnyNestedFlags(lines, startLineIndex, endLineIndex) {
-      var i;
-
-      for (i = startLineIndex; i < endLineIndex; i += 1) {
-        if (eitherRegex.test(lines[i])) {
-          lines.splice(i, 1);
-          endLineIndex--;
-          i--;
-        }
-      }
-
-      return endLineIndex;
-    }
-  }
-
-  function extractExampleText(exampleData, apiName, platform) {
-    var snippetText = extractText(exampleData.file.allText, apiName);
-
-    if (!snippetText) {
-      console.warn('Example not found in file: platform=' + platform + ', apiName=' + apiName);
-      snippetText =  '// Example forthcoming';
-    } else {
-      snippetText += exampleData.file.commonText;
-    }
-
-    exampleData.text = snippetText;
-  }
-
-  HackExamples = {
-    /**
-     * @param {string} groupDirectoryName
-     * @param {string} apiName
-     * @param {'all'|'web'|'ios'|'android'} platform
-     * @returns {Promise}
-     */
-    fetchExampleData: function (groupDirectoryName, apiName, platform) {
-      var url, promises;
-
-      if (platform === 'all') {
-        promises = [];
-
-        ['web', 'ios', 'android'].forEach(function (platform) {
-          promises.push(HackExamples.fetchExampleData(groupDirectoryName, apiName, platform));
-        });
-
-        return $q.all(promises);
-      } else {
-        // Determine the complete URL for this example
-        url = platform === 'android' ? androidExampleUrl : platform === 'ios' ? iosExampleUrl :
-            webExampleUrl;
-        url += HackSpecifications.specificationsData[apiName].codeExamples[platform];
-
-        // Make sure the example object exists
-        HackExamples.examplesData[apiName] = HackExamples.examplesData[apiName] ?
-            HackExamples.examplesData[apiName] : {};
-
-        HackExamples.examplesData[apiName][platform] = {
-          file: {
-            allText: '',
-            commonText: ''
-          },
-          text: ''
-        };
-
-        // Check whether we have already made a request for this example's file
-        if (!filePromises[url]) {
-          // Make the request for this example's file
-          filePromises[url] = $http.get(url)
-              .then(function (response) {
-                var file = {};
-
-                file.allText = $filter('unescapeJsonString')(response.data);
-
-                file.commonText = extractText(file.allText, commonSnippetId, platform);
-                file.commonText = file.commonText ? newline + newline + file.commonText : '';
-
-                return file;
-              })
-              .catch(function (error) {
-                var message = 'Problem retrieving example data';
-
-                console.error(message, error);
-
-                return {
-                  allText: message,
-                  commonText: ''
-                };
-              });
-        }
-
-        // Return the promise for this example data
-        return filePromises[url]
-            .then(function (file) {
-              // Extract this example's text from the file
-              HackExamples.examplesData[apiName][platform].file = file;
-              extractExampleText(HackExamples.examplesData[apiName][platform], apiName, platform);
-              return HackExamples.examplesData[apiName][platform];
-            });
-      }
-    },
-    /**
-     * @returns {Promise}
-     */
-    fetchAllExamplesData: function () {
-      var apiSectionKey, promises = [];
-
-      for (apiSectionKey in apiList) {
-        apiList[apiSectionKey].forEach(function (apiName) {
-          promises.push(HackExamples.fetchExampleData(apiSectionKey, apiName, 'all'));
-        });
-      }
-
-      return $q.all(promises)
-          .then(function () {
-            HackExamples.allDataHasBeenFetched = true;
-          });
-    },
-    /**
-     * @returns {Promise}
-     */
-    getAllExamplesData: function () {
-      var deferred = $q.defer();
-
-      if (HackExamples.allDataHasBeenFetched) {
-        deferred.resolve(HackExamples.examplesData);
-      } else {
-        HackExamples.fetchAllExamplesData()
-            .then(function () {
-              deferred.resolve(HackExamples.examplesData);
-            });
-      }
-
-      return deferred.promise;
-    },
-    allDataHasBeenFetched: false,
-    examplesData: {},
-    currentPlatform: 'web'
-  };
-
-  return HackExamples;
-});
-
-angular.module('markdownDataService', [])
-
-  .factory('MarkdownData', function ($q, $http, $filter, $rootScope, dataCollections, sideMenuGroups, dataLoadedEvent) {
-    /**
-     * @typedef {Object} Section
-     * @property {Number} index
-     * @property {String} id
-     * @property {String} label
-     * @property {String} convertedMarkdown
-     */
-
-    var sectionHeaderRegex = /<h2(?:.*?)>\s*(.*?)\s*<\/h2>/gi;
-
-    var startAndEndQuotRegex = /(?:^"|"$)/g;
-
-    var dataPromise = null;
-
-    var converter = new Showdown.converter({extensions: ['table']});
-
-    var MarkdownData = {
-      fetchDocumentation: fetchAllDocumentation,
-      getCollection: getCollection
-    };
-
-    return MarkdownData;
-
-    // ---  --- //
-
-    /**
-     * @returns {Promise}
-     */
-    function fetchAllDocumentation() {
-      if (dataPromise) {
-        return dataPromise;
-      } else {
-        var promises = dataCollections.map(function (collection) {
-          return $http.get(collection.url)
-            .then(function (response) {
-              switch (collection.type) {
-                case 'markdown-api':
-                  collection.sections = parseDocumentationIntoSections(response.data);
-                  break;
-                case 'json-api':
-                  // TODO: integrate this into the old JSON parsing logic?
-                  break;
-                case 'markdown-setup':
-                  collection.sections = parseDocumentationIntoSections(response.data);
-                  break;
-                default:
-                  throw new Error('Invalid data collection type: ' + collection.type);
-              }
-
-              // Add Markdown sections to the side menu for the Vehicle Apps API group
-              if (collection.id === 'vehicle-apps-api') {
-                collection.sections.forEach(function (section) {
-                  sideMenuGroups['vehicle-apps-api'].sections.push({
-                    isStateRoute: true,
-                    ref: 'api-docs.vehicle-apps-api({sectionId:\'' + section.id + '\'})',
-                    label: section.label
-                  });
-                });
-              }
-            });
-        });
-
-        dataPromise = $q.all(promises)
-          .then(function () {
-            $rootScope.$broadcast(dataLoadedEvent, dataCollections);
-            return dataCollections;
-          });
-
-        return dataPromise;
-      }
-    }
-
-    function getCollection(id) {
-      var i, count;
-
-      for (i = 0, count = dataCollections.length; i < count; i += 1) {
-        if (dataCollections[i].id === id) {
-          return dataCollections[i];
-        }
-      }
-
-      return null;
-    }
-
-    /**
-     * @param {String} documentationText
-     * @returns {Array.<Section>}
-     */
-    function parseDocumentationIntoSections(documentationText) {
-      documentationText = documentationText.replace(startAndEndQuotRegex, '');
-      documentationText = documentationText.replace(/\\n/g, '\n');// TODO: unescape other possible characters
-      var convertedMarkdown = parseMarkdown(documentationText);
-      return extractSections(convertedMarkdown);
-    }
-
-    /**
-     * @param {String} rawMarkdown
-     * @returns {String}
-     */
-    function parseMarkdown(rawMarkdown) {
-      return converter.makeHtml(rawMarkdown);
-    }
-
-    /**
-     * @param {String} convertedMarkdown
-     * @returns {Array.<Section>}
-     */
-    function extractSections(convertedMarkdown) {
-      var sections = [];
-      var index = 0;
-      var previousContentIndex = 0;
-
-      var result;
-
-      sectionHeaderRegex.lastIndex = 0;
-
-      // Add a section for the content before the first header
-      addSection('Introduction', null);
-
-      result = sectionHeaderRegex.exec(convertedMarkdown);
-
-      // Iterate over the h1 elements within the overall converted markdown text
-      while (result !== null) {
-        // Set the markdown content of the previous section (now that we know where that section ends)
-        sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex, result.index);
-
-        // Add a new section for the header we just found
-        addSection(result[1], null);
-
-        // Save the starting index of the content for this new section
-        previousContentIndex = result.index + result[0].length;
-
-        result = sectionHeaderRegex.exec(convertedMarkdown);
-      }
-
-      // Set the markdown content of the previous section (now that we know where that section ends)
-      sections[index - 1].convertedMarkdown = convertedMarkdown.substring(previousContentIndex);
-
-      // If there was no content before the first header, then we should remove the preliminary section we created
-      // earlier
-      if (!sections[0].convertedMarkdown) {
-        sections.shift();
-      }
-
-      return sections;
-
-      // ---  --- //
-
-      function addSection(label, convertedMarkdown) {
-        var id = $filter('sectionTitleToStateId')(label);
-
-        sections[index] = {
-          index: index,
-          id: id,
-          label: label,
-          convertedMarkdown: convertedMarkdown
-        };
-
-        index++;
-      }
-    }
-  });
-
-'use strict';
-
-angular.module('specificationsService', [])
-
-/**
- * @ngdoc service
- * @name HackSpecifications
- * @requires $q
- * @requires $http
- * @requires $log
- * @requires dataPath
- * @requires specificationUrl
- * @description
- *
- * This is the model for all of the hackathon's specifications.
- */
-.factory('HackSpecifications', function ($q, $http, $log, dataPath, specificationUrl) {
-  var HackSpecifications = {
-    /**
-     * @returns {Promise}
-     */
-    fetchAllSpecificationsData: function () {
-      return $http.get(specificationUrl)
-          .then(function (response) {
-            var i, count;
-
-            for (i = 0, count = response.data.length; i < count; i += 1) {
-              HackSpecifications.specificationsData[response.data[i].id] = response.data[i];
-            }
-
-            HackSpecifications.allDataHasBeenFetched = true;
-          });
-    },
-    /**
-     * @returns {Promise}
-     */
-    getAllSpecificationsData: function () {
-      var deferred = $q.defer();
-
-      if (HackSpecifications.allDataHasBeenFetched) {
-        deferred.resolve(HackSpecifications.specificationsData);
-      } else {
-        HackSpecifications.fetchAllSpecificationsData()
-            .then(function () {
-              deferred.resolve(HackSpecifications.specificationsData);
-            });
-      }
-
-      return deferred.promise;
-    },
-    allDataHasBeenFetched: false,
-    specificationsData: {}
-  };
-
-  return HackSpecifications;
-});
-
-'use strict';
-
-angular.module('tryItService', [])
-
-.constant('routeParams', [
-  'vin',
-  'requestId',
-  'messageId',
-  'id',
-  'userURI',
-  'senderURI'
-])
-.constant('queryParams', [
-  'longpoll'
-])
-
-/**
- * @ngdoc service
- * @name TryItData
- * @requires emulatorDomain
- * @requires routeParams
- * @requires queryParams
- * @description
- *
- * This model stores the current "try it"/emulator values.
- */
-.factory('TryItData', function (emulatorDomain, apiKey, username, password, routeParams, queryParams) {
-  var TryItData, originalValues, i, count, key, value;
-
-  function generateRandomId() {
-    return '' + parseInt(Math.random() * 10000000000);
-  }
-
-  function generateRandomBoolean() {
-    return '' + (Math.random() < 0.5);
-  }
-
-  function reset() {
-    for (i = 0, count = routeParams.length; i < count; i += 1) {
-      TryItData.routeParams[routeParams[i]] = originalValues.routeParams[routeParams[i]];
-    }
-
-    for (i = 0, count = queryParams.length; i < count; i += 1) {
-      TryItData.queryParams[queryParams[i]] = originalValues.queryParams[queryParams[i]];
-    }
-
-    TryItData.emulatorDomain = originalValues.emulatorDomain;
-  }
-
-  function updateAuthString() {
-//  TryItData.authString = 'Basic cHJvdmlkZXI6MTIzNA==';
-    TryItData.authString = 'Basic ' + btoa(TryItData.username + ':' + TryItData.password);
-  }
-
-  originalValues = {
-    emulatorDomain: emulatorDomain,
-    apiKey: apiKey,
-    username: username,
-    password: password,
-    routeParams: {},
-    queryParams: {}
-  };
-
-  TryItData = {
-    emulatorDomain: originalValues.emulatorDomain,
-    apiKey: originalValues.apiKey,
-    username: originalValues.username,
-    password: originalValues.password,
-    routeParams: {},
-    queryParams: {},
-    reset: reset,
-    updateAuthString: updateAuthString
-  };
-
-  for (i = 0, count = routeParams.length; i < count; i += 1) {
-    originalValues.routeParams[routeParams[i]] = generateRandomId();
-  }
-
-  for (i = 0, count = queryParams.length; i < count; i += 1) {
-    originalValues.queryParams[queryParams[i]] = generateRandomBoolean();
-  }
-
-  reset();
-
-  return TryItData;
-});
-
-'use strict';
-
 angular.module('apiExampleCardDirective', [])
 
 .constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
@@ -1461,50 +1461,6 @@ angular.module('apiExampleCardDirective', [])
       scope.handleTabClick = function (platform) {
         scope.apiItem.HackExamples.currentPlatform = platform;
       };
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiListDirective', [])
-
-.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
-
-/**
- * @ngdoc directive
- * @name apiList
- * @requires HackApi
- * @requires apiListTemplatePath
- * @description
- *
- * A footer list used for displaying a list of navigation links.
- */
-.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      category: '='
-    },
-    templateUrl: apiListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiListState = {};
-      scope.apiListState.apiData = [];
-      scope.apiListState.selectedItemId = null;
-
-      HackApi.getAllApiData()
-          .then(function (apiData) {
-            scope.apiListState.apiData = apiData;
-
-            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
-              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
-              console.log(scope.apiListState.selectedItemId);
-            }
-          });
-
-      scope.$watch('category', function () {
-        scope.apiListState.selectedItemId = null;
-      });
     }
   };
 });
@@ -1571,6 +1527,50 @@ angular.module('apiListItemDirective', [])
         //
         //$state.go(targetRef);
       };
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiListDirective', [])
+
+.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
+
+/**
+ * @ngdoc directive
+ * @name apiList
+ * @requires HackApi
+ * @requires apiListTemplatePath
+ * @description
+ *
+ * A footer list used for displaying a list of navigation links.
+ */
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      category: '='
+    },
+    templateUrl: apiListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
+
+      HackApi.getAllApiData()
+          .then(function (apiData) {
+            scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
+          });
+
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
+      });
     }
   };
 });
@@ -2095,6 +2095,24 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
   module.exports = timerModule;
 }
 
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('dynamicMarkdownListDirective', [])
 
 .constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
@@ -2127,19 +2145,19 @@ angular.module('dynamicMarkdownListDirective', [])
   };
 });
 
-angular.module('homePageSectionDirective', [])
+angular.module('shortHeaderDirective', [])
 
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
 
-.directive('homePageSection', function (homePageSectionTemplatePath) {
+.directive('shortHeader', function (shortHeaderTemplatePath) {
   return {
     restrict: 'E',
-    transclude: true,
+
     scope: {
-      label: '@',
-      sideBarLinks: '='
     },
-    templateUrl: homePageSectionTemplatePath,
+
+    templateUrl: shortHeaderTemplatePath,
+
     link: function (scope, element, attrs) {
     }
   };
@@ -2207,53 +2225,6 @@ angular.module('markdownBlockDirective', [])
         }
       };
     });
-
-angular.module('shortHeaderDirective', [])
-
-.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
-
-.directive('shortHeader', function (shortHeaderTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-    },
-
-    templateUrl: shortHeaderTemplatePath,
-
-    link: function (scope, element, attrs) {
-    }
-  };
-});
-
-angular.module('sideMenuDirective', [])
-
-.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
-
-.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      selectedItem: '='
-    },
-    templateUrl: sideMenuTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.sideMenuGroups = sideMenuGroups;
-
-      scope.handleItemClick = handleItemClick;
-
-      // ---  --- //
-
-      function handleItemClick(item) {
-        console.log('Side menu item clicked', item.label);
-
-        scope.selectedItem = item;
-
-        $rootScope.$broadcast(sideMenuItemClickEvent, item);
-      }
-    }
-  };
-});
 
 angular.module('tallHeaderDirective', [])
 
@@ -2365,6 +2336,35 @@ angular.module('tallHeaderDirective', [])
 
       function handleAnimationTabClick(animation, wasHumanClick) {
         scope.timeline.seek(animation.label, false);
+      }
+    }
+  };
+});
+
+angular.module('sideMenuDirective', [])
+
+.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
+
+.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      selectedItem: '='
+    },
+    templateUrl: sideMenuTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.sideMenuGroups = sideMenuGroups;
+
+      scope.handleItemClick = handleItemClick;
+
+      // ---  --- //
+
+      function handleItemClick(item) {
+        console.log('Side menu item clicked', item.label);
+
+        scope.selectedItem = item;
+
+        $rootScope.$broadcast(sideMenuItemClickEvent, item);
       }
     }
   };
