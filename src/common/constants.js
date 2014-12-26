@@ -87,14 +87,6 @@ angular.module('hackApp')
       repoUrl: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
       readmeUrl: 'http://github-raw-cors-proxy.herokuapp.com/ericsson-innovate/asdp-api-sampler-javascript/master/README.md',
       readmeText: 'Loading README...'
-    },
-    {
-      platform: 'angularjs',
-      humanReadablePlatform: 'AT&T Drive Head Unit App Samples',
-      iconUrl: document.baseURI + '/dist/images/angularjs-icon.png',
-      repoUrl: 'https://github.com/ericsson-innovate/sample-app',
-      readmeUrl: 'https://github.com/ericsson-innovate/sample-app',
-      readmeText: 'Loading README...'
     }
   ])
 
