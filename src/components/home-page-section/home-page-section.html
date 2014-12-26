@@ -1,4 +1,4 @@
-<h1>
+<h1 style="margin-top: 80px;">
   {{label}}
 </h1>
 
@@ -12,11 +12,13 @@
       ng-if="sideBarLinks">
     <li ng-repeat="link in sideBarLinks">
       <a ng-attr-ui-sref="{{link.state}}"
-         ng-if="link.isStateRoute">
+         ng-if="link.isStateRoute"
+         class="btn btn-primary">
         {{link.label}}
       </a>
       <a ng-href="{{link.url}}"
-         ng-if="!link.isStateRoute">
+         ng-if="!link.isStateRoute"
+         class="btn btn-primary">
         {{link.label}}
       </a>
     </li>

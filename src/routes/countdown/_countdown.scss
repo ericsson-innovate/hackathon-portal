@@ -1,0 +1,57 @@
+.countdown-main-container{
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	
+	background: url('../images/drive-studio-backdrop.png') no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
+	color: white;
+
+	.countdown-heading{
+		margin: 0px auto 20px;
+		font-size: 18px;
+		text-align: center;
+		
+		p{
+			margin-top: 10px;
+		}
+	}
+	
+	.timer{
+			.value{
+				font-size: 9em;
+				margin-left: 15px;
+			}
+			.unit{
+				font-size: 3em;
+			}
+		}
+	
+	.timer,
+	#timezone,	
+	#signup{
+		margin: 0 auto;
+	}
+
+	#timezone{
+		color: #aaa;
+	}
+
+	#signup{
+		margin-top: 80px;
+		font-size: 36px;
+		a{
+			color: white;
+		}
+	}
+
+}

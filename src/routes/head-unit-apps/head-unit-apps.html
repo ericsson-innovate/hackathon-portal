@@ -5,13 +5,17 @@
     <a ng-repeat-start="bubble in bubbles"
        ng-attr-ui-sref="{{bubble.ref}}"
        ng-if="bubble.isStateRoute">
-      <div class="bubble"></div>
+      <div class="bubble">
+        <img ng-src="{{bubble.imageRoute}}" alt="">
+      </div>
       <h3>{{bubble.label}}</h3>
     </a>
     <a ng-repeat-end
        ng-href="{{bubble.ref}}"
        ng-if="!bubble.isStateRoute">
-      <div class="bubble"></div>
+      <div class="bubble">
+        <img ng-src="{{bubble.imageRoute}}" alt="">
+      </div>
       <h3>{{bubble.label}}</h3>
     </a>
   </div>
@@ -32,7 +36,7 @@
     </ul>
   </home-page-section>
 
-  <home-page-section label="Getting Started"
+  <home-page-section id="getting-started" label="Getting Started"
                      side-bar-links="homeState.homeSectionsSideBarLinks['gettingStarted']">
     <p>
       Amongst the components of this toolkit is a head unit simulator that will allow you to test and debug your app as you build it. Some assembly is required and the instruction are included here, just follow the environment setup instructions.
@@ -69,7 +73,19 @@
     </ul>
   </home-page-section>
 
-  <home-page-section label="Head Unit Simulator"
+
+
+  <home-page-section id="sample-apps" label="Sample Apps"
+                     side-bar-links="homeState.homeSectionsSideBarLinks['sampleApps']">
+    <p>
+      Easiest way to get started is by seeding an example app that will contain all UI elements and corresponding AngularJS directives. Then in a most typical AngularJS way build your app components that extend the use of the default UI Kit elements and interaction patterns.
+    </p>
+    <p>
+      To seed the example app using grunt in the terminal window run `command here` and give the full path where you wish to put your app. Then run `http-server` inside of that directory to open your app in localhost: http://127.0.0.1:8080
+    </p>
+  </home-page-section>
+
+  <home-page-section id="simulator" label="Head Unit Simulator"
                      side-bar-links="homeState.homeSectionsSideBarLinks['headUnitSimulator']">
     <p>
       Need download instructions
@@ -84,17 +100,7 @@
     </ol>
   </home-page-section>
 
-  <home-page-section label="Sample Apps"
-                     side-bar-links="homeState.homeSectionsSideBarLinks['sampleApps']">
-    <p>
-      Easiest way to get started is by seeding an example app that will contain all UI elements and corresponding AngularJS directives. Then in a most typical AngularJS way build your app components that extend the use of the default UI Kit elements and interaction patterns.
-    </p>
-    <p>
-      To seed the example app using grunt in the terminal window run `command here` and give the full path where you wish to put your app. Then run `http-server` inside of that directory to open your app in localhost: http://127.0.0.1:8080
-    </p>
-  </home-page-section>
-
-  <home-page-section label="UI Kit"
+  <home-page-section id="ui-kit" label="UI Kit"
                      side-bar-links="homeState.homeSectionsSideBarLinks['uiApi']">
     <p>
       AT&T Drive supports a common application framework for app development. The objective is to allow Automotive OEM to optimize the experience of all apps and services effortlessly in one single location.
@@ -119,7 +125,7 @@
     </ul>
   </home-page-section>
 
-  <home-page-section label="Drive API"
+  <home-page-section id="drive-api" label="Drive API"
                      side-bar-links="homeState.homeSectionsSideBarLinks['vehicleApi']">
     <h3>
       Head Unit JavaScript API

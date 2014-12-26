@@ -1,31 +1,39 @@
 side-menu {
   position: fixed;
   width: $side-menu-width;
+  overflow: auto;
+  height: 700px;
+  height: 100vh;
+
 
   .side-menu-section {
   }
 
   h2 {
     margin-top: 30px;
-    font-size: $side-menu-font-size;
-    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-size: $side-menu-heading-size;
   }
 
   ul {
     @extend .non-bulleted-list;
-  }
 
+    li{
+      margin-bottom: 10px;
+    }
+  }
+  
   li > a {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: $side-menu-item-height;
     font-size: $side-menu-font-size;
-    text-transform: uppercase;
     cursor: pointer;
   }
 
   li.selected > a {
     font-weight: bold;
+
+  }
+
+  li.selected > a:focus{
+    outline: none;
   }
 }

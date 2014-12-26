@@ -1,0 +1,55 @@
+<div class="countdown-main-container" ng-show="preview.before">
+
+	<div class="countdown-heading">
+		<img ng-src="dist/images/att-drive-logo-white.png" alt="AT&T Drive"><br>
+		<p>&nbsp;DEVELOPER PREVIEW opens in:</p>
+	</div>
+
+	<div class="timer">
+
+		<countdown-timer end-time="end" finish-callback="countdownEnded()">
+			<span class="value">{{days}}</span>
+			<ng-pluralize class="unit"
+					 count="days" when="{'1': 'day', 'other': 'days'}">
+			</ng-pluralize>
+			<span class="value">{{hours}}</span>
+			<ng-pluralize class="unit"
+					 count="hours" when="{'1': 'hour', 'other': 'hours'}">
+			</ng-pluralize>
+			<span class="value">{{minutes}}</span>
+			<ng-pluralize class="unit"
+					 count="minutes" when="{'1': 'minute', 'other': 'minutes'}">
+			</ng-pluralize>
+		</countdown-timer>
+
+	</div>
+	<span id="timezone">PST (UTC&nbsp;&nbsp;−8:00)</span>
+	<div id="signup">
+		<a href="https://edo2014.wufoo.com/forms/drive-studio-contact-form/">Sign up</a>
+	</div>
+
+</div>
+
+<div class="countdown-main-container" ng-show="preview.during">
+
+	<div class="countdown-heading">
+		<img ng-src="dist/images/att-drive-logo-white.png" alt="AT&T Drive"><br>
+		<p>&nbsp;DEVELOPER PREVIEW is now open. Click <a ng-click="goToPortal()">here</a> to proceed to the developer preview website.</p>
+	</div>
+
+
+
+</div>
+
+<div class="countdown-main-container" ng-show="preview.after">
+
+	<div class="countdown-heading">
+		<img ng-src="dist/images/att-drive-logo-white.png" alt="AT&T Drive"><br>
+		<p>
+			DEVELOPER PREVIEW is closed at this time.
+			Please <a href="https://edo2014.wufoo.com/forms/drive-studio-contact-form/">Contact us</a> for further info.
+		</p>
+	</div>
+
+
+</div>

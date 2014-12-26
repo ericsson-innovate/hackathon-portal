@@ -6,8 +6,7 @@ short-header {
   vertical-align: middle;
   z-index: 4;
   color: #ffffff;
-//  background-color: $header-background-color;
-  background-color: #040404;
+  background-color: $header-background-color;
 
   .content-column {
     min-height: 0;
@@ -20,7 +19,8 @@ short-header {
 
     img {
       vertical-align: middle;
-      height: 30px;
+      height: 26px;
+      margin-top: -5px;
     }
   }
 
@@ -31,6 +31,7 @@ short-header {
 
   #logos>a, #logos>a>img {
     vertical-align: middle;
+    margin-top: -5px;
   }
 
   #logos>a {
@@ -40,5 +41,9 @@ short-header {
   #ericsson-logo {
     position: relative;
     top: -1px;
+  }
+
+  #dev-preview-label{
+    margin-left: 20px;
   }
 }
