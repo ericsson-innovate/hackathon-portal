@@ -1466,116 +1466,6 @@ angular.module('apiExampleCardDirective', [])
   };
 });
 
-'use strict';
-
-angular.module('apiListDirective', [])
-
-.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
-
-/**
- * @ngdoc directive
- * @name apiList
- * @requires HackApi
- * @requires apiListTemplatePath
- * @description
- *
- * A footer list used for displaying a list of navigation links.
- */
-.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      category: '='
-    },
-    templateUrl: apiListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiListState = {};
-      scope.apiListState.apiData = [];
-      scope.apiListState.selectedItemId = null;
-
-      HackApi.getAllApiData()
-          .then(function (apiData) {
-            scope.apiListState.apiData = apiData;
-
-            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
-              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
-              console.log(scope.apiListState.selectedItemId);
-            }
-          });
-
-      scope.$watch('category', function () {
-        scope.apiListState.selectedItemId = null;
-      });
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiListItemDirective', [])
-
-.constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
-
-/**
- * @ngdoc directive
- * @name apiListItem
- * @requires HackExamples
- * @requires HackApi
- * @requires apiListItemTemplatePath
- * @param {Object} apiItem
- * @description
- *
- * A panel used for displaying the specification for a single API call.
- */
-.directive('apiListItem', function ($rootScope, $state, HackExamples, HackApi, apiListItemTemplatePath) {
-  return {
-    restrict: 'A',
-    scope: {
-      apiItem: '=apiListItem',
-      apiListState: '='
-    },
-    templateUrl: apiListItemTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiItem.HackExamples = HackExamples;
-      scope.apiItem.HackApi = HackApi;
-
-      // TODO: implement scroll to selected API
-      // var GetScreenCordinates = function(obj) {
-      //   var p = {};
-      //   p.x = obj.offsetLeft;
-      //   p.y = obj.offsetTop;
-      //   while (obj.offsetParent) {
-      //     p.x = p.x + obj.offsetParent.offsetLeft;
-      //     p.y = p.y + obj.offsetParent.offsetTop;
-      //     if (obj == document.getElementsByTagName("body")[0]) {
-      //       break;
-      //     }
-      //     else {
-      //       obj = obj.offsetParent;
-      //     }
-      //   }
-      //   return p;
-      // };
-
-      scope.handleHeaderClick = function (evt) {
-
-        scope.apiListState.selectedItemId =
-          scope.apiListState.selectedItemId === scope.apiItem.specification.id ? null : scope.apiItem.specification.id;
-
-        // TODO: refactor this for the new routing scheme (use $location.hash(item.id);)
-
-
-        //var targetRef = 'web-apps-api.' + $rootScope.selectedApiCategory;
-        //
-        //if (scope.apiListState.selectedItemId != null)
-        //  targetRef = targetRef + '.' + scope.apiItem.ref;
-        //
-        //$state.go(targetRef);
-      };
-    }
-  };
-});
-
 angular.module('apiSectionBlockDirective', [])
 
 .constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
@@ -1592,36 +1482,6 @@ angular.module('apiSectionBlockDirective', [])
 
     link: function (scope, element, attrs) {
       element.attr('id', scope.section.id);
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiSpecificationCardDirective', [])
-
-.constant('apiSpecificationCardTemplatePath', document.baseURI + '/dist/templates/components/api-specification-card/api-specification-card.html')
-
-/**
- * @ngdoc directive
- * @name apiSpecificationCard
- * @requires apiSpecificationCardTemplatePath
- * @param {Object} apiItem
- * @description
- *
- * A panel used for displaying the specification for a single API call.
- */
-.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiSpecificationCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.isArray = function (input) {
-        return input instanceof Array;
-      };
     }
   };
 });
@@ -1808,6 +1668,146 @@ angular.module('apiTryItCardDirective', [])
             scope.apiItem.tryIt.response.error = message;
           });
         }
+      };
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiListDirective', [])
+
+.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
+
+/**
+ * @ngdoc directive
+ * @name apiList
+ * @requires HackApi
+ * @requires apiListTemplatePath
+ * @description
+ *
+ * A footer list used for displaying a list of navigation links.
+ */
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      category: '='
+    },
+    templateUrl: apiListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
+
+      HackApi.getAllApiData()
+          .then(function (apiData) {
+            scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
+          });
+
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
+      });
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiSpecificationCardDirective', [])
+
+.constant('apiSpecificationCardTemplatePath', document.baseURI + '/dist/templates/components/api-specification-card/api-specification-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiSpecificationCard
+ * @requires apiSpecificationCardTemplatePath
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel used for displaying the specification for a single API call.
+ */
+.directive('apiSpecificationCard', function (apiSpecificationCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiSpecificationCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.isArray = function (input) {
+        return input instanceof Array;
+      };
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiListItemDirective', [])
+
+.constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
+
+/**
+ * @ngdoc directive
+ * @name apiListItem
+ * @requires HackExamples
+ * @requires HackApi
+ * @requires apiListItemTemplatePath
+ * @param {Object} apiItem
+ * @description
+ *
+ * A panel used for displaying the specification for a single API call.
+ */
+.directive('apiListItem', function ($rootScope, $state, HackExamples, HackApi, apiListItemTemplatePath) {
+  return {
+    restrict: 'A',
+    scope: {
+      apiItem: '=apiListItem',
+      apiListState: '='
+    },
+    templateUrl: apiListItemTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiItem.HackExamples = HackExamples;
+      scope.apiItem.HackApi = HackApi;
+
+      // TODO: implement scroll to selected API
+      // var GetScreenCordinates = function(obj) {
+      //   var p = {};
+      //   p.x = obj.offsetLeft;
+      //   p.y = obj.offsetTop;
+      //   while (obj.offsetParent) {
+      //     p.x = p.x + obj.offsetParent.offsetLeft;
+      //     p.y = p.y + obj.offsetParent.offsetTop;
+      //     if (obj == document.getElementsByTagName("body")[0]) {
+      //       break;
+      //     }
+      //     else {
+      //       obj = obj.offsetParent;
+      //     }
+      //   }
+      //   return p;
+      // };
+
+      scope.handleHeaderClick = function (evt) {
+
+        scope.apiListState.selectedItemId =
+          scope.apiListState.selectedItemId === scope.apiItem.specification.id ? null : scope.apiItem.specification.id;
+
+        // TODO: refactor this for the new routing scheme (use $location.hash(item.id);)
+
+
+        //var targetRef = 'web-apps-api.' + $rootScope.selectedApiCategory;
+        //
+        //if (scope.apiListState.selectedItemId != null)
+        //  targetRef = targetRef + '.' + scope.apiItem.ref;
+        //
+        //$state.go(targetRef);
       };
     }
   };
@@ -2096,6 +2096,24 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
   module.exports = timerModule;
 }
 
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('dynamicMarkdownListDirective', [])
 
 .constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
@@ -2124,24 +2142,6 @@ angular.module('dynamicMarkdownListDirective', [])
         scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
         scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
       }
-    }
-  };
-});
-
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      label: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
-    link: function (scope, element, attrs) {
     }
   };
 });
@@ -2208,53 +2208,6 @@ angular.module('markdownBlockDirective', [])
         }
       };
     });
-
-angular.module('shortHeaderDirective', [])
-
-.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
-
-.directive('shortHeader', function (shortHeaderTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-    },
-
-    templateUrl: shortHeaderTemplatePath,
-
-    link: function (scope, element, attrs) {
-    }
-  };
-});
-
-angular.module('sideMenuDirective', [])
-
-.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
-
-.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      selectedItem: '='
-    },
-    templateUrl: sideMenuTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.sideMenuGroups = sideMenuGroups;
-
-      scope.handleItemClick = handleItemClick;
-
-      // ---  --- //
-
-      function handleItemClick(item) {
-        console.log('Side menu item clicked', item.label);
-
-        scope.selectedItem = item;
-
-        $rootScope.$broadcast(sideMenuItemClickEvent, item);
-      }
-    }
-  };
-});
 
 angular.module('tallHeaderDirective', [])
 
@@ -2367,6 +2320,53 @@ angular.module('tallHeaderDirective', [])
       function handleAnimationTabClick(animation, wasHumanClick) {
         scope.timeline.seek(animation.label, false);
       }
+    }
+  };
+});
+
+angular.module('sideMenuDirective', [])
+
+.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
+
+.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      selectedItem: '='
+    },
+    templateUrl: sideMenuTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.sideMenuGroups = sideMenuGroups;
+
+      scope.handleItemClick = handleItemClick;
+
+      // ---  --- //
+
+      function handleItemClick(item) {
+        console.log('Side menu item clicked', item.label);
+
+        scope.selectedItem = item;
+
+        $rootScope.$broadcast(sideMenuItemClickEvent, item);
+      }
+    }
+  };
+});
+
+angular.module('shortHeaderDirective', [])
+
+.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
+
+.directive('shortHeader', function (shortHeaderTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+    },
+
+    templateUrl: shortHeaderTemplatePath,
+
+    link: function (scope, element, attrs) {
     }
   };
 });
@@ -2567,16 +2567,6 @@ angular.module('dynamicMarkdownListItemDirective', [])
   };
 });
 
-angular.module('carAppFrameworkController', [])
-
-  .controller('CarAppFrameworkCtrl', function ($scope) {
-  });
-
-angular.module('sampleCarAppController', [])
-
-  .controller('SampleCarAppCtrl', function ($scope) {
-  });
-
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2590,10 +2580,19 @@ angular.module('apiDocumentationController', [])
       $scope.selectedApiCategory = $state.current.name.split('.').pop();
   });
 
-angular.module('uiComponentsController', [])
+'use strict';
 
-  .controller('UiComponentsCtrl', function ($scope) {
-  });
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
+});
 
 'use strict';
 
@@ -2611,16 +2610,17 @@ angular.module('sampleAppsController', [])
   $scope.sampleAppsState.sampleAppData = sampleAppData;
 });
 
-'use strict';
+angular.module('carAppFrameworkController', [])
 
-angular.module('gettingStartedController', [])
+  .controller('CarAppFrameworkCtrl', function ($scope) {
+  });
 
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
+angular.module('sampleCarAppController', [])
+
+  .controller('SampleCarAppCtrl', function ($scope) {
+  });
+
+angular.module('uiComponentsController', [])
+
+  .controller('UiComponentsCtrl', function ($scope) {
+  });
