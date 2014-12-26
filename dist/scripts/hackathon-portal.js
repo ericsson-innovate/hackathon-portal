@@ -388,7 +388,7 @@ angular.module('hackApp')
     'uiApi': [
       {
         isStateRoute: true,
-        state: 'vehicle-ui-api',
+        state: 'api-docs.vehicle-ui-api',
         label: 'Preview UI API'
       },
       {
@@ -405,7 +405,7 @@ angular.module('hackApp')
     'vehicleApi': [
       {
         isStateRoute: true,
-        state: 'vehicle-apps-api',
+        state: 'api-docs.vehicle-apps-api',
         label: 'Vehicle API'
       },
       {
@@ -1438,36 +1438,6 @@ angular.module('tryItService', [])
 
 'use strict';
 
-angular.module('apiExampleCardDirective', [])
-
-.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
-
-/**
- * @ngdoc directive
- * @name apiExampleCard
- * @requires apiExampleCardTemplatePath
- * @param {object} example
- * @description
- *
- * A panel used for displaying platform-specific examples of a single API call.
- */
-.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.handleTabClick = function (platform) {
-        scope.apiItem.HackExamples.currentPlatform = platform;
-      };
-    }
-  };
-});
-
-'use strict';
-
 angular.module('apiListItemDirective', [])
 
 .constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
@@ -1534,6 +1504,36 @@ angular.module('apiListItemDirective', [])
 
 'use strict';
 
+angular.module('apiExampleCardDirective', [])
+
+.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiExampleCard
+ * @requires apiExampleCardTemplatePath
+ * @param {object} example
+ * @description
+ *
+ * A panel used for displaying platform-specific examples of a single API call.
+ */
+.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiExampleCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListDirective', [])
 
 .constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
@@ -1576,6 +1576,26 @@ angular.module('apiListDirective', [])
   };
 });
 
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1602,26 +1622,6 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
-    }
-  };
-});
-
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2461,29 +2461,6 @@ angular.module('headUnitAppsController', [])
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
   });
 
-angular.module('vehicleAppsApiController', [])
-
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
-                                              MarkdownData, sideMenuItemClickEvent) {
-    $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
-
-    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
-
-    $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
-
-    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
-
-    // ---  --- //
-
-    function handleSideBarLinkClick(event, item) {
-      if ($location.hash() !== item.id) {
-        $location.hash(item.id);
-      } else {
-        $anchorScroll();
-      }
-    }
-  });
-
 angular.module('twoVideosController', [])
 
   .controller('TwoVideosCtrl', function ($scope, $sce) {
@@ -2545,6 +2522,29 @@ angular.module('twoVideosController', [])
     ];
   });
 
+angular.module('vehicleAppsApiController', [])
+
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
+                                              MarkdownData, sideMenuItemClickEvent) {
+    $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
+
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
+
+    $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
+
+    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
+
+    // ---  --- //
+
+    function handleSideBarLinkClick(event, item) {
+      if ($location.hash() !== item.id) {
+        $location.hash(item.id);
+      } else {
+        $anchorScroll();
+      }
+    }
+  });
+
 angular.module('dynamicMarkdownListItemDirective', [])
 
 .constant('dynamicMarkdownListItemTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item.html')
@@ -2586,6 +2586,19 @@ angular.module('uiComponentsController', [])
   .controller('UiComponentsCtrl', function ($scope) {
   });
 
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
+      $scope.selectedApiCategory = $state.current.name.split('.').pop();
+  });
+
 'use strict';
 
 angular.module('gettingStartedController', [])
@@ -2599,19 +2612,6 @@ angular.module('gettingStartedController', [])
  */
 .controller('GettingStartedCtrl', function () {
 });
-
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
-      $scope.selectedApiCategory = $state.current.name.split('.').pop();
-  });
 
 'use strict';
 
