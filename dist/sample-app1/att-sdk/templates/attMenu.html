@@ -1,0 +1,21 @@
+﻿<div class="att-menu">
+    <style>
+        .activeTemp
+        {
+            float: left;
+            height:0px;
+            width:0px;
+        }
+    </style>
+    <h3 class="active-screen" ng-bind="title" ></h3>
+    <ul class="list">
+        <li ng-repeat="item in items" id="item{{$index}}"
+            ng-class="{active: item.selected, activeTemp: item.selectedTemp}"
+            ng-click="onItemClick(item, false)">
+            <a ng-href="{{item.href}}">{{item.text}}
+            <span ng-bind="item.desc"></span>
+            </a>
+        </li>
+        <li id="sejo" ng-class="{activeTemp: activeTemp}"></li>
+    </ul>
+</div>

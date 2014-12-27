@@ -1,0 +1,24 @@
+<att-content has-header="true" background-img="images/background.png"> </att-content>
+<div class="container" id="main-container">
+    <div class="padding" class="ng-binding">
+		<br>
+		<br>
+		<br>
+ 		<label>VEHICLE</label><br>
+		<att-toggle-switch ng-model="subscribedVehicleInfo" on-change="onChangeVI()"></att-toggle-switch> <!-- Status: {{subscribedVehicleInfo}} -->
+		<br>
+		<br>
+    	<label>NAVIGATION</label><br>
+		<att-toggle-switch ng-model="subscribedNavigation" on-change="onChangeNav()"></att-toggle-switch> <!-- Status: {{subscribedNavigation}}-->
+		<br>
+		<br>
+		<label>NOTIFICATIONS</label><br>
+		<att-toggle-switch ng-model="subscribedNotifications" on-change="onChangeNotif()"></att-toggle-switch> <!-- Status: {{subscribedUserInfo}} -->		
+<!--  
+<br>
+<br> 
+	<button ng-click="resetSubscriptions()" class="btn btn-danger">Reset</button> 
+-->
+</div>
+</div>
+

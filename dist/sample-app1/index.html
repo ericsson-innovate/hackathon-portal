@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, target-densityDpi=120" />
+    <title>myFirstApp</title>
+    <link rel="stylesheet" href="att-sdk/styles/att-sdk.css">
+    <link rel="stylesheet" href="att-sdk/styles/font-asesome.css">
+    <link rel="stylesheet" href="styles/main.css"/>
+</head>
+<body ng-app="app">
+    <att-header app-name="appName" current-item="viewName" app-image="images/att-icon.png"></att-header>
+    <att-content has-header="true" background-img="images/att-stencil.png">
+        <ng-view></ng-view>
+    </att-content>
+    <att-drawer>
+        <att-menu title="title" items="appLinks"></att-menu>
+    </att-drawer>
+    <att-loader></att-loader>
+</body>
+
+<!-- DEC API -->
+<script type="text/javascript" src="dec-sdk\scripts\data-event-sdk.json"></script>
+<script type="text/javascript" src="dec-sdk\scripts\data-event-sdk.js"></script>
+
+<!-- APP FRAMEWORK -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
+<script src="att-sdk/scripts/connectedCarSDK-tpls-0.0.5.js"></script>
+<script src="scripts/app.js"></script>
+
+<!--Controllers-->
+<script src="firstPage/controllers/FirstPageCtrl.js"></script>
+<script src="secondPage/controllers/SecondPageCtrl.js"></script>
+</html>

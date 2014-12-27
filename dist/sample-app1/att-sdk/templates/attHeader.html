@@ -1,0 +1,16 @@
+﻿<div class="att-header">
+    <h3 class="active-screen">
+        
+        <i ng-show="backButton" ng-click="backCallback()" id="back-icon" class="icon-back"></i>
+        <span>{{currentItem}}</span>
+    </h3>
+    <a class="drawer-trigger pull-right sep-l-24">
+            <span id="menu-icon" class="icon-menu separate-left-10" ng-click="openMenu()"></span>
+    </a>
+    <div class="app-branding">
+        <span class="app-name" ng-bind="appName"></span>
+        <img class="app-icon" ng-src="{{appImage}}">
+        
+    </div>
+    
+</div>

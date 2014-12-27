@@ -1,0 +1,11 @@
+<div class="att-tabs">
+    <div class="tab-content" ng-class="{'nav-stacked': vertical, 'top': topPosition}">
+        <div class="tab-pane"
+             ng-repeat="tab in tabs"
+             ng-class="{active: tab.active}"
+             tab-content-transclude="tab">
+        </div>
+    </div>
+    <ul class="nav" ng-class="{'nav-stacked': vertical, 'top': topPosition}" ng-transclude></ul>
+    <span id="justify"></span> <!-- Important for alignment - do not remove -->
+</div>

@@ -1,0 +1,13 @@
+﻿<div class="att-dropdown">
+    <div ng-click="show=!show">
+        <a class="selected" ng-bind="defaultOption"></a>
+        <span class="icon"><i class="fa fa-caret-down"></i></span>
+    </div>
+    <div class="screen" ng-show="show">
+        <button ng-show="closeButton" type="button" class="btn btn-circ small btn-close-list" ng-click="show=false"><span class="icon-close"></span></button>
+        <ul class="list">
+            <li ng-repeat="item in items" ng-click="selectItem(item)">{{item.text}}</li>
+
+        </ul>
+    </div>
+</div>

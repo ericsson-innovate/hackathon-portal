@@ -1,0 +1,15 @@
+<att-content has-header="true" background-img="images/background.png">
+<div class="row">
+	<ng-form name="customForm" novalidate class="css-form">
+<div class="col">
+  <div ng-repeat="(type, navInfo) in formData.nav">
+    <label class="customform">{{type}}</label>
+    <input class="customform" type="text" ng-model="navInfo"/> <span ng-show="false">{{customForm[type] = navInfo}}</span>
+  </div>
+</div>
+<div class="col">  
+	<button class="btn btn-default" ng-click="saveFormData(customForm)"> Save Data </button>
+</div>
+ </ng-form>
+</div>
+</att-content>

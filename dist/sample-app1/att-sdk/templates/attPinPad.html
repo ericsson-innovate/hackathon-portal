@@ -1,0 +1,40 @@
+<div class="att-pin-pad">
+
+
+<div class="pin-pad-heading">
+
+        <input type="password" ng-model="ngModel">
+        <h1>Please enter your pin</h1>
+</div>
+
+
+
+
+
+    <div class="keypad">
+        <div class="panel-row">
+            <button class="btn keypad-button" ng-click="appendToPin(1)">1</button>
+            <button class="btn keypad-button" ng-click="appendToPin(2)">2</button>
+            <button class="btn keypad-button" ng-click="appendToPin(3)">3</button>
+        </div>
+        <div class="panel-row">
+            <button class="btn keypad-button" ng-click="appendToPin(4)">4</button>
+            <button class="btn keypad-button" ng-click="appendToPin(5)">5</button>
+            <button class="btn keypad-button" ng-click="appendToPin(6)">6</button>
+        </div>
+        <div class="panel-row">
+            <button class="btn keypad-button" ng-click="appendToPin(7)">7</button>
+            <button class="btn keypad-button" ng-click="appendToPin(8)">8</button>
+            <button class="btn keypad-button" ng-click="appendToPin(9)">9</button>
+        </div>
+        <div class="panel-row">
+            <button class="btn keypad-button confirm" ng-click="onConfirm()" ng-disabled="isDisabled()"><i class="icon-check-thin"></i></button>
+            <button class="btn keypad-button" ng-click="appendToPin(0)">0</button>
+            <button class="btn keypad-button backspace" ng-click="backspace()"><i class="icon-backspace"></i></button>
+        </div>
+    </div>
+
+
+
+
+</div>

@@ -1,0 +1,11 @@
+﻿<div class="att-list-view">
+    <h3 class="active-screen" ng-bind="title"></h3>
+    <ul class="list">
+        <li ng-repeat="item in items"
+            ng-class="{active: item.selected}"
+            ng-click="onItemClick(item)">
+            {{item.text}}
+            <span ng-bind="item.desc"></span>
+        </li>
+    </ul>
+</div>

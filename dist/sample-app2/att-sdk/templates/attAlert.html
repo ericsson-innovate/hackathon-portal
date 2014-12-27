@@ -1,0 +1,14 @@
+<div ng-show="alert.isActive" class="att-alert alert-animation" ng-class="alert.type && 'alert-' + alert.type" ng-click="close()">
+    <div class="content">
+        <h1 class="alert-heading" ng-bind="alert.title"></h1>
+        <!--<p class="alert-text" ng-bind="alert.text"></p>-->
+        <p class="alert-text" ng-transclude></p>
+    </div>
+    <span class="alert-icon {{type}}" ng-show="alert.showIcon && !alert.showConfirmationBtn">
+        <i class="fa" ng-class="type=='success' ? 'fa-check-circle' : type=='danger' ? 'fa-warning' : 'fa-info-circle'"></i>
+    </span>
+    <div class="alert-button">
+        <button class="btn btn-default" ng-show="alert.showConfirmationBtn" ng-click="btnClick()">{{alert.buttonText}}</button>
+    </div>
+
+</div>
