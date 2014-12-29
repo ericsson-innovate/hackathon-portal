@@ -203,14 +203,13 @@ angular.module('hackApp')
   .constant('homeSectionsSideBarLinks', {
     'gettingStarted': [
       {
-        isStateRoute: true,
-        state: 'setup',
-        url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate/hackathon-portal/blob/gh-pages/data/Setup.md',// TODO: set link to Setup.MD
         label: 'Developer Environment Setup Guide'
       },
       {
         isStateRoute: false,
-        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',// TODO: set the actual link
+        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',
         label: 'Download UI Design Assets'
       }
     ],
@@ -267,8 +266,8 @@ angular.module('hackApp')
         label: 'Vehicle API'
       },
       {
-        isStateRoute: false,
-        url: document.baseURI + '/#/web-apps-api/getting-started',
+        isStateRoute: true,
+        state: 'api-docs.web-apps-api.getting-started',
         label: 'Web API'
       }
     ]
