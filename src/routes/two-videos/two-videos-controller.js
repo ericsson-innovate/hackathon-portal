@@ -18,13 +18,13 @@ angular.module('twoVideosController', [])
           },
           {
             label: 'App Framework',
-            ref: 'api-docs.vehicle-apps-api',
-            isStateRoute: true
+            ref: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
+            isStateRoute: false
           },
           {
             label: 'Sample App',
-            ref: 'api-docs.vehicle-apps-api',
-            isStateRoute: true
+            ref: 'https://github.com/ericsson-innovate/sample-app',
+            isStateRoute: false
           }
         ],
         headerLink: 'head-unit-apps'
@@ -35,23 +35,23 @@ angular.module('twoVideosController', [])
         links: [
           {
             label: 'Get Started',
-            ref: 'head-unit-apps',
-            isStateRoute: true
-          },
-          {
-            label: 'Web API',
             ref: 'api-docs.web-apps-api.getting-started',
             isStateRoute: true
           },
           {
-            label: 'Sandbox (Luigi)',
-            ref: 'api-docs.vehicle-apps-api',
+            label: 'Web API',
+            ref: 'api-docs.web-apps-api.control-car',
             isStateRoute: true
           },
           {
-            label: 'Sample App',
-            ref: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
+            label: 'Sandbox (Luigi)',
+            ref: 'http://mafalda.hack.att.io/',
             isStateRoute: false
+          },
+          {
+            label: 'Sample Apps',
+            ref: 'api-docs.web-apps-api.sample-apps',
+            isStateRoute: true
           }
         ],
         headerLink: 'api-docs.web-apps-api.getting-started'
