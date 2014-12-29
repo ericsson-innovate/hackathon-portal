@@ -151,28 +151,20 @@ angular.module('hackApp')
       isAbstract: true,
       sections: [
         {
-          isStateRoute: true,
+          isStateRoute: false,
           ref: 'api-docs.vehicle-ui-api.car-app-framework',
           label: 'Car App Framework',
-          url: '/car-app-framework',
+          url: 'http://attgarage.msg.betelab.ericy.com:443/ui-toolkit/',
           templateUrl: document.baseURI + '/dist/templates/routes/vehicle-ui-api/car-app-framework/car-app-framework.html',
           controller: 'CarAppFrameworkCtrl'
         },
         {
-          isStateRoute: true,
+          isStateRoute: false,
           ref: 'api-docs.vehicle-ui-api.ui-components',
           label: 'UI Components',
-          url: '/ui-components',
+          url: 'http://attgarage.msg.betelab.ericy.com:443/ui-toolkit/#/alert',
           templateUrl: document.baseURI + '/dist/templates/routes/vehicle-ui-api/ui-components/ui-components.html',
           controller: 'UiComponentsCtrl'
-        },
-        {
-          isStateRoute: true,
-          ref: 'api-docs.vehicle-ui-api.sample-car-app',
-          label: 'Sample Car App',
-          url: '/sample-car-app',
-          templateUrl: document.baseURI + '/dist/templates/routes/vehicle-ui-api/sample-car-app/sample-car-app.html',
-          controller: 'SampleCarAppCtrl'
         }
       ],
       defaultParams: {
@@ -251,8 +243,8 @@ angular.module('hackApp')
     ],
     'uiApi': [
       {
-        isStateRoute: true,
-        state: 'api-docs.vehicle-ui-api',
+        isStateRoute: false,
+        url: 'http://attgarage.msg.betelab.ericy.com:443/ui-toolkit/',
         label: 'Preview UI API'
       },
       {

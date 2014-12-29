@@ -26,6 +26,7 @@ side-menu {
   li > a {
     font-size: $side-menu-font-size;
     cursor: pointer;
+    color: #0574ac;
   }
 
   li.selected > a {
