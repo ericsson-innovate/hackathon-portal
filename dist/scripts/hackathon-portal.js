@@ -331,14 +331,13 @@ angular.module('hackApp')
   .constant('homeSectionsSideBarLinks', {
     'gettingStarted': [
       {
-        isStateRoute: true,
-        state: 'setup',
-        url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate/hackathon-portal/blob/gh-pages/data/Setup.md',// TODO: set link to Setup.MD
         label: 'Developer Environment Setup Guide'
       },
       {
         isStateRoute: false,
-        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',// TODO: set the actual link
+        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',
         label: 'Download UI Design Assets'
       }
     ],
@@ -395,8 +394,8 @@ angular.module('hackApp')
         label: 'Vehicle API'
       },
       {
-        isStateRoute: false,
-        url: document.baseURI + '/#/web-apps-api/getting-started',
+        isStateRoute: true,
+        state: 'api-docs.web-apps-api.getting-started',
         label: 'Web API'
       }
     ]
@@ -473,6 +472,48 @@ angular.module('hackApp')
   })
   .constant('webAppsApiCategories', [
     {
+      id: 'control-car',
+      name: 'Control the Car',
+      specs: [
+        '2.6.1-sign-up',
+        '2.6.2-validate-otp',
+        '2.6.3-set-pin',
+        '2.6.4-login',
+        '2.6.5-door-unlock',
+        '2.6.6-door-lock',
+        '2.6.7-engine-on',
+        '2.6.8-engine-off',
+        '2.6.9-honk-and-blink',
+        '2.6.13-open-trunk',
+        '2.6.14-honk',
+        '2.6.15-blink',
+        '2.6.16-car-alarm-on',
+        '2.6.17-car-alarm-off',
+        '2.6.10-check-request-status',
+        '2.7.1-get-message',
+        '2.7.2-send-message',
+        '2.7.3-tcu-shoulder-tap',
+        '2.7.4-ping-tcu',
+        '2.7.5-tcu-notification-channel'
+      ]
+    },
+    {
+      id: 'know-car',
+      name: 'Know the Car',
+      specs: [
+        '2.6.10-check-request-status',
+        '2.6.11-view-diagnostic-data',
+        '2.6.12-get-vehicle-status',
+        '2.16.1-add-a-vehicle',
+        '2.16.2-update-a-vehicle',
+        '2.16.3-delete-a-vehicle',
+        '2.16.4-view-a-vehicle',
+        '2.16.5-update-vehicle-users',
+        '2.16.6-delete-vehicle-users',
+        '2.16.7-search-vehicles'
+      ]
+    },
+    {
       id: 'know-driver',
       name: 'Know the Driver',
       specs: [
@@ -509,48 +550,6 @@ angular.module('hackApp')
         // '2.12.25-gift-by-product-id',
         // '2.12.26-gift-by-premium-offer-id',
         // '2.12.27-refill'
-      ]
-    },
-    {
-      id: 'know-car',
-      name: 'Know the Car',
-      specs: [
-        '2.6.10-check-request-status',
-        '2.6.11-view-diagnostic-data',
-        '2.6.12-get-vehicle-status',
-        '2.16.1-add-a-vehicle',
-        '2.16.2-update-a-vehicle',
-        '2.16.3-delete-a-vehicle',
-        '2.16.4-view-a-vehicle',
-        '2.16.5-update-vehicle-users',
-        '2.16.6-delete-vehicle-users',
-        '2.16.7-search-vehicles'
-      ]
-    },
-    {
-      id: 'control-car',
-      name: 'Control the Car',
-      specs: [
-        '2.6.1-sign-up',
-        '2.6.2-validate-otp',
-        '2.6.3-set-pin',
-        '2.6.4-login',
-        '2.6.5-door-unlock',
-        '2.6.6-door-lock',
-        '2.6.7-engine-on',
-        '2.6.8-engine-off',
-        '2.6.9-honk-and-blink',
-        '2.6.13-open-trunk',
-        '2.6.14-honk',
-        '2.6.15-blink',
-        '2.6.16-car-alarm-on',
-        '2.6.17-car-alarm-off',
-        '2.6.10-check-request-status',
-        '2.7.1-get-message',
-        '2.7.2-send-message',
-        '2.7.3-tcu-shoulder-tap',
-        '2.7.4-ping-tcu',
-        '2.7.5-tcu-notification-channel'
       ]
     }
   ])
@@ -744,6 +743,9 @@ angular.module('hackApp')
     }
 
     function addWebAppsApiCategoriesToSideMenuGroups() {
+        // pop samples link so we can keep it on the bottom of the sidebar
+        var samplesSection = sideMenuGroups['web-apps-api'].sections.pop();
+
         webAppsApiCategories.forEach(function(category) {
             sideMenuGroups['web-apps-api'].sections.push({
                 isStateRoute: true,
@@ -754,6 +756,9 @@ angular.module('hackApp')
                 controller: 'ApiDocumentationCtrl'
             });
         });
+
+        // re-add samples link to bottom of sidebar
+        sideMenuGroups['web-apps-api'].sections.push(samplesSection);
     }
 })
 
@@ -2598,6 +2603,11 @@ angular.module('sampleCarAppController', [])
   .controller('SampleCarAppCtrl', function ($scope) {
   });
 
+angular.module('uiComponentsController', [])
+
+  .controller('UiComponentsCtrl', function ($scope) {
+  });
+
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2609,11 +2619,6 @@ angular.module('apiDocumentationController', [])
  */
   .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
       $scope.selectedApiCategory = $state.current.name.split('.').pop();
-  });
-
-angular.module('uiComponentsController', [])
-
-  .controller('UiComponentsCtrl', function ($scope) {
   });
 
 'use strict';
