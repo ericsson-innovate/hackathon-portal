@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+  <!--<base href="http://localhost:3000/" />-->
+  <base href="http://ericsson-innovate.github.io/hackathon-portal/" />
+
   <meta charset="UTF-8">
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  <!--<base href="http://localhost:3000">-->
-  <base href="http://ericsson-innovate.github.io/hackathon-portal/">
 
   <title>Hackathon Portal</title>
 
@@ -47,6 +47,22 @@
   <script src="bower_components/greensock/src/minified/TweenMax.min.js"></script>
   <script src="bower_components/greensock/src/minified/TimelineMax.min.js"></script>
   <script src="bower_components/greensock/src/minified/easing/EasePack.min.js"></script>
+
+  <script>
+    // IE doesn't seem to populate document.baseURI, so we'll do that manually here
+    var uri = document.baseURI;
+
+    if (uri === undefined || uri === null || uri.length === 0) {
+      var baseTags = document.getElementsByTagName("base");
+
+      if (baseTags.length > 0) {
+        var baseTag = baseTags[0];
+        uri = baseTag.href;
+      }
+    }
+
+    document.baseURI = uri;
+  </script>
 
   <!--<script src="dist/scripts/hackathon-portal.min.js"></script>-->
   <script src="dist/scripts/hackathon-portal.js"></script>

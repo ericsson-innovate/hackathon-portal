@@ -1560,26 +1560,6 @@ angular.module('apiListItemDirective', [])
   };
 });
 
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
-    }
-  };
-});
-
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1606,6 +1586,26 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
+    }
+  };
+});
+
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2193,24 +2193,6 @@ angular.module('markdownBlockDirective', [])
       };
     });
 
-angular.module('shortHeaderDirective', [])
-
-.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
-
-.directive('shortHeader', function (shortHeaderTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-    },
-
-    templateUrl: shortHeaderTemplatePath,
-
-    link: function (scope, element, attrs) {
-    }
-  };
-});
-
 angular.module('sideMenuDirective', [])
 
 .constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
@@ -2236,6 +2218,24 @@ angular.module('sideMenuDirective', [])
 
         $rootScope.$broadcast(sideMenuItemClickEvent, item);
       }
+    }
+  };
+});
+
+angular.module('shortHeaderDirective', [])
+
+.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
+
+.directive('shortHeader', function (shortHeaderTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+    },
+
+    templateUrl: shortHeaderTemplatePath,
+
+    link: function (scope, element, attrs) {
     }
   };
 });
@@ -2445,6 +2445,29 @@ angular.module('headUnitAppsController', [])
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
   });
 
+angular.module('vehicleAppsApiController', [])
+
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
+                                              MarkdownData, sideMenuItemClickEvent) {
+    $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
+
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
+
+    $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
+
+    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
+
+    // ---  --- //
+
+    function handleSideBarLinkClick(event, item) {
+      if ($location.hash() !== item.id) {
+        $location.hash(item.id);
+      } else {
+        $anchorScroll();
+      }
+    }
+  });
+
 angular.module('twoVideosController', [])
 
   .controller('TwoVideosCtrl', function ($scope, $sce) {
@@ -2506,29 +2529,6 @@ angular.module('twoVideosController', [])
     ];
   });
 
-angular.module('vehicleAppsApiController', [])
-
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
-                                              MarkdownData, sideMenuItemClickEvent) {
-    $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
-
-    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
-
-    $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
-
-    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
-
-    // ---  --- //
-
-    function handleSideBarLinkClick(event, item) {
-      if ($location.hash() !== item.id) {
-        $location.hash(item.id);
-      } else {
-        $anchorScroll();
-      }
-    }
-  });
-
 angular.module('dynamicMarkdownListItemDirective', [])
 
 .constant('dynamicMarkdownListItemTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list-item/dynamic-markdown-list-item.html')
@@ -2585,20 +2585,6 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
-
-'use strict';
-
 angular.module('sampleAppsController', [])
 
 /**
@@ -2611,4 +2597,18 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });
