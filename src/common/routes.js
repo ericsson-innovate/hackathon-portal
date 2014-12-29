@@ -83,6 +83,10 @@ angular.module('hackApp')
                 stateConfig.template = '<ui-view/>';
             }
 
+            if (group.noReloadOnSearch) {
+                stateConfig.reloadOnSearch = false;
+            }
+
             $stateProvider.state(stateConfig);
         });
 

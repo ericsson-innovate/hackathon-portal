@@ -272,7 +272,8 @@ angular.module('hackApp')
         sectionId: function ($location) {
           return $location.hash() || 'context-initialization';
         }
-      }
+      },
+      noReloadOnSearch: true
     },
     'vehicle-ui-api': {
       label: 'Vehicle UI API',
@@ -712,6 +713,10 @@ angular.module('hackApp')
                 stateConfig.controller = group.controller;
             } else {
                 stateConfig.template = '<ui-view/>';
+            }
+
+            if (group.noReloadOnSearch) {
+                stateConfig.reloadOnSearch = false;
             }
 
             $stateProvider.state(stateConfig);

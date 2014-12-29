@@ -144,7 +144,8 @@ angular.module('hackApp')
         sectionId: function ($location) {
           return $location.hash() || 'context-initialization';
         }
-      }
+      },
+      noReloadOnSearch: true
     },
     'vehicle-ui-api': {
       label: 'Vehicle UI API',
