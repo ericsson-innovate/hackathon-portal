@@ -2370,19 +2370,18 @@ angular.module('tallHeaderDirective', [])
 
 angular.module('apiDocsController', [])
 
-  .controller('ApiDocsCtrl', function ($scope, $state, $location, sideMenuGroups) {
-    $scope.apiDocsState = {};
+  .controller('ApiDocsCtrl', function ($scope, $rootScope, $state, $location, sideMenuGroups) {
+    $rootScope.apiDocsState = {};
 
     // Set the initially selected side-menu item
-    $scope.apiDocsState.selectedItem = getItemFromRoute();
+    $rootScope.apiDocsState.selectedItem = getItemFromRoute();
 
     // ---  --- //
 
     function getItemFromRoute() {
-      var i, count, key, group, item, itemRef;
+      var i, count, key, group, item;
       var hash = $location.hash();
-
-      itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
+      var itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
 
       for (key in sideMenuGroups) {
         group = sideMenuGroups[key];
@@ -2546,8 +2545,8 @@ angular.module('twoVideosController', [])
 
 angular.module('vehicleAppsApiController', [])
 
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll, $timeout,
-                                              MarkdownData, sideMenuItemClickEvent) {
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $location, $anchorScroll, $timeout, $state,
+                                              $stateParams, sideMenuGroups, MarkdownData, sideMenuItemClickEvent) {
     $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
 
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
@@ -2557,7 +2556,12 @@ angular.module('vehicleAppsApiController', [])
     // Scroll the page to the correct anchor position when navigating directly to this route with a specific hash
     $rootScope.$on('$viewContentLoaded', function () {
       $timeout(function () {
-        handleSideBarLinkClick(null, $scope.apiDocsState.selectedItem);
+        if (!$rootScope.apiDocsState.selectedItem) {
+          // Set the initially selected side-menu item
+          $rootScope.apiDocsState.selectedItem = getItemFromStateParam();
+        }
+
+        handleSideBarLinkClick(null, $rootScope.apiDocsState.selectedItem);
       }, 300);
     });
 
@@ -2569,6 +2573,26 @@ angular.module('vehicleAppsApiController', [])
       } else {
         $anchorScroll();
       }
+    }
+
+    function getItemFromStateParam() {
+      var i, count, key, group, item;
+      var hash = $stateParams.sectionId;
+      var itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
+
+      for (key in sideMenuGroups) {
+        group = sideMenuGroups[key];
+
+        for (i = 0, count = group.sections.length; i < count; i += 1) {
+          item = group.sections[i];
+
+          if (item.ref === itemRef) {
+            return item;
+          }
+        }
+      }
+
+      return null;
     }
   });
 

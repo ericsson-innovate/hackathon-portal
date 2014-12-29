@@ -1,18 +1,17 @@
 angular.module('apiDocsController', [])
 
-  .controller('ApiDocsCtrl', function ($scope, $state, $location, sideMenuGroups) {
-    $scope.apiDocsState = {};
+  .controller('ApiDocsCtrl', function ($scope, $rootScope, $state, $location, sideMenuGroups) {
+    $rootScope.apiDocsState = {};
 
     // Set the initially selected side-menu item
-    $scope.apiDocsState.selectedItem = getItemFromRoute();
+    $rootScope.apiDocsState.selectedItem = getItemFromRoute();
 
     // ---  --- //
 
     function getItemFromRoute() {
-      var i, count, key, group, item, itemRef;
+      var i, count, key, group, item;
       var hash = $location.hash();
-
-      itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
+      var itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
 
       for (key in sideMenuGroups) {
         group = sideMenuGroups[key];
