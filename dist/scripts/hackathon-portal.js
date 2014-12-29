@@ -1170,7 +1170,8 @@ angular.module('markdownDataService', [])
                   sideMenuGroups['vehicle-apps-api'].sections.push({
                     isStateRoute: true,
                     ref: 'api-docs.vehicle-apps-api({sectionId:\'' + section.id + '\'})',
-                    label: section.label
+                    label: section.label,
+                    id: section.id
                   });
                 });
               }
@@ -1562,6 +1563,26 @@ angular.module('apiListItemDirective', [])
   };
 });
 
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1588,26 +1609,6 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
-    }
-  };
-});
-
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2535,7 +2536,7 @@ angular.module('twoVideosController', [])
 
 angular.module('vehicleAppsApiController', [])
 
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll, $timeout,
                                               MarkdownData, sideMenuItemClickEvent) {
     $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
 
@@ -2543,7 +2544,12 @@ angular.module('vehicleAppsApiController', [])
 
     $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
 
-    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
+    // Scroll the page to the correct anchor position when navigating directly to this route with a specific hash
+    $rootScope.$on('$viewContentLoaded', function () {
+      $timeout(function () {
+        handleSideBarLinkClick(null, $scope.apiDocsState.selectedItem);
+      }, 300);
+    });
 
     // ---  --- //
 
@@ -2592,6 +2598,19 @@ angular.module('sampleCarAppController', [])
   .controller('SampleCarAppCtrl', function ($scope) {
   });
 
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
+      $scope.selectedApiCategory = $state.current.name.split('.').pop();
+  });
+
 angular.module('uiComponentsController', [])
 
   .controller('UiComponentsCtrl', function ($scope) {
@@ -2610,19 +2629,6 @@ angular.module('gettingStartedController', [])
  */
 .controller('GettingStartedCtrl', function () {
 });
-
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
-      $scope.selectedApiCategory = $state.current.name.split('.').pop();
-  });
 
 'use strict';
 

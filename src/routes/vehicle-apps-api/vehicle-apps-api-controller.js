@@ -1,6 +1,6 @@
 angular.module('vehicleAppsApiController', [])
 
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll, $timeout,
                                               MarkdownData, sideMenuItemClickEvent) {
     $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
 
@@ -8,7 +8,12 @@ angular.module('vehicleAppsApiController', [])
 
     $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
 
-    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
+    // Scroll the page to the correct anchor position when navigating directly to this route with a specific hash
+    $rootScope.$on('$viewContentLoaded', function () {
+      $timeout(function () {
+        handleSideBarLinkClick(null, $scope.apiDocsState.selectedItem);
+      }, 300);
+    });
 
     // ---  --- //
 

@@ -56,7 +56,8 @@ angular.module('markdownDataService', [])
                   sideMenuGroups['vehicle-apps-api'].sections.push({
                     isStateRoute: true,
                     ref: 'api-docs.vehicle-apps-api({sectionId:\'' + section.id + '\'})',
-                    label: section.label
+                    label: section.label,
+                    id: section.id
                   });
                 });
               }
