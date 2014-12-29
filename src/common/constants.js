@@ -141,7 +141,9 @@ angular.module('hackApp')
         // This is generated from Markdown data
       ],
       defaultParams: {
-        sectionId: 'context-initialization'
+        sectionId: function ($location) {
+          return $location.hash() || 'context-initialization';
+        }
       }
     },
     'vehicle-ui-api': {

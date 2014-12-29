@@ -13,7 +13,7 @@ angular.module('twoVideosController', [])
           },
           {
             label: 'Vehicle API',
-            ref: 'api-docs.vehicle-apps-api',
+            ref: 'api-docs.vehicle-apps-api({sectionId:\'context-initialization\'})',
             isStateRoute: true
           },
           {

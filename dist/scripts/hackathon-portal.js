@@ -269,7 +269,9 @@ angular.module('hackApp')
         // This is generated from Markdown data
       ],
       defaultParams: {
-        sectionId: 'context-initialization'
+        sectionId: function ($location) {
+          return $location.hash() || 'context-initialization';
+        }
       }
     },
     'vehicle-ui-api': {
@@ -2193,6 +2195,24 @@ angular.module('markdownBlockDirective', [])
       };
     });
 
+angular.module('shortHeaderDirective', [])
+
+.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
+
+.directive('shortHeader', function (shortHeaderTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+    },
+
+    templateUrl: shortHeaderTemplatePath,
+
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('sideMenuDirective', [])
 
 .constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
@@ -2218,24 +2238,6 @@ angular.module('sideMenuDirective', [])
 
         $rootScope.$broadcast(sideMenuItemClickEvent, item);
       }
-    }
-  };
-});
-
-angular.module('shortHeaderDirective', [])
-
-.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
-
-.directive('shortHeader', function (shortHeaderTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-    },
-
-    templateUrl: shortHeaderTemplatePath,
-
-    link: function (scope, element, attrs) {
     }
   };
 });
@@ -2357,9 +2359,34 @@ angular.module('tallHeaderDirective', [])
 
 angular.module('apiDocsController', [])
 
-  .controller('ApiDocsCtrl', function ($scope) {
+  .controller('ApiDocsCtrl', function ($scope, $state, $location, sideMenuGroups) {
     $scope.apiDocsState = {};
-    $scope.apiDocsState.selectedItem = null;
+
+    // Set the initially selected side-menu item
+    $scope.apiDocsState.selectedItem = getItemFromRoute();
+
+    // ---  --- //
+
+    function getItemFromRoute() {
+      var i, count, key, group, item, itemRef;
+      var hash = $location.hash();
+
+      itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
+
+      for (key in sideMenuGroups) {
+        group = sideMenuGroups[key];
+
+        for (i = 0, count = group.sections.length; i < count; i += 1) {
+          item = group.sections[i];
+
+          if (item.ref === itemRef) {
+            return item;
+          }
+        }
+      }
+
+      return null;
+    }
   });
 
 angular.module('countdownController', [])
@@ -2445,6 +2472,67 @@ angular.module('headUnitAppsController', [])
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
   });
 
+angular.module('twoVideosController', [])
+
+  .controller('TwoVideosCtrl', function ($scope, $sce) {
+    $scope.subColumns = [
+      {
+        label: 'Build In-Car Head Unit Apps',
+        videoSrc: $sce.trustAsResourceUrl('//www.youtube.com/embed/fbW2ESVqSvk?list=UUyDZ-l0emqyxpypCi-_rJyQ'),
+        links: [
+          {
+            label: 'Get Started',
+            ref: 'head-unit-apps',
+            isStateRoute: true
+          },
+          {
+            label: 'Vehicle API',
+            ref: 'api-docs.vehicle-apps-api({sectionId:\'context-initialization\'})',
+            isStateRoute: true
+          },
+          {
+            label: 'App Framework',
+            ref: 'https://github.com/ericsson-innovate/ATT-Drive-UI-Framework',
+            isStateRoute: false
+          },
+          {
+            label: 'Sample App',
+            ref: 'https://github.com/ericsson-innovate/sample-app',
+            isStateRoute: false
+          }
+        ],
+        headerLink: 'head-unit-apps'
+      },
+      {
+        label: 'Build Out-of-Car Mobile or Web Apps',
+        videoSrc: $sce.trustAsResourceUrl('//www.youtube.com/embed/fbW2ESVqSvk?list=UUyDZ-l0emqyxpypCi-_rJyQ'),
+        links: [
+          {
+            label: 'Get Started',
+            ref: 'api-docs.web-apps-api.getting-started',
+            isStateRoute: true
+          },
+          {
+            label: 'Web API',
+            ref: 'api-docs.web-apps-api.control-car',
+            isStateRoute: true
+          },
+          {
+            label: 'Sandbox (Luigi)',
+            ref: 'http://mafalda.hack.att.io/',
+            isStateRoute: false
+          },
+          {
+            label: 'Sample Apps',
+            ref: 'api-docs.web-apps-api.sample-apps',
+            isStateRoute: true
+          }
+        ],
+        headerLink: 'api-docs.web-apps-api.getting-started'
+      }
+    ];
+  });
+
 angular.module('vehicleAppsApiController', [])
 
   .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
@@ -2466,67 +2554,6 @@ angular.module('vehicleAppsApiController', [])
         $anchorScroll();
       }
     }
-  });
-
-angular.module('twoVideosController', [])
-
-  .controller('TwoVideosCtrl', function ($scope, $sce) {
-    $scope.subColumns = [
-      {
-        label: 'Build In-Car Head Unit Apps',
-        videoSrc: $sce.trustAsResourceUrl('//www.youtube.com/embed/fbW2ESVqSvk?list=UUyDZ-l0emqyxpypCi-_rJyQ'),
-        links: [
-          {
-            label: 'Get Started',
-            ref: 'head-unit-apps',
-            isStateRoute: true
-          },
-          {
-            label: 'Vehicle API',
-            ref: 'api-docs.vehicle-apps-api',
-            isStateRoute: true
-          },
-          {
-            label: 'App Framework',
-            ref: 'api-docs.vehicle-apps-api',
-            isStateRoute: true
-          },
-          {
-            label: 'Sample App',
-            ref: 'api-docs.vehicle-apps-api',
-            isStateRoute: true
-          }
-        ],
-        headerLink: 'head-unit-apps'
-      },
-      {
-        label: 'Build Out-of-Car Mobile or Web Apps',
-        videoSrc: $sce.trustAsResourceUrl('//www.youtube.com/embed/fbW2ESVqSvk?list=UUyDZ-l0emqyxpypCi-_rJyQ'),
-        links: [
-          {
-            label: 'Get Started',
-            ref: 'head-unit-apps',
-            isStateRoute: true
-          },
-          {
-            label: 'Web API',
-            ref: 'api-docs.web-apps-api.getting-started',
-            isStateRoute: true
-          },
-          {
-            label: 'Sandbox (Luigi)',
-            ref: 'api-docs.vehicle-apps-api',
-            isStateRoute: true
-          },
-          {
-            label: 'Sample App',
-            ref: 'https://github.com/ericsson-innovate/asdp-api-sampler-javascript',
-            isStateRoute: false
-          }
-        ],
-        headerLink: 'api-docs.web-apps-api.getting-started'
-      }
-    ];
   });
 
 angular.module('dynamicMarkdownListItemDirective', [])
@@ -2570,6 +2597,20 @@ angular.module('uiComponentsController', [])
   .controller('UiComponentsCtrl', function ($scope) {
   });
 
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
+});
+
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2597,18 +2638,4 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
-});
-
-'use strict';
-
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
 });
