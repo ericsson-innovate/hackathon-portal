@@ -331,14 +331,13 @@ angular.module('hackApp')
   .constant('homeSectionsSideBarLinks', {
     'gettingStarted': [
       {
-        isStateRoute: true,
-        state: 'setup',
-        url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
+        isStateRoute: false,
+        url: 'https://github.com/ericsson-innovate/hackathon-portal/blob/gh-pages/data/Setup.md',// TODO: set link to Setup.MD
         label: 'Developer Environment Setup Guide'
       },
       {
         isStateRoute: false,
-        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',// TODO: set the actual link
+        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',
         label: 'Download UI Design Assets'
       }
     ],
@@ -395,8 +394,8 @@ angular.module('hackApp')
         label: 'Vehicle API'
       },
       {
-        isStateRoute: false,
-        url: document.baseURI + '/#/web-apps-api/getting-started',
+        isStateRoute: true,
+        state: 'api-docs.web-apps-api.getting-started',
         label: 'Web API'
       }
     ]
@@ -473,6 +472,48 @@ angular.module('hackApp')
   })
   .constant('webAppsApiCategories', [
     {
+      id: 'control-car',
+      name: 'Control the Car',
+      specs: [
+        '2.6.1-sign-up',
+        '2.6.2-validate-otp',
+        '2.6.3-set-pin',
+        '2.6.4-login',
+        '2.6.5-door-unlock',
+        '2.6.6-door-lock',
+        '2.6.7-engine-on',
+        '2.6.8-engine-off',
+        '2.6.9-honk-and-blink',
+        '2.6.13-open-trunk',
+        '2.6.14-honk',
+        '2.6.15-blink',
+        '2.6.16-car-alarm-on',
+        '2.6.17-car-alarm-off',
+        '2.6.10-check-request-status',
+        '2.7.1-get-message',
+        '2.7.2-send-message',
+        '2.7.3-tcu-shoulder-tap',
+        '2.7.4-ping-tcu',
+        '2.7.5-tcu-notification-channel'
+      ]
+    },
+    {
+      id: 'know-car',
+      name: 'Know the Car',
+      specs: [
+        '2.6.10-check-request-status',
+        '2.6.11-view-diagnostic-data',
+        '2.6.12-get-vehicle-status',
+        '2.16.1-add-a-vehicle',
+        '2.16.2-update-a-vehicle',
+        '2.16.3-delete-a-vehicle',
+        '2.16.4-view-a-vehicle',
+        '2.16.5-update-vehicle-users',
+        '2.16.6-delete-vehicle-users',
+        '2.16.7-search-vehicles'
+      ]
+    },
+    {
       id: 'know-driver',
       name: 'Know the Driver',
       specs: [
@@ -509,48 +550,6 @@ angular.module('hackApp')
         // '2.12.25-gift-by-product-id',
         // '2.12.26-gift-by-premium-offer-id',
         // '2.12.27-refill'
-      ]
-    },
-    {
-      id: 'know-car',
-      name: 'Know the Car',
-      specs: [
-        '2.6.10-check-request-status',
-        '2.6.11-view-diagnostic-data',
-        '2.6.12-get-vehicle-status',
-        '2.16.1-add-a-vehicle',
-        '2.16.2-update-a-vehicle',
-        '2.16.3-delete-a-vehicle',
-        '2.16.4-view-a-vehicle',
-        '2.16.5-update-vehicle-users',
-        '2.16.6-delete-vehicle-users',
-        '2.16.7-search-vehicles'
-      ]
-    },
-    {
-      id: 'control-car',
-      name: 'Control the Car',
-      specs: [
-        '2.6.1-sign-up',
-        '2.6.2-validate-otp',
-        '2.6.3-set-pin',
-        '2.6.4-login',
-        '2.6.5-door-unlock',
-        '2.6.6-door-lock',
-        '2.6.7-engine-on',
-        '2.6.8-engine-off',
-        '2.6.9-honk-and-blink',
-        '2.6.13-open-trunk',
-        '2.6.14-honk',
-        '2.6.15-blink',
-        '2.6.16-car-alarm-on',
-        '2.6.17-car-alarm-off',
-        '2.6.10-check-request-status',
-        '2.7.1-get-message',
-        '2.7.2-send-message',
-        '2.7.3-tcu-shoulder-tap',
-        '2.7.4-ping-tcu',
-        '2.7.5-tcu-notification-channel'
       ]
     }
   ])
@@ -744,6 +743,9 @@ angular.module('hackApp')
     }
 
     function addWebAppsApiCategoriesToSideMenuGroups() {
+        // pop samples link so we can keep it on the bottom of the sidebar
+        var samplesSection = sideMenuGroups['web-apps-api'].sections.pop();
+
         webAppsApiCategories.forEach(function(category) {
             sideMenuGroups['web-apps-api'].sections.push({
                 isStateRoute: true,
@@ -754,6 +756,9 @@ angular.module('hackApp')
                 controller: 'ApiDocumentationCtrl'
             });
         });
+
+        // re-add samples link to bottom of sidebar
+        sideMenuGroups['web-apps-api'].sections.push(samplesSection);
     }
 })
 
@@ -1592,26 +1597,6 @@ angular.module('apiSpecificationCardDirective', [])
   };
 });
 
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
-    }
-  };
-});
-
 'use strict';
 
 angular.module('apiTryItCardDirective', [])
@@ -1795,6 +1780,26 @@ angular.module('apiTryItCardDirective', [])
           });
         }
       };
+    }
+  };
+});
+
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2082,6 +2087,24 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
   module.exports = timerModule;
 }
 
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('dynamicMarkdownListDirective', [])
 
 .constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
@@ -2110,24 +2133,6 @@ angular.module('dynamicMarkdownListDirective', [])
         scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
         scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
       }
-    }
-  };
-});
-
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      label: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
-    link: function (scope, element, attrs) {
     }
   };
 });
@@ -2389,46 +2394,6 @@ angular.module('apiDocsController', [])
     }
   });
 
-angular.module('countdownController', [])
-
-.controller('CountdownCtrl', [
-    '$scope',
-    'developerPreview',
-    '$state',
-    function($scope, developerPreview, $state) {
-
-
-	    var currentTime = (new Date()).getTime();
-	    var startTime = (new Date(developerPreview.startDate)).getTime();
-	    var endTime = (new Date(developerPreview.endDate)).getTime();
-
-	    $scope.preview = {
-	    	before: false,
-	    	during: false,
-	    	after: false
-	    };
-
-	    if(currentTime < startTime) $scope.preview.before = true;
-	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
-	    else if(currentTime > endTime) $scope.preview.after = true;
-
-
-
-    	$scope.countdownEnded = function(){
-    		console.log('redirect');
-	        $scope.$apply(function(){
-		    	$scope.preview.before = false;
-    			$scope.preview.during = true;
-        	});
-    	};
-
-    	$scope.goToPortal = function(){
-    		window.location.replace('/');
-    	};
-
-        $scope.end = (new Date(developerPreview.startDate)).getTime();
-    }
-]);
 angular.module('headUnitAppsController', [])
 
   .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
@@ -2533,6 +2498,46 @@ angular.module('twoVideosController', [])
     ];
   });
 
+angular.module('countdownController', [])
+
+.controller('CountdownCtrl', [
+    '$scope',
+    'developerPreview',
+    '$state',
+    function($scope, developerPreview, $state) {
+
+
+	    var currentTime = (new Date()).getTime();
+	    var startTime = (new Date(developerPreview.startDate)).getTime();
+	    var endTime = (new Date(developerPreview.endDate)).getTime();
+
+	    $scope.preview = {
+	    	before: false,
+	    	during: false,
+	    	after: false
+	    };
+
+	    if(currentTime < startTime) $scope.preview.before = true;
+	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
+	    else if(currentTime > endTime) $scope.preview.after = true;
+
+
+
+    	$scope.countdownEnded = function(){
+    		console.log('redirect');
+	        $scope.$apply(function(){
+		    	$scope.preview.before = false;
+    			$scope.preview.during = true;
+        	});
+    	};
+
+    	$scope.goToPortal = function(){
+    		window.location.replace('/');
+    	};
+
+        $scope.end = (new Date(developerPreview.startDate)).getTime();
+    }
+]);
 angular.module('vehicleAppsApiController', [])
 
   .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
@@ -2597,6 +2602,19 @@ angular.module('uiComponentsController', [])
   .controller('UiComponentsCtrl', function ($scope) {
   });
 
+angular.module('apiDocumentationController', [])
+
+/**
+ * @ngdoc object
+ * @name ApiDocumentationCtrl
+ * @description
+ *
+ * Controller for the API Documentation page.
+ */
+  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
+      $scope.selectedApiCategory = $state.current.name.split('.').pop();
+  });
+
 'use strict';
 
 angular.module('gettingStartedController', [])
@@ -2610,19 +2628,6 @@ angular.module('gettingStartedController', [])
  */
 .controller('GettingStartedCtrl', function () {
 });
-
-angular.module('apiDocumentationController', [])
-
-/**
- * @ngdoc object
- * @name ApiDocumentationCtrl
- * @description
- *
- * Controller for the API Documentation page.
- */
-  .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
-      $scope.selectedApiCategory = $state.current.name.split('.').pop();
-  });
 
 'use strict';
 
