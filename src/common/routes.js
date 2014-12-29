@@ -112,6 +112,9 @@ angular.module('hackApp')
     }
 
     function addWebAppsApiCategoriesToSideMenuGroups() {
+        // pop samples link so we can keep it on the bottom of the sidebar
+        var samplesSection = sideMenuGroups['web-apps-api'].sections.pop();
+
         webAppsApiCategories.forEach(function(category) {
             sideMenuGroups['web-apps-api'].sections.push({
                 isStateRoute: true,
@@ -122,6 +125,9 @@ angular.module('hackApp')
                 controller: 'ApiDocumentationCtrl'
             });
         });
+
+        // re-add samples link to bottom of sidebar
+        sideMenuGroups['web-apps-api'].sections.push(samplesSection);
     }
 })
 
