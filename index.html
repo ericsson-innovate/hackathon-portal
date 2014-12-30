@@ -48,6 +48,15 @@
   <script src="bower_components/greensock/src/minified/TimelineMax.min.js"></script>
   <script src="bower_components/greensock/src/minified/easing/EasePack.min.js"></script>
 
+  <!--[if IE 9]>
+  <script>
+    // dirty, dirty hack to get console.debug to work on IE 9
+    if (console.debug === null || console.debug === undefined) {
+      console.debug = console.log;
+    }
+  </script>
+  <![endif]-->
+
   <script>
     // IE doesn't seem to populate document.baseURI, so we'll do that manually here
     var uri = document.baseURI;

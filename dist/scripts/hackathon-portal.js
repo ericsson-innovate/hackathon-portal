@@ -1501,6 +1501,26 @@ angular.module('apiListDirective', [])
   };
 });
 
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiListItemDirective', [])
@@ -1780,26 +1800,6 @@ angular.module('apiTryItCardDirective', [])
           });
         }
       };
-    }
-  };
-});
-
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2218,35 +2218,6 @@ angular.module('shortHeaderDirective', [])
   };
 });
 
-angular.module('sideMenuDirective', [])
-
-.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
-
-.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      selectedItem: '='
-    },
-    templateUrl: sideMenuTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.sideMenuGroups = sideMenuGroups;
-
-      scope.handleItemClick = handleItemClick;
-
-      // ---  --- //
-
-      function handleItemClick(item) {
-        console.log('Side menu item clicked', item.label);
-
-        scope.selectedItem = item;
-
-        $rootScope.$broadcast(sideMenuItemClickEvent, item);
-      }
-    }
-  };
-});
-
 angular.module('tallHeaderDirective', [])
 
 .constant('tallHeaderTemplatePath', document.baseURI + '/dist/templates/components/tall-header/tall-header.html')
@@ -2362,6 +2333,35 @@ angular.module('tallHeaderDirective', [])
   };
 });
 
+angular.module('sideMenuDirective', [])
+
+.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
+
+.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      selectedItem: '='
+    },
+    templateUrl: sideMenuTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.sideMenuGroups = sideMenuGroups;
+
+      scope.handleItemClick = handleItemClick;
+
+      // ---  --- //
+
+      function handleItemClick(item) {
+        console.log('Side menu item clicked', item.label);
+
+        scope.selectedItem = item;
+
+        $rootScope.$broadcast(sideMenuItemClickEvent, item);
+      }
+    }
+  };
+});
+
 angular.module('apiDocsController', [])
 
   .controller('ApiDocsCtrl', function ($scope, $state, $location, sideMenuGroups) {
@@ -2394,49 +2394,46 @@ angular.module('apiDocsController', [])
     }
   });
 
-angular.module('headUnitAppsController', [])
+angular.module('countdownController', [])
 
-  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
-    var routeUrl = document.baseURI + '#/head-unit-apps';
+.controller('CountdownCtrl', [
+    '$scope',
+    'developerPreview',
+    '$state',
+    function($scope, developerPreview, $state) {
 
-    $scope.homeState = {};
-    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
-    $scope.bubbles = [
-      {
-        label: 'Get Started',
-        ref: routeUrl + '#getting-started',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
-      },
-      {
-        label: 'Sample Apps',
-        ref: routeUrl + '#sample-apps',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
-      },
-      {
-        label: 'Simulator',
-        ref: routeUrl + '#simulator',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
-      },
-      {
-        label: 'UI Kit',
-        ref: routeUrl + '#ui-kit',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
-      },
-      {
-        label: 'Drive API',
-        ref: routeUrl + '#drive-api',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
-      }
-    ];
 
-    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
-  });
+	    var currentTime = (new Date()).getTime();
+	    var startTime = (new Date(developerPreview.startDate)).getTime();
+	    var endTime = (new Date(developerPreview.endDate)).getTime();
 
+	    $scope.preview = {
+	    	before: false,
+	    	during: false,
+	    	after: false
+	    };
+
+	    if(currentTime < startTime) $scope.preview.before = true;
+	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
+	    else if(currentTime > endTime) $scope.preview.after = true;
+
+
+
+    	$scope.countdownEnded = function(){
+    		console.log('redirect');
+	        $scope.$apply(function(){
+		    	$scope.preview.before = false;
+    			$scope.preview.during = true;
+        	});
+    	};
+
+    	$scope.goToPortal = function(){
+    		window.location.replace('/');
+    	};
+
+        $scope.end = (new Date(developerPreview.startDate)).getTime();
+    }
+]);
 angular.module('twoVideosController', [])
 
   .controller('TwoVideosCtrl', function ($scope, $sce) {
@@ -2498,46 +2495,49 @@ angular.module('twoVideosController', [])
     ];
   });
 
-angular.module('countdownController', [])
+angular.module('headUnitAppsController', [])
 
-.controller('CountdownCtrl', [
-    '$scope',
-    'developerPreview',
-    '$state',
-    function($scope, developerPreview, $state) {
+  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
+    var routeUrl = document.baseURI + '#/head-unit-apps';
 
+    $scope.homeState = {};
+    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
+    $scope.bubbles = [
+      {
+        label: 'Get Started',
+        ref: routeUrl + '#getting-started',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
+      },
+      {
+        label: 'Sample Apps',
+        ref: routeUrl + '#sample-apps',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
+      },
+      {
+        label: 'Simulator',
+        ref: routeUrl + '#simulator',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
+      },
+      {
+        label: 'UI Kit',
+        ref: routeUrl + '#ui-kit',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
+      },
+      {
+        label: 'Drive API',
+        ref: routeUrl + '#drive-api',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
+      }
+    ];
 
-	    var currentTime = (new Date()).getTime();
-	    var startTime = (new Date(developerPreview.startDate)).getTime();
-	    var endTime = (new Date(developerPreview.endDate)).getTime();
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
+  });
 
-	    $scope.preview = {
-	    	before: false,
-	    	during: false,
-	    	after: false
-	    };
-
-	    if(currentTime < startTime) $scope.preview.before = true;
-	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
-	    else if(currentTime > endTime) $scope.preview.after = true;
-
-
-
-    	$scope.countdownEnded = function(){
-    		console.log('redirect');
-	        $scope.$apply(function(){
-		    	$scope.preview.before = false;
-    			$scope.preview.during = true;
-        	});
-    	};
-
-    	$scope.goToPortal = function(){
-    		window.location.replace('/');
-    	};
-
-        $scope.end = (new Date(developerPreview.startDate)).getTime();
-    }
-]);
 angular.module('vehicleAppsApiController', [])
 
   .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
@@ -2617,20 +2617,6 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
-
-'use strict';
-
 angular.module('sampleAppsController', [])
 
 /**
@@ -2643,4 +2629,18 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });
