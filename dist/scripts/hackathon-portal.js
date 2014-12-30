@@ -272,7 +272,8 @@ angular.module('hackApp')
         sectionId: function ($location) {
           return $location.hash() || 'context-initialization';
         }
-      }
+      },
+      noReloadOnSearch: true
     },
     'vehicle-ui-api': {
       label: 'Vehicle UI API',
@@ -712,6 +713,10 @@ angular.module('hackApp')
                 stateConfig.controller = group.controller;
             } else {
                 stateConfig.template = '<ui-view/>';
+            }
+
+            if (group.noReloadOnSearch) {
+                stateConfig.reloadOnSearch = false;
             }
 
             $stateProvider.state(stateConfig);
@@ -1175,7 +1180,8 @@ angular.module('markdownDataService', [])
                   sideMenuGroups['vehicle-apps-api'].sections.push({
                     isStateRoute: true,
                     ref: 'api-docs.vehicle-apps-api({sectionId:\'' + section.id + '\'})',
-                    label: section.label
+                    label: section.label,
+                    id: section.id
                   });
                 });
               }
@@ -1501,26 +1507,6 @@ angular.module('apiListDirective', [])
   };
 });
 
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
-    }
-  };
-});
-
 'use strict';
 
 angular.module('apiListItemDirective', [])
@@ -1613,6 +1599,26 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
+    }
+  };
+});
+
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2087,24 +2093,6 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
   module.exports = timerModule;
 }
 
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      label: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
-    link: function (scope, element, attrs) {
-    }
-  };
-});
-
 angular.module('dynamicMarkdownListDirective', [])
 
 .constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
@@ -2133,6 +2121,24 @@ angular.module('dynamicMarkdownListDirective', [])
         scope.markdownListState.sections = MarkdownData.getCollection(scope.id).sections;
         scope.markdownListState.selectedSection = scope.markdownListState.sections.length && scope.markdownListState.sections[0] || null;
       }
+    }
+  };
+});
+
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
     }
   };
 });
@@ -2364,19 +2370,18 @@ angular.module('sideMenuDirective', [])
 
 angular.module('apiDocsController', [])
 
-  .controller('ApiDocsCtrl', function ($scope, $state, $location, sideMenuGroups) {
-    $scope.apiDocsState = {};
+  .controller('ApiDocsCtrl', function ($scope, $rootScope, $state, $location, sideMenuGroups) {
+    $rootScope.apiDocsState = {};
 
     // Set the initially selected side-menu item
-    $scope.apiDocsState.selectedItem = getItemFromRoute();
+    $rootScope.apiDocsState.selectedItem = getItemFromRoute();
 
     // ---  --- //
 
     function getItemFromRoute() {
-      var i, count, key, group, item, itemRef;
+      var i, count, key, group, item;
       var hash = $location.hash();
-
-      itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
+      var itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
 
       for (key in sideMenuGroups) {
         group = sideMenuGroups[key];
@@ -2394,46 +2399,49 @@ angular.module('apiDocsController', [])
     }
   });
 
-angular.module('countdownController', [])
+angular.module('headUnitAppsController', [])
 
-.controller('CountdownCtrl', [
-    '$scope',
-    'developerPreview',
-    '$state',
-    function($scope, developerPreview, $state) {
+  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
+    var routeUrl = document.baseURI + '#/head-unit-apps';
 
+    $scope.homeState = {};
+    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
+    $scope.bubbles = [
+      {
+        label: 'Get Started',
+        ref: routeUrl + '#getting-started',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
+      },
+      {
+        label: 'Sample Apps',
+        ref: routeUrl + '#sample-apps',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
+      },
+      {
+        label: 'Simulator',
+        ref: routeUrl + '#simulator',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
+      },
+      {
+        label: 'UI Kit',
+        ref: routeUrl + '#ui-kit',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
+      },
+      {
+        label: 'Drive API',
+        ref: routeUrl + '#drive-api',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
+      }
+    ];
 
-	    var currentTime = (new Date()).getTime();
-	    var startTime = (new Date(developerPreview.startDate)).getTime();
-	    var endTime = (new Date(developerPreview.endDate)).getTime();
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
+  });
 
-	    $scope.preview = {
-	    	before: false,
-	    	during: false,
-	    	after: false
-	    };
-
-	    if(currentTime < startTime) $scope.preview.before = true;
-	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
-	    else if(currentTime > endTime) $scope.preview.after = true;
-
-
-
-    	$scope.countdownEnded = function(){
-    		console.log('redirect');
-	        $scope.$apply(function(){
-		    	$scope.preview.before = false;
-    			$scope.preview.during = true;
-        	});
-    	};
-
-    	$scope.goToPortal = function(){
-    		window.location.replace('/');
-    	};
-
-        $scope.end = (new Date(developerPreview.startDate)).getTime();
-    }
-]);
 angular.module('twoVideosController', [])
 
   .controller('TwoVideosCtrl', function ($scope, $sce) {
@@ -2495,60 +2503,67 @@ angular.module('twoVideosController', [])
     ];
   });
 
-angular.module('headUnitAppsController', [])
+angular.module('countdownController', [])
 
-  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
-    var routeUrl = document.baseURI + '#/head-unit-apps';
+.controller('CountdownCtrl', [
+    '$scope',
+    'developerPreview',
+    '$state',
+    function($scope, developerPreview, $state) {
 
-    $scope.homeState = {};
-    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
-    $scope.bubbles = [
-      {
-        label: 'Get Started',
-        ref: routeUrl + '#getting-started',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
-      },
-      {
-        label: 'Sample Apps',
-        ref: routeUrl + '#sample-apps',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
-      },
-      {
-        label: 'Simulator',
-        ref: routeUrl + '#simulator',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
-      },
-      {
-        label: 'UI Kit',
-        ref: routeUrl + '#ui-kit',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
-      },
-      {
-        label: 'Drive API',
-        ref: routeUrl + '#drive-api',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
-      }
-    ];
 
-    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
-  });
+	    var currentTime = (new Date()).getTime();
+	    var startTime = (new Date(developerPreview.startDate)).getTime();
+	    var endTime = (new Date(developerPreview.endDate)).getTime();
 
+	    $scope.preview = {
+	    	before: false,
+	    	during: false,
+	    	after: false
+	    };
+
+	    if(currentTime < startTime) $scope.preview.before = true;
+	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
+	    else if(currentTime > endTime) $scope.preview.after = true;
+
+
+
+    	$scope.countdownEnded = function(){
+    		console.log('redirect');
+	        $scope.$apply(function(){
+		    	$scope.preview.before = false;
+    			$scope.preview.during = true;
+        	});
+    	};
+
+    	$scope.goToPortal = function(){
+    		window.location.replace('/');
+    	};
+
+        $scope.end = (new Date(developerPreview.startDate)).getTime();
+    }
+]);
 angular.module('vehicleAppsApiController', [])
 
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
-                                              MarkdownData, sideMenuItemClickEvent) {
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $location, $anchorScroll, $timeout, $state,
+                                              $stateParams, sideMenuGroups, MarkdownData, sideMenuItemClickEvent) {
     $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
 
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
 
     $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
 
-    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
+    // Scroll the page to the correct anchor position when navigating directly to this route with a specific hash
+    $rootScope.$on('$viewContentLoaded', function () {
+      $timeout(function () {
+        if (!$rootScope.apiDocsState.selectedItem) {
+          // Set the initially selected side-menu item
+          $rootScope.apiDocsState.selectedItem = getItemFromStateParam();
+        }
+
+        handleSideBarLinkClick(null, $rootScope.apiDocsState.selectedItem);
+      }, 300);
+    });
 
     // ---  --- //
 
@@ -2558,6 +2573,26 @@ angular.module('vehicleAppsApiController', [])
       } else {
         $anchorScroll();
       }
+    }
+
+    function getItemFromStateParam() {
+      var i, count, key, group, item;
+      var hash = $stateParams.sectionId;
+      var itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
+
+      for (key in sideMenuGroups) {
+        group = sideMenuGroups[key];
+
+        for (i = 0, count = group.sections.length; i < count; i += 1) {
+          item = group.sections[i];
+
+          if (item.ref === itemRef) {
+            return item;
+          }
+        }
+      }
+
+      return null;
     }
   });
 
@@ -2617,6 +2652,20 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
+});
+
+'use strict';
+
 angular.module('sampleAppsController', [])
 
 /**
@@ -2629,18 +2678,4 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
-});
-
-'use strict';
-
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
 });

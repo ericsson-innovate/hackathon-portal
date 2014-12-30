@@ -1,14 +1,24 @@
 angular.module('vehicleAppsApiController', [])
 
-  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $stateParams, $location, $anchorScroll,
-                                              MarkdownData, sideMenuItemClickEvent) {
+  .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $location, $anchorScroll, $timeout, $state,
+                                              $stateParams, sideMenuGroups, MarkdownData, sideMenuItemClickEvent) {
     $scope.sections = MarkdownData.getCollection('vehicle-apps-api').sections;
 
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
 
     $rootScope.$on(sideMenuItemClickEvent, handleSideBarLinkClick);
 
-    $location.hash($stateParams.sectionId);// TODO: this should be performed differently; it needs to actually set the selectedSection property on the parent scope as well, so that the side-bar item will be highlighted
+    // Scroll the page to the correct anchor position when navigating directly to this route with a specific hash
+    $rootScope.$on('$viewContentLoaded', function () {
+      $timeout(function () {
+        if (!$rootScope.apiDocsState.selectedItem) {
+          // Set the initially selected side-menu item
+          $rootScope.apiDocsState.selectedItem = getItemFromStateParam();
+        }
+
+        handleSideBarLinkClick(null, $rootScope.apiDocsState.selectedItem);
+      }, 300);
+    });
 
     // ---  --- //
 
@@ -18,5 +28,25 @@ angular.module('vehicleAppsApiController', [])
       } else {
         $anchorScroll();
       }
+    }
+
+    function getItemFromStateParam() {
+      var i, count, key, group, item;
+      var hash = $stateParams.sectionId;
+      var itemRef = $state.current.name + (hash ? '({sectionId:\'' + hash + '\'})' : '');
+
+      for (key in sideMenuGroups) {
+        group = sideMenuGroups[key];
+
+        for (i = 0, count = group.sections.length; i < count; i += 1) {
+          item = group.sections[i];
+
+          if (item.ref === itemRef) {
+            return item;
+          }
+        }
+      }
+
+      return null;
     }
   });
