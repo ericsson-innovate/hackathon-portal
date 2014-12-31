@@ -163,6 +163,12 @@ table {
 tr:nth-child(even) {
   background-color: #fafafa; }
 
+#timezone, #signup {
+  display: block;
+  width: 120px;
+  margin-left: auto;
+  margin-right: auto; }
+
 .non-bulleted-list, .tabs, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links, side-menu ul, .two-videos-route > .content-column ul {
   padding-left: 0;
   list-style-type: none;
@@ -1173,7 +1179,10 @@ tall-header {
   font-size: 35pt; }
 
 countdown-timer {
-  display: block; }
+  display: block;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto; }
 
 .head-unit-apps-route {
   overflow-x: hidden; }

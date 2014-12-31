@@ -528,3 +528,10 @@ table {
 tr:nth-child(even) {
     background-color: #fafafa;
 }
+
+#timezone, #signup {
+	display: block;
+width: 120px;
+	margin-left: auto;
+	margin-right: auto;
+}
