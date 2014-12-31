@@ -130,7 +130,7 @@ angular.module('categoryFilter', [])
 
 angular.module('hackApp')
   
-  .constant('showCountdownPage', true)
+  .constant('showCountdownPage', false)
 
   //Assuming that the hackaton starts at 1/3/2015 8AM PST (UTC -8)
   .constant('developerPreview', {
@@ -1573,6 +1573,26 @@ angular.module('apiListItemDirective', [])
   };
 });
 
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1786,26 +1806,6 @@ angular.module('apiTryItCardDirective', [])
           });
         }
       };
-    }
-  };
-});
-
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2627,14 +2627,14 @@ angular.module('carAppFrameworkController', [])
   .controller('CarAppFrameworkCtrl', function ($scope) {
   });
 
-angular.module('sampleCarAppController', [])
-
-  .controller('SampleCarAppCtrl', function ($scope) {
-  });
-
 angular.module('uiComponentsController', [])
 
   .controller('UiComponentsCtrl', function ($scope) {
+  });
+
+angular.module('sampleCarAppController', [])
+
+  .controller('SampleCarAppCtrl', function ($scope) {
   });
 
 angular.module('apiDocumentationController', [])
@@ -2652,20 +2652,6 @@ angular.module('apiDocumentationController', [])
 
 'use strict';
 
-angular.module('gettingStartedController', [])
-
-/**
- * @ngdoc object
- * @name GettingStartedCtrl
- * @description
- *
- * Controller for the Getting Started page.
- */
-.controller('GettingStartedCtrl', function () {
-});
-
-'use strict';
-
 angular.module('sampleAppsController', [])
 
 /**
@@ -2678,4 +2664,18 @@ angular.module('sampleAppsController', [])
 .controller('SampleAppsCtrl', function ($scope, sampleAppData) {
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
+});
+
+'use strict';
+
+angular.module('gettingStartedController', [])
+
+/**
+ * @ngdoc object
+ * @name GettingStartedCtrl
+ * @description
+ *
+ * Controller for the Getting Started page.
+ */
+.controller('GettingStartedCtrl', function () {
 });

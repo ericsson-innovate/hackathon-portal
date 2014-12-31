@@ -1,0 +1,20 @@
+.status-box{
+	padding: 10px;
+	margin-right: 10px;
+	background-color: rgba(30,30,30,.85);
+}
+
+.att-content-container:before{
+	background-color: rgba(15,15,15,.65);
+}
+
+.change {
+	background-color: blue;
+	-webkit-transition: 1s linear;
+	/*to only change opacity*/
+	/*-webkit-transition: opacity 1s linear*/
+	-moz-transition: 1s linear;
+	-o-transition: 1s linear;
+	transition: 1s linear;
+	opacity: 1;
+}

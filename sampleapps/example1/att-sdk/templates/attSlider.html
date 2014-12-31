@@ -1,0 +1,5 @@
+﻿<div class="range-slider">
+    <span class="value-left">{{textLeft}}</span>
+    <span class="value-right" ng-show="textRight != '-NaN:NaN'">{{textRight}}</span>
+    <input class="input-range input-range-{{type}}" type="range" ng-model="ngModel" min="{{min}}" max="{{max}}" ng-mouseup="sliderMoved()" ng-mousedown="sliderMoving()">
+</div> 

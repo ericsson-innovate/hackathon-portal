@@ -2,7 +2,7 @@
 
 angular.module('hackApp')
   
-  .constant('showCountdownPage', true)
+  .constant('showCountdownPage', false)
 
   //Assuming that the hackaton starts at 1/3/2015 8AM PST (UTC -8)
   .constant('developerPreview', {
