@@ -217,14 +217,14 @@ angular.module('hackApp')
     'headUnitSimulator': [
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',
         label: 'Download Head Unit Simulator'
-      },
-      {
+      }
+/*      {
         isStateRoute: false,
         url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
         label: 'Head Unit Simulator Settings'
-      }
+      }*/
     ],
     'sampleApps': [
       {
