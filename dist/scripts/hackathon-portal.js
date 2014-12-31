@@ -2093,6 +2093,24 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
   module.exports = timerModule;
 }
 
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('dynamicMarkdownListDirective', [])
 
 .constant('dynamicMarkdownListTemplatePath', document.baseURI + '/dist/templates/components/dynamic-markdown-list/dynamic-markdown-list.html')
@@ -2125,19 +2143,19 @@ angular.module('dynamicMarkdownListDirective', [])
   };
 });
 
-angular.module('homePageSectionDirective', [])
+angular.module('shortHeaderDirective', [])
 
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
 
-.directive('homePageSection', function (homePageSectionTemplatePath) {
+.directive('shortHeader', function (shortHeaderTemplatePath) {
   return {
     restrict: 'E',
-    transclude: true,
+
     scope: {
-      label: '@',
-      sideBarLinks: '='
     },
-    templateUrl: homePageSectionTemplatePath,
+
+    templateUrl: shortHeaderTemplatePath,
+
     link: function (scope, element, attrs) {
     }
   };
@@ -2205,24 +2223,6 @@ angular.module('markdownBlockDirective', [])
         }
       };
     });
-
-angular.module('shortHeaderDirective', [])
-
-.constant('shortHeaderTemplatePath', document.baseURI + '/dist/templates/components/short-header/short-header.html')
-
-.directive('shortHeader', function (shortHeaderTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-    },
-
-    templateUrl: shortHeaderTemplatePath,
-
-    link: function (scope, element, attrs) {
-    }
-  };
-});
 
 angular.module('sideMenuDirective', [])
 
@@ -2399,46 +2399,6 @@ angular.module('apiDocsController', [])
     }
   });
 
-angular.module('countdownController', [])
-
-.controller('CountdownCtrl', [
-    '$scope',
-    'developerPreview',
-    '$state',
-    function($scope, developerPreview, $state) {
-
-
-	    var currentTime = (new Date()).getTime();
-	    var startTime = (new Date(developerPreview.startDate)).getTime();
-	    var endTime = (new Date(developerPreview.endDate)).getTime();
-
-	    $scope.preview = {
-	    	before: false,
-	    	during: false,
-	    	after: false
-	    };
-
-	    if(currentTime < startTime) $scope.preview.before = true;
-	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
-	    else if(currentTime > endTime) $scope.preview.after = true;
-
-
-
-    	$scope.countdownEnded = function(){
-    		console.log('redirect');
-	        $scope.$apply(function(){
-		    	$scope.preview.before = false;
-    			$scope.preview.during = true;
-        	});
-    	};
-
-    	$scope.goToPortal = function(){
-    		window.location.replace('/');
-    	};
-
-        $scope.end = (new Date(developerPreview.startDate)).getTime();
-    }
-]);
 angular.module('headUnitAppsController', [])
 
   .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
@@ -2482,6 +2442,46 @@ angular.module('headUnitAppsController', [])
     $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
   });
 
+angular.module('countdownController', [])
+
+.controller('CountdownCtrl', [
+    '$scope',
+    'developerPreview',
+    '$state',
+    function($scope, developerPreview, $state) {
+
+
+	    var currentTime = (new Date()).getTime();
+	    var startTime = (new Date(developerPreview.startDate)).getTime();
+	    var endTime = (new Date(developerPreview.endDate)).getTime();
+
+	    $scope.preview = {
+	    	before: false,
+	    	during: false,
+	    	after: false
+	    };
+
+	    if(currentTime < startTime) $scope.preview.before = true;
+	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
+	    else if(currentTime > endTime) $scope.preview.after = true;
+
+
+
+    	$scope.countdownEnded = function(){
+    		console.log('redirect');
+	        $scope.$apply(function(){
+		    	$scope.preview.before = false;
+    			$scope.preview.during = true;
+        	});
+    	};
+
+    	$scope.goToPortal = function(){
+    		window.location.replace('/');
+    	};
+
+        $scope.end = (new Date(developerPreview.startDate)).getTime();
+    }
+]);
 angular.module('twoVideosController', [])
 
   .controller('TwoVideosCtrl', function ($scope, $sce) {
@@ -2627,16 +2627,6 @@ angular.module('carAppFrameworkController', [])
   .controller('CarAppFrameworkCtrl', function ($scope) {
   });
 
-angular.module('sampleCarAppController', [])
-
-  .controller('SampleCarAppCtrl', function ($scope) {
-  });
-
-angular.module('uiComponentsController', [])
-
-  .controller('UiComponentsCtrl', function ($scope) {
-  });
-
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2648,6 +2638,16 @@ angular.module('apiDocumentationController', [])
  */
   .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
       $scope.selectedApiCategory = $state.current.name.split('.').pop();
+  });
+
+angular.module('uiComponentsController', [])
+
+  .controller('UiComponentsCtrl', function ($scope) {
+  });
+
+angular.module('sampleCarAppController', [])
+
+  .controller('SampleCarAppCtrl', function ($scope) {
   });
 
 'use strict';

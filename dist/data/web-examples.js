@@ -897,7 +897,7 @@ AJAX({
     "year": 2014,
     "description": "~description~",
     "condition": "Excellent",
-    "deliveryMileage": "80000 Mile",
+    "deliveryMileage": "80000",
     "deliveryDate": "2013-07-04",
     "licenseNumber": "~licenseNumber~",
     "engineNumber": "~engineNumber~",
@@ -919,7 +919,7 @@ AJAX({
       }
     ],
     "transmissionType": "automatic",
-    "weight": "3199 lbs",
+    "weight": "3199",
     "options": [
       {
         "Air Conditioning": "Includes climate control assembly"
