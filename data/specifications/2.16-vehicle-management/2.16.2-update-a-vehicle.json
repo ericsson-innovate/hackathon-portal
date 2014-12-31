@@ -78,7 +78,7 @@
       },
       {
         "key": "deliveryMileage",
-        "type": "String",
+        "type": "Long",
         "required": false,
         "description": "Odometer at delivery."
       },
@@ -152,9 +152,9 @@
       },
       {
         "key": "weight",
-        "type": "String",
+        "type": "Float",
         "required": false,
-        "description": "Vehicle weight"
+        "description": "Vehicle weight (in lbs)"
       },
       {
         "key": "category",

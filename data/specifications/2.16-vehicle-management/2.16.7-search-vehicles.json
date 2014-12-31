@@ -102,7 +102,7 @@
       },
       {
         "key": "deliveryMileage",
-        "type": "String",
+        "type": "Long",
         "required": false,
         "description": "Odometer at delivery."
       },
@@ -174,9 +174,9 @@
       },
       {
         "key": "weight",
-        "type": "String",
+        "type": "Float",
         "required": false,
-        "description": "Vehicle weight"
+        "description": "Vehicle weight (in lbs)"
       },
       {
         "key": "category",
@@ -313,7 +313,7 @@
           "year": 2014,
           "description": "~description~",
           "condition": "Excellent",
-          "deliveryMileage": "80000 Mile",
+          "deliveryMileage": "80000",
           "deliveryDate": "2013-07-04",
           "licenseNumber": "~licenseNumber~",
           "engineNumber": "~engineNumber~",
@@ -325,7 +325,7 @@
           "interiorColor": [{"colorCode": "~code~", "colorName": "Gray"}],
           "exteriorColor": [{"colorCode": "~code~", "colorName": "White"}],
           "transmissionType": "automatic",
-          "weight": "3199 lbs",
+          "weight": "3199",
           "options": [
             {"Air Conditioning":"Includes climate control assembly"},
             {"Cargo Tray":"custom-fit cargo tray"}
