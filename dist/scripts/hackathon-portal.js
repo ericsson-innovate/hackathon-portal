@@ -345,14 +345,14 @@ angular.module('hackApp')
     'headUnitSimulator': [
       {
         isStateRoute: false,
-        url: 'https://github.com/ericsson-innovate',// TODO: set the actual link
+        url: 'https://www.dropbox.com/sh/3vegatwa68pjlvw/AAAmJspnFaJfdBZ7ylQWdM0aa?dl=0',
         label: 'Download Head Unit Simulator'
-      },
-      {
+      }
+/*      {
         isStateRoute: false,
         url: 'https://github.com/ericsson-innovate',// TODO: set link to Setup.MD
         label: 'Head Unit Simulator Settings'
-      }
+      }*/
     ],
     'sampleApps': [
       {
@@ -1573,6 +1573,26 @@ angular.module('apiListItemDirective', [])
   };
 });
 
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
+    }
+  };
+});
+
 'use strict';
 
 angular.module('apiSpecificationCardDirective', [])
@@ -1599,26 +1619,6 @@ angular.module('apiSpecificationCardDirective', [])
       scope.isArray = function (input) {
         return input instanceof Array;
       };
-    }
-  };
-});
-
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2224,6 +2224,35 @@ angular.module('shortHeaderDirective', [])
   };
 });
 
+angular.module('sideMenuDirective', [])
+
+.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
+
+.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      selectedItem: '='
+    },
+    templateUrl: sideMenuTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.sideMenuGroups = sideMenuGroups;
+
+      scope.handleItemClick = handleItemClick;
+
+      // ---  --- //
+
+      function handleItemClick(item) {
+        console.log('Side menu item clicked', item.label);
+
+        scope.selectedItem = item;
+
+        $rootScope.$broadcast(sideMenuItemClickEvent, item);
+      }
+    }
+  };
+});
+
 angular.module('tallHeaderDirective', [])
 
 .constant('tallHeaderTemplatePath', document.baseURI + '/dist/templates/components/tall-header/tall-header.html')
@@ -2339,35 +2368,6 @@ angular.module('tallHeaderDirective', [])
   };
 });
 
-angular.module('sideMenuDirective', [])
-
-.constant('sideMenuTemplatePath', document.baseURI + '/dist/templates/components/side-menu/side-menu.html')
-
-.directive('sideMenu', function ($rootScope, sideMenuGroups, sideMenuItemClickEvent, sideMenuTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      selectedItem: '='
-    },
-    templateUrl: sideMenuTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.sideMenuGroups = sideMenuGroups;
-
-      scope.handleItemClick = handleItemClick;
-
-      // ---  --- //
-
-      function handleItemClick(item) {
-        console.log('Side menu item clicked', item.label);
-
-        scope.selectedItem = item;
-
-        $rootScope.$broadcast(sideMenuItemClickEvent, item);
-      }
-    }
-  };
-});
-
 angular.module('apiDocsController', [])
 
   .controller('ApiDocsCtrl', function ($scope, $rootScope, $state, $location, sideMenuGroups) {
@@ -2399,6 +2399,46 @@ angular.module('apiDocsController', [])
     }
   });
 
+angular.module('countdownController', [])
+
+.controller('CountdownCtrl', [
+    '$scope',
+    'developerPreview',
+    '$state',
+    function($scope, developerPreview, $state) {
+
+
+	    var currentTime = (new Date()).getTime();
+	    var startTime = (new Date(developerPreview.startDate)).getTime();
+	    var endTime = (new Date(developerPreview.endDate)).getTime();
+
+	    $scope.preview = {
+	    	before: false,
+	    	during: false,
+	    	after: false
+	    };
+
+	    if(currentTime < startTime) $scope.preview.before = true;
+	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
+	    else if(currentTime > endTime) $scope.preview.after = true;
+
+
+
+    	$scope.countdownEnded = function(){
+    		console.log('redirect');
+	        $scope.$apply(function(){
+		    	$scope.preview.before = false;
+    			$scope.preview.during = true;
+        	});
+    	};
+
+    	$scope.goToPortal = function(){
+    		window.location.replace('/');
+    	};
+
+        $scope.end = (new Date(developerPreview.startDate)).getTime();
+    }
+]);
 angular.module('headUnitAppsController', [])
 
   .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
@@ -2503,46 +2543,6 @@ angular.module('twoVideosController', [])
     ];
   });
 
-angular.module('countdownController', [])
-
-.controller('CountdownCtrl', [
-    '$scope',
-    'developerPreview',
-    '$state',
-    function($scope, developerPreview, $state) {
-
-
-	    var currentTime = (new Date()).getTime();
-	    var startTime = (new Date(developerPreview.startDate)).getTime();
-	    var endTime = (new Date(developerPreview.endDate)).getTime();
-
-	    $scope.preview = {
-	    	before: false,
-	    	during: false,
-	    	after: false
-	    };
-
-	    if(currentTime < startTime) $scope.preview.before = true;
-	    else if(currentTime >= startTime  && currentTime <= endTime) $scope.preview.during = true;
-	    else if(currentTime > endTime) $scope.preview.after = true;
-
-
-
-    	$scope.countdownEnded = function(){
-    		console.log('redirect');
-	        $scope.$apply(function(){
-		    	$scope.preview.before = false;
-    			$scope.preview.during = true;
-        	});
-    	};
-
-    	$scope.goToPortal = function(){
-    		window.location.replace('/');
-    	};
-
-        $scope.end = (new Date(developerPreview.startDate)).getTime();
-    }
-]);
 angular.module('vehicleAppsApiController', [])
 
   .controller('VehicleAppsApiCtrl', function ($scope, $rootScope, $location, $anchorScroll, $timeout, $state,
