@@ -234,12 +234,12 @@ angular.module('hackApp')
       },
       {
         isStateRoute: false,
-        url: 'https://ericsson-innovate.github.io/sample-app1',// TODO: set the actual link
+        url: 'http://ericsson-innovate.github.io/hackathon-portal/sampleapps/helloworld',// TODO: set the actual link
         label: 'Hello World App'
       },
       {
         isStateRoute: false,
-        url: 'https://ericsson-innovate.github.io/sample-app2',// TODO: set the actual link
+        url: 'http://ericsson-innovate.github.io/hackathon-portal/sampleapps/example',// TODO: set the actual link
         label: 'Sample App'
       }
     ],
