@@ -28,6 +28,9 @@ function process(data) {
     if (data.position != null) {
         $rootScope.position = data.position;
     }
+    if (data.identification != null) {
+        $rootScope.identification = data.identification;
+    }
     if (data.fuel != null) {
         $rootScope.fuel = data.fuel;
     }

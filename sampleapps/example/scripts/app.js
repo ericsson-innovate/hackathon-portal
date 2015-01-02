@@ -5,20 +5,45 @@ var app = angular.module('app', [
     'connectedCarSDK'
 ]);
 
+angular.module('connectedCarSDK')
+  .controller('ContentCtrl', ['$scope', function($scope){
+    $scope.hasHeader = true;
+    $scope.hasFooter = false;
+    $scope.bgImg = '/images/content-bg.png';
+    var images = [
+      '/images/content-bg.png',
+      '/images/interior-1.jpg',
+      '/images/interior-2.jpg',
+      '/images/interior-3.jpg',
+    ];
+    var bgIndex = 0;
+    $scope.toggleHeader = function(){
+      $scope.hasHeader = !$scope.hasHeader;
+    };
+    $scope.toggleFooter = function(){
+      $scope.hasFooter = ! $scope.hasFooter;
+    };
+    $scope.toggleBackground = function(){
+      bgIndex++;
+      if(bgIndex === images.length) bgIndex = 0;
+      $scope.bgImg = images[bgIndex];
+    };
+  }]);
+
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/firstPage', {
             templateUrl: 'firstPage/views/firstPage.html',
             controller: 'FirstPageCtrl',
             settings: {
-                viewName: 'First Page',
+                viewName: 'Vehicle Diagnostics',
             }
         })
         .when('/secondPage', {
             templateUrl: 'secondPage/views/secondPage.html',
             controller: 'SecondPageCtrl',
             settings: {
-                viewName: 'Second Page',
+                viewName: 'Navigation Stats',
             }
         })
         .otherwise({
@@ -81,7 +106,7 @@ app.run(function ($rootScope) {
     window.$rootScope = $rootScope;
     initDec();
 
-    $rootScope.appName = 'myFirstApp';
+    $rootScope.appName = 'Sample Head Unit App';
     $rootScope.showDrawer = true;
 
     $rootScope.$on('$routeChangeSuccess',
@@ -96,7 +121,7 @@ app.run(function ($rootScope) {
         });
 
     $rootScope.appLinks = [
-        { text: 'First Page', desc: 'First page description', href: '#/firstPage', selected: true },
-        { text: 'Second Page', desc: 'Second page description', href: '#/secondPage', selected: false }
+        { text: 'Vehicle Diagnostics', desc: 'Simple test to show that the API is in fact working and tied to the vehicle simulator. ', href: '#/firstPage', selected: true },
+        { text: 'Navigation Status', desc: 'DEC API is working properly if this HTML app responds to changes in position and fuel level.', href: '#/secondPage', selected: false }
     ];
 });

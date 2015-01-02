@@ -18,3 +18,24 @@
 	transition: 1s linear;
 	opacity: 1;
 }
+
+.col ul {
+display: block;
+list-style-type: none;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 0px;
+}
+
+.col ul .att-badge {
+float: right;
+}
+
+.col ul li {
+	display: block;
+	padding: 4px;
+	font-size: 12px;
+	border-bottom: 1px solid #333333;
+}

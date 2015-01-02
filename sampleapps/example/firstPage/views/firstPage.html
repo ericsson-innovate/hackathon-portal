@@ -1,31 +1,87 @@
-﻿<div class="row">
-    <div class="col">
-        <h3>Success</h3>
-        <div class="status-box">
-            <span>You now have:</span>
-            <ul>
-                <li>DEC API</li>
-                <li>UI SDK</li>
-            </ul>
-            <hr />
-            <div class="row">
-                <div class="col col-center">
-                    <span>DEC connection status:</span>&nbsp;                    
-                    <span style="color: red" ng-hide="isDecOnline">[OFFLINE]&nbsp;&nbsp;<i class="fa fa-exclamation-circle"></i></span>
-                    <span style="color:green" ng-show="isDecOnline">[ONLINE]&nbsp;&nbsp;<i class="fa fa-check-circle"></i></span>
-                </div>
-            </div>
+ <div class="row">
+        <div class="col">
+            <span>DEC connection status:</span>&nbsp;
+            <span style="color: red" ng-hide="isDecOnline">[OFFLINE]&nbsp;&nbsp;<i class="fa fa-exclamation-circle"></i></span>
+            <span style="color:green" ng-show="isDecOnline">[ONLINE]&nbsp;&nbsp;<i class="fa fa-check-circle"></i></span>
+        </div>
+
+        <div class="col">
+            <span class="vehicle-brand">{{identification.brand}}</span> /
+            <span class="vehicle-model">{{identification.model}}</span> /
+            <span class="vehicle-vin">{{identification.vin}}</span>
+        </div>
+
+        <div class="col">
+            <span class="firstname">First Name</span> / <span class="lastname">Last Name</span>
         </div>
     </div>
-    <div class="col">
-        <h3>App seed</h3>
-        <p>
-            You've successfully seeded your first app, and you're ready to start developing it. <br/>
-            For your convenience, we've coded up some basic app structure to get you started.
-        </p>
-        <h3>Display emulation</h3>
-        <p>
-            <strong>Make sure</strong> you use your browser's built in device emulation, and set your (emulated) screen resolution to 768x470. Click <a target="_blank" href="https://developer.chrome.com/devtools/docs/device-mode"> here</a> for additional info.
-        </p>
+
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" animate-on-change='fuel.level'>
+                    Fuel <att-threshold-badge status="{{fuel.level}}" threshold="5" value="{{fuel.level}}"/>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Power Mode <att-status-badge status="{{ignition.vehiclePowerMode}}" value="{{ignition.vehiclePowerMode}}"/>
+                </li>
+                <li class="list-group-item">
+                    Parking Brake <att-status-badge refvalue="inactive" status="{{parkingBreak.status}}" value="{{parkingBreak.status}}"/>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="tire_nr in tire.zones">  {{tire_nr.zone}} Tire Pressure <att-threshold-badge status="{{tire_nr.pressure}}" threshold="28" value="{{tire_nr.pressure}}"></att-threshold-badge></li>
+
+            </ul>
+        </div>
+
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="(key,value) in diagnostic"> {{key}} Status  <att-status-badge status="{{value}}" refvalue="ok" value="{{value}}"/></li>
+            </ul>
+        </div>
     </div>
-</div>
+
+    <!--<div class="row">-->
+        <!--<div class="col">-->
+            <!--<bf>Status</bf>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="row">
+
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="(key,value) in lightStatus">
+                    {{key}} Light <att-badge badge-type="info" value="{{value}}"/>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="sideWindow_nr in sideWindow.zones">
+                    {{sideWindow_nr.zone}} Window [<span class="front-left-window-openness">{{sideWindow_nr.openness}}</span>%]
+                    <att-status-badge status="{{sideWindow_nr.lock}}" value="Lock: {{sideWindow_nr.lock}}"/>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="door_nr in door.zones">
+                    {{door_nr.zone}} Door [<span class="driver-door-status"> {{door_nr.status}}</span>]
+                    <att-status-badge status="{{door_nr.lock}}" value="Lock: {{door_nr.lock}}"/>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+ <!--<button type="button" class="btn btn-primary" ng-click="poiChange()">Simulate POI change...</button>-->

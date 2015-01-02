@@ -477,8 +477,8 @@ if (typeof Promise === 'undefined') {
 }
 },{"./polyfill-done.js":5,"promise":3}]},{},[6])
 
-var host = "10.16.49.80";
-var port = "4412";
+var host = "127.0.0.1";
+var port = "4402";
 
 /**
  * Get the properties to open the web socket 

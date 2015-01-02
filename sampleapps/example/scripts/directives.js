@@ -27,12 +27,62 @@ app.directive('animateOnChange', function($animate) {
     }
 });
 
+
+app.directive('attStatusBadge', function () {
+    return {
+        templateUrl: 'templates/attStatusBadge.html',
+        restrict: 'E',
+        replace: true,
+        scope: {
+            value: "@"
+        },
+        link: function (scope, element, attrs) {
+            var a = 5;
+            scope.$watch(attrs.status, function(nv,ov) {
+                var refstring = attrs.refvalue;
+                element.removeClass('att-badge badge-success');
+                element.removeClass('att-badge badge-danger');
+                if (typeof refstring == 'undefined')
+                  refstring  = "true";
+                if (attrs.status.toUpperCase()==refstring.toUpperCase()) {
+                    element.addClass('att-badge badge-success');
+                } else {
+                    element.addClass('att-badge badge-danger');
+                }
+            })
+        }
+    };
+});
+
+app.directive('attThresholdBadge', function () {
+    return {
+        templateUrl: 'templates/attStatusBadge.html',
+        restrict: 'E',
+        replace: true,
+        scope: {
+            value: "@"
+        },
+        link: function (scope, element, attrs) {
+            var a = 5;
+            scope.$watch(attrs.status, function(nv,ov) {
+                element.removeClass('att-badge badge-success');
+                element.removeClass('att-badge badge-danger');
+                if (parseFloat(attrs.status) > parseFloat(attrs.threshold)) {
+                    element.addClass('att-badge badge-success');
+                } else {
+                    element.addClass('att-badge badge-danger');
+                }
+            })
+        }
+    };
+});
+
 app.directive('readable', function() {
     return {
      // Replace with the template below
         restrict: 'E',
         template: '<span><reptext/></span>',
-        replace: true,
+        replace: false,
         link: function($scope, element, attrs) {
             attrs.$observe('text', function(value) {
                 var readstring;
@@ -78,6 +128,21 @@ app.directive('readable', function() {
                        break;
                    case "troubleCodes":
                        readstring = "Trouble Codes";
+                       break;
+                   case "engine":
+                       readstring = "Engine";
+                       break;
+                   case "driver":
+                       readstring = "Driver";
+                       break;
+                   case "passenger":
+                       readstring = "Passenger";
+                       break;
+                   case "trunk":
+                       readstring = "Trunk";
+                       break;
+                   case "fuel":
+                       readstring = "Fuel";
                        break;
                    default:
                        readstring = value;

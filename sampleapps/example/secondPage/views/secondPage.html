@@ -1,140 +1,43 @@
-﻿<!--<div class="row">-->
-    <!--<div class="col">-->
-        <!--<h2>A cool heading</h2>-->
-        <!--<p>-->
-            <!--Some killer content-->
-        <!--</p>-->
-        <!--<button type="button" class="btn btn-primary" ng-click="poiChange()">Simulate POI change...</button>-->
-    <!--</div>-->
-<!--</div>-->
+<div class="att-grid">
 
-<!--</head>-->
-<!--<body>-->
-<div class="container">
-    <div class="bs-docs-section">
-        <div class="row">
-            <div class="col-lg-4">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <span class="badge connection-status">OFFLINE</span>
-                        DEC Connection Status
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-4">
-                <ul class="breadcrumb">
-                    <li><span class="vehicle-brand">Brand</span></li>
-                    <li><span class="vehicle-model">Model</span></li>
-                    <li><span class="vehicle-vin">VIN</span></li>
-                </ul>
-            </div>
-
+    <div class="row">
+        <div class="col">
+            <span>DEC connection status:</span>&nbsp;
+            <span style="color: red" ng-hide="isDecOnline">[OFFLINE]&nbsp;&nbsp;<i class="fa fa-exclamation-circle"></i></span>
+            <span style="color:green" ng-show="isDecOnline">[ONLINE]&nbsp;&nbsp;<i class="fa fa-check-circle"></i></span>
         </div>
 
+        <div class="col">
+            <span class="vehicle-brand">{{identification.brand}}</span> /
+            <span class="vehicle-model">{{identification.model}}</span> /
+            <span class="vehicle-vin">{{identification.vin}}</span>
+        </div>
+
+        <div class="col">
+            <span class="firstname">First Name</span> / <span class="lastname">Last Name</span>
+        </div>
     </div>
 
-    <div class="bs-docs-section">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Vehicle Diagnostics</h1>
-                </div>
-            </div>
+    <div class="row">
+
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="(key,value) in position"> <span animate-on-change='value'>{{key}}</span> <att-badge badge-type="info" value="{{value}}"/></li>
+            </ul>
         </div>
 
-        <div class="row">
-            <div class="col-lg-4">
-
-                <ul class="list-group">
-                    <li class="list-group-item" animate-on-change='fuel.level'>
-                        <span class="badge">{{fuel.level}}</span>
-                        Fuel
-                </ul>
-            </div>
-
-            <div class="col-lg-4">
-
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="tire_nr in tire.zones"> <span class="badge">{{tire_nr.pressure}}</span> <readable text='{{tire_nr.zone}}'/> Pressure</li>
-
-                </ul>
-            </div>
-
-            <div class="col-lg-4">
-
-                <ul class="list-group">
-
-                    <li class="list-group-item" ng-repeat="(key,value) in diagnostic"> <span class="badge">{{value}}</span><readable text='{{key}}'/> Status</li>
-                </ul>
-            </div>
-
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" animate-on-change='fuel.level'>
+                    Fuel <att-badge badge-type="info" value="{{fuel.level}}"/>
+                </li>
+            </ul>
         </div>
 
-        <div class="bs-docs-section">
-            <div class="page-header">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1>Vehicle Status</h1>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-lg-4">
-
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <span class="badge power-mode">{{ignition.vehiclePowerMode}}</span>
-                            Power Mode
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge parking-brake">{{parkingBreak.status}}</span>
-                            Parking Brake
-                        </li>
-
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-lg-4">
-
-                    <ul class="list-group">
-
-                        <li class="list-group-item" ng-repeat="(key,value) in lightStatus">
-                            <span class="badge">{{value}}</span>
-                            <readable text='{{key}}'/>Light
-                        </li>
-
-                    </ul>
-                </div>
-
-
-                <div class="col-lg-4">
-                    <ul class="list-group">
-
-                        <li class="list-group-item" ng-repeat="sideWindow_nr in sideWindow.zones">
-                            <span class="badge">Lock: <span class="front-left-window-lock">{{sideWindow_nr.lock}}</span></span>
-                            <readable text='{{sideWindow_nr.zone}}'/> Window[<span class="front-left-window-openness">{{sideWindow_nr.openness}}</span>%]
-                        </li>
-                    </ul>
-                </div>
-
-
-                <div class="col-lg-4">
-                    <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="door_nr in door.zones">
-                            <span class="badge">Lock: <span class="driver-door-lock">{{door_nr.lock}}</span></span>
-                            <readable text='{{door_nr.zone}}'/> Door[<span class="driver-door-status"> {{door_nr.status}}</span>]
-                        </li>
-                    </ul>
-
-                </div>
-
-            </div>
+        <div class="col">
 
         </div>
+    </div>
+</div>
 
-        <button type="button" class="btn btn-primary" ng-click="poiChange()">Simulate POI change...</button>
-<!--</body>-->
