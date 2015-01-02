@@ -7,13 +7,16 @@
     <h2>
       <a ng-attr-ui-sref="{{subColumn.headerLink}}">{{subColumn.label}}</a>
     </h2>
-
+<!-- 
     <iframe width="450"
             height="254"
             ng-src="{{subColumn.videoSrc}}"
             frameborder="0"
             allowfullscreen></iframe>
-
+--> 
+	  <div class="bubble">
+        <img ng-src="{{subColumn.videoSrc}}" height="300" width"300">
+      </div>
     <ul>
       <li ng-repeat="link in subColumn.links">
         <a ng-attr-ui-sref="{{link.ref}}"

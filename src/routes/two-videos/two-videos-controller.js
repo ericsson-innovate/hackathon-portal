@@ -4,7 +4,7 @@ angular.module('twoVideosController', [])
     $scope.subColumns = [
       {
         label: 'Build In-Car Head Unit Apps',
-        videoSrc: $sce.trustAsResourceUrl('//www.youtube.com/embed/fbW2ESVqSvk?list=UUyDZ-l0emqyxpypCi-_rJyQ'),
+        videoSrc: $sce.trustAsResourceUrl('/dist/images/app-image.png'),
         links: [
           {
             label: 'Get Started',
@@ -31,7 +31,7 @@ angular.module('twoVideosController', [])
       },
       {
         label: 'Build Out-of-Car Mobile or Web Apps',
-        videoSrc: $sce.trustAsResourceUrl('//www.youtube.com/embed/fbW2ESVqSvk?list=UUyDZ-l0emqyxpypCi-_rJyQ'),
+        videoSrc: $sce.trustAsResourceUrl('/dist/images/api-image.png'),
         links: [
           {
             label: 'Get Started',

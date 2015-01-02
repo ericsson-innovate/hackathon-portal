@@ -169,6 +169,13 @@ tr:nth-child(even) {
   margin-left: auto;
   margin-right: auto; }
 
+.two-videos-route {
+  display: block;
+  height: 800px; }
+
+.bubble {
+  text-align: center; }
+
 .non-bulleted-list, .tabs, .api-documentation-categories, api-specification-card ul, api-list > ul, dynamic-markdown-list ul, home-page-section > .section-body > .home-section-side-bar-links, side-menu ul, .two-videos-route > .content-column ul {
   padding-left: 0;
   list-style-type: none;
