@@ -31,7 +31,7 @@ interface Zone {
     const String Left = "Left";
     const String Rear = "Rear";
     const String Center = "Center";
-                attribute String[] value;
+    attribute String[] value;
     readonly    attribute Zone        driver;
     readonly    attribute Zone        passenger;
     Boolean equals (Zone zone);
