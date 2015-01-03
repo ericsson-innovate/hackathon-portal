@@ -3125,6 +3125,105 @@ function isAvailable(){
 }
 ```
 
+##Geo-Messaging
+Drive Platform offers a server side REST API that allows client application to directly interact with Geo-Messaging service. Geo-Messaging service (GLM-service) enables applications to offer location based services, like geo fencing, road incidence information reporting, couponing, etc. Applications can generate geo-messages through this API or subscribe to DEC to receive these messages.
+
+Applications generating geo-messages can be client applications running on the head unit or server side application or web services. These generated messages are consumed by client applications running on the head unit. To consume messages the client needs to subscribe to DEC to get notified whenever a message is received by DEC.
+The messages received in the DEC get also converted by default into POIs and get pushed to navigation app for display in the navigation map.
+
+An example of usage of this capability is Road incident reporting app: A client app running on the head unit uses the GLM REST API to report an incident to the cloud for notifying drivers that are within that same area. The app will provide a description of the event, the lat. /long of the vehicle, the lifetime of the event and the radius of geographical area. The server has the position of all vehicles, it will then deliver the message to all vehicles that are currently located within that geo-location. The message then gets pushed to the navigation app and POI is automatically displayed in the map. If another app running in the head unit has a subscription for this type of messages, it will notified by DEC to receive the message.
+
+The following table describes the message format:
+ 
+```javascript 
+POST /messages
+Parameters
+Parameter	Description	Parameter Type	Data Type
+authorization	Basic HTTP authorization: username:password, encoded as a Base64 string.
+```
+
+Example:
+```javascript
+Basic <Base64("user:password")>	header	String
+provider-id	ID of the message provider	header	String
+service-id	ID of the service of the message provider	header	String
+msg-id	ID of the message	header	String
+msg-type	Type of the message e.g. "Danger", "Traffic Jam", "WWDW", "BLOB", etc.	header	String
+msg-timestamp	Timestamp of the message	header	Integer
+msg-lifetime	Lifetime of the message in seconds	header	Integer
+geo-area	Relevance area of the message.
+{
+    "shape":    "circle", 
+    "lat":          <latitude>, 
+    "lng":         <longitude>, 
+    "radius":    <radius in km>
+}
+```
+
+(Currently only Circle shape is supported)	header	JSON Object
+Value	[optional] Value of the message	header	String
+Services	A list of services to which the message should be published.
+
+Example:
+```javascript
+["service1", "service2"]	header	JSON Array
+content-type	The content type of the payload of the message. 
+Currently application/json is supported	header	String
+Body	Content of the message, encoded in JSON.
+```
+
+Example:
+```javascript
+{"data": "hello world"}	body JSON Object
+Table 20 : GLM server Message format
+```
+
+The following example shows how to send a request message to the GLM-Server
+```javascript
+POST http://129.192.174.214:9000/messages HTTP/1.1
+Accept-Encoding: gzip,deflate
+Content-Type: application/json
+Authorization: Basic bmV2YWRhOmJkcnQ4OWRmZw==
+msg-timestamp: 1420224088
+geo-area: {"shape":"circle","lat": 36.167377,"lng":-115.144747,"radius":1}
+service-id: Service_ID_GUI
+value: danger
+msg-type: rhw
+msg-lifetime: 60
+provider-id: Service_Provider_GUI
+msg-id: GUI_1420224092_1
+Content-Length: 23
+Host: 129.192.174.214:9000
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.1.1 (java 1.5)
+ 
+{"data":"hello world!"}
+```
+To receive a message from the GLM server the client app needs to subscribe to the navigation name space and filter on type message type element in the DEC. 
+
+```javascript 
+String [] compArray = {"navigation"};
+Drive drive = new Drive(); // Instantiate an object of type Drive to connect to the proper
+		
+drive.init ("Test app", new InterfaceCallback() {
+           @Override
+             public void callback (Object value) {
+								if (value instanceof DecError) {
+	   DecError decError = (DecError) value;
+	  System.out.println("Error code ::: "+decError.getErrorCode() +"Error message ::: "+decError.getErrorMessage());
+	}else if (value instanceof DecSuccess) {
+	  DecSuccess decSuccess = (DecSuccess) value;
+	  System.out.println("Success code ::: "+decSuccess.getSuccessCode() +"Success message ::: "+decSuccess.getSuccessMessage());
+	} 
+                }
+       }, compArray);
+			
+      Pois filter = new Pois();
+     filter.setType("rhw");
+
+```
+
+
 **Error object format**
 
 |Parameter |Type |Required |Description|
