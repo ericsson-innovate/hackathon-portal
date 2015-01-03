@@ -1465,6 +1465,50 @@ angular.module('apiExampleCardDirective', [])
 
 'use strict';
 
+angular.module('apiListDirective', [])
+
+.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
+
+/**
+ * @ngdoc directive
+ * @name apiList
+ * @requires HackApi
+ * @requires apiListTemplatePath
+ * @description
+ *
+ * A footer list used for displaying a list of navigation links.
+ */
+.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      category: '='
+    },
+    templateUrl: apiListTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.apiListState = {};
+      scope.apiListState.apiData = [];
+      scope.apiListState.selectedItemId = null;
+
+      HackApi.getAllApiData()
+          .then(function (apiData) {
+            scope.apiListState.apiData = apiData;
+
+            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
+              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
+              console.log(scope.apiListState.selectedItemId);
+            }
+          });
+
+      scope.$watch('category', function () {
+        scope.apiListState.selectedItemId = null;
+      });
+    }
+  };
+});
+
+'use strict';
+
 angular.module('apiListItemDirective', [])
 
 .constant('apiListItemTemplatePath', document.baseURI + '/dist/templates/components/api-list-item/api-list-item.html')
@@ -1525,50 +1569,6 @@ angular.module('apiListItemDirective', [])
         //
         //$state.go(targetRef);
       };
-    }
-  };
-});
-
-'use strict';
-
-angular.module('apiListDirective', [])
-
-.constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
-
-/**
- * @ngdoc directive
- * @name apiList
- * @requires HackApi
- * @requires apiListTemplatePath
- * @description
- *
- * A footer list used for displaying a list of navigation links.
- */
-.directive('apiList', function ($rootScope, HackApi, apiListTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      category: '='
-    },
-    templateUrl: apiListTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.apiListState = {};
-      scope.apiListState.apiData = [];
-      scope.apiListState.selectedItemId = null;
-
-      HackApi.getAllApiData()
-          .then(function (apiData) {
-            scope.apiListState.apiData = apiData;
-
-            if ($rootScope.selectedApi != null) {// TODO: refactor this for the new routing scheme
-              scope.apiListState.selectedItemId = $rootScope.selectedApi.replace(/_/g, '.');
-              console.log(scope.apiListState.selectedItemId);
-            }
-          });
-
-      scope.$watch('category', function () {
-        scope.apiListState.selectedItemId = null;
-      });
     }
   };
 });
@@ -2125,6 +2125,24 @@ angular.module('dynamicMarkdownListDirective', [])
   };
 });
 
+angular.module('homePageSectionDirective', [])
+
+.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
+
+.directive('homePageSection', function (homePageSectionTemplatePath) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      label: '@',
+      sideBarLinks: '='
+    },
+    templateUrl: homePageSectionTemplatePath,
+    link: function (scope, element, attrs) {
+    }
+  };
+});
+
 angular.module('markdownBlockDirective', [])
 
     .directive('markdownBlock', function ($compile, $timeout) {
@@ -2187,24 +2205,6 @@ angular.module('markdownBlockDirective', [])
         }
       };
     });
-
-angular.module('homePageSectionDirective', [])
-
-.constant('homePageSectionTemplatePath', document.baseURI + '/dist/templates/components/home-page-section/home-page-section.html')
-
-.directive('homePageSection', function (homePageSectionTemplatePath) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      label: '@',
-      sideBarLinks: '='
-    },
-    templateUrl: homePageSectionTemplatePath,
-    link: function (scope, element, attrs) {
-    }
-  };
-});
 
 angular.module('shortHeaderDirective', [])
 
@@ -2439,6 +2439,49 @@ angular.module('countdownController', [])
         $scope.end = (new Date(developerPreview.startDate)).getTime();
     }
 ]);
+angular.module('headUnitAppsController', [])
+
+  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
+    var routeUrl = document.baseURI + '#/head-unit-apps';
+
+    $scope.homeState = {};
+    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
+    $scope.bubbles = [
+      {
+        label: 'Get Started',
+        ref: routeUrl + '#getting-started',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
+      },
+      {
+        label: 'Sample Apps',
+        ref: routeUrl + '#sample-apps',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
+      },
+      {
+        label: 'Simulator',
+        ref: routeUrl + '#simulator',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
+      },
+      {
+        label: 'UI Kit',
+        ref: routeUrl + '#ui-kit',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
+      },
+      {
+        label: 'Drive API',
+        ref: routeUrl + '#drive-api',
+        isStateRoute: false,
+        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
+      }
+    ];
+
+    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
+  });
+
 angular.module('twoVideosController', [])
 
   .controller('TwoVideosCtrl', function ($scope, $sce) {
@@ -2498,49 +2541,6 @@ angular.module('twoVideosController', [])
         headerLink: 'api-docs.web-apps-api.getting-started'
       }
     ];
-  });
-
-angular.module('headUnitAppsController', [])
-
-  .controller('HeadUnitAppsCtrl', function ($scope, $anchorScroll, topLevelRoutes, homeSectionsSideBarLinks) {
-    var routeUrl = document.baseURI + '#/head-unit-apps';
-
-    $scope.homeState = {};
-    $scope.homeState.homeSectionsSideBarLinks = homeSectionsSideBarLinks;
-    $scope.bubbles = [
-      {
-        label: 'Get Started',
-        ref: routeUrl + '#getting-started',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon.png'
-      },
-      {
-        label: 'Sample Apps',
-        ref: routeUrl + '#sample-apps',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-sample-apps.png'
-      },
-      {
-        label: 'Simulator',
-        ref: routeUrl + '#simulator',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-simulator-3.png'
-      },
-      {
-        label: 'UI Kit',
-        ref: routeUrl + '#ui-kit',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-ui-kit.png'
-      },
-      {
-        label: 'Drive API',
-        ref: routeUrl + '#drive-api',
-        isStateRoute: false,
-        imageRoute: document.baseURI + 'dist/images/getting-started-icon-api.png'
-      }
-    ];
-
-    $anchorScroll.yOffset = document.querySelector('short-header').offsetHeight + 20;
   });
 
 angular.module('vehicleAppsApiController', [])
@@ -2632,6 +2632,11 @@ angular.module('sampleCarAppController', [])
   .controller('SampleCarAppCtrl', function ($scope) {
   });
 
+angular.module('uiComponentsController', [])
+
+  .controller('UiComponentsCtrl', function ($scope) {
+  });
+
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2643,11 +2648,6 @@ angular.module('apiDocumentationController', [])
  */
   .controller('ApiDocumentationCtrl', function ($scope, $state, $stateParams) {
       $scope.selectedApiCategory = $state.current.name.split('.').pop();
-  });
-
-angular.module('uiComponentsController', [])
-
-  .controller('UiComponentsCtrl', function ($scope) {
   });
 
 'use strict';

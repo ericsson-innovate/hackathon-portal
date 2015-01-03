@@ -1187,9 +1187,10 @@ tall-header {
 
 countdown-timer {
   display: block;
-  width: 800px;
+  width: 850px;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  text-align: center; }
 
 .head-unit-apps-route {
   overflow-x: hidden; }
