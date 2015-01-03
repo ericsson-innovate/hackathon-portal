@@ -31,7 +31,7 @@ var AJAX = (function(){
 
 
   // These 4 variables below can be edited by you if necessary
-  var _domain = "http://car2.hack.att.io:3000";
+  var _domain = "http://luigi.hack.att.io:3000";
   var _authUser = "provider";
   var _authPass = "1234";
   var _apiKey = "1234";

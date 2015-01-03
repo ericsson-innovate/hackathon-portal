@@ -139,7 +139,7 @@ angular.module('hackApp')
   })
 
   .constant('apiKey', 'api-key-1234')
-  .constant('emulatorDomain', 'http://car1.hack.att.io:3000')
+  .constant('emulatorDomain', 'http://luigi.hack.att.io:3000')
   .constant('username', 'provider')
   .constant('password', '1234')
 //.constant('emulatorDomain', 'http://mater.att.io:3000')
@@ -1435,36 +1435,6 @@ angular.module('tryItService', [])
 
 'use strict';
 
-angular.module('apiExampleCardDirective', [])
-
-.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
-
-/**
- * @ngdoc directive
- * @name apiExampleCard
- * @requires apiExampleCardTemplatePath
- * @param {object} example
- * @description
- *
- * A panel used for displaying platform-specific examples of a single API call.
- */
-.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
-  return {
-    restrict: 'E',
-    scope: {
-      apiItem: '='
-    },
-    templateUrl: apiExampleCardTemplatePath,
-    link: function (scope, element, attrs) {
-      scope.handleTabClick = function (platform) {
-        scope.apiItem.HackExamples.currentPlatform = platform;
-      };
-    }
-  };
-});
-
-'use strict';
-
 angular.module('apiListDirective', [])
 
 .constant('apiListTemplatePath', document.baseURI + '/dist/templates/components/api-list/api-list.html')
@@ -1503,6 +1473,36 @@ angular.module('apiListDirective', [])
       scope.$watch('category', function () {
         scope.apiListState.selectedItemId = null;
       });
+    }
+  };
+});
+
+'use strict';
+
+angular.module('apiExampleCardDirective', [])
+
+.constant('apiExampleCardTemplatePath', document.baseURI + '/dist/templates/components/api-example-card/api-example-card.html')
+
+/**
+ * @ngdoc directive
+ * @name apiExampleCard
+ * @requires apiExampleCardTemplatePath
+ * @param {object} example
+ * @description
+ *
+ * A panel used for displaying platform-specific examples of a single API call.
+ */
+.directive('apiExampleCard', function (apiExampleCardTemplatePath) {
+  return {
+    restrict: 'E',
+    scope: {
+      apiItem: '='
+    },
+    templateUrl: apiExampleCardTemplatePath,
+    link: function (scope, element, attrs) {
+      scope.handleTabClick = function (platform) {
+        scope.apiItem.HackExamples.currentPlatform = platform;
+      };
     }
   };
 });
@@ -2529,7 +2529,7 @@ angular.module('twoVideosController', [])
           },
           {
             label: 'Sandbox (Luigi)',
-            ref: 'http://mafalda.hack.att.io/',
+            ref: 'http://luigi.hack.att.io/',
             isStateRoute: false
           },
           {

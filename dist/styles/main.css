@@ -1306,17 +1306,17 @@ countdown-timer {
     .countdown-main-container #signup a {
       color: white; }
 
-.web-apps-api {
+.web-apps-api-getting-started-route {
   padding-bottom: 40px; }
-  .web-apps-api h2 {
+  .web-apps-api-getting-started-route h2 {
     padding-bottom: 10px; }
-  .web-apps-api a.sans {
+  .web-apps-api-getting-started-route a.sans {
     font-family: Courier, sans; }
-  .web-apps-api ol {
+  .web-apps-api-getting-started-route ol {
     padding-left: 40px; }
-  .web-apps-api ol {
+  .web-apps-api-getting-started-route ol {
     padding-bottom: 10px; }
-  .web-apps-api pre {
+  .web-apps-api-getting-started-route pre {
     display: inline; }
 
 .web-apps-api-sample-apps-route .sample-app-card {

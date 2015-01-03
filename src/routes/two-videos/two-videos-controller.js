@@ -45,7 +45,7 @@ angular.module('twoVideosController', [])
           },
           {
             label: 'Sandbox (Luigi)',
-            ref: 'http://mafalda.hack.att.io/',
+            ref: 'http://luigi.hack.att.io/',
             isStateRoute: false
           },
           {
