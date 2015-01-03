@@ -2488,7 +2488,7 @@ angular.module('twoVideosController', [])
     $scope.subColumns = [
       {
         label: 'Build In-Car Head Unit Apps',
-        videoSrc: $sce.trustAsResourceUrl('/dist/images/app-image.png'),
+        videoSrc: $sce.trustAsResourceUrl(document.baseURI + '/dist/images/app-image.png'),
         links: [
           {
             label: 'Get Started',
@@ -2515,7 +2515,7 @@ angular.module('twoVideosController', [])
       },
       {
         label: 'Build Out-of-Car Mobile or Web Apps',
-        videoSrc: $sce.trustAsResourceUrl('/dist/images/api-image.png'),
+        videoSrc: $sce.trustAsResourceUrl(document.baseURI + '/dist/images/api-image.png'),
         links: [
           {
             label: 'Get Started',
