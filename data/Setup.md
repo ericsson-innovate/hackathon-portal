@@ -3,13 +3,6 @@ AT&T Head Unit apps are built with HTML5 for AngularJS framework. Sample apps co
 
 App framework contains automation and helper tools for which we need to install NodeJS, and some of its libraries. You can get started in two ways; Using Virtual Machine or by installing developer environment manually into your local environment.
 
-
-## Installing developer environment using virtual machine 
-This is the fastes way to get coding as application framework and its dependencies are preconfigured. Using Vagrant is simple and upon installation all you need to do is SSH into the VM and start coding.
-
-### AT&T Drive App Development VM 
-This virtual machine will get you up and running with development very fast. If you are planing on continuing building you app for AT&T Drive its best if you setup your local development environment locally following the steps below.
-
 ## Installing developer environment manually into local environment
 Suggested method if you intent to get serius about developing apps for AT&T Drive.
 
@@ -26,8 +19,7 @@ Once Node is installed and running, using terminal as sudo (Node shell running a
 > Hackaton participants: Request hardware from the organizers. See AT&T or Ericsson booth for help. You will skip this step.
 
 #### Configure Head Unit Simulator
-> Hackaton participants: Request hardware from the organizers. See AT&T or Ericsson booth for help.
-Note: There has been some issues with network latency at the Developer Summit that causes slow response of the Head Unit. We are looking for a workaround. 
+> There has been some issues with network latency at the Developer Summit that causes slow response of the Head Unit. We are looking for a workaround.
 
 ### Step 3: 
 #### Installing App Framework
