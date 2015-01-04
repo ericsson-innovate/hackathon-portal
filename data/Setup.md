@@ -10,18 +10,6 @@ This is the fastes way to get coding as application framework and its dependenci
 ### AT&T Drive App Development VM 
 This virtual machine will get you up and running with development very fast. If you are planing on continuing building you app for AT&T Drive its best if you setup your local development environment locally following the steps below.
 
-#### VM Setup
-
-- Download and install [Vagrant](http://vagrantup.com)
-- Download and install [VirtualBox](https://www.virtualbox.org)
-- Download or clone this repository [AT&T Drive VM](https://github.com/ericsson-innovate/ATT-Drive-SDK-VM.git)
-
-- Using terminal (Command Line), go to root of this project **ATT-Drive-VM** and type `vagrant up`
-- Once Vagrant starts the VM, use SSH to access the server `vagrant ssh` command
-- CD into **myfirstapp** directory then type `http-server -p 3000` commmand to start the app
-- Preview the "hello world app" in browser 127.0.0.1:3000 
-
-
 ## Installing developer environment manually into local environment
 Suggested method if you intent to get serius about developing apps for AT&T Drive.
 
@@ -37,12 +25,9 @@ Once Node is installed and running, using terminal as sudo (Node shell running a
 #### Install Head Unit simulator and DEC service
 > Hackaton participants: Request hardware from the organizers. See AT&T or Ericsson booth for help. You will skip this step.
 
-- Download and run [nSpan](url)
-- Download and run [nServices](url)
-- Download and install head unit Simulator (for Android 4.4.x tablets)
-
 #### Configure Head Unit Simulator
 > Hackaton participants: Request hardware from the organizers. See AT&T or Ericsson booth for help.
+Note: There has been some issues with network latency at the Developer Summit that causes slow response of the Head Unit. We are looking for a workaround. 
 
 ### Step 3: 
 #### Installing App Framework
@@ -58,12 +43,15 @@ App framework contains all the essentials to build standardized head unit apps, 
 Now you are ready to build your first app, and the API is readily available. 
 
 #### Seed your first app
-Once you download the SDK, using terminal in "Connected-Car-SDK" folder run this command: `grunt seed --dec-host=127.0.0.1 --dec-port=4402 -name=/full/path/to/your/app` (you can change the default IP and port if needed). You can always change this later (see optional commands).
+Once you download the SDK, using terminal in "Connected-Car-SDK" folder run this command: `grunt seed --dec-host=YOUR_LAPTOP_IP --dec-port=4412 -name=/full/path/to/your/app` Make sure you provide the full path to where you want to place your seed app. You only need to run this once to compile the seed of the app framework. (you can change the default IP and port if needed in DEC-SDK folder). You can always change this later (see optional commands).
 
-Once the build is completed the app will load in your browser and if you see the first page, the app is connected to span and ready for development. 
+Go to the app you just seeded and from with the folder run `http-server` command. This will serve the app on 127.0.0.1:8080 (it will show the port number). 
 
-Now you are ready to build your first app, and the API is readily available. 
+If you see a message in the app: Deck Status [OFFLINE] that means that your app is not communicating with the DEC on the Head Unit simulator. Check for the services running on the Head Unit and make sure IP adresses are mapping correctly between the Head Unit and the app on your laptop. 
 
+If you see Deck Status [ONLINE], the app is connected to DEC and you are ready for development. 
+
+Now get familiar with APIs: 
 - [In-car Apps API Docs](http://attgarage.msg.betelab.ericy.com:443/driveSdk/#/api-docs/vehicle-apps-api)
 - [UI Kit API Docs](http://attgarage.msg.betelab.ericy.com:443/ui-toolkit/)
 
