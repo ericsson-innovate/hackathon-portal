@@ -130,12 +130,12 @@ angular.module('categoryFilter', [])
 
 angular.module('hackApp')
   
-  .constant('showCountdownPage', false)
+  .constant('showCountdownPage', true)
 
   //Assuming that the hackaton starts at 1/3/2015 8AM PST (UTC -8)
   .constant('developerPreview', {
     startDate: '3 Jan 2015 08:00:00 -0800',
-    endDate: '6 Jan 2015 08:00:00 -0800'
+    endDate: '5 Jan 2015 08:00:00 -0800'
   })
 
   .constant('apiKey', 'api-key-1234')
