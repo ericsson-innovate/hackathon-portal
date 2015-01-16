@@ -55,6 +55,8 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
+  'loginService',
+
   // Routes
 
   'apiDocsController',

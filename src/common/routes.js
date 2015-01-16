@@ -4,46 +4,23 @@
 
 angular.module('hackApp')
 
-.config(function($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideMenuGroups, webAppsApiCategories, showCountdownPage, developerPreview) {
+.config(function($locationProvider, 
+                    $stateProvider,
+                    $urlRouterProvider, 
+                    topLevelRoutes, 
+                    sideMenuGroups, 
+                    webAppsApiCategories) {
 
-    var isPreviewOpen = false;
-    var currentTime = (new Date()).getTime();
-    var startTime = (new Date(developerPreview.startDate)).getTime();
-    var endTime = (new Date(developerPreview.endDate)).getTime();
 
-    if(currentTime >= startTime  && currentTime <= endTime) isPreviewOpen = true;
-    
 
-    if (isPreviewOpen === true || showCountdownPage === false) {
-        // Re-route invalid routes back to home
-        $urlRouterProvider.otherwise(topLevelRoutes[0].url);
 
-        addWebAppsApiCategoriesToSideMenuGroups();
+    // Re-route invalid routes back to home
+    $urlRouterProvider.otherwise(topLevelRoutes[0].url);
 
-        registerTopLevelRoutes();
-        registerApiDocsRoutes();
-    } 
+    addWebAppsApiCategoriesToSideMenuGroups();
 
-    else {
-        var route = topLevelRoutes[3];
-
-        $stateProvider
-            .state({
-                name: route.ref,
-                url: route.url,
-                abstract: route.isAbstract,
-                templateUrl: route.templateUrl,
-                controller: route.controller,
-                resolve: {
-                    'collections': function(MarkdownData) {
-                        return MarkdownData.fetchDocumentation();
-                    }
-                },
-                params: route.defaultParams
-            });
-
-          $urlRouterProvider.otherwise(route.url);
-    }
+    registerTopLevelRoutes();
+    registerApiDocsRoutes();
 
 
     function registerTopLevelRoutes() {
@@ -135,31 +112,59 @@ angular.module('hackApp')
     }
 })
 
-.run(function($rootScope, $log) {
-    $rootScope.routeState = {};
+.run(function($rootScope, $log, $state, $timeout, $urlRouter, showCountdownPage, developerPreview, loginService) {
+        $rootScope.routeState = {};
+  
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        $log.debug('$stateChangeStart', toState.name);
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-        // Allows us to use a different CSS class for the top-level view element for each route
-        $rootScope.routeState = toState;
-    });
+            $log.debug('$stateChangeStart', toState.name, fromState.name);      
+        
+            // Redirects requests to the Countdown page if the preview is closed
 
-    $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-        $log.debug('$stateNotFound', unfoundState.name);
-    });
+            if(shouldRedirect()){
+                // wait for the $digest to complete ($timeout)
+                $timeout(function(){
+                    console.log('Redirecting to the countdown page');
+                     if (toState.name === 'countdown') {
+                        return;
+                     }
+                    event.preventDefault();
+                    $state.go('countdown');
+                },0);
+            }
 
-    $rootScope.$on('$stateChangeSuccess',
-        function(event, toState, toParams, fromState, fromParams) {
-            $log.debug('$stateChangeSuccess', toState.name);
+            // Allows us to use a different CSS class for the top-level view element for each route
+            $rootScope.routeState = toState;
         });
 
-    $rootScope.$on('$stateChangeError',
-        function(event, toState, toParams, fromState, fromParams, error) {
-            $log.debug('$stateChangeError', toState.name, error);
+        $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+            $log.debug('$stateNotFound', unfoundState.name);
         });
 
-    $rootScope.$on('$viewContentLoaded', function(event) {
-        console.log('$viewContentLoaded');
-    });
+        $rootScope.$on('$stateChangeSuccess',
+            function(event, toState, toParams, fromState, fromParams) {
+                $log.debug('$stateChangeSuccess', toState.name);
+            });
+
+        $rootScope.$on('$stateChangeError',
+            function(event, toState, toParams, fromState, fromParams, error) {
+                $log.debug('$stateChangeError', toState.name, error);
+            });
+
+        $rootScope.$on('$viewContentLoaded', function(event) {
+            console.log('$viewContentLoaded');
+        });
+
+        var shouldRedirect = function(){
+            var isPreviewOpen = false;
+            var currentTime = (new Date()).getTime();
+            var startTime = (new Date(developerPreview.startDate)).getTime();
+            var endTime = (new Date(developerPreview.endDate)).getTime();  
+
+            if (showCountdownPage && !isPreviewOpen  && !loginService.isLoggedIn()) return true;
+            return false;
+        };
+
+    
 });
