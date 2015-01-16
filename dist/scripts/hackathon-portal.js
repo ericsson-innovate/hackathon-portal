@@ -55,6 +55,8 @@ angular.module('hackApp', [
   'tryItService',
   'markdownDataService',
 
+  'loginService',
+
   // Routes
 
   'apiDocsController',
@@ -135,7 +137,11 @@ angular.module('hackApp')
   //Assuming that the hackaton starts at 1/3/2015 8AM PST (UTC -8)
   .constant('developerPreview', {
     startDate: '3 Jan 2015 08:00:00 -0800',
-    endDate: '5 Jan 2015 08:00:00 -0800'
+    endDate: '6 Jan 2015 08:00:00 -0800'
+  })
+  .constant('previewLoginCredentials', {
+    username: 'previewLogin',
+    password: 'haveFun'
   })
 
   .constant('apiKey', 'api-key-1234')
@@ -607,6 +613,30 @@ angular.module('hackController', [])
 
 'use strict';
 
+angular.module('loginService', [])
+	.factory('loginService', ['previewLoginCredentials', function(previewLoginCredentials){
+		var LoggedIn = false;
+
+		var isLoggedIn = function(){
+			return LoggedIn;
+		};
+
+		var authenticate = function (username, password) {
+        	//Since we don't really have a backend in place at this point, I'll just hardcode the shit out of this
+             LoggedIn = (username === previewLoginCredentials.username && password === previewLoginCredentials.password);
+             console.log('auth function: ' + LoggedIn);
+             return LoggedIn;
+        };
+
+        return {
+        	authenticate : authenticate,
+        	isLoggedIn: isLoggedIn
+        };
+	}]);
+
+
+'use strict';
+
 angular.module('orderApiCallsFilter', [])
 
 /**
@@ -636,46 +666,23 @@ angular.module('orderApiCallsFilter', [])
 
 angular.module('hackApp')
 
-.config(function($locationProvider, $stateProvider, $urlRouterProvider, topLevelRoutes, sideMenuGroups, webAppsApiCategories, showCountdownPage, developerPreview) {
+.config(function($locationProvider, 
+                    $stateProvider,
+                    $urlRouterProvider, 
+                    topLevelRoutes, 
+                    sideMenuGroups, 
+                    webAppsApiCategories) {
 
-    var isPreviewOpen = false;
-    var currentTime = (new Date()).getTime();
-    var startTime = (new Date(developerPreview.startDate)).getTime();
-    var endTime = (new Date(developerPreview.endDate)).getTime();
 
-    if(currentTime >= startTime  && currentTime <= endTime) isPreviewOpen = true;
-    
 
-    if (isPreviewOpen === true || showCountdownPage === false) {
-        // Re-route invalid routes back to home
-        $urlRouterProvider.otherwise(topLevelRoutes[0].url);
 
-        addWebAppsApiCategoriesToSideMenuGroups();
+    // Re-route invalid routes back to home
+    $urlRouterProvider.otherwise(topLevelRoutes[0].url);
 
-        registerTopLevelRoutes();
-        registerApiDocsRoutes();
-    } 
+    addWebAppsApiCategoriesToSideMenuGroups();
 
-    else {
-        var route = topLevelRoutes[3];
-
-        $stateProvider
-            .state({
-                name: route.ref,
-                url: route.url,
-                abstract: route.isAbstract,
-                templateUrl: route.templateUrl,
-                controller: route.controller,
-                resolve: {
-                    'collections': function(MarkdownData) {
-                        return MarkdownData.fetchDocumentation();
-                    }
-                },
-                params: route.defaultParams
-            });
-
-          $urlRouterProvider.otherwise(route.url);
-    }
+    registerTopLevelRoutes();
+    registerApiDocsRoutes();
 
 
     function registerTopLevelRoutes() {
@@ -767,33 +774,61 @@ angular.module('hackApp')
     }
 })
 
-.run(function($rootScope, $log) {
-    $rootScope.routeState = {};
+.run(function($rootScope, $log, $state, $timeout, $urlRouter, showCountdownPage, developerPreview, loginService) {
+        $rootScope.routeState = {};
+  
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        $log.debug('$stateChangeStart', toState.name);
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-        // Allows us to use a different CSS class for the top-level view element for each route
-        $rootScope.routeState = toState;
-    });
+            $log.debug('$stateChangeStart', toState.name, fromState.name);      
+        
+            // Redirects requests to the Countdown page if the preview is closed
 
-    $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-        $log.debug('$stateNotFound', unfoundState.name);
-    });
+            if(shouldRedirect()){
+                // wait for the $digest to complete ($timeout)
+                $timeout(function(){
+                    console.log('Redirecting to the countdown page');
+                     if (toState.name === 'countdown') {
+                        return;
+                     }
+                    event.preventDefault();
+                    $state.go('countdown');
+                },0);
+            }
 
-    $rootScope.$on('$stateChangeSuccess',
-        function(event, toState, toParams, fromState, fromParams) {
-            $log.debug('$stateChangeSuccess', toState.name);
+            // Allows us to use a different CSS class for the top-level view element for each route
+            $rootScope.routeState = toState;
         });
 
-    $rootScope.$on('$stateChangeError',
-        function(event, toState, toParams, fromState, fromParams, error) {
-            $log.debug('$stateChangeError', toState.name, error);
+        $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+            $log.debug('$stateNotFound', unfoundState.name);
         });
 
-    $rootScope.$on('$viewContentLoaded', function(event) {
-        console.log('$viewContentLoaded');
-    });
+        $rootScope.$on('$stateChangeSuccess',
+            function(event, toState, toParams, fromState, fromParams) {
+                $log.debug('$stateChangeSuccess', toState.name);
+            });
+
+        $rootScope.$on('$stateChangeError',
+            function(event, toState, toParams, fromState, fromParams, error) {
+                $log.debug('$stateChangeError', toState.name, error);
+            });
+
+        $rootScope.$on('$viewContentLoaded', function(event) {
+            console.log('$viewContentLoaded');
+        });
+
+        var shouldRedirect = function(){
+            var isPreviewOpen = false;
+            var currentTime = (new Date()).getTime();
+            var startTime = (new Date(developerPreview.startDate)).getTime();
+            var endTime = (new Date(developerPreview.endDate)).getTime();  
+
+            if (showCountdownPage && !isPreviewOpen  && !loginService.isLoggedIn()) return true;
+            return false;
+        };
+
+    
 });
 angular.module('sectionTitleToStateIdFilter', [])
 
@@ -1507,26 +1542,6 @@ angular.module('apiListDirective', [])
   };
 });
 
-angular.module('apiSectionBlockDirective', [])
-
-.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
-
-.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
-  return {
-    restrict: 'E',
-
-    scope: {
-      section: '='
-    },
-
-    templateUrl: apiSectionBlockTemplatePath,
-
-    link: function (scope, element, attrs) {
-      element.attr('id', scope.section.id);
-    }
-  };
-});
-
 'use strict';
 
 angular.module('apiListItemDirective', [])
@@ -1589,6 +1604,26 @@ angular.module('apiListItemDirective', [])
         //
         //$state.go(targetRef);
       };
+    }
+  };
+});
+
+angular.module('apiSectionBlockDirective', [])
+
+.constant('apiSectionBlockTemplatePath', document.baseURI + '/dist/templates/components/api-section-block/api-section-block.html')
+
+.directive('apiSectionBlock', function (apiSectionBlockTemplatePath) {
+  return {
+    restrict: 'E',
+
+    scope: {
+      section: '='
+    },
+
+    templateUrl: apiSectionBlockTemplatePath,
+
+    link: function (scope, element, attrs) {
+      element.attr('id', scope.section.id);
     }
   };
 });
@@ -2403,14 +2438,19 @@ angular.module('countdownController', [])
 
 .controller('CountdownCtrl', [
     '$scope',
-    'developerPreview',
+    '$timeout',
     '$state',
-    function($scope, developerPreview, $state) {
-
+    'loginService',
+    'developerPreview',
+    function($scope, $timeout, $state, loginService, developerPreview) {
+        
 
 	    var currentTime = (new Date()).getTime();
 	    var startTime = (new Date(developerPreview.startDate)).getTime();
 	    var endTime = (new Date(developerPreview.endDate)).getTime();
+
+        $scope.showError = false;
+        $scope.showLogin = false;
 
 	    $scope.preview = {
 	    	before: false,
@@ -2426,17 +2466,30 @@ angular.module('countdownController', [])
 
     	$scope.countdownEnded = function(){
     		console.log('redirect');
-	        $scope.$apply(function(){
-		    	$scope.preview.before = false;
-    			$scope.preview.during = true;
-        	});
+	        $timeout(function(){
+                $scope.$apply(function(){
+                    $scope.preview.before = false;
+                    $scope.preview.during = true;
+                });
+            });
     	};
 
     	$scope.goToPortal = function(){
-    		window.location.replace('/');
+    		$state.go('two-videos');
     	};
 
         $scope.end = (new Date(developerPreview.startDate)).getTime();
+
+        $scope.login = function(){
+            if (loginService.authenticate($scope.username , $scope.password)) {
+                console.log('Authenticated');
+                $scope.goToPortal();
+            }
+            else{
+                console.log('Invalid credentials');
+                $scope.showError = true;
+            };
+        }
     }
 ]);
 angular.module('headUnitAppsController', [])
@@ -2622,21 +2675,6 @@ angular.module('dynamicMarkdownListItemDirective', [])
   };
 });
 
-angular.module('carAppFrameworkController', [])
-
-  .controller('CarAppFrameworkCtrl', function ($scope) {
-  });
-
-angular.module('sampleCarAppController', [])
-
-  .controller('SampleCarAppCtrl', function ($scope) {
-  });
-
-angular.module('uiComponentsController', [])
-
-  .controller('UiComponentsCtrl', function ($scope) {
-  });
-
 angular.module('apiDocumentationController', [])
 
 /**
@@ -2679,3 +2717,18 @@ angular.module('sampleAppsController', [])
   $scope.sampleAppsState = {};
   $scope.sampleAppsState.sampleAppData = sampleAppData;
 });
+
+angular.module('carAppFrameworkController', [])
+
+  .controller('CarAppFrameworkCtrl', function ($scope) {
+  });
+
+angular.module('sampleCarAppController', [])
+
+  .controller('SampleCarAppCtrl', function ($scope) {
+  });
+
+angular.module('uiComponentsController', [])
+
+  .controller('UiComponentsCtrl', function ($scope) {
+  });

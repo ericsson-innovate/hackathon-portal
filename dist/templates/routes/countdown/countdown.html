@@ -41,15 +41,39 @@
 
 </div>
 
-<div class="countdown-main-container" ng-show="preview.after">
+<div class="countdown-main-container" ng-show="preview.after && !showLogin">
 
 	<div class="countdown-heading">
 		<img ng-src="dist/images/att-drive-logo-white.png" alt="AT&T Drive"><br>
 		<p>
 			DEVELOPER PREVIEW is closed at this time.
-			Please <a href="https://edo2014.wufoo.com/forms/drive-studio-contact-form/">Contact us</a> for further info.
+			Please <a ng-click="showLogin=true">Log in</a> or <a href="https://edo2014.wufoo.com/forms/drive-studio-contact-form/">Contact us</a> for further info.
 		</p>
 	</div>
 
 
+
+
+
+</div>
+
+<div class="countdown-main-container" ng-show="showLogin">
+		<div class="countdown-heading">
+			<img ng-src="dist/images/att-drive-logo-white.png" alt="AT&T Drive"><br>
+		</div>
+		<div class="login animated fadeInUp" >
+		
+		    <form name="loginForm" class="form-signin" role="form">
+		        
+		        <input ng-model="username" type="text" placeholder="Username" required autofocus>
+		        <input ng-model="password" type="password"  placeholder="Password" required>
+		        <button ng-click="login()" ng-disabled="!loginForm.$valid">Log in</button>
+
+		    </form>
+		    <div ng-show="showError" class="login-error">
+		    	Invalid username or password.
+		    </div>
+
+		
+	</div>
 </div>
