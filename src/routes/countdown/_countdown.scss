@@ -54,4 +54,72 @@
 		}
 	}
 
+	.login{
+
+		width: 20em;
+		position: relative;
+		margin: 0 auto;
+		padding: 2em;
+
+		background-color: rgba(150, 150, 150, 0.3);
+		border: 1px solid rgba(200, 200, 200, 0.3);
+		border-radius: .2em;
+
+			
+		input{
+			width: 100%;
+			margin-bottom: .8em;
+			box-sizing: border-box;
+		}
+
+		button{
+			margin-top: 2em;
+			width: 100%;
+		}
+
+		.login-error{
+			padding-top: 1em;
+			color: red;
+			font-weight: bold;
+		}
+
+		
+		
+	}
+
 }
+
+.animated {
+		  -webkit-animation-duration: 1s;
+		  animation-duration: 1s;
+		  -webkit-animation-fill-mode: both;
+		  animation-fill-mode: both;
+		}
+		@-webkit-keyframes fadeInUp {
+		  0% {
+		    opacity: 0;
+		    -webkit-transform: translate3d(0, 100%, 0);
+		    transform: translate3d(0, 100%, 0);
+		  }
+		  100% {
+		    opacity: 1;
+		    -webkit-transform: none;
+		    transform: none;
+		  }
+		}
+		@keyframes fadeInUp {
+		  0% {
+		    opacity: 0;
+		    -webkit-transform: translate3d(0, 100%, 0);
+		    transform: translate3d(0, 100%, 0);
+		  }
+		  100% {
+		    opacity: 1;
+		    -webkit-transform: none;
+		    transform: none;
+		  }
+		}
+		.fadeInUp {
+		  -webkit-animation-name: fadeInUp;
+		  animation-name: fadeInUp;
+		}
